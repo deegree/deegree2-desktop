@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:Project xmlns="http://www.deegree.org/coremapmodel" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.deegree.org/jdbc" xmlns:ns4="http://www.deegree.org/project" xmlns:ns5="http://www.deegree.org/settings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.deegree.org/project D:/java/projekte/deegree2_client/resources/schema/jaxbschema/project.xsd">
+	<ns4:name>TestProject</ns4:name>
+	<identifier>
+		<value>TP1</value>
+	</identifier>
+	<ns4:View hasFooter="true">
+		<ns4:ViewForm>
+			<ns4:FrameViewForm resizeable="true">
+				<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.map.DefaultMapFrame</ns4:containerClass>
+				<ns4:containerClass viewPlatform="Portlet">org.deegree.client.portlet.DeegreeJSP
+                                </ns4:containerClass>
+				<ns4:ComponentState modal="false" active="true">
+					<ns4:windowState>normal</ns4:windowState>
+				</ns4:ComponentState>
+				<ns4:frameTitle>$FVF1.FrameTitle</ns4:frameTitle>
+			</ns4:FrameViewForm>
+			<ns4:Layout>
+				<ns4:NoneLayout/>
+			</ns4:Layout>
+		</ns4:ViewForm>
+		<ns4:SupportedViewPlatform>Application</ns4:SupportedViewPlatform>
+		<ns4:Window width="950" height="700" top="10" left="10"/>
+		<ns4:ModuleRegister>
+			<ns4:BorderPosition>
+				<ns4:borderPositionValue>center</ns4:borderPositionValue>
+			</ns4:BorderPosition>
+			<ns4:Module>
+				<ns4:name>InfoText</ns4:name>
+				<identifier>
+					<value>XYZ999</value>
+				</identifier>
+				<ns4:className>org.deegree.igeo.modules.DefaultModule</ns4:className>
+				<ns4:ViewForm >
+					<ns4:PaneViewForm>
+					<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.InfoTextPanel</ns4:containerClass>
+						<ns4:ComponentState modal="false" active="true">
+							<ns4:windowState>normal</ns4:windowState>
+						</ns4:ComponentState>
+						<ns4:paneTitle>dummy</ns4:paneTitle>
+					</ns4:PaneViewForm>
+				</ns4:ViewForm>
+				<ns4:init-param>
+					<ns4:name>page</ns4:name>
+					<ns4:value>./resources/data/help/start.html</ns4:value>
+				</ns4:init-param>
+			</ns4:Module>
+		</ns4:ModuleRegister>
+		<ns4:ModuleRegister>
+			<ns4:AbsolutePosition>
+				<ns4:Window width="388" height="504" top="185" left="351"/>
+			</ns4:AbsolutePosition>
+			<ns4:Module>
+				<ns4:name>ProxyManager</ns4:name>
+				<identifier>
+					<value>PM1</value>
+				</identifier>
+				<ns4:className>org.deegree.igeo.modules.ProxyManagerModule</ns4:className>
+				<ns4:ViewForm>
+					<ns4:FrameViewForm>
+						<ns4:containerClass viewPlatform="Application"> org.deegree.igeo.views.swing.proxymanager.ProxyManagerDialog</ns4:containerClass>
+						<ns4:ComponentState modal="false" active="true">
+							<ns4:windowState>closed</ns4:windowState>
+						</ns4:ComponentState>
+						<ns4:frameTitle>$Proxymanager.FrameTitle</ns4:frameTitle>
+					</ns4:FrameViewForm>
+					<ns4:Layout>
+						<ns4:NoneLayout/>
+					</ns4:Layout>
+				</ns4:ViewForm>											
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>Proxy_Open_TB</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$Proxymanager.open.tooltip</ns4:tooltip>
+					<ns4:assignedAction>open</ns4:assignedAction>
+					<ns4:icon ns2:href="connect.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>				
+			</ns4:Module>
+		</ns4:ModuleRegister>
+		<ns4:MenuBar>
+			<ns4:Menu>
+				<identifier>
+					<value>MB1</value>
+				</identifier>
+				<ns4:name>$MB1.name</ns4:name>
+				<ns4:mnemonic>p</ns4:mnemonic>
+				<ns4:MenuItem>
+					<ns4:name>$MB03.name</ns4:name>
+					<ns4:assignedAction>newproject</ns4:assignedAction>
+					<ns4:mnemonic>n</ns4:mnemonic>
+					<ns4:accelerator>
+						<ns4:mnemonic>n</ns4:mnemonic>
+						<ns4:mask>CTRL</ns4:mask>
+					</ns4:accelerator>
+				</ns4:MenuItem>
+				<ns4:MenuItem>
+					<ns4:name>$newprojectbyfile.name</ns4:name>
+					<ns4:assignedAction>newprojectbyfile</ns4:assignedAction>
+					<ns4:mnemonic>p</ns4:mnemonic>
+					<ns4:accelerator>
+						<ns4:mnemonic>p</ns4:mnemonic>
+						<ns4:mask>CTRL</ns4:mask>
+					</ns4:accelerator>
+				</ns4:MenuItem>
+				<ns4:MenuItem>
+					<ns4:name>$MB0.name</ns4:name>
+					<ns4:assignedAction>open</ns4:assignedAction>
+					<ns4:mnemonic>o</ns4:mnemonic>
+					<ns4:accelerator>
+						<ns4:mnemonic>o</ns4:mnemonic>
+						<ns4:mask>CTRL</ns4:mask>
+					</ns4:accelerator>
+				</ns4:MenuItem>
+			</ns4:Menu>
+		</ns4:MenuBar>
+		<ns4:ToolBar useRollover="true" floatable="true">
+			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
+				<identifier>
+					<value>TB01.open</value>
+				</identifier>
+				<ns4:name/>
+				<ns4:tooltip>$OpenProject.tooltip</ns4:tooltip>
+				<ns4:assignedAction>open</ns4:assignedAction>
+				<ns4:icon ns2:href="/org/deegree/igeo/views/images/open.gif"/>
+				<ns4:entryType>PushButton</ns4:entryType>
+			</ns4:ToolBarEntry>
+			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
+				<identifier>
+					<value>TB01.login</value>
+				</identifier>
+				<ns4:name/>
+				<ns4:tooltip>$Login.tooltip</ns4:tooltip>
+				<ns4:assignedAction>login</ns4:assignedAction>
+				<ns4:icon ns2:href="/org/deegree/igeo/views/images/log_in.png"/>
+				<ns4:entryType>PushButton</ns4:entryType>
+			</ns4:ToolBarEntry>
+		</ns4:ToolBar>
+	</ns4:View>
+	<ns4:Settings>
+		<ns5:MapHandling>
+			<ns5:zoomLevel>25</ns5:zoomLevel>
+			<ns5:panLevel>25</ns5:panLevel>
+		</ns5:MapHandling>
+		<ns5:DataAdapter>
+			<ns5:WFSFeatureAdapter>
+				<ns5:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
+				<ns5:Timeout val="10000"/>
+				<ns5:MaxFeature val="5000"/>
+				<ns5:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
+			</ns5:WFSFeatureAdapter>
+		</ns5:DataAdapter>
+		<ns5:ProjectTemplates>
+			<ns5:Template desc="project with pane layout" file="resources/templates/default" name="pane layout"/>
+            <ns5:Template desc="project with innerframe layout" file="resources/templates/empty_innerframelayout" name="innerframe layout"/>
+	        <ns5:Template desc="project with frame layout" file="resources/templates/frame_layout" name="frame layout"/>	
+        </ns5:ProjectTemplates>
+		<ns5:HelpPage changeable="true">
+			<ns5:HelpContext>
+				<ns5:page mainPage="true">
+					<OnlineResource ns2:href="./resources/data/help/projects/project_new.de.html"/>
+					<ns5:keyword>Projekte neu anlegen</ns5:keyword>
+				</ns5:page>
+			</ns5:HelpContext>
+			<ns5:HelpContext>
+				<ns5:page mainPage="true">
+					<OnlineResource ns2:href="./resources/data/help/projects/project_open.de.html"/>
+					<ns5:keyword>Projekte öffnen</ns5:keyword>
+				</ns5:page>
+			</ns5:HelpContext>
+		</ns5:HelpPage>
+		<ns5:Clipboard format="text/xml; subtype=gml/3.1.1" maxObjects="1000"/>
+		<ns5:Security>
+			<ns5:Authentication default="true">
+				<ns5:method>org.deegree.igeo.commands.DummyUserAuthenticationCommand</ns5:method>
+				<ns5:AuthenticationServer>http://localhost:8280/igeo_authentication/authentication</ns5:AuthenticationServer>
+			</ns5:Authentication>
+		</ns5:Security>
+	</ns4:Settings>
+	<MapModelCollection>
+		<name>TestMMC</name>
+		<maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+		<externalResource>
+			<OnlineResource ns2:href="./docs/deegree_client_portal_specification.odt"/>
+			<abstract>
+                                According to changed requirements to thin and thick geospatial clients in following document a new
+                                concept for deegree's implementation of portal and client functionality will be developed. One basic
+                                decision is to brake with current implementation of iGeoPortal standard and portlet edition and not to
+                                use classes, JavaScript objects, HTML-pages and JSPs anymore. The same is true for further usage of
+                                moduls developed by lat/lon for OpenJUMP (deeJUMP).
+            </abstract>
+			<externalResourceTitle>deegree client and portal concept and specification</externalResourceTitle>
+			<externalResourceType>Open Office document</externalResourceType>
+		</externalResource>
+		<mapModel current="true">
+			<name>TestMM</name>
+			<identifier>
+				<value>MM1</value>
+			</identifier>
+			<targetDevice>
+				<pixelWidth>676</pixelWidth>
+				<pixelHeight>563</pixelHeight>
+				<dpi>96</dpi>
+			</targetDevice>
+			<extent crs="EPSG:26912" maxy="4653798.05" maxx="786797.8054340585" miny="4107118.55" minx="130394.00081594137"/>
+			<maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+			<layerGroup>
+				<identifier>
+					<value>root</value>
+				</identifier>
+				<title>Enter new name</title>
+			</layerGroup>
+			<description/>
+		</mapModel>
+	</MapModelCollection>
+</ns4:Project>

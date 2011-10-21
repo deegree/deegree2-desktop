@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bm="http://www.deegree.org/bookmarks" 
+elementFormDefault="qualified" attributeFormDefault="unqualified"  targetNamespace="http://www.deegree.org/bookmarks">
+	
+	<xs:element name="BookmarkList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Bookmark" type="bm:BookmarkType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BookmarkType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="allMapModels" type="xs:boolean"/>			
+			<xs:element name="envelope" type="bm:EnvelopeType" />
+			<xs:element name="mapModelId" type="bm:IdentifierType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnvelopeType">
+		<xs:sequence/>
+		<xs:attribute name="minx" type="xs:double" use="required"/>
+		<xs:attribute name="miny" type="xs:double" use="required"/>
+		<xs:attribute name="maxx" type="xs:double" use="required"/>
+		<xs:attribute name="maxy" type="xs:double" use="required"/>
+		<xs:attribute name="crs" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="IdentifierType">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string"/>
+			<xs:element name="namespace" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

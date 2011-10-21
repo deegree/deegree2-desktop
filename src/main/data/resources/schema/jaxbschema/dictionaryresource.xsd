@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.deegree.org/dictionary" xmlns:dict="http://www.deegree.org/dictionary" xmlns:jdbc="http://www.deegree.org/jdbc" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.deegree.org/jdbc" schemaLocation="jdbc_connection.xsd"/>
+	<xs:element name="DictionaryResource" type="dict:DictionaryResourceType"/>
+	<xs:complexType name="DictionaryResourceType">
+		<xs:sequence>
+			<xs:element name="connection" type="jdbc:JDBCConnectionType"/>
+			<xs:element name="definition" type="dict:DefinitionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DefinitionType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="codeSpace" type="xs:string"/>
+			<xs:element name="table" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

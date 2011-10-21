@@ -1,0 +1,1618 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project xmlns="http://www.deegree.org/project" 
+			xmlns:ns2="http://www.deegree.org/coremapmodel" 
+			xmlns:ns3="http://www.w3.org/1999/xlink" 
+			xmlns:ns4="http://www.deegree.org/settings" 
+			xmlns:ns5="http://www.deegree.org/jdbc" language="de" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:schemaLocation="http://www.deegree.org/project ../schema/jaxbschema/project.xsd">
+	<name>TestProject</name>
+	<ns2:identifier>
+		<ns2:value>TP1</ns2:value>
+	</ns2:identifier>
+	<View hasFooter="true">
+		<ViewForm>
+			<FrameViewForm resizeable="true">
+				<containerClass viewPlatform="Application">org.deegree.igeo.views.map.DefaultMapFrame</containerClass>
+				<ComponentState modal="false" active="true">
+					<windowState>normal</windowState>
+				</ComponentState>
+				<frameTitle>$FVF1.FrameTitle</frameTitle>
+			</FrameViewForm>
+			<Layout>
+				<NoneLayout/>
+			</Layout>
+		</ViewForm>
+		<SupportedViewPlatform>Application</SupportedViewPlatform>
+		<Window width="998" height="833" top="52" left="107"/>
+		<!-- LeftSide -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="270" height="636" top="2" left="1"/>
+			</AbsolutePosition>
+			<ModuleGroup>
+				<name/>
+				<ns2:identifier>
+					<ns2:value>LayerGroup</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.DefaultModuleGroup</className>
+				<ViewForm>
+					<InnerFrameViewForm>
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.DefaultInnerFrame</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>normal</windowState>
+						</ComponentState>
+						<frameTitle>$F5.FrameTitle</frameTitle>
+					</InnerFrameViewForm>
+					<Layout>
+						<TabLayout/>
+					</Layout>
+				</ViewForm>
+				<!-- LayerTree -->
+				<ModuleRegister>
+					<TabPosition>
+						<tabPosition>0</tabPosition>
+					</TabPosition>
+					<Module>
+						<name>Ebenen</name>
+						<ns2:identifier>
+							<ns2:value>LayerTreeId</ns2:value>
+						</ns2:identifier>
+						<className>org.deegree.igeo.modules.LayerListTreeViewModule</className>
+						<ViewForm>
+							<PaneViewForm>
+								<containerClass viewPlatform="Application">
+                                    org.deegree.igeo.views.swing.layerlist.LayerTreePanel
+                                </containerClass>
+								<ComponentState modal="false" active="true">
+									<windowState>normal</windowState>
+								</ComponentState>
+								<paneTitle>$F5.FrameTitle</paneTitle>
+							</PaneViewForm>
+							<Layout>
+								<NoneLayout/>
+							</Layout>
+						</ViewForm>
+						<PopUpEntry assignedGroup="LLTreeView">
+							<ns2:identifier>
+								<ns2:value>LLTV1</ns2:value>
+							</ns2:identifier>
+							<name>$removeLayer.name</name>
+							<assignedAction>removeLayer</assignedAction>
+							<icon ns3:href="../icons/removelayer.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>LLTV5</ns2:value>
+							</ns2:identifier>
+							<name>$addLayerGroup.name</name>
+							<assignedAction>addLayerGroup</assignedAction>
+							<icon ns3:href="../icons/s_add_layergroup.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>LLTV6</ns2:value>
+							</ns2:identifier>
+							<name>$rename</name>
+							<assignedAction>rename</assignedAction>
+							<icon ns3:href="../icons/rename.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>ZoomLayerPU</ns2:value>
+							</ns2:identifier>
+							<name>$ZoomLayer</name>
+							<assignedAction>$module:MapModule#zoomToSelectedLayers</assignedAction>
+							<icon ns3:href="../icons/zoomToLayers.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>ExpLayerPU</ns2:value>
+							</ns2:identifier>
+							<name>$ExportLayer</name>
+							<assignedAction>$module:MapModule#exportLayer</assignedAction>
+							<icon ns3:href="../icons/export_layer.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>LLTV4</ns2:value>
+							</ns2:identifier>
+							<name>$layerInfo.name</name>
+							<assignedAction>layerInfo</assignedAction>
+							<icon ns3:href="../icons/s_layerinfo.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>LayerInfoMB_1</ns2:value>
+							</ns2:identifier>
+							<name>$LayerInfo</name>
+							<assignedAction>$module:LayerInfo#open</assignedAction>
+							<icon ns3:href="../icons/table.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>EditStyle_Open_TB1</ns2:value>
+							</ns2:identifier>
+							<name>$EditStyle.name</name>
+							<assignedAction>$module:EditStyle#editStyle</assignedAction>
+							<icon ns3:href="../icons/palette.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>LLTV3</ns2:value>
+							</ns2:identifier>
+							<name>$setEditing.name</name>
+							<assignedAction>setEditing</assignedAction>
+						</PopUpEntry>
+					</Module>
+				</ModuleRegister>
+				<!-- Legend -->
+				<ModuleRegister>
+					<TabPosition>
+						<tabPosition>1</tabPosition>
+					</TabPosition>
+					<Module>
+						<name>Legende</name>
+						<ns2:identifier>
+							<ns2:value>LegendViewId</ns2:value>
+						</ns2:identifier>
+						<className>org.deegree.igeo.modules.LegendModule</className>
+						<ViewForm>
+							<PaneViewForm>
+								<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.legend.LegendPanel</containerClass>
+								<ComponentState modal="false" active="true">
+									<windowState>normal</windowState>
+								</ComponentState>
+								<paneTitle>$F5.FrameTitle</paneTitle>
+							</PaneViewForm>
+							<Layout>
+								<NoneLayout/>
+							</Layout>
+						</ViewForm>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>PUexportLegend</ns2:value>
+							</ns2:identifier>
+							<name>$exportLegend</name>
+							<assignedAction>exportAsImage</assignedAction>
+							<icon ns3:href="../icons/legend_export.png"/>
+						</PopUpEntry>
+						<PopUpEntry>
+							<ns2:identifier>
+								<ns2:value>PUexportLegend</ns2:value>
+							</ns2:identifier>
+							<name>$copyLegend</name>
+							<assignedAction>exportToClipBoard</assignedAction>
+							<icon ns3:href="../icons/legend_copy.png"/>
+						</PopUpEntry>
+					</Module>
+				</ModuleRegister>
+				<ModuleRegister>
+					<TabPosition>
+						<tabPosition>2</tabPosition>
+					</TabPosition>
+					<Module>
+						<name>Kartenübersicht</name>
+						<ns2:identifier>
+							<ns2:value>F1</ns2:value>
+						</ns2:identifier>
+						<className>org.deegree.igeo.modules.DefaultModule</className>
+						<ViewForm>
+							<PaneViewForm>
+								<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.MapOverviewPanel</containerClass>
+								<ComponentState modal="false" active="true">
+									<windowState>normal</windowState>
+								</ComponentState>
+								<paneTitle>$F4.FrameTitle</paneTitle>
+							</PaneViewForm>
+							<Layout>
+								<NoneLayout/>
+							</Layout>
+						</ViewForm>
+						<init-param>
+							<name>mapImage</name>
+							<value>images/utah_overview.gif</value>
+						</init-param>
+						<init-param>
+							<name>mapEnvelope</name>
+							<value>117300,4049850,767300,4699850</value>
+						</init-param>
+					</Module>
+				</ModuleRegister>
+			</ModuleGroup>
+		</ModuleRegister>
+		<!-- MapModellCollection. Ermöglicht das Anlegen mehrerer Kartenfenster. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="388" height="504" top="185" left="351"/>
+			</AbsolutePosition>
+			<Module>
+				<name>MapModelCollectionInfoInfo</name>
+				<ns2:identifier>
+					<ns2:value>MapModelCollectionInfoInfo</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.MapModelCollectionInfoModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.MapModelCollectionInfoDialog</containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$MapModelCollectionInfo.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>MMC1</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1</ns2:value>
+					</parent>
+					<name>dummy</name>
+					<MenuItem>
+						<name>$MapModelCollectionInfo.open</name>
+						<assignedAction>open</assignedAction>
+					</MenuItem>
+				</Menu>
+				<init-param>
+					<name>programName</name>
+					<value>cmd</value>
+				</init-param>
+				<init-param>
+					<name>programParameter</name>
+					<value>/c,start,$PROPERTY</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- Bookmark. Ermöglicht das Anlegen und Verwalten von Lesezeichen. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="388" height="504" top="185" left="351"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Bookmark</name>
+				<ns2:identifier>
+					<ns2:value>BookmarkId</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.bookmarks.BookmarkModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="true">
+						<containerClass viewPlatform="Application">
+							org.deegree.igeo.views.swing.bookmark.BookmarkFrame
+                        </containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$Bookmark.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>Bookmark_Open_TB</ns2:value>
+					</ns2:identifier>
+					<name/>
+					<tooltip>$Bookmark.open.tooltip</tooltip>
+					<assignedAction>open</assignedAction>
+					<icon ns3:href="../icons/bookmark.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>Bookmark_add_TB</ns2:value>
+					</ns2:identifier>
+					<name/>
+					<tooltip>$Bookmark.add.tooltip</tooltip>
+					<assignedAction>addBookmark</assignedAction>
+					<icon ns3:href="../icons/bookmark_add.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/bookmarks/bookmark.de.html"/>
+						<ns4:keyword>Lesezeichen: anlegen/bearbeiten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- AddLayer. Ermöglicht das Hinzufügen von Vektor- (WFS, DB, Datei) und Rasterdaten (WMS, WCS, Datei). -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="288" height="500" top="138" left="420"/>
+			</AbsolutePosition>
+			<Module>
+				<name>AddLayer</name>
+				<ns2:identifier>
+					<ns2:value>AddLayerId</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.AddLayerModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="true">
+						<containerClass viewPlatform="Application">
+							org.deegree.igeo.views.swing.addlayer.AddLayerFrame
+                        </containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$AddLayer.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>MM1_MB007</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1</ns2:value>
+					</parent>
+					<name>$AddLayer.menu.name</name>
+					<mnemonic>a</mnemonic>
+					<MenuItem>
+						<name>$OpenFile.item.name</name>
+						<assignedAction>openFile</assignedAction>
+						<icon ns3:href="../icons/s_openFile.png"/>
+						<mnemonic>f</mnemonic>
+						<accelerator>
+							<mnemonic>f</mnemonic>
+							<mask>ALT</mask>
+						</accelerator>
+					</MenuItem>
+					<MenuItem>
+						<name>$AddNewLayer</name>
+						<assignedAction>addLayer</assignedAction>
+						<icon ns3:href="../icons/addLayer.png"/>
+					</MenuItem>
+				</Menu>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>AddLayer_Open_TB</ns2:value>
+					</ns2:identifier>
+					<name/>
+					<tooltip>$AddNewLayer.tooltip</tooltip>
+					<assignedAction>addLayer</assignedAction>
+					<icon ns3:href="../icons/addLayer.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/addlayer/add_layer_raster.de.html"/>
+						<ns4:keyword>Ebene hinzufügen: Rasterdaten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/addlayer/add_layer_vector.de.html"/>
+						<ns4:keyword>Ebene hinzufügen: Vektordaten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/addlayer/import_gps.de.html"/>
+						<ns4:keyword>Ebene hinzufügen: GPS-Daten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<init-param>
+					<name>knownWMS</name>
+					<value>
+						demo deegree wms: http://demo.deegree.org/deegree-wms/services,another wms: http://another.de/wms,localhost: http://localhost:8080/deegree-wms/services
+                    </value>
+				</init-param>
+				<init-param>
+					<name>WMSversions</name>
+					<value>1.0.0,1.1.0,1.1.1</value>
+				</init-param>
+				<init-param>
+					<name>knownWFS</name>
+					<value>demo deegree wfs: http://demo.deegree.org/deegree-wfs/services</value>
+				</init-param>
+				<init-param>
+					<name>knownWCS</name>
+					<value>demo deegree wcs: http://demo.deegree.org/deegree-wcs/services</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- MapModule. Beinhaltet die Grundfunktionen der Navigation (Zoom, Verschieben, etc). -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="715" height="635" top="2" left="273"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./map_module_iframe.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- ZoomByCoordinates. Ermöglicht das Zoomen auf bestimmte Koordinaten. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="400" height="210" top="250" left="270"/>
+			</AbsolutePosition>
+			<Module>
+				<name>ZoomByCoordinates</name>
+				<ns2:identifier>
+					<ns2:value>ZoomByCoordinates</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.ZoomByCoordinatesModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.zoom.ZoomByCoordDialog</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$F4.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>ZbCMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1view</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$ZoomCoord</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/zoombycoord.png"/>
+					</MenuItem>
+				</Menu>
+				<init-param>
+					<name>size</name>
+					<value>100000</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- ExifModule. Ermöglicht das Laden georeferenzierter Images, bzw das Anreichern solcher Images mit Koordinaten.-->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./exif_module.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- MeasureModule. Misst Flächen und Entfernungen. -->
+		<ModuleRegister>
+			<FooterPosition>
+				<footerPosition>1</footerPosition>
+			</FooterPosition>
+			<Module>
+				<name>Measuring</name>
+				<ns2:identifier>
+					<ns2:value>Measure1</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.MeasureModule</className>
+				<ViewForm>
+					<PaneViewForm>
+						<containerClass viewPlatform="Application">
+                                    org.deegree.igeo.views.swing.measure.MeasureFooterPanel
+                                </containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>normal</windowState>
+						</ComponentState>
+						<paneTitle>$M1.PaneTitle</paneTitle>
+					</PaneViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>MeasureMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$MD.name</name>
+						<assignedAction>measureDistance</assignedAction>
+						<icon ns3:href="../icons/ruler.png"/>
+					</MenuItem>
+					<MenuItem>
+						<name>$MA.name</name>
+						<assignedAction>measureArea</assignedAction>
+						<icon ns3:href="../icons/measure_areas.png"/>
+					</MenuItem>
+				</Menu>
+			</Module>
+		</ModuleRegister>
+		<!-- Analysis. Berechnet Objektstatistik. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./analysis_module.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- Buffer. Erzeugt  verschiedene Puffer. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="520" height="250" top="0" left="187"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Buffer</name>
+				<ns2:identifier>
+					<ns2:value>Buffer</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.geoprocessing.BufferModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.geoprocessing.ExtendedBufferDialog</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$F74.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>BufferMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$BufferMB.name</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/s_buffer.png"/>
+					</MenuItem>
+				</Menu>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/buffer/geoprocessing_buffer.de.html"/>
+						<ns4:keyword>Geoprocessing: Buffer berechnen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- WPS -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="849" height="565" top="150" left="270"/>
+			</AbsolutePosition>
+			<Module>
+				<name>WPSClient</name>
+				<ns2:identifier>
+					<ns2:value>WPSClient</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.geoprocessing.WPSClientModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.geoprocessing.wpsclient.ExtendedBufferDialog</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$F74.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>WPSMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$WPSClient.name</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/s_wps_buffer.png"/>
+					</MenuItem>
+				</Menu>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/wpsclient/geoprocessing_wps.de.html"/>
+						<ns4:keyword>Geoprocessing: WPS Buffer berechnen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<init-param>
+					<name>http://demo.deegree.org/deegree-wps/services</name>
+					<value>Buffer:org.deegree.igeo.views.swing.geoprocessing.wpsclient.BufferPanel</value>
+				</init-param>
+				<init-param>
+					<name>Buffer@http://demo.deegree.org/deegree-wps/services</name>
+					<value>org.deegree.igeo.commands.geoprocessing.WPSBufferCommand</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- Intersection. Erzeugt verschiedene Verschneidungen. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="520" height="250" top="0" left="177"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Intersection</name>
+				<ns2:identifier>
+					<ns2:value>Intersection</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.geoprocessing.IntersectionModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.geoprocessing.ExtendedIntersectionDialog</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$F74.Intersection</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>IntersectionMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$Intersection.name</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/s_intersection.png"/>
+					</MenuItem>
+				</Menu>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/intersection/geoprocessing_intersection.de.html"/>
+						<ns4:keyword>Geoprocessing: Verschneidung berechnen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- CopyPaste. Ermöglicht das kopieren und einfügen von Objekten.-->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./copypaste_module.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- Print. Ermöglicht das Erstellen von PDF-Dateien. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="364" height="390" top="252" left="535"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Print</name>
+				<ns2:identifier>
+					<ns2:value>PrintID</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.PrintModule</className>
+				<ViewForm>
+					<FrameViewForm>
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
+						</containerClass>
+						<ComponentState modal="true" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$MD10348</frameTitle>
+					</FrameViewForm>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>printmodule</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1</ns2:value>
+					</parent>
+					<name>$MB1.name</name>
+					<MenuItem>
+						<name>$MD10348</name>
+						<tooltip>$MD10348</tooltip>
+						<assignedAction>print</assignedAction>
+						<icon ns3:href="../icons/s_pdf.png"/>
+					</MenuItem>
+					<MenuItem>
+						<name>$MD10364</name>
+						<tooltip>$MD10364</tooltip>
+						<assignedAction>editSettings</assignedAction>
+						<icon ns3:href="../icons/s_report_edit.png"/>
+					</MenuItem>
+					<MenuItem>
+						<name>$MD10365</name>
+						<tooltip>$MD10365</tooltip>
+						<assignedAction>editTemplates</assignedAction>
+						<icon ns3:href="../icons/s_ireport.png"/>
+					</MenuItem>
+				</Menu>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>TBprint</ns2:value>
+					</ns2:identifier>
+					<tooltip>$MD10348</tooltip>
+					<assignedAction>print</assignedAction>
+					<icon ns3:href="../icons/pdf.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<init-param>
+					<name>templates</name>
+					<value>            
+					Hochformat; ../jaspertemplates/report1.jrxml; ../jaspertemplates/hochformat.jpg, 
+                    Querformat; ../jaspertemplates/super.jrxml; ../jaspertemplates/querformat.jpg
+					  </value>
+				</init-param>
+				<init-param>
+					<name>noTemplateImage</name>
+					<value>../jaspertemplates/querformat.jpg</value>
+				</init-param>
+				<init-param>
+					<name>ireportLocation</name>
+					<value>../../../../iReport-3.0.0/</value>
+				</init-param>
+				<init-param>
+					<name>dpi</name>
+					<value>400</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- Digitizer. Ermöglicht die Bearbeitung der Geometrie. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="443" height="446" top="553" left="20"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Digitizer</name>
+				<ns2:identifier>
+					<ns2:value>D1</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.DigitizerModule</className>
+				<ViewForm>
+					<FrameViewForm>
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.digitize.DefaultDigitizerFrame</containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$D1.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>MB50</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name>Digitizer.menu.name</name>
+					<MenuItem>
+						<name>$OpenDigitizer.menu.name</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/digitizer.png"/>
+					</MenuItem>
+				</Menu>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>MB38</ns2:value>
+					</ns2:identifier>
+					<tooltip>$openEditPanel.tooltip</tooltip>
+					<assignedAction>open</assignedAction>
+					<icon ns3:href="../icons/digitizer.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/digitizer/digitizer.de.html"/>
+						<ns4:keyword>Digitalisierung: allgemein</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/digitizer/digitizer_create.de.html"/>
+						<ns4:keyword>Digitalisierung: Objekte neu erstellen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/digitizer/digitizer_edit.de.html"/>
+						<ns4:keyword>Digitalisierung: Objekte bearbeiten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/digitizer/digitizer_snapping.de.html"/>
+						<ns4:keyword>Digitalisierung: Fang-Radius angeben</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page>
+						<ns2:OnlineResource ns3:href="./help/digitizer/digitizer_validierung.de.html"/>
+						<ns4:keyword>Digitalisierung: Validierung</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- PointForPolygon. Erzeugt einen representativen Punkt innerhalb eines Polygons. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="400" height="550" top="100" left="100"/>
+			</AbsolutePosition>
+			<Module>
+				<name>PointForPolygon</name>
+				<ns2:identifier>
+					<ns2:value>PointForPolygon</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.geoprocessing.PointForPolygonModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="false">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing</containerClass>
+						<ComponentState modal="true" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$-</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/pointforpolygon/point_in_polygon.de.html"/>
+						<ns4:keyword>Punkt innerhalb eines Polygons erzeugen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- EditStyle. Ermöglicht die Bearbeitung der Darstellung (incl. Klassifikation). -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="350" height="530" top="298" left="506"/>
+			</AbsolutePosition>
+			<Module>
+				<name>EditStyle</name>
+				<ns2:identifier>
+					<ns2:value>EditStyleId</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.EditStyleModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="true">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.style.RuleDialog</containerClass>
+						<ComponentState modal="true" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$editStyle.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>EditStyleMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1tools</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$EditStyle.name</name>
+						<assignedAction>editStyle</assignedAction>
+						<icon ns3:href="../icons/s_palette.png"/>
+					</MenuItem>
+				</Menu>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>EditStyle_Open_TB</ns2:value>
+					</ns2:identifier>
+					<tooltip>$editStyle.tooltip</tooltip>
+					<assignedAction>editStyle</assignedAction>
+					<icon ns3:href="../icons/palette.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/style_editor/edit_layer.de.html"/>
+						<ns4:keyword>Darstellung bearbeiten</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/style_editor/edit_layer_colorschema.de.html"/>
+						<ns4:keyword>Farben ändern (HSB, RGB)</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/style_editor/edit_layer_klassification.de.html"/>
+						<ns4:keyword>Klassifizierung</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/style_editor/edit_layer_settings.de.html"/>
+						<ns4:keyword>Vorlagen, Regeln, Style´s</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+				<ns4:HelpContext>
+					<ns4:page mainPage="true">
+						<ns2:OnlineResource ns3:href="./help/style_editor/edit_layer_color.de.html"/>
+						<ns4:keyword>Farbrampen</ns4:keyword>
+					</ns4:page>
+				</ns4:HelpContext>
+			</Module>
+		</ModuleRegister>
+		<!-- LayerInfo. AttributTabelle -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="681" height="400" top="275" left="246"/>
+			</AbsolutePosition>
+			<Module>
+				<name>LayerInfo</name>
+				<ns2:identifier>
+					<ns2:value>LayerInfoId</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.LayerInfoModule</className>
+				<ViewForm>
+					<FrameViewForm resizeable="true">
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.objectinfo.LayerInfoFrame</containerClass>
+						<ComponentState modal="false" active="false">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$F5.FrameTitle</frameTitle>
+					</FrameViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<!--Menu>
+					<ns2:identifier>
+						<ns2:value>LayerInfoMB</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1view</ns2:value>
+					</parent>
+					<name/>
+					<MenuItem>
+						<name>$LayerInfo</name>
+						<assignedAction>open</assignedAction>
+						<icon ns3:href="../icons/table.png"/>
+					</MenuItem>
+				</Menu-->
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>OpenLayerInfo</ns2:value>
+					</ns2:identifier>
+					<name/>
+					<tooltip>$OpenLayerInfo.tooltip</tooltip>
+					<assignedAction>open</assignedAction>
+					<icon ns3:href="../icons/table.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+			</Module>
+		</ModuleRegister>
+		<!-- Scale. Maßstab -->
+		<ModuleRegister>
+			<HeaderPosition>
+				<headerPosition>10</headerPosition>
+			</HeaderPosition>
+			<Module>
+				<name>Maßstab</name>
+				<ns2:identifier>
+					<ns2:value>ScaleModuleId</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.DefaultModule</className>
+				<ViewForm>
+					<PaneViewForm>
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.ScaleSelectionPanel</containerClass>
+						<ComponentState modal="false" active="true">
+							<windowState>normal</windowState>
+						</ComponentState>
+						<paneTitle>$F5.FrameTitle</paneTitle>
+					</PaneViewForm>
+					<Layout>
+						<NoneLayout/>
+					</Layout>
+				</ViewForm>
+				<init-param>
+					<name>scales</name>
+					<value>100000, 250000, 500000, 1000000, 5000000, 10000000</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>
+		<!-- ImageViewer. Öffnet einen Bildbetrachter, wenn Koordinaten mit Bildern verknüpft sind.  -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="open_imageviewer.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- externalProgram. externeProgrammeÖffnen -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./external_program.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
+		<!-- MenuBar/Menüleiste -->
+		<MenuBar>
+			<Menu>
+				<ns2:identifier>
+					<ns2:value>MB1</ns2:value>
+				</ns2:identifier>
+				<name>$MB1.name</name>
+				<mnemonic>p</mnemonic>
+				<MenuItem>
+					<name>$MB03.name</name>
+					<assignedAction>newproject</assignedAction>
+					<icon ns3:href="../icons/s_newProjectOpen.png"/>
+					<mnemonic>n</mnemonic>
+					<accelerator>
+						<mnemonic>n</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$MB0.name</name>
+					<assignedAction>open</assignedAction>
+					<icon ns3:href="../icons/projectOpen.png"/>
+					<mnemonic>o</mnemonic>
+					<accelerator>
+						<mnemonic>o</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$MB01.name</name>
+					<assignedAction>save</assignedAction>
+					<icon ns3:href="../icons/s_save.png"/>
+					<mnemonic>s</mnemonic>
+					<accelerator>
+						<mnemonic>s</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$MB02.name</name>
+					<assignedAction>saveas</assignedAction>
+					<icon ns3:href="../icons/s_save_as.png"/>
+					<mnemonic>a</mnemonic>
+				</MenuItem>
+			</Menu>
+			<Menu>
+				<ns2:identifier>
+					<ns2:value>MB1view</ns2:value>
+				</ns2:identifier>
+				<name>$MBAnsicht.name</name>
+				<mnemonic>a</mnemonic>
+				<MenuItem>
+					<name>$orderWindows.name</name>
+					<assignedAction>orderWindows</assignedAction>
+					<icon ns3:href="../icons/s_order_windows.png"/>
+					<mnemonic>r</mnemonic>
+					<accelerator>
+						<mnemonic>b</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$closeWindows.name</name>
+					<assignedAction>closeWindows</assignedAction>
+					<icon ns3:href="../icons/s_close_windows.png"/>
+					<mnemonic>l</mnemonic>
+					<accelerator>
+						<mnemonic>q</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$setLookAndFeel.name</name>
+					<assignedAction>setLookAndFeel</assignedAction>
+					<icon ns3:href="../icons/s_setLookAndFeel.png"/>
+					<mnemonic>f</mnemonic>
+					<accelerator>
+						<mnemonic>k</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+			</Menu>
+			<Menu>
+				<ns2:identifier>
+					<ns2:value>MB1edit</ns2:value>
+				</ns2:identifier>
+				<name>$MB1edit.name</name>
+				<mnemonic>e</mnemonic>
+				<MenuItem>
+					<name>$MB12.name</name>
+					<assignedAction>undo</assignedAction>
+					<icon ns3:href="../icons/undo.png"/>
+					<mnemonic>u</mnemonic>
+					<accelerator>
+						<mnemonic>z</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+				<MenuItem>
+					<name>$MB13.name</name>
+					<assignedAction>redo</assignedAction>
+					<icon ns3:href="../icons/redo.png"/>
+					<mnemonic>r</mnemonic>
+					<accelerator>
+						<mnemonic>y</mnemonic>
+						<mask>CTRL</mask>
+					</accelerator>
+				</MenuItem>
+			</Menu>
+			<Menu>
+				<ns2:identifier>
+					<ns2:value>MB1tools</ns2:value>
+				</ns2:identifier>
+				<name>$MB1tools.name</name>
+				<MenuItem>
+					<name>$openLogger</name>
+					<assignedAction>openLogger</assignedAction>
+					<icon ns3:href="../icons/application_error.png"/>
+				</MenuItem>
+				<MenuItem>
+					<name>$pointForPolygon</name>
+					<tooltip>$pointForPolygon.tooltip</tooltip>
+					<assignedAction>$module:PointForPolygon#calculate</assignedAction>
+					<icon ns3:href="../icons/point_for_polygon.png"/>
+				</MenuItem>
+			</Menu>
+		</MenuBar>
+		<!-- ToolBar/Werkzeugleiste -->
+		<ToolBar useRollover="true" floatable="true">
+			<ToolBarEntry assignedGroup="TBProjectGroup">
+				<ns2:identifier>
+					<ns2:value>openMM</ns2:value>
+				</ns2:identifier>
+				<name/>
+				<tooltip>$openMM</tooltip>
+				<assignedAction>openMapModel</assignedAction>
+				<icon ns3:href="../icons/mapwindow_open.png"/>
+				<entryType>PushButton</entryType>
+			</ToolBarEntry>
+			<ToolBarEntry assignedGroup="TBProjectGroup">
+				<ns2:identifier>
+					<ns2:value>addMM</ns2:value>
+				</ns2:identifier>
+				<name/>
+				<tooltip>$addMM</tooltip>
+				<assignedAction>addMapModel</assignedAction>
+				<icon ns3:href="../icons/mapwindow_add.png"/>
+				<entryType>PushButton</entryType>
+			</ToolBarEntry>
+			<ToolBarEntry assignedGroup="TBProjectGroup">
+				<ns2:identifier>
+					<ns2:value>removeMM</ns2:value>
+				</ns2:identifier>
+				<name/>
+				<tooltip>$removeMM</tooltip>
+				<assignedAction>removeMapModel</assignedAction>
+				<icon ns3:href="../icons/mapwindow_delete.png"/>
+				<entryType>PushButton</entryType>
+			</ToolBarEntry>
+			<ToolBarEntry assignedGroup="TBProjectGroup">
+				<ns2:identifier>
+					<ns2:value>syncMM</ns2:value>
+				</ns2:identifier>
+				<name/>
+				<tooltip>$synchronizeMapModels.tooltip</tooltip>
+				<assignedAction>$module:MapModule#synchronizeMapModels</assignedAction>
+				<icon ns3:href="../icons/synchronize_maps.png"/>
+				<entryType>PushButton</entryType>
+			</ToolBarEntry>
+		</ToolBar>
+	</View>
+	<Settings>
+		<ns4:Snapping>
+			<ns4:tolerance val="20.0" uom="Pixel"/>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>b6baefa8-6de0-4365-9f4d-497aad524610</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>2cbb8fdb-695c-4709-a7cc-5167c0adbcc5</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>d8b29976-f622-414c-beab-d037dfc54ff2</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>d4a83088-3781-47c9-9a54-cbea3346f52e</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>1165f731-37c7-4b06-9853-0cf31efb99b0</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>1ac569d2-c43b-42c5-bcec-65fdfd8db035</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>fe87cb51-deb6-4fb3-af4c-795145fc0b91</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>1363f7a7-febf-4468-a1fc-6ce9f5b4881c</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+			<ns4:snapLayer edgeCenter="false" edge="false" endNode="false" startNode="false" vertex="true">
+				<ns4:layer>
+					<ns2:value>bf0ae95d-3a7d-482d-b572-35a9543c3300</ns2:value>
+				</ns4:layer>
+			</ns4:snapLayer>
+		</ns4:Snapping>
+		<ns4:MapHandling>
+			<ns4:zoomLevel val="25.0"/>
+			<ns4:panLevel val="25.0"/>
+		</ns4:MapHandling>
+		<ns4:DigitizingOptions changeable="true">
+			<ns4:vertices useNearest="false" handleNearest="false">
+				<ns4:searchRadius val="25.0" uom="pixel"/>
+			</ns4:vertices>
+			<ns4:graphicLineSize val="2.0" uom="pixel"/>
+		</ns4:DigitizingOptions>
+		<ns4:Validation>
+			<ns4:GeometryMetrics checkForPolygonOrientation="true" changeable="true"/>
+			<ns4:GeometryTypes allowHoles="false" changeable="true"/>
+			<ns4:GeometryTopology allowEqualGeometries="false" changeable="false"/>
+		</ns4:Validation>
+		<ns4:DataAdapter>
+			<ns4:WFSFeatureAdapter>
+				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator"/>
+				<ns4:Timeout val="10000"/>
+				<ns4:MaxFeature val="50000"/>
+				<ns4:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
+			</ns4:WFSFeatureAdapter>
+			<ns4:WMSGridCoverageAdapter>
+				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
+				<ns4:Timeout val="10000"/>
+				<ns4:featureCount val="2"/>
+			</ns4:WMSGridCoverageAdapter>
+		</ns4:DataAdapter>
+		<ns4:ProjectTemplates>
+			<ns4:Template desc="project with pane layout" file="resources/templates/default" name="pane layout"/>
+			<ns4:Template desc="project with innerframe layout" file="resources/templates/empty_innerframelayout" name="innerframe layout"/>
+			<ns4:Template desc="project with frame layout" file="resources/templates/frame_layout" name="frame layout"/>
+		</ns4:ProjectTemplates>
+		<ns4:FileFilter>
+			<ns4:Format desc="georeferenced jpeg image" extension="jpg" name="JPEG image"/>
+			<ns4:Format desc="georeferenced jpeg image" extension="jpeg" name="JPEG image"/>
+			<ns4:Format desc="georeferenced bmp image" extension="bmp" name="bitmap image"/>
+			<ns4:Format desc="georeferenced gif image" extension="gif" name="GIF image"/>
+			<ns4:Format desc="georeferenced png image" extension="png" name="PNG image"/>
+			<ns4:Format desc="georeferenced tif image" extension="tif" name="TIFF image"/>
+			<ns4:Format desc="georeferenced tif image" extension="tiff" name="TIFF image"/>
+			<ns4:Format isVector="true" desc="ESRI Shape File" extension="shp" name="shape file"/>
+			<ns4:Format isVector="true" desc="GML 2 or 3.1 file" extension="gml" name="GML file"/>
+			<ns4:Format isVector="true" desc="GML 2 or 3.1 file" extension="xml" name="XML file"/>
+		</ns4:FileFilter>
+		<ns4:HelpPage changeable="true">
+			<ns4:HelpContext>
+				<ns4:page>
+					<ns2:OnlineResource ns3:href="./help/projects/projects.de.html"/>
+					<ns4:keyword>Projekt: allgemein</ns4:keyword>
+				</ns4:page>
+			</ns4:HelpContext>
+			<ns4:HelpContext>
+				<ns4:page>
+					<ns2:OnlineResource ns3:href="./help/projects/project_new.de.html"/>
+					<ns4:keyword>Projekt: neu anlegen</ns4:keyword>
+				</ns4:page>
+			</ns4:HelpContext>
+			<ns4:HelpContext>
+				<ns4:page>
+					<ns2:OnlineResource ns3:href="./help/projects/project_open.de.html"/>
+					<ns4:keyword>Projekt: öffnen</ns4:keyword>
+				</ns4:page>
+			</ns4:HelpContext>
+			<ns4:HelpContext>
+				<ns4:page>
+					<ns2:OnlineResource ns3:href="./help/projects/project_save.de.html"/>
+					<ns4:keyword>Projekt: speichern</ns4:keyword>
+				</ns4:page>
+			</ns4:HelpContext>
+		</ns4:HelpPage>
+		<ns4:CursorDefinitions>
+			<ns4:Cursor name="default" action="default"/>
+		</ns4:CursorDefinitions>
+		<ns4:Clipboard maxObjects="1000" format="text/xml; subtype=gml/3.1.1"/>
+		<ns4:Formats changeable="true">
+			<ns4:Format pattern="##.000" name="number"/>
+		</ns4:Formats>
+		<ns4:ExternalReferences>
+			<ns4:Reference program="word.exe" extension="doc"/>
+		</ns4:ExternalReferences>
+		<ns4:FileAccess changeable="true"/>
+		<ns4:Dictionaries>
+			<ns2:OnlineResource ns3:href="../dictionaries/test.xml"/>
+		</ns4:Dictionaries>
+	</Settings>
+	<ns2:MapModelCollection>
+		<ns2:name>tutorial.prj</ns2:name>
+		<ns2:maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+		<ns2:externalResource>
+			<ns2:OnlineResource ns3:href="http://download.deegree.org/igeodesktop/doc/deegree_desktop_documentation_de.pdf"/>
+			<ns2:abstract>Handbuch/Dokumentation</ns2:abstract>
+			<ns2:externalResourceTitle>iGeoDesktop</ns2:externalResourceTitle>
+			<ns2:externalResourceType>text/html</ns2:externalResourceType>
+		</ns2:externalResource>
+		<ns2:externalResource>
+			<ns2:OnlineResource ns3:href="http://deegree.org/deegree/"/>
+			<ns2:abstract>homepage/download</ns2:abstract>
+			<ns2:externalResourceTitle>deegree</ns2:externalResourceTitle>
+			<ns2:externalResourceType>text/html</ns2:externalResourceType>
+		</ns2:externalResource>
+		<ns2:mapModel current="true">
+			<ns2:name>TestMM</ns2:name>
+			<ns2:identifier>
+				<ns2:value>MM1</ns2:value>
+			</ns2:identifier>
+			<ns2:targetDevice>
+				<ns2:pixelWidth>705</ns2:pixelWidth>
+				<ns2:pixelHeight>604</ns2:pixelHeight>
+				<ns2:dpi>96</ns2:dpi>
+			</ns2:targetDevice>
+			<ns2:supportedCRS>
+				<ns2:CRS>
+					<ns2:name>UTAH/NAD</ns2:name>
+					<ns2:code>EPSG:26912</ns2:code>
+				</ns2:CRS>
+				<ns2:CRS>
+					<ns2:name>WGS84 Geographic</ns2:name>
+					<ns2:code>EPSG:4326</ns2:code>
+				</ns2:CRS>
+			</ns2:supportedCRS>
+			<ns2:extent crs="EPSG:26912" maxy="4497546.267329651" maxx="510100.5066135616" miny="4400067.021409652" minx="396320.9232135616"/>
+			<ns2:maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+			<ns2:layerGroup>
+				<ns2:identifier>
+					<ns2:value>UTAH Administration</ns2:value>
+				</ns2:identifier>
+				<ns2:title>UTAH Administration</ns2:title>
+				<ns2:layer editable="false" queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>d202b25b-c965-43f4-9253-8477076ab029</ns2:value>
+					</ns2:identifier>
+					<ns2:abstract/>
+					<ns2:title>Utah_Boundary</ns2:title>
+					<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+					<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+					<ns2:Datasource>
+						<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+							<ns2:name>Utah_CO.shp</ns2:name>
+							<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+							<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+							<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+							<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+							<ns2:file>./data/Utah_CO.shp</ns2:file>
+						</ns2:FileDatasource>
+					</ns2:Datasource>
+					<ns2:Style>
+						<ns2:DirectStyle current="true">
+							<ns2:name>default1</ns2:name>
+							<ns2:title>Utah_Boundary</ns2:title>
+							<ns2:abstract>default3</ns2:abstract>
+							<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKUlEQVR42mNMS0v7z0BNQE0DQWYxMVAZjBo4auCogaMGjhoIAYzUrgIAo5QI6TZ43DgAAAAASUVORK5CYII=</ns2:legendImage>
+							<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah_Boundary&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah_Boundary&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#666666&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+						</ns2:DirectStyle>
+					</ns2:Style>
+				</ns2:layer>
+				<ns2:layer editable="true" queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>635be5e1-b77e-4cc0-b8e9-5dee2e3a4510</ns2:value>
+					</ns2:identifier>
+					<ns2:abstract/>
+					<ns2:title>Städte</ns2:title>
+					<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+					<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+					<ns2:Datasource>
+						<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+							<ns2:name>SGID93_TownDemographics2000.shp</ns2:name>
+							<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+							<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+							<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+							<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+							<ns2:file>./data/SGID93_TownDemographics2000.shp</ns2:file>
+						</ns2:FileDatasource>
+					</ns2:Datasource>
+					<ns2:Style>
+						<ns2:DirectStyle current="true">
+							<ns2:name>default1</ns2:name>
+							<ns2:title>SGID93_TownDemographics2000</ns2:title>
+							<ns2:abstract>default3</ns2:abstract>
+							<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAPElEQVR42mNgGAWjYOABIzGK/s9k+A/XkI5fDzNRhhkDGVIQ3GDM0NC4haERl3omanuZadCH4SgYBWQAALmFC/GY64ecAAAAAElFTkSuQmCC</ns2:legendImage>
+							<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;SGID93_TownDemographics2000&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;SGID93_TownDemographics2000&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_TownDemographics2000&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PointSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Graphic&gt;&lt;Mark&gt;&lt;WellKnownName&gt;circle&lt;/WellKnownName&gt;&lt;Fill&gt;&lt;CssParameter name='fill'&gt;#ffcc00&lt;/CssParameter&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#ff9900&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;square&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/Mark&gt;&lt;Opacity&gt;1.0&lt;/Opacity&gt;&lt;Size&gt;6.0&lt;/Size&gt;&lt;Rotation&gt;0.0&lt;/Rotation&gt;&lt;/Graphic&gt;&lt;/PointSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+						</ns2:DirectStyle>
+					</ns2:Style>
+				</ns2:layer>
+				<ns2:layer queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>b6baefa8-6de0-4365-9f4d-497aad524610</ns2:value>
+					</ns2:identifier>
+					<ns2:abstract/>
+					<ns2:title>Höhenmeter</ns2:title>
+					<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+					<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+					<ns2:selectedFor>action</ns2:selectedFor>
+					<ns2:Datasource>
+						<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+							<ns2:name>SGID93_ELEVATION_Contours500Ft.shp</ns2:name>
+							<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+							<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+							<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+							<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+							<ns2:file>./data/SGID93_ELEVATION_Contours500Ft.shp</ns2:file>
+						</ns2:FileDatasource>
+					</ns2:Datasource>
+					<ns2:Style>
+						<ns2:DirectStyle current="true">
+							<ns2:name>default1</ns2:name>
+							<ns2:title>Höhenmeter (app:ELEV)</ns2:title>
+							<ns2:abstract>default3</ns2:abstract>
+							<ns2:legendImage>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</ns2:legendImage>
+							<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Höhenmeter&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Höhenmeter (app:ELEV)&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Elevation&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_ELEVATION_Contours500Ft&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;alle Werte kleiner als 5200&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5200.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#666600&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5200 bis 5900&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5200.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#887d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5900 bis 6600&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa9300&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;6600 bis 7300&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#ccaa00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;7300 bis 8000&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eec100&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8000 bis 8700&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eeb500&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8700 bis 9400&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cc8800&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;9400 bis 10100&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa5b00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;10100 bis 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#882d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;Werte größer als 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#660000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+						</ns2:DirectStyle>
+					</ns2:Style>
+				</ns2:layer>
+				<ns2:layerGroup queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>ad5fd8a9-e2e1-45bd-a455-d3d42dd07144</ns2:value>
+						<ns2:namespace>http://www.deegree.org</ns2:namespace>
+					</ns2:identifier>
+					<ns2:title>Hydrology</ns2:title>
+					<ns2:abstract>Hydrology</ns2:abstract>
+					<ns2:layer editable="true" queryable="true" visible="true">
+						<ns2:identifier>
+							<ns2:value>2cbb8fdb-695c-4709-a7cc-5167c0adbcc5</ns2:value>
+						</ns2:identifier>
+						<ns2:abstract/>
+						<ns2:title>Seen</ns2:title>
+						<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+						<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+						<ns2:Datasource>
+							<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+								<ns2:name>SGID93_WATER_LakesDLG100.shp</ns2:name>
+								<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+								<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+								<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+								<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+								<ns2:file>./data/SGID93_WATER_LakesDLG100.shp</ns2:file>
+							</ns2:FileDatasource>
+						</ns2:Datasource>
+						<ns2:Style>
+							<ns2:DirectStyle current="true">
+								<ns2:name>default1</ns2:name>
+								<ns2:title>SGID93_WATER_LakesDLG100</ns2:title>
+								<ns2:abstract>default3</ns2:abstract>
+								<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAM0lEQVR42mP09t73n4GKgAVEmJhIUsWwM2eeMzAxUBmMGjhq4KiBowaOGohUYoNKWmoBAEACB/6cQkKvAAAAAElFTkSuQmCC</ns2:legendImage>
+								<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Seen&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;SGID93_WATER_LakesDLG100&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_WATER_LakesDLG100&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#7f7fd7&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#4b4bbe&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+							</ns2:DirectStyle>
+						</ns2:Style>
+					</ns2:layer>
+					<ns2:layer editable="true" queryable="true" visible="true">
+						<ns2:identifier>
+							<ns2:value>ec4812e1-b9a0-4951-948f-578ef0fb5490</ns2:value>
+						</ns2:identifier>
+						<ns2:abstract/>
+						<ns2:title>Flüsse</ns2:title>
+						<ns2:maxScaleDenominator>700000.0</ns2:maxScaleDenominator>
+						<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+						<ns2:Datasource>
+							<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="true">
+								<ns2:name>SGID93_WATER_UtahMajorRivers.shp</ns2:name>
+								<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+								<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+								<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+								<ns2:maxScaleDenominator>700000.0</ns2:maxScaleDenominator>
+								<ns2:file>./data/SGID93_WATER_UtahMajorRivers.shp</ns2:file>
+							</ns2:FileDatasource>
+						</ns2:Datasource>
+						<ns2:Style>
+							<ns2:DirectStyle current="true">
+								<ns2:name>default1</ns2:name>
+								<ns2:title>Flüsse</ns2:title>
+								<ns2:abstract>default3</ns2:abstract>
+								<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAW0lEQVR42mNgGMzA23vff6ZB7ToQTXUXMlHTdZQrIlYtTAGxhhJtIDGKSTKMGE1kGUiKRUzE2rZ1qxMjKRFFdMwiRxjZ3sWmjmqG0SWn0Mx1tCkcqOk6qnsXBADzX0d2l+oahAAAAABJRU5ErkJggg==</ns2:legendImage>
+								<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Flüsse&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Flüsse&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_WATER_UtahMajorRivers&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#4b4bbe&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+							</ns2:DirectStyle>
+						</ns2:Style>
+					</ns2:layer>
+				</ns2:layerGroup>
+				<ns2:layer editable="true" queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>fe87cb51-deb6-4fb3-af4c-795145fc0b91</ns2:value>
+					</ns2:identifier>
+					<ns2:abstract/>
+					<ns2:title>Gemeinden</ns2:title>
+					<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+					<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+					<ns2:Datasource>
+						<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+							<ns2:name>SGID93_Municipalities.shp</ns2:name>
+							<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+							<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+							<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+							<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+							<ns2:file>./data/SGID93_Municipalities.shp</ns2:file>
+						</ns2:FileDatasource>
+					</ns2:Datasource>
+					<ns2:Style>
+						<ns2:DirectStyle current="true">
+							<ns2:name>default1</ns2:name>
+							<ns2:title>Gemeinden</ns2:title>
+							<ns2:abstract>default3</ns2:abstract>
+							<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAN0lEQVR42mOMiYr6z0BFwAIiuHh4qGLYty9fGJgYqAxGDRw1cNTAUQNHDUQqsUElLTXAkmXLGAGZmgoKl0ZrkgAAAABJRU5ErkJggg==</ns2:legendImage>
+							<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Gemeinden&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Gemeinden&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_Municipalities&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#666666&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#5c5a5a&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+						</ns2:DirectStyle>
+					</ns2:Style>
+				</ns2:layer>
+				<ns2:layer editable="true" queryable="true" visible="true">
+					<ns2:identifier>
+						<ns2:value>1165f731-37c7-4b06-9853-0cf31efb99b0</ns2:value>
+					</ns2:identifier>
+					<ns2:abstract/>
+					<ns2:title>Utah County</ns2:title>
+					<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+					<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+					<ns2:Datasource>
+						<ns2:FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
+							<ns2:name>Utah_CO.shp</ns2:name>
+							<ns2:extent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+							<ns2:nativeCRS>EPSG:26912</ns2:nativeCRS>
+							<ns2:minScaleDenominator>0.0</ns2:minScaleDenominator>
+							<ns2:maxScaleDenominator>1.0E9</ns2:maxScaleDenominator>
+							<ns2:file>./data/Utah_CO.shp</ns2:file>
+						</ns2:FileDatasource>
+					</ns2:Datasource>
+					<ns2:Style>
+						<ns2:DirectStyle current="true">
+							<ns2:name>default1</ns2:name>
+							<ns2:title>Utah County</ns2:title>
+							<ns2:abstract>default3</ns2:abstract>
+							<ns2:legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAQElEQVR42mM8dOjQAQYqAS4urmcsIMbevXu7qGGgr69vDBMDlcGogaMGjho4auCogRDAAiq2QSUtNQwzMTGJAgApCQt3QICiZAAAAABJRU5ErkJggg==</ns2:legendImage>
+							<ns2:sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah County&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah County&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.29&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cccccc&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;0.65&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</ns2:sld>
+						</ns2:DirectStyle>
+					</ns2:Style>
+				</ns2:layer>
+			</ns2:layerGroup>
+			<ns2:description/>
+		</ns2:mapModel>
+		<ns2:description/>
+	</ns2:MapModelCollection>
+</Project>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:app="http://www.deegree.org/app" xmlns:deegreewfs="http://www.deegree.org/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" targetNamespace="http://www.deegree.org/app" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/ gml/3.1.1/base/feature.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/geometryAggregates.xsd"/>
+	<xsd:annotation>
+		<xsd:appinfo>
+			<deegreewfs:Prefix>app</deegreewfs:Prefix>
+			<deegreewfs:Backend>POSTGIS</deegreewfs:Backend>
+			<deegreewfs:DefaultSRS>EPSG:26912</deegreewfs:DefaultSRS>
+			<JDBCConnection xmlns="http://www.deegree.org/jdbc">
+				<Driver>org.postgresql.Driver</Driver>
+				<Url>jdbc:postgresql://hurricane:5432/igeodesktop</Url>
+				<User>postgres</User>
+				<Password></Password>
+				<SecurityConstraints/>
+				<Encoding>iso-8859-1</Encoding>
+			</JDBCConnection>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:element name="postgiszipcodes" type="app:zipcodesType" substitutionGroup="gml:_Feature">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<deegreewfs:table>zipcodes</deegreewfs:table>
+				<deegreewfs:gmlId prefix="ID_">
+					<deegreewfs:MappingField field="gid" type="INTEGER"/>
+					<deegreewfs:IdGenerator type="DB_MAX">
+						<deegreewfs:param name="table">zipcodes</deegreewfs:param>
+						<deegreewfs:param name="column">gid</deegreewfs:param>
+					</deegreewfs:IdGenerator>
+				</deegreewfs:gmlId>
+				<deegreewfs:visible>true</deegreewfs:visible>
+				<deegreewfs:transaction update="true" delete="true" insert="true"/>
+			</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="zipcodesType">
+		<xsd:complexContent>
+			<xsd:extension base="gml:AbstractFeatureType">
+				<xsd:sequence>
+					<xsd:element name="gid" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="gid" type="INTEGER"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="objectid" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="objectid" type="BIGINT"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="zip" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="zip" type="VARCHAR"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="po_name" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="po_name" type="VARCHAR"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="state" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="state" type="VARCHAR"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="sumblkpop" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="sumblkpop" type="NUMERIC"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pop1999" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="pop1999" type="NUMERIC"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="shape_area" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="shape_area" type="NUMERIC"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="shape_len" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="shape_len" type="NUMERIC"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="geom" type="gml:GeometryPropertyType">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<deegreewfs:Content>
+									<deegreewfs:MappingField field="geom" srs="26912" type="GEOMETRY"/>
+								</deegreewfs:Content>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>
