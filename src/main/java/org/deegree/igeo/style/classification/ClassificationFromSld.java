@@ -655,7 +655,7 @@ public class ClassificationFromSld {
             row.setFillTransparency( SldValues.getOpacityInPercent( fill.getOpacity( null ) ) );
             row.setLineColor( s.getStroke( null ) );
             row.setLineTransparency( SldValues.getOpacityInPercent( s.getOpacity( null ) ) );
-            row.setLineWidth( s.getWidth( null ) );
+            row.setValue( LINEWIDTH, getStrokeWidth( s ) );
             setDashArray( s, row, settings );
         } else if ( rule.getSymbolizers()[0] instanceof PointSymbolizer ) {
             Graphic g = ( (PointSymbolizer) rule.getSymbolizers()[0] ).getGraphic();
@@ -723,26 +723,7 @@ public class ClassificationFromSld {
             Stroke stroke = ( (LineSymbolizer) rule.getSymbolizers()[0] ).getStroke();
             row.setLineColor( stroke.getStroke( null ) );
             row.setLineTransparency( SldValues.getOpacityInPercent( stroke.getOpacity( null ) ) );
-
-            // TODO
-            CssParameter strokeWidthParam = (CssParameter) stroke.getCssParameters().get( "stroke-width" );
-            if ( strokeWidthParam != null && strokeWidthParam.getValue() != null ) {
-                ParameterValueType pvt = (ParameterValueType) strokeWidthParam.getValue();
-                PropertyName propertyNameFromPvt = SldCreatorUtils.getPropertyNameFromPvt( pvt );
-
-                if ( propertyNameFromPvt != null ) {
-                    row.setValue( LINEWIDTH, propertyNameFromPvt );
-                } else {
-                    double defaultValue;
-                    try {
-                        defaultValue = stroke.getWidth( null );
-                    } catch ( Exception e ) {
-                        defaultValue = SldValues.getDefaultFontSize();
-                    }
-                    row.setValue( LINEWIDTH, UnitsValue.readFromParameterValueType( pvt, defaultValue ).getValue() );
-                }
-            }
-
+            row.setValue( LINEWIDTH, getStrokeWidth( stroke ) );
             setLineCap( stroke, row );
             setDashArray( stroke, row, settings );
         } else if ( rule.getSymbolizers()[0] instanceof TextSymbolizer ) {
@@ -876,6 +857,27 @@ public class ClassificationFromSld {
 
         }
 
+    }
+
+    private static Object getStrokeWidth( Stroke stroke ) {
+        CssParameter strokeWidthParam = (CssParameter) stroke.getCssParameters().get( "stroke-width" );
+        if ( strokeWidthParam != null && strokeWidthParam.getValue() != null ) {
+            ParameterValueType pvt = (ParameterValueType) strokeWidthParam.getValue();
+            PropertyName propertyNameFromPvt = SldCreatorUtils.getPropertyNameFromPvt( pvt );
+
+            if ( propertyNameFromPvt != null ) {
+                return propertyNameFromPvt;
+            } else {
+                double defaultValue;
+                try {
+                    defaultValue = stroke.getWidth( null );
+                } catch ( Exception e ) {
+                    defaultValue = SldValues.getDefaultLineWidth();
+                }
+                return UnitsValue.readFromParameterValueType( pvt, defaultValue ).getValue();
+            }
+        }
+        return SldValues.getDefaultLineWidth();
     }
 
     private static double getSize( Graphic g ) {
