@@ -198,14 +198,19 @@ public class VectorPrintCommand extends AbstractCommand {
      */
     private Graphics2D initDocument()
                             throws FileNotFoundException, DocumentException {
-        Rectangle pageSize = PageSize.getRectangle( printDefinition.getPageFormat() );
+        String pageFormat = printDefinition.getPageFormat();
+        Rectangle pageSize;
+        if ( pageFormat != null )
+            pageSize = PageSize.getRectangle( pageFormat );
+        else
+            pageSize = new Rectangle( printDefinition.getPageWidth(), printDefinition.getPageHeight() );
         LOG.logDebug( "page size", pageSize );
         // create (pdf) document with selected pages size; set margin and PDF-version
         document = new Document( pageSize );
-        document.setMargins( printDefinition.getAreaLeft(), printDefinition.getAreaLeft()
-                                                            + printDefinition.getAreaWidth(),
-                             printDefinition.getAreaTop(), printDefinition.getAreaTop()
-                                                           + printDefinition.getAreaHeight() );
+        document.setMargins( printDefinition.getAreaLeft(),
+                             printDefinition.getAreaLeft() + printDefinition.getAreaWidth(),
+                             printDefinition.getAreaTop(),
+                             printDefinition.getAreaTop() + printDefinition.getAreaHeight() );
 
         PdfWriter writer = PdfWriter.getInstance( document, new FileOutputStream( printDefinition.getTargetFile() ) );
         writer.setPdfVersion( printDefinition.getPdfVersion() );
@@ -226,15 +231,15 @@ public class VectorPrintCommand extends AbstractCommand {
         g.scale( 72d / printDefinition.getDpi(), 72d / printDefinition.getDpi() );
         return g;
     }
-    
+
     private void addMetaData( Document document ) {
         // TODO
         // read metadata from configuration or input dialog
-//        document.addTitle( "My first PDF" );
-//        document.addSubject( "Using iText" );
-//        document.addKeywords( "Java, PDF, iText" );
-//        document.addAuthor( "Lars Vogel" );
-//        document.addCreator( "Lars Vogel" );
+        // document.addTitle( "My first PDF" );
+        // document.addSubject( "Using iText" );
+        // document.addKeywords( "Java, PDF, iText" );
+        // document.addAuthor( "Lars Vogel" );
+        // document.addCreator( "Lars Vogel" );
     }
 
     private int convert( double millimeter ) {
@@ -298,6 +303,10 @@ public class VectorPrintCommand extends AbstractCommand {
         private double scale;
 
         private String pageFormat;
+
+        private float pageWidth = PageSize.A4.getWidth();
+
+        private float pageHeight = PageSize.A4.getHeight();
 
         private char pdfVersion = PdfWriter.VERSION_1_4;
 
@@ -468,6 +477,39 @@ public class VectorPrintCommand extends AbstractCommand {
          */
         public void setDpi( int dpi ) {
             this.dpi = dpi;
+        }
+
+        /**
+         * @param pageWidth
+         *            the individuell width of the page to print (use this and height instad of pageFormat)
+         */
+        public void setPageWidth( float pageWidth ) {
+            this.pageWidth = pageWidth;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public float getPageWidth() {
+            return pageWidth;
+        }
+
+        /**
+         * 
+         * @param pageHeight
+         *            the individuell height of the page to print (use this and height instad of pageFormat)
+         */
+        public void setPageHeight( float pageHeight ) {
+            this.pageHeight = pageHeight;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public float getPageHeight() {
+            return pageHeight;
         }
 
     }

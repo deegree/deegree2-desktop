@@ -699,7 +699,7 @@
 				<className>org.deegree.igeo.modules.PrintModule</className>
 				<ViewForm>
 					<FrameViewForm>
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.VectorPrintDialog
 						</containerClass>
 						<ComponentState modal="true" active="true">
 							<windowState>closed</windowState>
@@ -718,20 +718,8 @@
 					<MenuItem>
 						<name>$MD10348</name>
 						<tooltip>$MD10348</tooltip>
-						<assignedAction>print</assignedAction>
+						<assignedAction>openVectorPrint</assignedAction>
 						<icon ns3:href="../icons/s_pdf.png"/>
-					</MenuItem>
-					<MenuItem>
-						<name>$MD10364</name>
-						<tooltip>$MD10364</tooltip>
-						<assignedAction>editSettings</assignedAction>
-						<icon ns3:href="../icons/s_report_edit.png"/>
-					</MenuItem>
-					<MenuItem>
-						<name>$MD10365</name>
-						<tooltip>$MD10365</tooltip>
-						<assignedAction>editTemplates</assignedAction>
-						<icon ns3:href="../icons/s_ireport.png"/>
 					</MenuItem>
 				</Menu>
 				<ToolBarEntry>
@@ -739,7 +727,7 @@
 						<ns2:value>TBprint</ns2:value>
 					</ns2:identifier>
 					<tooltip>$MD10348</tooltip>
-					<assignedAction>print</assignedAction>
+					<assignedAction>openVectorPrint</assignedAction>
 					<icon ns3:href="../icons/pdf.png"/>
 					<entryType>PushButton</entryType>
 				</ToolBarEntry>
@@ -763,6 +751,7 @@
 					<value>400</value>
 				</init-param>
 			</Module>
+			
 		</ModuleRegister>
 		<!-- Digitizer. Ermöglicht die Bearbeitung der Geometrie. -->
 		<ModuleRegister>

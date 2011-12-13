@@ -102,9 +102,9 @@ import org.deegree.igeo.views.HelpManager;
 import org.deegree.igeo.views.swing.ButtonGroup;
 import org.deegree.igeo.views.swing.HelpFrame;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
+import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.IconRegistry;
-import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.Geometry;
 import org.deegree.model.spatialschema.GeometryFactory;
@@ -152,6 +152,18 @@ public class VectorPrintDialog extends javax.swing.JDialog {
     private JLabel lbPageSize;
 
     private JComboBox cbPageFormat;
+
+    private JLabel lbPageWidth;
+
+    private JSpinner tfPageWidth;
+
+    private JLabel lbPageUnitW;
+
+    private JLabel lbPageHeight;
+
+    private JSpinner tfPageHeight;
+
+    private JLabel lbPageUnitH;
 
     private JPanel pnFormat;
 
@@ -277,8 +289,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                     FlowLayout pnButtonsLayout = new FlowLayout();
                     pnButtonsLayout.setAlignment( FlowLayout.LEFT );
                     pnButtons.setLayout( pnButtonsLayout );
-                    getContentPane().add(
-                                          pnButtons,
+                    getContentPane().add( pnButtons,
                                           new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -318,8 +329,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                     FlowLayout pnHelpLayout = new FlowLayout();
                     pnHelpLayout.setAlignment( FlowLayout.RIGHT );
                     pnHelp.setLayout( pnHelpLayout );
-                    getContentPane().add(
-                                          pnHelp,
+                    getContentPane().add( pnHelp,
                                           new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -339,8 +349,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                 {
                     pnPrint = new JPanel();
                     GridBagLayout pnPrintLayout = new GridBagLayout();
-                    getContentPane().add(
-                                          pnPrint,
+                    getContentPane().add( pnPrint,
                                           new GridBagConstraints( 0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -634,28 +643,80 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                         {
                             String[] tmp = StringTools.toArray( Messages.getMessage( getLocale(), "$MD11807" ), ",;",
                                                                 true );
-                            ListEntry[] le = new ListEntry[tmp.length / 2];
+                            ListEntry[] le = new ListEntry[tmp.length / 2 + 1];
+                            le[0] = new ListEntry( Messages.getMessage( getLocale(), "$MD11829" ), null );
                             for ( int i = 0; i < tmp.length; i += 2 ) {
-                                le[i / 2] = new ListEntry( tmp[i], tmp[i + 1] );
+                                le[i / 2 + 1] = new ListEntry( tmp[i], tmp[i + 1] );
                             }
                             cbPageFormat = new JComboBox( new DefaultComboBoxModel( le ) );
-                            cbPageFormat.setSelectedIndex( 1 );
-                            pnFormat.add( cbPageFormat, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0,
+                            cbPageFormat.setSelectedIndex( 2 );
+
+                            pnFormat.add( cbPageFormat, new GridBagConstraints( 0, 0, 3, 1, 0.0, 0.0,
                                                                                 GridBagConstraints.CENTER,
                                                                                 GridBagConstraints.HORIZONTAL,
                                                                                 new Insets( 0, 9, 0, 9 ), 0, 0 ) );
 
+                            lbPageHeight = new JLabel( Messages.getMessage( getLocale(), "$MD11830" ) );
+                            pnFormat.add( lbPageHeight, new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 15, 0, 0 ), 0, 0 ) );
+                            tfPageHeight = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getHeight() ), 0,
+                                                                                 3000000, 1 ) );
+                            pnFormat.add( tfPageHeight, new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 5, 0, 0, 0 ), 0, 0 ) );
+                            tfPageHeight.setEnabled( false );
+                            lbPageUnitH = new JLabel( Messages.getMessage( getLocale(), "$MD11832" ) );
+                            pnFormat.add( lbPageUnitH, new GridBagConstraints( 2, 1, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 15 ), 0, 0 ) );
+
+                            lbPageWidth = new JLabel( Messages.getMessage( getLocale(), "$MD11831" ) );
+                            pnFormat.add( lbPageWidth, new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 15, 0, 0 ), 0, 0 ) );
+                            tfPageWidth = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getWidth() ), 0,
+                                                                                3000000, 1 ) );
+                            pnFormat.add( tfPageWidth, new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 5, 0, 0, 0 ), 0, 0 ) );
+
+                            tfPageWidth.setEnabled( false );
+                            lbPageUnitW = new JLabel( Messages.getMessage( getLocale(), "$MD11832" ) );
+                            pnFormat.add( lbPageUnitW, new GridBagConstraints( 2, 2, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.WEST,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 15 ), 0, 0 ) );
+
                             cbPageFormat.addActionListener( new ActionListener() {
 
                                 public void actionPerformed( ActionEvent e ) {
+
+                                    int width;
+                                    int height;
+                                    ListEntry le = (ListEntry) ( (JComboBox) e.getSource() ).getSelectedItem();
+                                    if ( le.value != null ) {
+                                        String value = (String) le.value;
+                                        Rectangle rect = PageSize.getRectangle( value );
+                                        width = (int) Math.round( rect.getWidth() / 72 * 25.4 );
+                                        height = (int) Math.round( rect.getHeight() / 72 * 25.4 );
+                                        tfPageWidth.setEnabled( false );
+                                        tfPageHeight.setEnabled( false );
+                                    } else {
+                                        tfPageWidth.setEnabled( true );
+                                        tfPageHeight.setEnabled( true );
+                                        width = ( (Number) tfPageWidth.getValue() ).intValue();
+                                        height = ( (Number) tfPageHeight.getValue() ).intValue();
+                                    }
                                     // if page format has been changed max size of printed map must be changed
                                     // for new map size (millimeter) left and top border must be considered to
                                     // ensure that printed map does not overlap paper at the right and at the bottom
-                                    ListEntry le = (ListEntry) ( (JComboBox) e.getSource() ).getSelectedItem();
-                                    String value = (String) le.value;
-                                    Rectangle rect = PageSize.getRectangle( value );
-                                    int width = (int) Math.round( rect.getWidth() / 72 * 25.4 );
-                                    int height = (int) Math.round( rect.getHeight() / 72 * 25.4 );
+
                                     width -= ( ( (Number) spLeft.getValue() ).intValue() * 2 );
                                     height -= ( ( (Number) spTop.getValue() ).intValue() * 2 );
                                     spWidth.setValue( width );
@@ -755,7 +816,15 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
             pnPreview.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
             pnPreview.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
-            pnPreview.setPageSize( PageSize.getRectangle( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value ) );
+            Rectangle rect;
+            ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
+            if ( le.value != null ) {
+                rect = PageSize.getRectangle( (String) le.value );
+            } else {
+                rect = new Rectangle( inPt( ( (Number) tfPageWidth.getValue() ).intValue() ),
+                                      inPt( ( (Number) tfPageHeight.getValue() ).intValue() ) );
+            }
+            pnPreview.setPageSize( rect );
             this.setBounds( 300, 200, 530, 609 );
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -765,6 +834,14 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         Container jco = mapModule.getMapContainer();
         jco.addMouseListener( ml );
         jco.addMouseMotionListener( mml );
+    }
+
+    private int inPt( int inMM ) {
+        return (int) Math.round( ( (double) inMM / 25.4 * 72 ) );
+    }
+
+    private int inMM( float inPt ) {
+        return (int) Math.round( inPt / 72 * 25.4 );
     }
 
     private void doPrint() {
@@ -778,7 +855,14 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         pdb.setMapBottom( ( (Number) spMapBottom.getValue() ).doubleValue() );
         pdb.setMapLeft( ( (Number) spMapLeft.getValue() ).doubleValue() );
 
-        pdb.setPageFormat( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value );
+        ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
+        if ( le.value != null ) {
+            pdb.setPageFormat( (String) le.value );
+        } else {
+            pdb.setPageWidth( inPt( ( (Number) tfPageWidth.getValue() ).intValue() ) );
+            pdb.setPageHeight( inPt( ( (Number) tfPageHeight.getValue() ).intValue() ) );
+        }
+
         if ( rbConst.isSelected() ) {
             pdb.setScale( (Integer) ( (ListEntry) cbScale.getSelectedItem() ).value );
         } else {
@@ -792,13 +876,12 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         try {
             appContainer.getCommandProcessor().executeSychronously( cmd, false );
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                      "$MD11810" ),
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11810" ),
                                            Messages.getMessage( getLocale(), "$MD11811" ), e );
         }
-        DialogFactory.openInformationDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                        "$MD11824" ),
-                                             "INFORMATION" );
+        DialogFactory.openInformationDialog( appContainer.getViewPlatform(), this,
+                                             Messages.getMessage( getLocale(), "$MD11824" ), "INFORMATION" );
     }
 
     /**
@@ -811,7 +894,14 @@ public class VectorPrintDialog extends javax.swing.JDialog {
      *    <DPI>300</DPI>
      *    <MapLeft>2597678</MapLeft>
      *    <MapBottom>5697438</MapBottom>
-     *    <PageFormat>A4</PageFormat>
+     *    <PageFormat>
+     *       <Named label="Din A4">A4</Named>
+     *       <!-- or -->
+     *       <Extent>
+     *          <width unit="pt">300.0</width>
+     *          <height unit="pt">500.0</height>
+     *       <Extent>
+     *    </PageFormat>
      *    <Scale>25000</Scale>
      *    <TargetFile>e:/temp/test.pdf</TargetFile>
      * </PrintDefinition>
@@ -854,17 +944,34 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             XMLTools.setNodeValue( el, spMapBottom.getValue().toString() );
             root.appendChild( el );
             el = doc.createElementNS( "http://www.deegree.org/print", "PageFormat" );
-            XMLTools.setNodeValue( el, ( (ListEntry) cbPageFormat.getSelectedItem() ).value.toString() );
-            el.setAttribute( "label", ( (ListEntry) cbPageFormat.getSelectedItem() ).title );
+            Element subEl;
+            ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
+            if ( le.value != null ) {
+                subEl = doc.createElementNS( "http://www.deegree.org/print", "Named" );
+                XMLTools.setNodeValue( subEl, le.value.toString() );
+                subEl.setAttribute( "label", le.title );
+            } else {
+                subEl = doc.createElementNS( "http://www.deegree.org/print", "Extent" );
+                Element w = doc.createElementNS( "http://www.deegree.org/print", "width" );
+                XMLTools.setNodeValue( w, Integer.toString( ( (Number) tfPageWidth.getValue() ).intValue() ) );
+                w.setAttribute( "unit", "mm" );
+                subEl.appendChild( w );
+                Element h = doc.createElementNS( "http://www.deegree.org/print", "height" );
+                XMLTools.setNodeValue( h, Integer.toString( ( (Number) tfPageHeight.getValue() ).intValue() ) );
+                h.setAttribute( "unit", "mm" );
+                subEl.appendChild( h );
+                el.appendChild( subEl );
+            }
             root.appendChild( el );
             el = doc.createElementNS( "http://www.deegree.org/print", "Scale" );
             if ( rbConst.isSelected() ) {
-                XMLTools.setNodeValue( el, ( (ListEntry) cbPageFormat.getSelectedItem() ).value.toString() );
+                XMLTools.setNodeValue( el, ( (ListEntry) cbScale.getSelectedItem() ).value.toString() );
             } else {
                 XMLTools.setNodeValue( el, "-1" );
             }
-            el.setAttribute( "label", ( (ListEntry) cbPageFormat.getSelectedItem() ).title );
+            el.setAttribute( "label", ( (ListEntry) cbScale.getSelectedItem() ).title );
             root.appendChild( el );
+
             el = doc.createElementNS( "http://www.deegree.org/print", "TargetFile" );
             XMLTools.setNodeValue( el, tfOutputFile.getText() );
             root.appendChild( el );
@@ -877,8 +984,8 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             fos.close();
         } catch ( Exception e ) {
             LOG.logError( e );
-            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                      "$MD11812" ),
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11812" ),
                                            Messages.getMessage( getLocale(), "$MD11813" ), e );
         }
 
@@ -894,7 +1001,14 @@ public class VectorPrintDialog extends javax.swing.JDialog {
      *    <DPI>300</DPI>
      *    <MapLeft>2597678</MapLeft>
      *    <MapBottom>5697438</MapBottom>
-     *    <PageFormat label="Din A4">A4</PageFormat>
+     *    <PageFormat>
+     *       <Named label="Din A4">A4</Named>
+     *       <!-- or -->
+     *       <Extent>
+     *          <width unit="pt">300</width>
+     *          <height unit="pt">500</height>
+     *       <Extent>
+     *    </PageFormat>
      *    <Scale label="1:25000">25000</Scale>
      *    <TargetFile>e:/temp/test.pdf</TargetFile>
      * </PrintDefinition>
@@ -923,8 +1037,12 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             int dpi = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:DPI", nsc );
             double ml = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapLeft", nsc );
             double mb = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapBottom", nsc );
-            String pf = XMLTools.getRequiredNodeAsString( xml.getRootElement(), "prnt:PageFormat", nsc );
-            String pfl = XMLTools.getRequiredNodeAsString( xml.getRootElement(), "prnt:PageFormat/@label", nsc );
+            String pf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:PageFormat/prnt:Named", nsc, null );
+            String pfl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:PageFormat/prnt:Named/@label", nsc, null );
+            int pfw = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:PageFormat/prnt:Extent/prnt:width", nsc,
+                                             inMM( PageSize.A4.getWidth() ) );
+            int pfh = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:PageFormat/prnt:Extent/prnt:height", nsc,
+                                             inMM( PageSize.A4.getHeight() ) );
             int sc = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:Scale", nsc, -1 );
             String scl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:Scale/@label", nsc, null );
             String tf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:TargetFilet", nsc, "" );
@@ -936,7 +1054,16 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             cbDPI.setSelectedItem( new Integer( dpi ) );
             spMapLeft.setValue( new Double( ml ) );
             spMapBottom.setValue( new Double( mb ) );
-            cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
+            System.out.println(pf);
+            if ( pf != null ) {
+                cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
+            } else {
+                cbPageFormat.setSelectedIndex( 0 );
+                tfPageHeight.setValue( pfh );
+                tfPageHeight.setEnabled( true );
+                tfPageWidth.setValue( pfw );
+                tfPageWidth.setEnabled( true );
+            }
             if ( sc > -1 ) {
                 rbConst.setSelected( true );
                 cbScale.setSelectedItem( new ListEntry( scl, sc ) );
@@ -946,8 +1073,8 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             tfOutputFile.setText( tf );
         } catch ( Exception e ) {
             LOG.logError( e );
-            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                      "$MD11814" ),
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11814" ),
                                            Messages.getMessage( getLocale(), "$MD11815" ), e );
         }
     }
@@ -956,9 +1083,24 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         removePreviewLayer();
         addPreviewLayer();
 
-        Rectangle r = PageSize.getRectangle( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value );
-        int pw = (int) Math.round( r.getWidth() / 72 * 25.4 );
-        int ph = (int) Math.round( r.getHeight() / 72 * 25.4 );
+        Rectangle r;
+        int pw;
+        int ph;
+        ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
+        if ( le.value != null ) {
+            tfPageWidth.setEnabled( false );
+            tfPageHeight.setEnabled( false );
+            r = PageSize.getRectangle( (String) le.value );
+            pw = (int) Math.round( r.getWidth() / 72 * 25.4 );
+            ph = (int) Math.round( r.getHeight() / 72 * 25.4 );
+        } else {
+            tfPageWidth.setEnabled( true );
+            tfPageHeight.setEnabled( true );
+            pw = ( (Number) tfPageWidth.getValue() ).intValue();
+            ph = ( (Number) tfPageHeight.getValue() ).intValue();
+            r = new Rectangle( inPt( pw ), inPt( ph ) );
+        }
+
         lbPageSize.setText( Messages.getMessage( getLocale(), "$MD11816", pw, ph ) );
         pnPreview.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
         pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
