@@ -42,7 +42,7 @@
 				</ns4:ViewForm>
 				<ns4:init-param>
 					<ns4:name>page</ns4:name>
-					<ns4:value>./resources/data/help/start.html</ns4:value>
+					<ns4:value>./org/deegree/igeo/help/start.html</ns4:value>
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
