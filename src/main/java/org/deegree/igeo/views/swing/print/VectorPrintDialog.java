@@ -662,7 +662,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                 GridBagConstraints.HORIZONTAL,
                                                                                 new Insets( 0, 15, 0, 0 ), 0, 0 ) );
                             tfPageHeight = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getHeight() ), 0,
-                                                                                 3000000, 1 ) );
+                                                                                 6080, 1 ) );
                             pnFormat.add( tfPageHeight, new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0,
                                                                                 GridBagConstraints.CENTER,
                                                                                 GridBagConstraints.HORIZONTAL,
@@ -680,7 +680,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                GridBagConstraints.HORIZONTAL,
                                                                                new Insets( 0, 15, 0, 0 ), 0, 0 ) );
                             tfPageWidth = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getWidth() ), 0,
-                                                                                3000000, 1 ) );
+                                                                                6080, 1 ) );
                             pnFormat.add( tfPageWidth, new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0,
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.HORIZONTAL,
@@ -1054,7 +1054,6 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             cbDPI.setSelectedItem( new Integer( dpi ) );
             spMapLeft.setValue( new Double( ml ) );
             spMapBottom.setValue( new Double( mb ) );
-            System.out.println(pf);
             if ( pf != null ) {
                 cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
             } else {
