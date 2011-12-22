@@ -69,7 +69,7 @@ import com.sun.media.jai.codec.MemoryCacheSeekableStream;
  */
 public class GraphicSymbol extends Symbol implements Comparable<GraphicSymbol> {
 
-    private static final ILogger LOG = LoggerFactory.getLogger( Symbol.class );
+    private static final ILogger LOG = LoggerFactory.getLogger( GraphicSymbol.class );
 
     private URL url;
 
