@@ -83,7 +83,8 @@ public class ClassificationCalculator<U extends Comparable<U>> {
 
     /**
      * Calculates a classification with equal number of values in each class. The number ob returning maximum values may
-     * differ from the given number of classes, if there are a lot of equal values.
+     * differ from the given number of classes, if there are a lot of equal values. If numberOfClasses is greater than
+     * the number of values the numberOfClasses is set to the number of values.
      * 
      * @param values
      *            the values to classify
@@ -92,6 +93,9 @@ public class ClassificationCalculator<U extends Comparable<U>> {
      * @return a list with the maximum values of the classes
      */
     public List<ValueRange<U>> calculateQuantileClassification( List<Intervallable<U>> values, int numberOfClasses ) {
+        if ( numberOfClasses > values.size() ) {
+            numberOfClasses = values.size();
+        }
         List<ValueRange<U>> result = new ArrayList<ValueRange<U>>();
         Collections.sort( values, new Comparator<Intervallable<U>>() {
             public int compare( Intervallable<U> o1, Intervallable<U> o2 ) {

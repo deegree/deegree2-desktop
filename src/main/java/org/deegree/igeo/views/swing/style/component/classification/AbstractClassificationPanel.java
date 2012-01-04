@@ -245,6 +245,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         if ( propertyName == null ) {
             throw new IllegalClassificationException( "PopertyNames are not valid!" );
         }
+        // TODO: check if this is necessary!?
         boolean isTypeCorrect = ClassificationFromSld.isTypeCorrect( rules, getSymbolizerType() );
         if ( !isTypeCorrect ) {
             throw new IllegalClassificationException(
