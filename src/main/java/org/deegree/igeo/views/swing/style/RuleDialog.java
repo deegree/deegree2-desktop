@@ -149,6 +149,8 @@ public class RuleDialog extends DefaultFrame implements ActionListener {
 
     private JMenuItem settingsItem;
 
+    private JMenuItem editSymbolItem;
+
     private SettingsPanel settingsPanel = new SettingsPanel();
 
     private List<ChangeListener> uomChangedListener = new ArrayList<ChangeListener>();
@@ -268,6 +270,12 @@ public class RuleDialog extends DefaultFrame implements ActionListener {
         settingsItem.addActionListener( this );
         menuSettings.add( settingsItem );
 
+        JMenu menuEdit = new JMenu( get( "$MD11833" ) );
+        editSymbolItem = new JMenuItem( get( "$MD11834" ) );
+        editSymbolItem.addActionListener( this );
+        menuEdit.add( editSymbolItem );
+
+        menuBar.add( menuEdit );
         menuBar.add( menuRules );
         menuBar.add( menuStyles );
         menuBar.add( menuSettings );
@@ -483,6 +491,10 @@ public class RuleDialog extends DefaultFrame implements ActionListener {
                         informUomChangeListener();
                     }
                 }
+            } else if ( srcItem == editSymbolItem ) {
+                PanelDialog dlg = new PanelDialog( new EditSymbollibraryPanel( settings.getGraphicOptions() ), false );
+                dlg.setLocationRelativeTo( this );
+                dlg.setVisible( true );
             }
         }
     }

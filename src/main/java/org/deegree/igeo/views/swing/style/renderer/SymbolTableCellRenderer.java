@@ -38,6 +38,7 @@
 package org.deegree.igeo.views.swing.style.renderer;
 
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -68,8 +69,8 @@ public class SymbolTableCellRenderer extends JLabel implements TableCellRenderer
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
-     * java.lang.Object, boolean, boolean, int, int)
+     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object,
+     * boolean, boolean, int, int)
      */
     public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                     int row, int column ) {
@@ -86,7 +87,10 @@ public class SymbolTableCellRenderer extends JLabel implements TableCellRenderer
         }
         if ( value instanceof Symbol ) {
             Symbol symbol = (Symbol) value;
-            setIcon( new ImageIcon( symbol.getAsImage() ) );
+            BufferedImage asImage = symbol.getAsImage();
+            if ( asImage != null ) {
+                setIcon( new ImageIcon( asImage ) );
+            }
             setText( symbol.getName() );
         } else {
             setText( (String) value );

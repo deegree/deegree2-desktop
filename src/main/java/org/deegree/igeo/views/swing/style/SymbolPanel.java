@@ -42,20 +42,17 @@ import static org.deegree.igeo.i18n.Messages.get;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.deegree.igeo.ChangeListener;
 import org.deegree.igeo.ValueChangedEvent;
@@ -64,11 +61,8 @@ import org.deegree.igeo.style.model.GraphicSymbol;
 import org.deegree.igeo.style.model.SldValues;
 import org.deegree.igeo.style.model.Symbol;
 import org.deegree.igeo.style.model.WellKnownMark;
-import org.deegree.igeo.views.swing.style.component.MarkPanel;
 import org.deegree.igeo.views.swing.style.renderer.SymbolRenderer;
-import org.deegree.igeo.views.swing.util.GenericFileChooser;
-import org.deegree.igeo.views.swing.util.IGeoFileFilter;
-import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.igeo.views.swing.util.panels.PanelDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -93,17 +87,7 @@ public class SymbolPanel extends JPanel implements ActionListener {
 
     private JComboBox markCB;
 
-    private JTextField newMarkNameTF;
-
-    private JButton selectFileBt;
-
-    private JTextField newMarkTF;
-
-    private JButton addMarkBt;
-
-    private JComboBox markToRemoveCB;
-
-    private JButton removeMarkBt;
+    private JButton editSymbolsBt;
 
     /**
      * @param graphicOptions
@@ -182,120 +166,23 @@ public class SymbolPanel extends JPanel implements ActionListener {
         markCB.setRenderer( new SymbolRenderer() );
         markCB.addActionListener( this );
 
-        // add own
-        newMarkNameTF = new JTextField();
-        selectFileBt = new JButton( get( "$MD10771" ) );
-        selectFileBt.addActionListener( this );
-        newMarkTF = new JTextField();
-        addMarkBt = new JButton( get( "$MD10772" ) );
-        addMarkBt.addActionListener( this );
-
-        // remove own
-        markToRemoveCB = new JComboBox();
-        markToRemoveCB.setRenderer( new SymbolRenderer() );
-        removeMarkBt = new JButton( get( "$MD11165" ) );
-        removeMarkBt.addActionListener( this );
+        editSymbolsBt = new JButton( get( "$MD11835" ) );
+        editSymbolsBt.addActionListener( this );
 
         // layout
-        FormLayout fl = new FormLayout( "left:$rgap, left:min, $ugap, fill:default:grow(1)",
-                                        "$sepheight, $cpheight, $sepheight, $cpheight, $btheight, $cpheight, $btheight, $sepheight, $cpheight, $btheight" );
+        FormLayout fl = new FormLayout( "fill:default:grow(1)", "$cpheight, $btheight" );
         DefaultFormBuilder builder = new DefaultFormBuilder( fl );
         CellConstraints cc = new CellConstraints();
 
-        builder.addSeparator( get( "$MD10774" ), cc.xyw( 1, 1, 4 ) );
-        builder.add( markCB, cc.xyw( 2, 2, 3 ) );
-
-        builder.addSeparator( get( "$MD10775" ), cc.xyw( 1, 3, 4 ) );
-        builder.addLabel( get( "$MD10776" ), cc.xy( 2, 4 ) );
-        builder.add( newMarkNameTF, cc.xy( 4, 4 ) );
-
-        builder.addLabel( get( "$MD10777" ), cc.xy( 2, 5 ) );
-        builder.add( selectFileBt, cc.xy( 4, 5, CellConstraints.RIGHT, CellConstraints.CENTER ) );
-        builder.add( newMarkTF, cc.xyw( 2, 6, 3 ) );
-        builder.add( addMarkBt, cc.xyw( 2, 7, 3, CellConstraints.CENTER, CellConstraints.CENTER ) );
-
-        builder.addSeparator( get( "$MD11166" ), cc.xyw( 1, 8, 4 ) );
-        builder.add( markToRemoveCB, cc.xyw( 2, 9, 3 ) );
-        builder.add( removeMarkBt, cc.xyw( 2, 10, 3, CellConstraints.CENTER, CellConstraints.CENTER ) );
+        builder.add( markCB, cc.xy( 1, 1, CellConstraints.CENTER, CellConstraints.FILL ) );
+        builder.add( editSymbolsBt, cc.xy( 1, 2, CellConstraints.CENTER, CellConstraints.CENTER ) );
 
         add( builder.getPanel() );
 
     }
 
-    private void selectFile() {
-        File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.image, null, this,
-                                                       Preferences.systemNodeForPackage( MarkPanel.class ),
-                                                       "lastSelectMark", IGeoFileFilter.IMAGES );
-        if ( file != null ) {
-            try {
-                newMarkTF.setText( file.toURI().toURL().toExternalForm() );
-            } catch ( MalformedURLException e ) {
-                // should never happen
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void addMark() {
-        String url = newMarkTF.getText();
-        String name = newMarkNameTF.getText();
-        boolean invalidURL = false;
-        if ( url != null && url.length() > 0 ) {
-            try {
-                URL u = new URL( url );
-                GraphicSymbol newSymbol = new GraphicSymbol( name, u );
-                if ( newSymbol.getFormat() != null ) {
-                    graphicOptions.addSymbolDefinition( name, u.toExternalForm() );
-                    updateSymbolMarkCB();
-                    markCB.setSelectedItem( graphicOptions.getSymbolDefinitions().get( name ) );
-
-                    newMarkTF.setText( "" );
-                    newMarkNameTF.setText( "" );
-                } else {
-                    JOptionPane.showMessageDialog( this, get( "$MD10780" ), get( "$MD10781" ),
-                                                   JOptionPane.INFORMATION_MESSAGE );
-                }
-            } catch ( MalformedURLException e ) {
-                invalidURL = true;
-            }
-        } else {
-            invalidURL = true;
-        }
-        if ( invalidURL ) {
-            JOptionPane.showMessageDialog( this, get( "$MD10782" ), get( "$MD10783" ), JOptionPane.INFORMATION_MESSAGE );
-        }
-    }
-
-    private void removeMark() {
-        if ( markToRemoveCB.getSelectedItem() != null && markToRemoveCB.getSelectedItem() instanceof GraphicSymbol ) {
-            GraphicSymbol gs = (GraphicSymbol) markToRemoveCB.getSelectedItem();
-            int result = JOptionPane.showOptionDialog( this, get( "$MD11168", gs.getName() ), get( "$MD11167" ),
-                                                       JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-                                                       null, null, null );
-            if ( result == JOptionPane.OK_OPTION ) {
-                try {
-                    graphicOptions.removeSymbolDefinition( gs.getName() );
-                    markToRemoveCB.removeItem( gs );
-                    if ( markCB.getSelectedItem() == gs ) {
-                        markCB.setSelectedIndex( 0 );
-                    }
-                    markCB.removeItem( gs );
-                } catch ( MalformedURLException e ) {
-                    JOptionPane.showMessageDialog( this, get( "$MD11169" ), get( "$DI10017" ),
-                                                   JOptionPane.INFORMATION_MESSAGE );
-                }
-                if ( markToRemoveCB.getItemCount() > 0 ) {
-                    removeMarkBt.setEnabled( true );
-                } else {
-                    removeMarkBt.setEnabled( false );
-                }
-            }
-        }
-    }
-
     private void updateSymbolMarkCB() {
         markCB.removeAllItems();
-        markToRemoveCB.removeAllItems();
         for ( WellKnownMark mark : SldValues.getWellKnownMarks() ) {
             markCB.addItem( mark );
         }
@@ -306,16 +193,9 @@ public class SymbolPanel extends JPanel implements ActionListener {
             Collections.sort( (List<GraphicSymbol>) values );
             for ( GraphicSymbol gs : values ) {
                 markCB.addItem( gs );
-                markToRemoveCB.addItem( gs );
             }
         } catch ( MalformedURLException e ) {
             JOptionPane.showMessageDialog( this, get( "$MD10788" ), get( "$DI10017" ), JOptionPane.ERROR_MESSAGE );
-        }
-
-        if ( markToRemoveCB.getItemCount() > 0 ) {
-            removeMarkBt.setEnabled( true );
-        } else {
-            removeMarkBt.setEnabled( false );
         }
     }
 
@@ -331,12 +211,10 @@ public class SymbolPanel extends JPanel implements ActionListener {
     public void actionPerformed( ActionEvent e ) {
         if ( e.getSource() == markCB && changeListener != null ) {
             changeListener.valueChanged( new SymbolChangedEvent( (Symbol) markCB.getSelectedItem() ) );
-        } else if ( e.getSource() == selectFileBt ) {
-            selectFile();
-        } else if ( e.getSource() == addMarkBt ) {
-            addMark();
-        } else if ( e.getSource() == removeMarkBt ) {
-            removeMark();
+        } else if ( e.getSource() == editSymbolsBt ) {
+            PanelDialog dlg = new PanelDialog( new EditSymbollibraryPanel( graphicOptions ), false );
+            dlg.setLocationRelativeTo( this );
+            dlg.setVisible( true );
         }
     }
 
