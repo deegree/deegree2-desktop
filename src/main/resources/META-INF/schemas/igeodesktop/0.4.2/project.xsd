@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:gml="http://www.opengis.net/gml" xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" targetNamespace="http://www.deegree.org/project" elementFormDefault="qualified" attributeFormDefault="unqualified" jxb:version="2.0">
+<xs:schema xmlns:gml="http://www.opengis.net/gml" xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" targetNamespace="http://www.deegree.org/project" elementFormDefault="qualified" attributeFormDefault="unqualified" jaxb:version="2.0">
 	<xs:annotation>
 		<xs:appinfo>
-			<jxb:globalBindings underscoreBinding="asCharInWord"/>
+            <jaxb:schemaBindings>
+              <jaxb:package name="org.deegree.igeo.config" />
+            </jaxb:schemaBindings>
+			<jaxb:globalBindings underscoreBinding="asCharInWord"/>
 		</xs:appinfo>
 	</xs:annotation>
 	<!-- ============================================================================

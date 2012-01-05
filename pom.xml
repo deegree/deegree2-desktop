@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>deegree2-igeodesktop</artifactId>
-  <name>deegree2-igeodesktop</name>
+  <artifactId>deegree2-igeodesktop-clean</artifactId>
+  <name>deegree2-igeodesktop clean</name>
   <version>0.4.3-pre1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <parent>
@@ -11,6 +11,37 @@
     <version>2.6-pre1-SNAPSHOT</version>
     <relativePath/>
   </parent>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>0.8.0</version>
+         <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <schemaIncludes>
+                <include>**/project.xsd</include>
+                <!-- 
+                <include>**/coremapmodel.xsd</include>
+                <include>**/settings.xsd</include>
+                 -->
+              </schemaIncludes>
+              <schemaDirectory>src/main/resources/META-INF/schemas/</schemaDirectory>
+              <episode>true</episode>
+              <generatePackage>org.deegree.igeo.config</generatePackage>
+            </configuration>
+          </execution>
+        </executions>
+        
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>default</id>
