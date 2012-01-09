@@ -192,12 +192,13 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                 {
                     geommetrics = new JPanel();
                     geommetrics.addComponentListener( new ComponentAdapter() {
-                                            
+
                         public void componentShown( ComponentEvent e ) {
-                            btCheckGeometries.setEnabled( true );
+                            if ( btCheckGeometries != null )
+                                btCheckGeometries.setEnabled( true );
                         }
-                        
-                     });
+
+                    } );
                     GridBagLayout geommetricsLayout = new GridBagLayout();
                     jTabbedPane1.addTab( Messages.getMessage( getLocale(), "$MD11196" ), null, geommetrics, null );
                     geommetricsLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -216,7 +217,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbGeometry.setToolTipText( Messages.getMessage( getLocale(), "$MD10389" ) );
                         cbGeometry.setSelected( vm.checkForValidGeometries() );
                         cbGeometry.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setCheckForValidGeometries( !vm.checkForValidGeometries() );
                             }
@@ -233,7 +234,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbRepeatedPoints.setToolTipText( Messages.getMessage( getLocale(), "$MD10391" ) );
                         cbRepeatedPoints.setSelected( vm.disallowRepeatedPoints() );
                         cbRepeatedPoints.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setDisallowRepeatedPoints( !vm.disallowRepeatedPoints() );
                             }
@@ -250,7 +251,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbPolygonOrientation.setToolTipText( Messages.getMessage( getLocale(), "$MD10393" ) );
                         cbPolygonOrientation.setSelected( vm.checkForPolygonOrientation() );
                         cbPolygonOrientation.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setCheckForPolygonOrientation( !vm.checkForPolygonOrientation() );
                             }
@@ -267,7 +268,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbDoubleGeometries.setToolTipText( Messages.getMessage( getLocale(), "$MD10395" ) );
                         cbDoubleGeometries.setSelected( vm.disallowDoubleGeomerties() );
                         cbDoubleGeometries.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setDisallowDoubleGeomerties( !vm.disallowDoubleGeomerties() );
                             }
@@ -277,14 +278,14 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbSimpleLines = new JCheckBox();
                         cbSimpleLines.setEnabled( vm.isChangeable() );
                         geommetrics.add( cbSimpleLines, new GridBagConstraints( 0, 4, 1, 1, 0.0, 0.0,
-                                                                              GridBagConstraints.WEST,
-                                                                              GridBagConstraints.HORIZONTAL,
-                                                                              new Insets( 0, 5, 0, 0 ), 0, 0 ) );
+                                                                                GridBagConstraints.WEST,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 5, 0, 0 ), 0, 0 ) );
                         cbSimpleLines.setText( Messages.getMessage( getLocale(), "$MD10434" ) );
                         cbSimpleLines.setToolTipText( Messages.getMessage( getLocale(), "$MD10435" ) );
                         cbSimpleLines.setSelected( vm.ensureSimpleLines() );
                         cbSimpleLines.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setEnsureSimpleLines( !vm.ensureSimpleLines() );
                             }
@@ -301,7 +302,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbMinSegmentLength.setToolTipText( Messages.getMessage( getLocale(), "$MD10399" ) );
                         cbMinSegmentLength.setSelected( vm.limitMinSegmentLength() );
                         cbMinSegmentLength.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setLimitMinSegmentLength( !vm.limitMinSegmentLength() );
                             }
@@ -316,11 +317,10 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                                                                                  new Insets( 0, 5, 0, 5 ), 0, 0 ) );
                         tfMinSegLength.setText( Float.toString( vm.getMinSegmentLength() ) );
                         tfMinSegLength.addFocusListener( new FocusListener() {
-                            
+
                             public void focusGained( FocusEvent e ) {
                             }
 
-                            
                             public void focusLost( FocusEvent e ) {
                                 vm.setMinSegmentLength( Float.parseFloat( tfMinSegLength.getText() ) );
                             }
@@ -338,7 +338,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbMinPolyArea.setToolTipText( Messages.getMessage( getLocale(), "$MD10401" ) );
                         cbMinPolyArea.setSelected( vm.limitMinPolygonArea() );
                         cbMinPolyArea.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vm.setLimitMinPolygonArea( !vm.limitMinPolygonArea() );
                             }
@@ -353,11 +353,10 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                                                                                 new Insets( 0, 5, 0, 5 ), 0, 0 ) );
                         tfMinPolyArea.setText( Float.toString( vm.getMinPolygonArea() ) );
                         tfMinPolyArea.addFocusListener( new FocusListener() {
-                            
+
                             public void focusGained( FocusEvent e ) {
                             }
 
-                            
                             public void focusLost( FocusEvent e ) {
                                 vm.setMinPolygonArea( Float.parseFloat( tfMinPolyArea.getText() ) );
                             }
@@ -368,14 +367,14 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                 {
                     geomtypes = new JPanel();
                     geomtypes.addComponentListener( new ComponentAdapter() {
-                                            
+
                         public void componentShown( ComponentEvent e ) {
                             btCheckGeometries.setEnabled( false );
                         }
-                        
-                     });
+
+                    } );
                     GridBagLayout geomtypesLayout = new GridBagLayout();
-                    jTabbedPane1.addTab(Messages.getMessage( getLocale(), "$MD11197" ) , null, geomtypes, null );
+                    jTabbedPane1.addTab( Messages.getMessage( getLocale(), "$MD11197" ), null, geomtypes, null );
                     geomtypesLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1 };
                     geomtypesLayout.rowHeights = new int[] { 31, 31, 30, 30, 31, 31, 7 };
                     geomtypesLayout.columnWeights = new double[] { 0.0, 0.1 };
@@ -392,7 +391,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowPoints.setToolTipText( Messages.getMessage( getLocale(), "$MD10403" ) );
                         cbAllowPoints.setSelected( vgt.pointsAllowed() );
                         cbAllowPoints.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setPointsAllowed( !vgt.pointsAllowed() );
                             }
@@ -409,7 +408,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowLines.setToolTipText( Messages.getMessage( getLocale(), "$MD10405" ) );
                         cbAllowLines.setSelected( vgt.linestringsAllowed() );
                         cbAllowLines.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setLinestringsAllowed( !vgt.linestringsAllowed() );
                             }
@@ -426,7 +425,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowPolygons.setToolTipText( Messages.getMessage( getLocale(), "$MD10407" ) );
                         cbAllowPolygons.setSelected( vgt.polygonsAllowed() );
                         cbAllowPolygons.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setPolygonsAllowed( !vgt.polygonsAllowed() );
                             }
@@ -443,7 +442,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowMultiPoints.setToolTipText( Messages.getMessage( getLocale(), "$MD10409" ) );
                         cbAllowMultiPoints.setSelected( vgt.multiPointsAllowed() );
                         cbAllowMultiPoints.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setMultiPointsAllowed( !vgt.multiPointsAllowed() );
                             }
@@ -460,7 +459,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowMultiLines.setSelected( vgt.multiLinestringsAllowed() );
                         cbAllowMultiLines.setToolTipText( Messages.getMessage( getLocale(), "$MD10411" ) );
                         cbAllowMultiLines.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setMultiLinestringsAllowed( !vgt.multiLinestringsAllowed() );
                             }
@@ -477,7 +476,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowMultiPolys.setToolTipText( Messages.getMessage( getLocale(), "$MD10413" ) );
                         cbAllowMultiPolys.setSelected( vgt.multiPolygonsAllowed() );
                         cbAllowMultiPolys.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setMultiPolygonsAllowed( !vgt.multiPolygonsAllowed() );
                             }
@@ -494,7 +493,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowHoles.setToolTipText( Messages.getMessage( getLocale(), "$MD10415" ) );
                         cbAllowHoles.setSelected( vgt.polygonsWithHolesAllowed() );
                         cbAllowHoles.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setPolygonsWithHolesAllowed( !vgt.polygonsWithHolesAllowed() );
                             }
@@ -511,7 +510,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowNoneLinearInterpolations.setToolTipText( Messages.getMessage( getLocale(), "$MD10417" ) );
                         cbAllowNoneLinearInterpolations.setSelected( vgt.noneLinearInterpolationAllowed() );
                         cbAllowNoneLinearInterpolations.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setNoneLinearInterpolationAllowed( !vgt.noneLinearInterpolationAllowed() );
                             }
@@ -528,7 +527,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowGeometryCollections.setToolTipText( Messages.getMessage( getLocale(), "$MD10397" ) );
                         cbAllowGeometryCollections.setSelected( vgt.geometryCollectionsAllowed() );
                         cbAllowGeometryCollections.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgt.setGeometryCollectionsAllowed( !vgt.geometryCollectionsAllowed() );
                             }
@@ -538,14 +537,14 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                 {
                     topologyPanel = new JPanel();
                     topologyPanel.addComponentListener( new ComponentAdapter() {
-                                            
+
                         public void componentShown( ComponentEvent e ) {
                             btCheckGeometries.setEnabled( true );
                         }
-                        
-                     });
+
+                    } );
                     GridBagLayout topologyPanelLayout = new GridBagLayout();
-                    jTabbedPane1.addTab( Messages.getMessage( getLocale(), "$MD11198" ) , null, topologyPanel, null );
+                    jTabbedPane1.addTab( Messages.getMessage( getLocale(), "$MD11198" ), null, topologyPanel, null );
                     topologyPanelLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.1 };
                     topologyPanelLayout.rowHeights = new int[] { 27, 27, 27, 7 };
                     topologyPanelLayout.columnWeights = new double[] { 0.0, 0.1 };
@@ -562,7 +561,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowIntersection.setToolTipText( Messages.getMessage( getLocale(), "$MD10438" ) );
                         cbAllowIntersection.setSelected( vgto.intersectionAllowed() );
                         cbAllowIntersection.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgto.setIntersectionAllowed( !vgto.intersectionAllowed() );
                             }
@@ -579,7 +578,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowTouching.setToolTipText( Messages.getMessage( getLocale(), "$MD10440" ) );
                         cbAllowTouching.setSelected( vgto.touchingAllowed() );
                         cbAllowTouching.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgto.setTouchingAllowed( !vgto.touchingAllowed() );
                             }
@@ -588,8 +587,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                     {
                         cbAllowEqualGeometries = new JCheckBox();
                         cbAllowEqualGeometries.setEnabled( vgto.isChangeable() );
-                        topologyPanel.add(
-                                           cbAllowEqualGeometries,
+                        topologyPanel.add( cbAllowEqualGeometries,
                                            new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
                                                                    GridBagConstraints.HORIZONTAL, new Insets( 0, 5, 0,
                                                                                                               0 ), 0, 0 ) );
@@ -597,7 +595,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                         cbAllowEqualGeometries.setToolTipText( Messages.getMessage( getLocale(), "$MD10442" ) );
                         cbAllowEqualGeometries.setSelected( vgto.equalGeometriesAllowed() );
                         cbAllowEqualGeometries.addActionListener( new ActionListener() {
-                            
+
                             public void actionPerformed( ActionEvent e ) {
                                 vgto.setEqualGeometriesAllowed( !vgto.equalGeometriesAllowed() );
                             }
@@ -624,7 +622,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
                     cbPrintWarnings.setToolTipText( Messages.getMessage( getLocale(), "$MD10419" ) );
                     cbPrintWarnings.setSelected( appContainer.getSettings().printValidationWaring() );
                     cbPrintWarnings.addActionListener( new ActionListener() {
-                        
+
                         public void actionPerformed( ActionEvent e ) {
                             boolean value = !appContainer.getSettings().printValidationWaring();
                             appContainer.getSettings().setPrintValidationWaring( value );
@@ -687,7 +685,7 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-   
+
     // ///////////////////////////////////////////////////////////////////////////
     // inner classes
     // ///////////////////////////////////////////////////////////////////////////
@@ -712,8 +710,8 @@ public class GeometryValidationPanel extends javax.swing.JPanel {
          */
         public void actionPerformed( ActionEvent event ) {
             AbstractButton button = (AbstractButton) event.getSource();
-            String action = button.getActionCommand();            
-            List<Layer> layers = appContainer.getMapModel(null ).getLayersSelectedForAction( MapModel.SELECTION_ACTION );
+            String action = button.getActionCommand();
+            List<Layer> layers = appContainer.getMapModel( null ).getLayersSelectedForAction( MapModel.SELECTION_ACTION );
             for ( Layer layer : layers ) {
                 if ( "checkgeometries".equals( action ) ) {
                     checkGeometries( layer );
