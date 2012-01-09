@@ -392,7 +392,11 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
             if ( list != null && list.size() > 0 ) {
                 cb = new JComboBox();
                 for ( Pair<String, String> pair : list ) {
-                    cb.addItem( new ComboBoxItem( pair ) );
+                    ComboBoxItem cbItem = new ComboBoxItem( pair );
+                    cb.addItem( cbItem );
+                    if ( equals( pair, value ) ) {
+                        cb.setSelectedItem( cbItem );
+                    }
                 }
                 comp = cb;
             } else {
@@ -414,6 +418,33 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
             // Return the configured component
             return comp;
+        }
+
+        private boolean equals( Pair<String, String> pair, Object value ) {
+            if ( value != null ) {
+                if ( value instanceof Double || value instanceof Float ) {
+                    try {
+                        return Double.parseDouble( pair.first ) == (Double) value;
+                    } catch ( Exception e ) {
+                        LOG.logDebug( "not a double value: " + pair.first );
+                    }
+                } else if ( value instanceof Integer ) {
+                    try {
+                        return Integer.parseInt( pair.first ) == (Integer) value;
+                    } catch ( Exception e ) {
+                        LOG.logDebug( "not an integer value: " + pair.first );
+                    }
+                } else if ( value instanceof Date ) {
+                    try {
+                        return TimeTools.createDate( pair.first ).equals( value );
+                    } catch ( Exception e ) {
+                        LOG.logDebug( "not a date: " + pair.first );
+                    }
+                } else {
+                    return pair.first.equals( value.toString() );
+                }
+            }
+            return false;
         }
 
         // This method is called when editing is completed.
@@ -481,6 +512,14 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
         @Override
         public String toString() {
             return pair.second + " [" + pair.first + "]";
+        }
+
+        @Override
+        public boolean equals( Object obj ) {
+            if ( obj instanceof ComboBoxItem ) {
+                return pair.equals( ( (ComboBoxItem) obj ).pair );
+            }
+            return super.equals( obj );
         }
 
     }
