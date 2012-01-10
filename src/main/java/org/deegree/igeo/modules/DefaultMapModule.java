@@ -295,34 +295,36 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
             LOG.logError( e.getMessage(), e );
         }
 
-        Component[] comps = jco.getComponents();
-
-        for ( int i = 0; i < comps.length; i++ ) {
-
-            MouseListener[] ml = comps[i].getMouseListeners();
-            for ( MouseListener mouseListener : ml ) {
-                if ( !( mouseListener instanceof DefaultMapComponent.DMCMouseListener ) ) {
-                    // keep mouse listener of map component
-                    comps[i].removeMouseListener( mouseListener );
+        if( jco != null ){
+            Component[] comps = jco.getComponents();
+    
+            for ( int i = 0; i < comps.length; i++ ) {
+    
+                MouseListener[] ml = comps[i].getMouseListeners();
+                for ( MouseListener mouseListener : ml ) {
+                    if ( !( mouseListener instanceof DefaultMapComponent.DMCMouseListener ) ) {
+                        // keep mouse listener of map component
+                        comps[i].removeMouseListener( mouseListener );
+                    }
                 }
-            }
-            MouseMotionListener[] mml = comps[i].getMouseMotionListeners();
-            for ( MouseMotionListener mouseMotionListener : mml ) {
-                if ( !( mouseMotionListener instanceof DefaultMapComponent.DMCMouseMotionListener ) ) {
-                    // keep mouse motion listener of map component
-                    comps[i].removeMouseMotionListener( mouseMotionListener );
+                MouseMotionListener[] mml = comps[i].getMouseMotionListeners();
+                for ( MouseMotionListener mouseMotionListener : mml ) {
+                    if ( !( mouseMotionListener instanceof DefaultMapComponent.DMCMouseMotionListener ) ) {
+                        // keep mouse motion listener of map component
+                        comps[i].removeMouseMotionListener( mouseMotionListener );
+                    }
                 }
-            }
-
-            if ( comps[i] instanceof JPanel ) {
-                jco.remove( comps[i] );
-            }
-            if ( !( getViewForm() instanceof JFrame ) ) {
-                if ( comps[i] instanceof MouseListener ) {
-                    jco.removeMouseListener( (MouseListener) comps[i] );
+    
+                if ( comps[i] instanceof JPanel ) {
+                    jco.remove( comps[i] );
                 }
-                if ( comps[i] instanceof MouseMotionListener ) {
-                    jco.removeMouseMotionListener( (MouseMotionListener) comps[i] );
+                if ( !( getViewForm() instanceof JFrame ) ) {
+                    if ( comps[i] instanceof MouseListener ) {
+                        jco.removeMouseListener( (MouseListener) comps[i] );
+                    }
+                    if ( comps[i] instanceof MouseMotionListener ) {
+                        jco.removeMouseMotionListener( (MouseMotionListener) comps[i] );
+                    }
                 }
             }
         }
