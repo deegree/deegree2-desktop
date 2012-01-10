@@ -40,6 +40,7 @@ package org.deegree.igeo.views.swing.objectinfo;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -47,6 +48,9 @@ import javax.swing.table.DefaultTableModel;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
 import org.deegree.datatypes.UnknownTypeException;
+import org.deegree.framework.util.DateUtil;
+import org.deegree.framework.util.Pair;
+import org.deegree.framework.utils.DictionaryCollection;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureCollection;
 import org.deegree.model.feature.FeatureFactory;
@@ -75,12 +79,15 @@ class FeatureTableModel extends DefaultTableModel {
 
     private List<PropertyType> properties;
 
+    private DictionaryCollection dictionaries;
+
     /**
      * 
      * @param fc
      */
-    FeatureTableModel( FeatureCollection fc ) {
+    FeatureTableModel( FeatureCollection fc, DictionaryCollection dictionaries ) {
         this.fc = fc;
+        this.dictionaries = dictionaries;
         if ( fc != null && fc.size() > 0 ) {
             ft = fc.getFeature( 0 ).getFeatureType();
             // find all none geometry properties
@@ -103,6 +110,11 @@ class FeatureTableModel extends DefaultTableModel {
         } else {
             properties = new ArrayList<PropertyType>( 1 );
         }
+    }
+
+    FeatureTableModel( FeatureCollection fc ) {
+        this( fc, null );
+
     }
 
     @Override
@@ -139,12 +151,35 @@ class FeatureTableModel extends DefaultTableModel {
             return fc.getFeature( rowIndex ).getId();
         } else {
             QualifiedName qn = properties.get( columnIndex ).getName();
+            QualifiedName qName = new QualifiedName( ft.getName().getLocalName() + '/' + qn.getLocalName(),
+                                                     qn.getNamespace() );
             FeatureProperty[] fps = fc.getFeature( rowIndex ).getProperties( qn );
+            Object fpValue = null;
             if ( fps != null && fps.length > 0 && fps[0] != null ) {
-                return fps[0].getValue( "" );
+                fpValue = fps[0].getValue( "" );
             }
+            if ( dictionaries != null ) {
+                List<Pair<String, String>> codelist = dictionaries.getCodelist( qName, null );
+                if ( codelist != null && codelist.size() > 0 ) {
+                    String valueAsString;
+                    if ( fpValue instanceof Double ) {
+                        valueAsString = Double.toString( ( (Double) fpValue ) );
+                    } else if ( fpValue instanceof Integer ) {
+                        valueAsString = Integer.toString( (Integer) fpValue );
+                    } else if ( fpValue instanceof Date ) {
+                        valueAsString = DateUtil.formatISO8601Date( (Date) fpValue );
+                    } else {
+                        valueAsString = fpValue.toString();
+                    }
+                    for ( Pair<String, String> cl : codelist ) {
+                        if ( cl.first != null && cl.first.equals( valueAsString ) ) {
+                            return cl.second + " [" + cl.first + "]";
+                        }
+                    }
+                }
+            }
+            return fpValue;
         }
-        return null;
     }
 
     @Override
@@ -186,7 +221,7 @@ class FeatureTableModel extends DefaultTableModel {
                         o2 = "";
                     }
                     boolean swtch = false;
-                    if ( o1 instanceof Number && o2 instanceof Number) {
+                    if ( o1 instanceof Number && o2 instanceof Number ) {
                         double v1 = ( (Number) o1 ).doubleValue();
                         double v2 = ( (Number) o2 ).doubleValue();
                         if ( ascending ) {

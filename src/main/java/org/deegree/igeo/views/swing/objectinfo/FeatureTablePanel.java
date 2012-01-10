@@ -449,7 +449,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
             WMSFeatureTableModel wftm = new WMSFeatureTableModel( featureCollection );
             this.tabFeat.setModel( wftm );
         } else {
-            FeatureTableModel ftm = new FeatureTableModel( featureCollection );
+            FeatureTableModel ftm = new FeatureTableModel( featureCollection, owner.getApplicationContainer().getSettings().getDictionaries() );
             this.tabFeat.setModel( ftm );
         }
 
