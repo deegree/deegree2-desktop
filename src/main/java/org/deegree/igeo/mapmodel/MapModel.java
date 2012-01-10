@@ -134,13 +134,7 @@ public class MapModel implements ChangeListener {
     
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
-            int result = HashCodeUtil.SEED;
-            result = HashCodeUtil.hash( result, appContainer );
-            result = HashCodeUtil.hash( result, layerGroups );
-            result = HashCodeUtil.hash( result, mmType );
-        }
-        return fHashCode;
+        return getIdentifier().hashCode();
     }
 
     /**

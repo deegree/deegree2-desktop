@@ -1025,16 +1025,7 @@ public class Layer implements MapModelEntry {
     
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
-            int result = HashCodeUtil.SEED;
-            result = HashCodeUtil.hash( result, dataAccess );         
-            result = HashCodeUtil.hash( result, datasources );
-            result = HashCodeUtil.hash( result, layerType );
-            result = HashCodeUtil.hash( result, owner );
-            result = HashCodeUtil.hash( result, parent );
-            result = HashCodeUtil.hash( result, styles );
-        }
-        return fHashCode;
+        return getIdentifier().hashCode();
     }
 
     @Override

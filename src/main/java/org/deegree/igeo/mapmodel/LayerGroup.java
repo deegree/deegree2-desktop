@@ -468,16 +468,7 @@ public class LayerGroup implements MapModelEntry {
     
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
-            int result = HashCodeUtil.SEED;
-            result = HashCodeUtil.hash( result, entries );
-            result = HashCodeUtil.hash( result, layerGroups );
-            result = HashCodeUtil.hash( result, layerGroupType );
-            result = HashCodeUtil.hash( result, layers );
-            result = HashCodeUtil.hash( result, owner );
-            result = HashCodeUtil.hash( result, parent );
-        }
-        return fHashCode;
+        return getIdentifier().hashCode();
     }
 
     @Override
