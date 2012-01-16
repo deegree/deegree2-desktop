@@ -74,13 +74,13 @@ public class VersionDialog extends JDialog {
         setResizable( false );
 
         JLabel vlabel = new JLabel( "Version: " + Version.getVersionNumber() );
-        vlabel.setBounds( 200, 240, 120, 20 );
+        vlabel.setBounds( 200, 240, 240, 20 );
         add( vlabel );
         JLabel vdlabel = new JLabel( "Date: " + Version.getVersionDate() );
-        vdlabel.setBounds( 200, 255, 120, 20 );
+        vdlabel.setBounds( 200, 255, 240, 20 );
         add( vdlabel );
         JLabel svnlabel = new JLabel( "SVN revision: " + Version.getSVNRevison() );
-        svnlabel.setBounds( 200, 270, 140, 20 );
+        svnlabel.setBounds( 200, 270, 240, 20 );
         add( svnlabel );
 
         // Icon icon = new ImageIcon( VersionDialog.class.getResource(
