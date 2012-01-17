@@ -11,6 +11,16 @@
     <version>2.6-pre1-SNAPSHOT</version>
     <relativePath />
   </parent>
+  
+  <repositories>
+    <repository>
+      <id>deegree-repo</id>
+      <url>http://artefacts.deegree.org/repo</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <scm>
     <connection>scm:svn:http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</connection>
