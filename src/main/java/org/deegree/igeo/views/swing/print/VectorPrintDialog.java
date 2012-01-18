@@ -419,7 +419,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.BOTH,
                                                                                new Insets( 0, 0, 0, 0 ), 0, 0 ) );
-                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( "layout position" ) );
+                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( "$MD11848" ) );
                         {
                             lb1 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
                             pnLayoutPosition.add( lb1, new GridBagConstraints( 2, 0, 1, 1, 0.0, 0.0,
