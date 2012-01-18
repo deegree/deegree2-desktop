@@ -419,7 +419,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.BOTH,
                                                                                new Insets( 0, 0, 0, 0 ), 0, 0 ) );
-                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( "$MD11848" ) );
+                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),"$MD11848" ) ) );
                         {
                             lb1 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
                             pnLayoutPosition.add( lb1, new GridBagConstraints( 2, 0, 1, 1, 0.0, 0.0,
@@ -656,40 +656,42 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                 GridBagConstraints.HORIZONTAL,
                                                                                 new Insets( 0, 9, 0, 9 ), 0, 0 ) );
 
-                            lbPageHeight = new JLabel( Messages.getMessage( getLocale(), "$MD11830" ) );
-                            pnFormat.add( lbPageHeight, new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0,
-                                                                                GridBagConstraints.CENTER,
-                                                                                GridBagConstraints.HORIZONTAL,
-                                                                                new Insets( 0, 15, 0, 0 ), 0, 0 ) );
-                            tfPageHeight = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getHeight() ), 0,
-                                                                                 6080, 1 ) );
-                            pnFormat.add( tfPageHeight, new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0,
-                                                                                GridBagConstraints.CENTER,
-                                                                                GridBagConstraints.HORIZONTAL,
-                                                                                new Insets( 5, 0, 0, 0 ), 0, 0 ) );
-                            tfPageHeight.setEnabled( false );
-                            lbPageUnitH = new JLabel( Messages.getMessage( getLocale(), "$MD11832" ) );
-                            pnFormat.add( lbPageUnitH, new GridBagConstraints( 2, 1, 1, 1, 0.0, 0.0,
-                                                                               GridBagConstraints.CENTER,
-                                                                               GridBagConstraints.HORIZONTAL,
-                                                                               new Insets( 0, 9, 0, 15 ), 0, 0 ) );
-
+                            // width
                             lbPageWidth = new JLabel( Messages.getMessage( getLocale(), "$MD11831" ) );
-                            pnFormat.add( lbPageWidth, new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0,
+                            pnFormat.add( lbPageWidth, new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0,
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.HORIZONTAL,
                                                                                new Insets( 0, 15, 0, 0 ), 0, 0 ) );
                             tfPageWidth = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getWidth() ), 0,
                                                                                 6080, 1 ) );
-                            pnFormat.add( tfPageWidth, new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0,
+                            pnFormat.add( tfPageWidth, new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0,
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.HORIZONTAL,
                                                                                new Insets( 5, 0, 0, 0 ), 0, 0 ) );
 
                             tfPageWidth.setEnabled( false );
                             lbPageUnitW = new JLabel( Messages.getMessage( getLocale(), "$MD11832" ) );
-                            pnFormat.add( lbPageUnitW, new GridBagConstraints( 2, 2, 1, 1, 0.0, 0.0,
+                            pnFormat.add( lbPageUnitW, new GridBagConstraints( 2, 1, 1, 1, 0.0, 0.0,
                                                                                GridBagConstraints.WEST,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 15 ), 0, 0 ) );
+                            
+                            // height
+                            lbPageHeight = new JLabel( Messages.getMessage( getLocale(), "$MD11830" ) );
+                            pnFormat.add( lbPageHeight, new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 15, 0, 0 ), 0, 0 ) );
+                            tfPageHeight = new JSpinner( new SpinnerNumberModel( inMM( PageSize.A4.getHeight() ), 0,
+                                                                                 6080, 1 ) );
+                            pnFormat.add( tfPageHeight, new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 5, 0, 0, 0 ), 0, 0 ) );
+                            tfPageHeight.setEnabled( false );
+                            lbPageUnitH = new JLabel( Messages.getMessage( getLocale(), "$MD11832" ) );
+                            pnFormat.add( lbPageUnitH, new GridBagConstraints( 2, 2, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
                                                                                GridBagConstraints.HORIZONTAL,
                                                                                new Insets( 0, 9, 0, 15 ), 0, 0 ) );
 
