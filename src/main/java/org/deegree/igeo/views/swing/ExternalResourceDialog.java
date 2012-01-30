@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -97,8 +98,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                 {
                     pnDescription = new JPanel();
                     BorderLayout pnDescriptionLayout = new BorderLayout();
-                    getContentPane().add(
-                                          pnDescription,
+                    getContentPane().add( pnDescription,
                                           new GridBagConstraints( 0, 0, 1, 4, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -117,8 +117,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                     FlowLayout pnButtonsLayout = new FlowLayout();
                     pnButtonsLayout.setAlignment( FlowLayout.LEFT );
                     pnButtons.setLayout( pnButtonsLayout );
-                    getContentPane().add(
-                                          pnButtons,
+                    getContentPane().add( pnButtons,
                                           new GridBagConstraints( 0, 4, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -149,40 +148,35 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                 }
                 {
                     jLabel1 = new JLabel( Messages.get( "$MD11020" ) );
-                    getContentPane().add(
-                                          jLabel1,
+                    getContentPane().add( jLabel1,
                                           new GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 0, 10, 0,
                                                                                                              0 ), 0, 0 ) );
                 }
                 {
                     tfTitle = new JTextField();
-                    getContentPane().add(
-                                          tfTitle,
+                    getContentPane().add( tfTitle,
                                           new GridBagConstraints( 2, 0, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 0, 0, 0,
                                                                                                              10 ), 0, 0 ) );
                 }
                 {
                     jLabel2 = new JLabel( Messages.get( "$MD11021" ) );
-                    getContentPane().add(
-                                          jLabel2,
+                    getContentPane().add( jLabel2,
                                           new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 10, 10, 0,
                                                                                                              0 ), 0, 0 ) );
                 }
                 {
                     tpAbstract = new JTextPane();
-                    getContentPane().add(
-                                          tpAbstract,
+                    getContentPane().add( tpAbstract,
                                           new GridBagConstraints( 2, 1, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 10, 0, 10, 10 ),
                                                                   0, 0 ) );
                 }
                 {
                     jLabel3 = new JLabel( Messages.get( "$MD11022" ) );
-                    getContentPane().add(
-                                          jLabel3,
+                    getContentPane().add( jLabel3,
                                           new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 0, 10, 0,
                                                                                                              0 ), 0, 0 ) );
@@ -193,8 +187,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                                                                                         "image/bmp", "image/jpeg" } );
                     cbType = new JComboBox( cbTypeModel );
                     cbType.setEditable( true );
-                    getContentPane().add(
-                                          cbType,
+                    getContentPane().add( cbType,
                                           new GridBagConstraints( 2, 2, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 0, 0, 0,
                                                                                                              10 ), 0, 0 ) );
@@ -202,8 +195,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                 }
                 {
                     jLabel4 = new JLabel( Messages.get( "$MD11023" ) );
-                    getContentPane().add(
-                                          jLabel4,
+                    getContentPane().add( jLabel4,
                                           new GridBagConstraints( 1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
                                                                   GridBagConstraints.HORIZONTAL, new Insets( 10, 10, 0,
                                                                                                              0 ), 0, 0 ) );
@@ -211,8 +203,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                 {
                     pnURL = new JPanel();
                     GridBagLayout pnURLLayout = new GridBagLayout();
-                    getContentPane().add(
-                                          pnURL,
+                    getContentPane().add( pnURL,
                                           new GridBagConstraints( 2, 3, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -234,16 +225,14 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                         btValidate.addActionListener( new ActionListener() {
 
                             public void actionPerformed( ActionEvent e ) {
-                                try {
-                                    new URL( tfURL.getText() );
+                                if ( isURLValid( tfURL.getText() ) ) {
                                     DialogFactory.openInformationDialog( "application", getParent(),
                                                                          Messages.get( "$MD11025" ),
                                                                          Messages.get( "$MD11026" ) );
-                                } catch ( Exception ex ) {
-                                    ex.printStackTrace();
+                                } else {
                                     DialogFactory.openErrorDialog( "application", getParent(),
                                                                    Messages.get( "$MD11026" ),
-                                                                   Messages.get( "$MD11028" ), ex );
+                                                                   Messages.get( "$MD11028" ), null );
                                 }
                             }
 
@@ -257,6 +246,23 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
             this.setSize( 585, 336 );
         } catch ( Exception e ) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * checks if the passed URL is valid.
+     * 
+     * @param urlToValidate
+     *            the url to validate
+     * @return true if the url is valid, false otherwise
+     * @throws MalformedURLException
+     */
+    boolean isURLValid( String urlToValidate ) {
+        try {
+            new URL( urlToValidate );
+            return true;
+        } catch ( MalformedURLException e ) {
+            return false;
         }
     }
 
