@@ -59,8 +59,6 @@ public class TestExternalResourceDialogTest {
         String validUrl = "http://www.deegree.org";
         Mockito.when( dia.isURLValid( validUrl ) ).thenCallRealMethod();
 
-        dia.isURLValid( validUrl );
-
         boolean isValid = dia.isURLValid( validUrl );
         Assert.assertTrue( isValid );
     }
