@@ -54,7 +54,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
 
     private JPanel pnURL;
 
-    private JTextField tfURL;
+    private JTextField layerResourceURL;
 
     private JComboBox cbType;
 
@@ -213,8 +213,8 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                     pnURLLayout.columnWidths = new int[] { 7 };
                     pnURL.setLayout( pnURLLayout );
                     {
-                        tfURL = new JTextField();
-                        pnURL.add( tfURL,
+                        layerResourceURL = new JTextField();
+                        pnURL.add( layerResourceURL,
                                    new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                            GridBagConstraints.HORIZONTAL, new Insets( 0, 0, 0, 10 ), 0,
                                                            0 ) );
@@ -225,15 +225,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
                         btValidate.addActionListener( new ActionListener() {
 
                             public void actionPerformed( ActionEvent e ) {
-                                if ( isURLValid( tfURL.getText() ) ) {
-                                    DialogFactory.openInformationDialog( "application", getParent(),
-                                                                         Messages.get( "$MD11025" ),
-                                                                         Messages.get( "$MD11026" ) );
-                                } else {
-                                    DialogFactory.openErrorDialog( "application", getParent(),
-                                                                   Messages.get( "$MD11026" ),
-                                                                   Messages.get( "$MD11028" ), null );
-                                }
+                                validateURL( layerResourceURL.getText() );
                             }
 
                         } );
@@ -246,6 +238,16 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
             this.setSize( 585, 336 );
         } catch ( Exception e ) {
             e.printStackTrace();
+        }
+    }
+
+    private void validateURL( String url ) {
+        if ( isURLValid( url ) ) {
+            DialogFactory.openInformationDialog( "application", getParent(), Messages.get( "$MD11025" ),
+                                                 Messages.get( "$MD11026" ) );
+        } else {
+            DialogFactory.openErrorDialog( "application", getParent(), Messages.get( "$MD11026" ),
+                                           Messages.get( "$MD11028" ), null );
         }
     }
 
@@ -279,7 +281,7 @@ public class ExternalResourceDialog extends javax.swing.JDialog {
         values[0] = tfTitle.getText();
         values[1] = tpAbstract.getText();
         values[2] = cbType.getSelectedItem().toString();
-        values[3] = tfURL.getText();
+        values[3] = layerResourceURL.getText();
         values[4] = "go to";
         return values;
     }

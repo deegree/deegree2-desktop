@@ -43,45 +43,67 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * TODO add class documentation here
+ * Test of {@link ExternalResourceDialog#isURLValid()}
  * 
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  * @author last edited by: $Author: lyn $
  * 
  * @version $Revision: $, $Date: $
  */
-public class TestExternalResourceDialogTest {
+public class ExternalResourceDialogTest {
 
     @Test
-    public void testCheckURLValidityOfValidURL()
+    public void testURLValiditionOfValidURL()
                             throws MalformedURLException {
-        ExternalResourceDialog dia = Mockito.mock( ExternalResourceDialog.class );
+        // arrange / buld
         String validUrl = "http://www.deegree.org";
-        Mockito.when( dia.isURLValid( validUrl ) ).thenCallRealMethod();
-
-        boolean isValid = dia.isURLValid( validUrl );
+        ExternalResourceDialog dia = arrangeExternalResource( validUrl );
+        // act / operate
+        boolean isValid = acrUrlValidation( validUrl, dia );
+        // assert / check
         Assert.assertTrue( isValid );
     }
 
     @Test
-    public void testCheckURLValidityOfInvalidURL()
+    public void testURLValiditionOfInvalidURLWithSeperator()
                             throws MalformedURLException {
-        ExternalResourceDialog dia = Mockito.mock( ExternalResourceDialog.class );
         String invalidUrl = "http: deegree";
-        Mockito.when( dia.isURLValid( invalidUrl ) ).thenCallRealMethod();
+        ExternalResourceDialog dia = arrangeExternalResource( invalidUrl );
 
-        boolean isValid = dia.isURLValid( invalidUrl );
+        boolean isValid = acrUrlValidation( invalidUrl, dia );
+
         Assert.assertFalse( isValid );
     }
 
     @Test
-    public void testCheckURLValidityOfInvalidURL2()
+    public void testURLValiditionOfInvalidURLWithoutSeperator()
                             throws MalformedURLException {
-        ExternalResourceDialog dia = Mockito.mock( ExternalResourceDialog.class );
         String invalidUrl = "http deegree";
-        Mockito.when( dia.isURLValid( invalidUrl ) ).thenCallRealMethod();
+        ExternalResourceDialog dia = arrangeExternalResource( invalidUrl );
 
-        boolean isValid = dia.isURLValid( invalidUrl );
+        boolean isValid = acrUrlValidation( invalidUrl, dia );
+
         Assert.assertFalse( isValid );
+    }
+
+    @Test
+    public void testURLValiditionOfNullUrl()
+                            throws MalformedURLException {
+        String invalidUrl = null;
+        ExternalResourceDialog dia = arrangeExternalResource( invalidUrl );
+
+        boolean isValid = acrUrlValidation( invalidUrl, dia );
+
+        Assert.assertFalse( isValid );
+    }
+
+    private ExternalResourceDialog arrangeExternalResource( String urlTOValidate ) {
+        ExternalResourceDialog dia = Mockito.mock( ExternalResourceDialog.class );
+        Mockito.when( dia.isURLValid( urlTOValidate ) ).thenCallRealMethod();
+        return dia;
+    }
+
+    private boolean acrUrlValidation( String urlToValidate, ExternalResourceDialog externalResourceDialog ) {
+        return externalResourceDialog.isURLValid( urlToValidate );
     }
 }
