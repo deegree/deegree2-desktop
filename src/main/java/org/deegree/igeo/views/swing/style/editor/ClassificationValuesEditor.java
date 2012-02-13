@@ -72,20 +72,27 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
 
     /**
      * @param dummy
-     *            the dummy value is required to have access to a Intervallable and methods to
-     *            create a new intervallable out of a string or get the invalid intervallable
-     *            message after editing a value
+     *            the dummy value is required to have access to a Intervallable and methods to create a new
+     *            intervallable out of a string or get the invalid intervallable message after editing a value
      */
     public ClassificationValuesEditor( Intervallable<U> dummy ) {
         super( new JTextField() );
         this.dummy = dummy;
     }
-
+    
     @Override
     public boolean stopCellEditing() {
         String text = ( (JTextField) getComponent() ).getText();
         try {
-            valueRange.setMin( dummy.getAsIntervallable( text ) );
+            Intervallable<U> value = dummy.getAsIntervallable( text );
+            // check if value has changed
+            if ( !valueRange.getMin().equals( value ) ) {
+                valueRange.setMin( value );
+            } else {
+                // otherwise cancel cell editing
+                fireEditingCanceled();
+                return false;
+            }
         } catch ( Exception e ) {
             String msg = dummy.getInvalidMessage( text );
             JOptionPane.showMessageDialog( getComponent(), msg, Messages.getMessage( Locale.getDefault(), "$MD10751" ),
@@ -126,6 +133,6 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
      */
     public void setValueRange( ValueRange<U> valueRange ) {
         this.valueRange = valueRange;
-    }
+    }    
 
 }
