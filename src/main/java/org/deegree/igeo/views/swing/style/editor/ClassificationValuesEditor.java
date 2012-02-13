@@ -87,6 +87,10 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
             Intervallable<U> value = dummy.getAsIntervallable( text );
             // check if value has changed
             if ( !valueRange.getMin().equals( value ) ) {
+                // keep classification type 'unique' (expressed by equal min/max values) 
+                if ( valueRange.getMin().equals( valueRange.getMax() ) ) {
+                    valueRange.setMax( value );
+                }
                 valueRange.setMin( value );
             } else {
                 // otherwise cancel cell editing

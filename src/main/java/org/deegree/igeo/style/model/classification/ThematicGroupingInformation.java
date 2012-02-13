@@ -51,7 +51,22 @@ import java.util.List;
 public class ThematicGroupingInformation<U extends Comparable<U>> {
 
     public static enum GROUPINGTYPE {
-        UNIQUE, EQUAL, QUANTILE, MANUAL, QUALITY
+
+        UNIQUE, EQUAL( true ), QUANTILE( true ), MANUAL( true ), QUALITY( true );
+
+        private boolean changesAffectsOtherRows = false;
+
+        private GROUPINGTYPE() {
+        }
+
+        private GROUPINGTYPE( boolean changesAffectsOtherRows ) {
+            this.changesAffectsOtherRows = changesAffectsOtherRows;
+        }
+
+        public boolean changesAffectsOtherRows() {
+            return changesAffectsOtherRows;
+        }
+
     };
 
     private GROUPINGTYPE type;

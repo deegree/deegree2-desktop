@@ -63,6 +63,7 @@ import org.deegree.igeo.style.model.Symbol;
 import org.deegree.igeo.style.model.classification.ClassificationTableRow;
 import org.deegree.igeo.style.model.classification.ClassificationTableRowComparator;
 import org.deegree.igeo.style.model.classification.Column;
+import org.deegree.igeo.style.model.classification.Column.COLUMNTYPE;
 import org.deegree.igeo.style.model.classification.DoubleRange;
 import org.deegree.igeo.style.model.classification.IntegerRamp;
 import org.deegree.igeo.style.model.classification.IntegerRange;
@@ -70,8 +71,8 @@ import org.deegree.igeo.style.model.classification.Intervallable;
 import org.deegree.igeo.style.model.classification.SingleDouble;
 import org.deegree.igeo.style.model.classification.SingleInteger;
 import org.deegree.igeo.style.model.classification.ThematicGrouping;
+import org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE;
 import org.deegree.igeo.style.model.classification.ValueRange;
-import org.deegree.igeo.style.model.classification.Column.COLUMNTYPE;
 import org.deegree.igeo.views.swing.style.StyleDialog;
 import org.deegree.igeo.views.swing.style.component.classification.AbstractClassificationPanel.SYMBOLIZERTYPE;
 import org.deegree.igeo.views.swing.style.editor.ClassificationValuesEditor;
@@ -101,6 +102,8 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
     private List<Column> columns = new ArrayList<Column>();
 
     private StyleDialog styleDialog;
+
+    private GROUPINGTYPE baseType;
 
     /**
      * @param thematicGrouping
@@ -183,8 +186,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
                             if ( oldRows.size() > 0 && i < oldRows.size() ) {
                                 rows.get( i ).setFillTransparency( oldRows.get( i ).getFillTransparency() );
                             } else if ( oldRows.size() > 0 ) {
-                                rows.get( i ).setFillTransparency(
-                                                                   oldRows.get( oldRows.size() - 1 ).getFillTransparency() );
+                                rows.get( i ).setFillTransparency( oldRows.get( oldRows.size() - 1 ).getFillTransparency() );
                             }
                         }
                     } else {
@@ -225,8 +227,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
                             if ( oldRows.size() > 0 && i < oldRows.size() ) {
                                 rows.get( i ).setLineTransparency( oldRows.get( i ).getLineTransparency() );
                             } else if ( oldRows.size() > 0 ) {
-                                rows.get( i ).setLineTransparency(
-                                                                   oldRows.get( oldRows.size() - 1 ).getLineTransparency() );
+                                rows.get( i ).setLineTransparency( oldRows.get( oldRows.size() - 1 ).getLineTransparency() );
                             }
                         }
                     } else {
@@ -339,10 +340,8 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
                                 rows.get( i ).setValue( COLUMNTYPE.FONTCOLOR,
                                                         oldRows.get( i ).getValue( COLUMNTYPE.FONTCOLOR ) );
                             } else if ( oldRows.size() > 0 ) {
-                                rows.get( i ).setValue(
-                                                        COLUMNTYPE.FONTCOLOR,
-                                                        oldRows.get( oldRows.size() - 1 ).getValue(
-                                                                                                    COLUMNTYPE.FONTCOLOR ) );
+                                rows.get( i ).setValue( COLUMNTYPE.FONTCOLOR,
+                                                        oldRows.get( oldRows.size() - 1 ).getValue( COLUMNTYPE.FONTCOLOR ) );
                             }
                         }
                     } else if ( fontColor instanceof Fill ) {
@@ -399,10 +398,8 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
                                 rows.get( i ).setValue( COLUMNTYPE.FONTTRANSPARENCY,
                                                         oldRows.get( i ).getValue( COLUMNTYPE.FONTTRANSPARENCY ) );
                             } else if ( oldRows.size() > 0 ) {
-                                rows.get( i ).setValue(
-                                                        COLUMNTYPE.FONTTRANSPARENCY,
-                                                        oldRows.get( oldRows.size() - 1 ).getValue(
-                                                                                                    COLUMNTYPE.FONTTRANSPARENCY ) );
+                                rows.get( i ).setValue( COLUMNTYPE.FONTTRANSPARENCY,
+                                                        oldRows.get( oldRows.size() - 1 ).getValue( COLUMNTYPE.FONTTRANSPARENCY ) );
                             }
                         }
                     } else if ( fontTransparency instanceof IntegerRamp ) {
@@ -451,10 +448,8 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
                                 rows.get( i ).setValue( COLUMNTYPE.HALOCOLOR,
                                                         oldRows.get( i ).getValue( COLUMNTYPE.HALOCOLOR ) );
                             } else if ( oldRows.size() > 0 ) {
-                                rows.get( i ).setValue(
-                                                        COLUMNTYPE.HALOCOLOR,
-                                                        oldRows.get( oldRows.size() - 1 ).getValue(
-                                                                                                    COLUMNTYPE.HALOCOLOR ) );
+                                rows.get( i ).setValue( COLUMNTYPE.HALOCOLOR,
+                                                        oldRows.get( oldRows.size() - 1 ).getValue( COLUMNTYPE.HALOCOLOR ) );
                             }
                         }
                     } else if ( haloColor instanceof Fill ) {
@@ -527,8 +522,9 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
      * @param set
      *            the rows of the classification
      */
-    public void setClassification( List<ClassificationTableRow<U>> rows ) {
+    public void setClassification( List<ClassificationTableRow<U>> rows, GROUPINGTYPE baseType ) {
         this.rows = rows;
+        this.baseType = baseType;
         fireTableDataChanged();
     }
 
@@ -865,7 +861,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
 
     @SuppressWarnings("unchecked")
     public void editingStopped( ChangeEvent e ) {
-        if ( e.getSource() instanceof ClassificationValuesEditor<?> ) {
+        if ( e.getSource() instanceof ClassificationValuesEditor<?> && baseType.changesAffectsOtherRows() ) {
             // update all classes!
             ClassificationValuesEditor<U> editor = (ClassificationValuesEditor<U>) e.getSource();
             ValueRange<U> vr = editor.getValueRange();
@@ -898,8 +894,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
             // delete row, when min and max value are the same and classification does not support
             // same class borders
             if ( !thematicGrouping.hasSameClassBorders()
-                 && ( ( vr.getMin() != null && vr.getMax() != null && vr.getMin().getValue().equals(
-                                                                                                     vr.getMax().getValue() ) ) )
+                 && ( ( vr.getMin() != null && vr.getMax() != null && vr.getMin().getValue().equals( vr.getMax().getValue() ) ) )
                  || ( vr.getMin() == null && vr.getMax() == null ) && indexOfEditedRow > -1 ) {
                 rows.remove( indexOfEditedRow );
             } else if ( thematicGrouping.hasSameClassBorders() ) {

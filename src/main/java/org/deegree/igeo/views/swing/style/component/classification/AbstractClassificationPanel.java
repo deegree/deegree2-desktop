@@ -60,6 +60,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -99,6 +100,9 @@ import org.deegree.igeo.style.model.classification.Column;
 import org.deegree.igeo.style.model.classification.EqualIntervalClassification;
 import org.deegree.igeo.style.model.classification.IllegalClassificationException;
 import org.deegree.igeo.style.model.classification.Intervallable;
+import org.deegree.igeo.style.model.classification.Intervallables.DateIntervallable;
+import org.deegree.igeo.style.model.classification.Intervallables.DoubleIntervallable;
+import org.deegree.igeo.style.model.classification.Intervallables.StringIntervallable;
 import org.deegree.igeo.style.model.classification.ManualClassification;
 import org.deegree.igeo.style.model.classification.QualityClassification;
 import org.deegree.igeo.style.model.classification.QuantileClassification;
@@ -106,9 +110,6 @@ import org.deegree.igeo.style.model.classification.ThematicGrouping;
 import org.deegree.igeo.style.model.classification.ThematicGroupingInformation;
 import org.deegree.igeo.style.model.classification.UniqueValueGrouping;
 import org.deegree.igeo.style.model.classification.ValueRange;
-import org.deegree.igeo.style.model.classification.Intervallables.DateIntervallable;
-import org.deegree.igeo.style.model.classification.Intervallables.DoubleIntervallable;
-import org.deegree.igeo.style.model.classification.Intervallables.StringIntervallable;
 import org.deegree.igeo.views.swing.addlayer.QualifiedNameRenderer;
 import org.deegree.igeo.views.swing.style.SingleItem;
 import org.deegree.igeo.views.swing.style.SingleItemDisableComboBox;
@@ -163,7 +164,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
 
     private static final int QUALITY = 3;
 
-    private static final SingleItem manualClassification = new SingleItem( get( "$MD10735" ), true );
+    // private static final SingleItem manualClassification = new SingleItem( get( "$MD10735" ), true );
 
     public enum SYMBOLIZERTYPE {
         POLYGON, POINT, LINE, LABEL
@@ -179,13 +180,13 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
 
     private SingleItemDisableComboBox classificationTypeCB;
 
+    private JLabel isManual = new JLabel( get( "$MD10735" ) );
+
     private JSpinner numberOfClassesSpinner;
 
     private JTable classesTable;
 
     private boolean isUpdating = false;
-
-    private boolean isTableChanging = false;
 
     private boolean isInitialising = true;
 
@@ -205,7 +206,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
      * 
      * @param assignedVisualPropPanel
      */
-    public AbstractClassificationPanel( VisualPropertyPanel assignedVisualPropPanel) {
+    public AbstractClassificationPanel( VisualPropertyPanel assignedVisualPropPanel ) {
         this.assignedVisualPropPanel = assignedVisualPropPanel;
         datePattern = assignedVisualPropPanel.getOwner().getSettings().getFormatsOptions().getPattern( "datePattern" );
         decimalPattern = assignedVisualPropPanel.getOwner().getSettings().getFormatsOptions().getPattern( "decimalPattern" );
@@ -299,7 +300,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             ClassificationTableModel<Double> tableModelDouble = new ClassificationTableModel<Double>(
                                                                                                       getColumns(),
                                                                                                       assignedVisualPropPanel.getOwner() );
-            tableModelDouble.setClassification( tgiDouble.getRows() );
+            tableModelDouble.setClassification( tgiDouble.getRows(), tgiDouble.getType() );
             tableModelDouble.setThematicGrouping( groupingDouble );
             configureClassesTable( tableModelDouble,
                                    groupingDouble.getAttributeHeader(),
@@ -347,7 +348,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             ClassificationTableModel<Date> tableModelDate = new ClassificationTableModel<Date>(
                                                                                                 getColumns(),
                                                                                                 assignedVisualPropPanel.getOwner() );
-            tableModelDate.setClassification( tgiDate.getRows() );
+            tableModelDate.setClassification( tgiDate.getRows(), tgiDate.getType() );
             tableModelDate.setThematicGrouping( groupingDate );
             configureClassesTable( tableModelDate,
                                    groupingDate.getAttributeHeader(),
@@ -388,7 +389,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             ClassificationTableModel<String> tableModelString = new ClassificationTableModel<String>(
                                                                                                       getColumns(),
                                                                                                       assignedVisualPropPanel.getOwner() );
-            tableModelString.setClassification( tgiString.getRows() );
+            tableModelString.setClassification( tgiString.getRows(), tgiString.getType() );
             tableModelString.setThematicGrouping( groupingString );
             configureClassesTable( tableModelString, groupingString.getAttributeHeader(),
                                    new ClassificationValuesRenderer<String>(),
@@ -457,7 +458,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         numberOfClassesSpinner = new JSpinner( noClassesModel );
         numberOfClassesSpinner.addChangeListener( new javax.swing.event.ChangeListener() {
             public void stateChanged( ChangeEvent e ) {
-                if ( classificationTypeCB.getSelectedItem() != manualClassification ) {
+                if ( !isManual.isVisible() ) {
                     model.getThematicGrouping().setNoOfClasses( (Integer) numberOfClassesSpinner.getValue() );
                     model.update( VALUE, true );
                 }
@@ -476,6 +477,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         } );
 
         classificationTypeCB.setSelectedIndex( UNIQUEVALUE );
+        isManual.setVisible( false );
 
         addRowBt = new JButton( get( "$MD10739" ), IconRegistry.getIcon( "textfield_add.png" ) );
         addRowBt.addActionListener( this );
@@ -560,7 +562,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         builder.addLabel( get( "$MD10720" ), cc.xy( 2, 1 ) );
 
         builder.addLabel( get( "$MD10721" ), cc.xy( 2, 2 ) );
-        builder.add( classificationTypeCB, cc.xyw( 3, 2, 3 ) );
+        builder.add( classificationTypeCB, cc.xy( 3, 2 ) );
+        builder.add( isManual, cc.xy( 5, 2 ) );
         builder.addLabel( get( "$MD10722" ), cc.xy( 2, 3 ) );
         builder.add( propertyCB, cc.xy( 3, 3 ) );
         builder.add( openHistogramBt, cc.xy( 5, 3 ) );
@@ -874,17 +877,16 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
     }
 
     private void addManuellClassificationItem() {
-        if ( ( classificationTypeCB.getItemCount() == 0 )
-             || ( classificationTypeCB.getItemCount() > 0 && classificationTypeCB.getItemAt( 0 ) != manualClassification ) ) {
-            classificationTypeCB.insertItemAt( manualClassification, 0 );
-            classificationTypeCB.setSelectedItem( manualClassification );
+        if ( classificationTypeCB.getSelectedIndex() != UNIQUEVALUE
+             && ( ( classificationTypeCB.getItemCount() == 0 ) || !isManual.isVisible() ) ) {
+            isManual.setVisible( true );
             numberOfClassesSpinner.setEnabled( false );
             propertyCB.setEnabled( false );
         }
     }
 
     private void removeManuellClassificationItem() {
-        classificationTypeCB.removeItem( manualClassification );
+        isManual.setVisible( false );
         numberOfClassesSpinner.setEnabled( true );
         propertyCB.setEnabled( true );
     }
@@ -909,14 +911,11 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
      */
     public void actionPerformed( ActionEvent e ) {
         if ( e.getSource() == classificationTypeCB ) {
-            if ( !isTableChanging ) {
-                if ( classificationTypeCB.getSelectedItem() != manualClassification ) {
-                    removeManuellClassificationItem();
-                }
-                updateAfterClassificationChanged();
-                setClassificationActive();
+            if ( isManual.isVisible() ) {
+                removeManuellClassificationItem();
             }
-            isTableChanging = false;
+            updateAfterClassificationChanged();
+            setClassificationActive();
         } else if ( e.getSource() == propertyCB ) {
             if ( this.propertyCB.getSelectedItem() != null && !isUpdating ) {
                 updateTable();
@@ -953,9 +952,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
     public void tableChanged( TableModelEvent e ) {
         // mark as manuell classification, if user changed a class limit in the table or
         // inserted/removed a row
-        if ( ( model.getColumnIndex( VALUE ) == e.getColumn() && classificationTypeCB.getItemCount() > 0 && classificationTypeCB.getItemAt( 0 ) != manualClassification )
+        if ( ( model.getColumnIndex( VALUE ) == e.getColumn() && !isManual.isVisible() )
              || ( e.getType() == TableModelEvent.INSERT ) || ( e.getType() == TableModelEvent.DELETE ) ) {
-            isTableChanging = true;
             addManuellClassificationItem();
         }
     }
