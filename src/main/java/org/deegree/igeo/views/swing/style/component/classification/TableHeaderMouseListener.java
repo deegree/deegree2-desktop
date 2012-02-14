@@ -38,7 +38,18 @@
 package org.deegree.igeo.views.swing.style.component.classification;
 
 import static org.deegree.igeo.i18n.Messages.get;
-import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.*;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.COUNT;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FILLCOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FILLTRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTTRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINECAP;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINECOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINESTYLE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINETRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINEWIDTH;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.SIZE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.SYMBOL;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.VALUE;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,8 +72,8 @@ import org.deegree.igeo.style.model.DashArray;
 import org.deegree.igeo.style.model.Fill;
 import org.deegree.igeo.style.model.SldProperty;
 import org.deegree.igeo.style.model.SldValues;
-import org.deegree.igeo.style.model.classification.IntegerRange;
 import org.deegree.igeo.style.model.classification.Column.COLUMNTYPE;
+import org.deegree.igeo.style.model.classification.IntegerRange;
 import org.deegree.igeo.views.swing.style.SymbolPanel;
 import org.deegree.igeo.views.swing.style.VisualPropertyPanel;
 import org.deegree.igeo.views.swing.style.component.classification.edit.AnchorPointClassificationPanel;
@@ -284,7 +295,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                             get( "$MD10729" ) );
 
         PanelDialog fillColorDlg = new PanelDialog( fillColorFrame, true );
-        fillColorDlg.setLocation( classesTable.getLocationOnScreen() );
+        fillColorDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fillColorDlg.setVisible( true );
         if ( fillColorDlg.clickedOk ) {
             getModel().getThematicGrouping().setFillColor( fillColorFrame.getValue() );
@@ -301,7 +312,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                 SldValues.getDefaultHaloColor(), true,
                                                                                 propertyNames );
         PanelDialog haloColorDlg = new PanelDialog( haloColorFrame, true );
-        haloColorDlg.setLocation( classesTable.getLocationOnScreen() );
+        haloColorDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         haloColorDlg.setVisible( true );
         if ( haloColorDlg.clickedOk ) {
             getModel().getThematicGrouping().setHaloColor( haloColorFrame.getValue() );
@@ -322,7 +333,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                           propertyNames );
 
         PanelDialog haloColorDlg = new PanelDialog( haloColorFrame, true );
-        haloColorDlg.setLocation( classesTable.getLocationOnScreen() );
+        haloColorDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         haloColorDlg.setVisible( true );
         if ( haloColorDlg.clickedOk ) {
             getModel().getThematicGrouping().setHaloRadius( haloColorFrame.getValue() );
@@ -343,7 +354,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                               propertyNames );
 
         PanelDialog anchorPointDlg = new PanelDialog( anchorPointFrame, true );
-        anchorPointDlg.setLocation( classesTable.getLocationOnScreen() );
+        anchorPointDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         anchorPointDlg.setVisible( true );
         if ( anchorPointDlg.clickedOk ) {
             getModel().getThematicGrouping().setAnchorPoint( anchorPointFrame.getValue() );
@@ -363,7 +374,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                      get( "$MD11708" ), propertyNames );
 
         PanelDialog rotationDlg = new PanelDialog( rotationFrame, true );
-        rotationDlg.setLocation( classesTable.getLocationOnScreen() );
+        rotationDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         rotationDlg.setVisible( true );
         if ( rotationDlg.clickedOk ) {
             getModel().getThematicGrouping().setRotation( rotationFrame.getValue() );
@@ -384,7 +395,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                                  propertyNames );
 
         PanelDialog displacementDlg = new PanelDialog( displacementFrame, true );
-        displacementDlg.setLocation( classesTable.getLocationOnScreen() );
+        displacementDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         displacementDlg.setVisible( true );
         if ( displacementDlg.clickedOk ) {
             getModel().getThematicGrouping().setDisplacement( displacementFrame.getValue() );
@@ -400,7 +411,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                 SldValues.getDefaultLineColor(), false,
                                                                                 null );
         PanelDialog lineColorDlg = new PanelDialog( lineColorPanel, true );
-        lineColorDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineColorDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineColorDlg.setVisible( true );
         if ( lineColorDlg.clickedOk && lineColorPanel.getValue() instanceof Fill ) {
             getModel().getThematicGrouping().setLineColor( (Fill) lineColorPanel.getValue() );
@@ -416,7 +427,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                                      opAsInt, 0, 100,
                                                                                                      1, false, null );
         PanelDialog fillTransparencyDlg = new PanelDialog( fillTransparencyPanel, true );
-        fillTransparencyDlg.setLocation( classesTable.getLocationOnScreen() );
+        fillTransparencyDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fillTransparencyDlg.setVisible( true );
         if ( fillTransparencyDlg.clickedOk && fillTransparencyPanel.getValue() instanceof IntegerRange ) {
             getModel().getThematicGrouping().setFillTransparency( (IntegerRange) fillTransparencyPanel.getValue() );
@@ -433,7 +444,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                 SldValues.getDefaultLineColor(), true,
                                                                                 propertyNames );
         PanelDialog fontColorDlg = new PanelDialog( fontColorPanel, true );
-        fontColorDlg.setLocation( classesTable.getLocationOnScreen() );
+        fontColorDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fontColorDlg.setVisible( true );
         if ( fontColorDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontColor( fontColorPanel.getValue() );
@@ -448,7 +459,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                               get( "$MD11676" ),
                                                                                               propertyNames );
         PanelDialog fontFamilyDlg = new PanelDialog( qualifiedNamePanel, true );
-        fontFamilyDlg.setLocation( classesTable.getLocationOnScreen() );
+        fontFamilyDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fontFamilyDlg.setVisible( true );
         if ( fontFamilyDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontFamily( qualifiedNamePanel.getValue() );
@@ -464,7 +475,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                               get( "$MD11686" ),
                                                                                               propertyNames );
         PanelDialog fontWeightDlg = new PanelDialog( qualifiedNamePanel, true );
-        fontWeightDlg.setLocation( classesTable.getLocationOnScreen() );
+        fontWeightDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fontWeightDlg.setVisible( true );
         if ( fontWeightDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontWeight( qualifiedNamePanel.getValue() );
@@ -480,7 +491,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                             get( "$MD11685" ),
                                                                                             propertyNames );
         PanelDialog fontStyleDlg = new PanelDialog( qualifiedNamePanel, true );
-        fontStyleDlg.setLocation( classesTable.getLocationOnScreen() );
+        fontStyleDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fontStyleDlg.setVisible( true );
         if ( fontStyleDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontStyle( qualifiedNamePanel.getValue() );
@@ -499,7 +510,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
         FontSizeClassificationPanel qualifiedNamePanel = new FontSizeClassificationPanel( fontSize, get( "$MD11687" ),
                                                                                           propertyNames );
         PanelDialog fontsizeDlg = new PanelDialog( qualifiedNamePanel, true );
-        fontsizeDlg.setLocation( classesTable.getLocationOnScreen() );
+        fontsizeDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         fontsizeDlg.setVisible( true );
         if ( fontsizeDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontSize( qualifiedNamePanel.getValue() );
@@ -523,7 +534,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                                      propertyNames );
 
         PanelDialog lineTransparencyDlg = new PanelDialog( fontTransparencyPanel, true );
-        lineTransparencyDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineTransparencyDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineTransparencyDlg.setVisible( true );
         if ( lineTransparencyDlg.clickedOk ) {
             getModel().getThematicGrouping().setFontTransparency( fontTransparencyPanel.getValue() );
@@ -540,7 +551,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                                      1, false, null );
 
         PanelDialog lineTransparencyDlg = new PanelDialog( lineTransparencyPanel, true );
-        lineTransparencyDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineTransparencyDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineTransparencyDlg.setVisible( true );
         if ( lineTransparencyDlg.clickedOk && lineTransparencyPanel.getValue() instanceof IntegerRange ) {
             getModel().getThematicGrouping().setLineTransparency( (IntegerRange) lineTransparencyPanel.getValue() );
@@ -556,7 +567,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                             0, 100, 0.5 );
 
         PanelDialog lineWidthDlg = new PanelDialog( lineWidthPanel, true );
-        lineWidthDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineWidthDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineWidthDlg.setVisible( true );
         if ( lineWidthDlg.clickedOk ) {
             getModel().getThematicGrouping().setLineWidth( lineWidthPanel.getValue() );
@@ -582,7 +593,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
         p.add( lineStyleCB );
         p.setBorder( BorderFactory.createEmptyBorder( 20, 20, 18, 20 ) );
         PanelDialog lineStyleDlg = new PanelDialog( p, true );
-        lineStyleDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineStyleDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineStyleDlg.setVisible( true );
         if ( lineStyleDlg.clickedOk ) {
             getModel().getThematicGrouping().setLineStyle( (DashArray) lineStyleCB.getSelectedItem() );
@@ -598,7 +609,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                                                                                        Integer.MAX_VALUE, 1.0 );
 
         PanelDialog sizeDlg = new PanelDialog( sizePanel, true );
-        sizeDlg.setLocation( classesTable.getLocationOnScreen() );
+        sizeDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         sizeDlg.setVisible( true );
         if ( sizeDlg.clickedOk ) {
             getModel().getThematicGrouping().setSize( sizePanel.getValue() );
@@ -617,7 +628,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
         };
         symbolPanel.setBorder( BorderFactory.createEmptyBorder( 5, 5, 5, 5 ) );
         PanelDialog symbolDlg = new PanelDialog( symbolPanel, true );
-        symbolDlg.setLocation( classesTable.getLocationOnScreen() );
+        symbolDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         symbolDlg.setVisible( true );
         if ( symbolDlg.clickedOk ) {
             getModel().getThematicGrouping().setSymbol( symbolPanel.getValue() );
@@ -644,7 +655,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
         lineCapPanel.add( lineCapCB );
         lineCapPanel.setBorder( BorderFactory.createEmptyBorder( 20, 20, 18, 20 ) );
         PanelDialog lineCapDlg = new PanelDialog( lineCapPanel, true );
-        lineCapDlg.setLocation( classesTable.getLocationOnScreen() );
+        lineCapDlg.setLocation( classesTable.getTableHeader().getLocationOnScreen() );
         lineCapDlg.setVisible( true );
         if ( lineCapDlg.clickedOk ) {
             getModel().getThematicGrouping().setLineCap( (SldProperty) lineCapCB.getSelectedItem() );
@@ -689,8 +700,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                 openFillTransparencyDlg();
                 break;
             case RESET:
-                getModel().getThematicGrouping().setFillTransparency(
-                                                                      getModel().getThematicGrouping().getFillTransparency() );
+                getModel().getThematicGrouping().setFillTransparency( getModel().getThematicGrouping().getFillTransparency() );
                 getModel().update( FILLTRANSPARENCY, true );
                 break;
             }
@@ -703,8 +713,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                 openLineTransparencyDlg();
                 break;
             case RESET:
-                getModel().getThematicGrouping().setLineTransparency(
-                                                                      getModel().getThematicGrouping().getLineTransparency() );
+                getModel().getThematicGrouping().setLineTransparency( getModel().getThematicGrouping().getLineTransparency() );
                 getModel().update( LINETRANSPARENCY, true );
                 break;
             }
@@ -830,8 +839,7 @@ public class TableHeaderMouseListener extends MouseAdapter implements ItemPerfor
                 openFontTransparencyDlg();
                 break;
             case RESET:
-                getModel().getThematicGrouping().setFontTransparency(
-                                                                      getModel().getThematicGrouping().getFontTransparency() );
+                getModel().getThematicGrouping().setFontTransparency( getModel().getThematicGrouping().getFontTransparency() );
                 getModel().update( FONTTRANSPARENCY, true );
                 break;
             }

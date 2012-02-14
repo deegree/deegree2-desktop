@@ -51,8 +51,8 @@ import org.deegree.igeo.style.model.classification.ClassificationTableRow;
 import org.deegree.igeo.views.swing.util.panels.PanelDialog;
 
 /**
- * <code>TableMouseListener</code> mouse listener to listen on mouse events on the classification
- * table; shows a context menu to edit the label of the row.
+ * <code>TableMouseListener</code> mouse listener to listen on mouse events on the classification table; shows a context
+ * menu to edit the label of the row.
  * 
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
@@ -120,7 +120,7 @@ public class TableMouseListener extends MouseAdapter {
                 editField.setText( row.getLabel() );
                 PanelDialog editLabelDlg = new PanelDialog( editField, true );
                 editLabelDlg.setTitle( Messages.get( "$MD11072" ) );
-                editLabelDlg.setLocation( table.getLocationOnScreen() );
+                editLabelDlg.setLocation( table.getTableHeader().getLocationOnScreen() );
                 editLabelDlg.setVisible( true );
                 if ( editLabelDlg.clickedOk ) {
                     row.setLabel( editField.getText() );
