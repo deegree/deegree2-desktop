@@ -58,7 +58,7 @@ public class SingleItem {
      */
     public SingleItem( Object item, boolean enabled ) {
         this.item = item;
-        this.enabled = enabled;
+        this.setEnabled( enabled );
     }
 
     /**
@@ -73,6 +73,13 @@ public class SingleItem {
      */
     public boolean isEnabled() {
         return enabled;
+    }
+
+    /**
+     * @param enabled
+     */
+    public void setEnabled( boolean enabled ) {
+        this.enabled = enabled;
     }
 
 }

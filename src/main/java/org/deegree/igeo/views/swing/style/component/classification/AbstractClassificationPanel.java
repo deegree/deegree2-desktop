@@ -41,6 +41,10 @@ import static org.deegree.igeo.i18n.Messages.get;
 import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FILLCOLOR;
 import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINESTYLE;
 import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.VALUE;
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.EQUAL;
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.QUALITY;
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.QUANTILE;
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.UNIQUE;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -108,6 +112,7 @@ import org.deegree.igeo.style.model.classification.QualityClassification;
 import org.deegree.igeo.style.model.classification.QuantileClassification;
 import org.deegree.igeo.style.model.classification.ThematicGrouping;
 import org.deegree.igeo.style.model.classification.ThematicGroupingInformation;
+import org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE;
 import org.deegree.igeo.style.model.classification.UniqueValueGrouping;
 import org.deegree.igeo.style.model.classification.ValueRange;
 import org.deegree.igeo.views.swing.addlayer.QualifiedNameRenderer;
@@ -156,15 +161,15 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
 
     private static final ILogger LOG = LoggerFactory.getLogger( AbstractClassificationPanel.class );
 
-    private static final int UNIQUEVALUE = 0;
+    private SingleItem unknownClassification;
 
-    private static final int EQUALINTERVAL = 1;
+    private SingleItem uniqueValue;
 
-    private static final int QUANTILE = 2;
+    private SingleItem equalInterval;
 
-    private static final int QUALITY = 3;
+    private SingleItem quantile;
 
-    // private static final SingleItem manualClassification = new SingleItem( get( "$MD10735" ), true );
+    private SingleItem quality;
 
     public enum SYMBOLIZERTYPE {
         POLYGON, POINT, LINE, LABEL
@@ -271,29 +276,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                                                                                                               decimalPattern,
                                                                                                               assignedVisualPropPanel.getOwner().getSettings() );
             ThematicGrouping<Double> groupingDouble;
-            switch ( tgiDouble.getType() ) {
-            case UNIQUE:
-                groupingDouble = new UniqueValueGrouping<Double>();
-                classificationTypeCB.setSelectedIndex( UNIQUEVALUE );
-                numberOfClassesSpinner.setEnabled( false );
-                break;
-            case QUANTILE:
-                groupingDouble = new QuantileClassification<Double>();
-                classificationTypeCB.setSelectedIndex( QUANTILE );
-                break;
-            case EQUAL:
-                groupingDouble = new EqualIntervalClassification<Double>();
-                classificationTypeCB.setSelectedIndex( EQUALINTERVAL );
-                break;
-            case QUALITY:
-                groupingDouble = new QualityClassification<Double>();
-                classificationTypeCB.setSelectedIndex( QUALITY );
-                break;
-            default:
-                groupingDouble = new ManualClassification<Double>();
-                addManuellClassificationItem();
-                break;
-            }
+            groupingDouble = getGrouping( tgiDouble );
             numberOfClassesSpinner.setValue( tgiDouble.getRows().size() );
 
             groupingDouble.setData( doubleData );
@@ -301,7 +284,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                                                                                                       getColumns(),
                                                                                                       assignedVisualPropPanel.getOwner() );
             tableModelDouble.setClassification( tgiDouble.getRows(), tgiDouble.getType() );
-            tableModelDouble.setThematicGrouping( groupingDouble );
+            tableModelDouble.setThematicGrouping( groupingDouble, tgiDouble.getType() );
             configureClassesTable( tableModelDouble,
                                    groupingDouble.getAttributeHeader(),
                                    new ClassificationValuesRenderer<Double>(),
@@ -318,30 +301,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                                                                                                         datePattern,
                                                                                                         assignedVisualPropPanel.getOwner().getSettings() );
             ThematicGrouping<Date> groupingDate;
-            switch ( tgiDate.getType() ) {
-            case UNIQUE:
-                groupingDate = new UniqueValueGrouping<Date>();
-                classificationTypeCB.setSelectedIndex( UNIQUEVALUE );
-                numberOfClassesSpinner.setEnabled( false );
-                break;
-            case QUANTILE:
-                groupingDate = new QuantileClassification<Date>();
-                classificationTypeCB.setSelectedIndex( QUANTILE );
-                break;
-            case EQUAL:
-                groupingDate = new EqualIntervalClassification<Date>();
-                classificationTypeCB.setSelectedIndex( EQUALINTERVAL );
-                break;
-            case QUALITY:
-                groupingDate = new QualityClassification<Date>();
-                classificationTypeCB.setSelectedIndex( QUALITY );
-                break;
-            default:
-                groupingDate = new ManualClassification<Date>();
-                numberOfClassesSpinner.setValue( tgiDate.getRows().size() );
-                addManuellClassificationItem();
-                break;
-            }
+            groupingDate = getGrouping( tgiDate );
             numberOfClassesSpinner.setValue( tgiDate.getRows().size() );
 
             groupingDate.setData( dateData );
@@ -349,7 +309,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                                                                                                 getColumns(),
                                                                                                 assignedVisualPropPanel.getOwner() );
             tableModelDate.setClassification( tgiDate.getRows(), tgiDate.getType() );
-            tableModelDate.setThematicGrouping( groupingDate );
+            tableModelDate.setThematicGrouping( groupingDate, tgiDate.getType() );
             configureClassesTable( tableModelDate,
                                    groupingDate.getAttributeHeader(),
                                    new ClassificationValuesRenderer<Date>(),
@@ -368,18 +328,19 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             switch ( tgiString.getType() ) {
             case UNIQUE:
                 groupingString = new UniqueValueGrouping<String>();
-                classificationTypeCB.setSelectedIndex( UNIQUEVALUE );
+                classificationTypeCB.setSelectedItem( uniqueValue );
                 numberOfClassesSpinner.setEnabled( false );
                 break;
             case QUALITY:
                 groupingString = new QualityClassification<String>();
-                classificationTypeCB.setSelectedIndex( QUALITY );
+                classificationTypeCB.setSelectedItem( quality );
                 numberOfClassesSpinner.setEnabled( false );
                 break;
             default:
                 groupingString = new ManualClassification<String>();
                 numberOfClassesSpinner.setValue( tgiString.getRows().size() );
-                addManuellClassificationItem();
+                unknownClassification.setEnabled( true );
+                classificationTypeCB.setSelectedItem( unknownClassification );
                 break;
             }
             numberOfClassesSpinner.setValue( tgiString.getRows().size() );
@@ -390,7 +351,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                                                                                                       getColumns(),
                                                                                                       assignedVisualPropPanel.getOwner() );
             tableModelString.setClassification( tgiString.getRows(), tgiString.getType() );
-            tableModelString.setThematicGrouping( groupingString );
+            tableModelString.setThematicGrouping( groupingString, tgiString.getType() );
             configureClassesTable( tableModelString, groupingString.getAttributeHeader(),
                                    new ClassificationValuesRenderer<String>(),
                                    new ClassificationValuesEditor<String>( new StringIntervallable( "dummy" ) ) );
@@ -401,6 +362,41 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         }
 
         status.setSelected( true );
+    }
+
+    private <V extends Comparable<V>> ThematicGrouping<V> getGrouping( ThematicGroupingInformation<V> thematicGrouping ) {
+        GROUPINGTYPE type = thematicGrouping.getType();
+        // TODO: ask user for classification
+        if ( !thematicGrouping.getType().equals( UNIQUE ) && !thematicGrouping.getType().equals( QUANTILE )
+             && !thematicGrouping.getType().equals( EQUAL ) && !thematicGrouping.getType().equals( QUALITY ) ) {
+            // type = askUserForClassificationType();
+        }
+        ThematicGrouping<V> grouping;
+        switch ( type ) {
+        case UNIQUE:
+            grouping = new UniqueValueGrouping<V>();
+            classificationTypeCB.setSelectedItem( uniqueValue );
+            numberOfClassesSpinner.setEnabled( false );
+            break;
+        case QUANTILE:
+            grouping = new QuantileClassification<V>();
+            classificationTypeCB.setSelectedItem( quantile );
+            break;
+        case EQUAL:
+            grouping = new EqualIntervalClassification<V>();
+            classificationTypeCB.setSelectedItem( equalInterval );
+            break;
+        case QUALITY:
+            grouping = new QualityClassification<V>();
+            classificationTypeCB.setSelectedItem( quality );
+            break;
+        default:
+            grouping = new ManualClassification<V>();
+            unknownClassification.setEnabled( true );
+            classificationTypeCB.setSelectedItem( unknownClassification );
+            break;
+        }
+        return grouping;
     }
 
     protected ClassificationTableModel<?> getModel() {
@@ -437,12 +433,19 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             }
         }
 
+        uniqueValue = new SingleItem( get( "$MD10724" ), true );
+        equalInterval = new SingleItem( get( "$MD10725" ), isClassEnabled );
+        quantile = new SingleItem( get( "$MD10726" ), isClassEnabled );
+        quality = new SingleItem( get( "$MD11531" ), isStringClassEnabled );
+        unknownClassification = new SingleItem( get( "$MD11849" ), false );
+
         List<SingleItem> classificationItems = new ArrayList<SingleItem>( 4 );
-        // never change order!
-        classificationItems.add( new SingleItem( get( "$MD10724" ), true ) );
-        classificationItems.add( new SingleItem( get( "$MD10725" ), isClassEnabled ) );
-        classificationItems.add( new SingleItem( get( "$MD10726" ), isClassEnabled ) );
-        classificationItems.add( new SingleItem( get( "$MD11531" ), isStringClassEnabled ) );
+        classificationItems.add( uniqueValue );
+        classificationItems.add( equalInterval );
+        classificationItems.add( quantile );
+        classificationItems.add( quality );
+        classificationItems.add( unknownClassification );
+
         classificationTypeCB = new SingleItemDisableComboBox( classificationItems );
 
         classificationTypeCB.addActionListener( this );
@@ -476,7 +479,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             };
         } );
 
-        classificationTypeCB.setSelectedIndex( UNIQUEVALUE );
+        classificationTypeCB.setSelectedItem( uniqueValue );
         isManual.setVisible( false );
 
         addRowBt = new JButton( get( "$MD10739" ), IconRegistry.getIcon( "textfield_add.png" ) );
@@ -667,27 +670,12 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                         dataInteger.add( new DoubleIntervallable( (double) ( (Integer) o ), decimalPattern ) );
                     }
                 }
-                ThematicGrouping<Double> groupingInteger;
                 ClassificationTableModel<Double> tableModelInteger = new ClassificationTableModel<Double>(
                                                                                                            getColumns(),
                                                                                                            assignedVisualPropPanel.getOwner() );
-                switch ( classificationTypeCB.getSelectedIndex() ) {
-                case EQUALINTERVAL:
-                    groupingInteger = new EqualIntervalClassification<Double>();
-                    break;
-                case QUANTILE:
-                    groupingInteger = new QuantileClassification<Double>();
-                    break;
-                case QUALITY:
-                    groupingInteger = new QualityClassification<Double>();
-                    break;
-                default:
-                    groupingInteger = new UniqueValueGrouping<Double>();
-                    break;
-                }
-                groupingInteger.setData( dataInteger );
-                groupingInteger.setNoOfClasses( (Integer) numberOfClassesSpinner.getValue() );
-                tableModelInteger.setThematicGrouping( groupingInteger );
+                ThematicGrouping<Double> groupingInteger = getGrouping( dataInteger,
+                                                                        (Integer) numberOfClassesSpinner.getValue() );
+                tableModelInteger.setThematicGrouping( groupingInteger, getGroupingType() );
                 configureClassesTable( tableModelInteger,
                                        groupingInteger.getAttributeHeader(),
                                        new ClassificationValuesRenderer<Double>(),
@@ -700,27 +688,13 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 for ( Object o : pv.getValues() ) {
                     dataDouble.add( new DoubleIntervallable( (Double) o, decimalPattern ) );
                 }
-                ThematicGrouping<Double> groupingDouble;
+
                 ClassificationTableModel<Double> tableModelDouble = new ClassificationTableModel<Double>(
                                                                                                           getColumns(),
                                                                                                           assignedVisualPropPanel.getOwner() );
-                switch ( classificationTypeCB.getSelectedIndex() ) {
-                case EQUALINTERVAL:
-                    groupingDouble = new EqualIntervalClassification<Double>();
-                    break;
-                case QUANTILE:
-                    groupingDouble = new QuantileClassification<Double>();
-                    break;
-                case QUALITY:
-                    groupingDouble = new QualityClassification<Double>();
-                    break;
-                default:
-                    groupingDouble = new UniqueValueGrouping<Double>();
-                    break;
-                }
-                groupingDouble.setData( dataDouble );
-                groupingDouble.setNoOfClasses( (Integer) numberOfClassesSpinner.getValue() );
-                tableModelDouble.setThematicGrouping( groupingDouble );
+                ThematicGrouping<Double> groupingDouble = getGrouping( dataDouble,
+                                                                       (Integer) numberOfClassesSpinner.getValue() );
+                tableModelDouble.setThematicGrouping( groupingDouble, getGroupingType() );
                 configureClassesTable( tableModelDouble,
                                        groupingDouble.getAttributeHeader(),
                                        new ClassificationValuesRenderer<Double>(),
@@ -735,23 +709,9 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 for ( Object o : pv.getValues() ) {
                     dataDate.add( new DateIntervallable( (Date) o, datePattern ) );
                 }
-                ThematicGrouping<Date> groupingDate;
-                switch ( classificationTypeCB.getSelectedIndex() ) {
-                case EQUALINTERVAL:
-                    groupingDate = new EqualIntervalClassification<Date>();
-                    break;
-                case QUANTILE:
-                    groupingDate = new QuantileClassification<Date>();
-                    break;
-                case QUALITY:
-                    groupingDate = new QualityClassification<Date>();
-                default:
-                    groupingDate = new UniqueValueGrouping<Date>();
-                    break;
-                }
-                groupingDate.setData( dataDate );
-                groupingDate.setNoOfClasses( (Integer) numberOfClassesSpinner.getValue() );
-                tableModelDate.setThematicGrouping( groupingDate );
+                ThematicGrouping<Date> groupingDate = getGrouping( dataDate,
+                                                                   (Integer) numberOfClassesSpinner.getValue() );
+                tableModelDate.setThematicGrouping( groupingDate, getGroupingType() );
                 configureClassesTable( tableModelDate, groupingDate.getAttributeHeader(),
                                        new ClassificationValuesRenderer<Date>(),
                                        new ClassificationValuesEditor<Date>( new DateIntervallable( new Date(),
@@ -766,37 +726,52 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 for ( Object o : pv.getValues() ) {
                     dataString.add( new StringIntervallable( (String) o ) );
                 }
-                ThematicGrouping<String> groupingString;
-                switch ( classificationTypeCB.getSelectedIndex() ) {
-                case EQUALINTERVAL:
-                    groupingString = new EqualIntervalClassification<String>();
-                    break;
-                case QUANTILE:
-                    groupingString = new QuantileClassification<String>();
-                    break;
-                case QUALITY:
-                    groupingString = new QualityClassification<String>();
-                    break;
-                default:
-                    groupingString = new UniqueValueGrouping<String>();
-                    break;
-                }
-                groupingString.setData( dataString );
-                groupingString.setNoOfClasses( (Integer) numberOfClassesSpinner.getValue() );
-                tableModelString.setThematicGrouping( groupingString );
+                ThematicGrouping<String> groupingString = getGrouping( dataString,
+                                                                       (Integer) numberOfClassesSpinner.getValue() );
+
+                tableModelString.setThematicGrouping( groupingString, getGroupingType() );
                 configureClassesTable( tableModelString, groupingString.getAttributeHeader(),
                                        new ClassificationValuesRenderer<String>(),
                                        new ClassificationValuesEditor<String>( new StringIntervallable( "dummy" ) ) );
                 break;
             }
-            if ( classificationTypeCB.getSelectedIndex() == UNIQUEVALUE
-                 || classificationTypeCB.getSelectedIndex() == QUALITY ) {
+            if ( classificationTypeCB.getSelectedItem() == uniqueValue
+                 || classificationTypeCB.getSelectedItem() == quality ) {
                 getModel().getThematicGrouping().setFillColor( new RandomColors() );
                 model.update( FILLCOLOR, true );
             }
             model.update( VALUE, true );
         }
 
+    }
+    
+    private GROUPINGTYPE getGroupingType(){
+        if ( classificationTypeCB.getSelectedItem() == equalInterval ) {
+            return EQUAL;
+        } else if ( classificationTypeCB.getSelectedItem() == quantile ) {
+            return QUANTILE;
+        } else if ( classificationTypeCB.getSelectedItem() == quality ) {
+            return QUALITY;
+        } else if ( classificationTypeCB.getSelectedItem() == uniqueValue ) {
+            return UNIQUE;
+        }
+        return GROUPINGTYPE.MANUAL;
+    }
+
+    private <V extends Comparable<V>> ThematicGrouping<V> getGrouping( List<Intervallable<V>> data, int noOfClasses ) {
+        ThematicGrouping<V> grouping;
+        if ( classificationTypeCB.getSelectedItem() == equalInterval ) {
+            grouping = new EqualIntervalClassification<V>();
+        } else if ( classificationTypeCB.getSelectedItem() == quantile ) {
+            grouping = new QuantileClassification<V>();
+        } else if ( classificationTypeCB.getSelectedItem() == quality ) {
+            grouping = new QualityClassification<V>();
+        } else {
+            grouping = new UniqueValueGrouping<V>();
+        }
+        grouping.setData( data );
+        grouping.setNoOfClasses( noOfClasses );
+        return grouping;
     }
 
     private JPanel buildTableChangerButtonBar() {
@@ -822,22 +797,18 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
     private void updateAfterClassificationChanged() {
         List<QualifiedName> pvList;
         boolean isClassesSpinnerEnabled = false;
-        switch ( classificationTypeCB.getSelectedIndex() ) {
-        case EQUALINTERVAL:
+        if ( classificationTypeCB.getSelectedItem() == equalInterval ) {
             pvList = assignedVisualPropPanel.getOwner().getPropertyNames( Types.FLOAT, Types.DOUBLE, Types.INTEGER,
                                                                           Types.DATE, Types.BIGINT, Types.SMALLINT );
             isClassesSpinnerEnabled = true;
             numberOfClassesSpinner.setValue( 6 );
-            break;
-        case QUANTILE:
+        } else if ( classificationTypeCB.getSelectedItem() == quantile ) {
             pvList = assignedVisualPropPanel.getOwner().getPropertyNames( Types.FLOAT, Types.DOUBLE, Types.INTEGER,
                                                                           Types.DATE, Types.BIGINT, Types.SMALLINT );
             isClassesSpinnerEnabled = true;
             numberOfClassesSpinner.setValue( 6 );
-            break;
-        default:
+        } else {
             pvList = assignedVisualPropPanel.getOwner().getPropertyNames();
-            break;
         }
         isUpdating = true;
         fillPropertyCB( pvList );
@@ -877,7 +848,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
     }
 
     private void addManuellClassificationItem() {
-        if ( classificationTypeCB.getSelectedIndex() != UNIQUEVALUE
+        if ( classificationTypeCB.getSelectedItem() != uniqueValue
              && ( ( classificationTypeCB.getItemCount() == 0 ) || !isManual.isVisible() ) ) {
             isManual.setVisible( true );
             numberOfClassesSpinner.setEnabled( false );
@@ -914,6 +885,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             if ( isManual.isVisible() ) {
                 removeManuellClassificationItem();
             }
+            unknownClassification.setEnabled( false );
             updateAfterClassificationChanged();
             setClassificationActive();
         } else if ( e.getSource() == propertyCB ) {

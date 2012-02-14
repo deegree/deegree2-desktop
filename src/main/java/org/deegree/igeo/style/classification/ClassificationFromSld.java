@@ -174,7 +174,8 @@ public class ClassificationFromSld {
                         throw new IllegalClassificationException( IllegalMiscMsg );
                     }
                 } else {
-                    throw new IllegalClassificationException( "FOr Strings, only UNIQUE classification is supported!" );
+                    throw new IllegalClassificationException(
+                                                              "For Strings, only UNIQUE/QUALITY classification is supported!" );
                 }
             }
             if ( vr != null ) {
@@ -186,43 +187,28 @@ public class ClassificationFromSld {
                 throw new IllegalClassificationException( "Could not create list of value ranges" );
             }
         }
+        return new ThematicGroupingInformation<String>( getUniqueClassificationType( classification, values ),
+                                                        classification );
+    }
 
-        GROUPINGTYPE gt = null;
-        ClassificationCalculator<String> classCalculator = new ClassificationCalculator<String>();
-
-        for ( ValueRange<String> origClass : classCalculator.calculateQualityClassification( values ) ) {
-            boolean isInOrig = false;
-            for ( ClassificationTableRow<String> classificationTableRow : classification ) {
-                if ( origClass.equals( classificationTableRow.getValue() ) ) {
-                    isInOrig = true;
-                    break;
-                }
-            }
-            if ( !isInOrig ) {
-                gt = GROUPINGTYPE.MANUAL;
+    private static <V extends Comparable<V>> GROUPINGTYPE getUniqueClassificationType( List<ClassificationTableRow<V>> classification,
+                                                                                       List<Intervallable<V>> data ) {
+        boolean containsDoubleValues = false;
+        List<Intervallable<V>> values = new ArrayList<Intervallable<V>>( classification.size() );
+        for ( ClassificationTableRow<V> row : classification ) {
+            Intervallable<V> min = row.getValue().getMin();
+            if ( values.contains( min ) ) {
+                containsDoubleValues = true;
                 break;
+            } else {
+                values.add( min );
             }
         }
-
-        for ( ValueRange<String> origClass : classCalculator.calculateUniqueValues( values ) ) {
-            boolean isInOrig = false;
-            for ( ClassificationTableRow<String> classificationTableRow : classification ) {
-                if ( origClass.equals( classificationTableRow.getValue() ) ) {
-                    isInOrig = true;
-                    break;
-                }
-            }
-            if ( !isInOrig ) {
-                gt = GROUPINGTYPE.MANUAL;
-                break;
-            }
+        if ( containsDoubleValues ) {
+            return GROUPINGTYPE.UNIQUE;
+        } else {
+            return GROUPINGTYPE.QUALITY;
         }
-
-        if ( gt == null ) {
-            gt = GROUPINGTYPE.UNIQUE;
-        }
-
-        return new ThematicGroupingInformation<String>( GROUPINGTYPE.UNIQUE, classification );
     }
 
     public static boolean isTypeCorrect( List<Rule> rules, SYMBOLIZERTYPE type ) {
@@ -402,39 +388,22 @@ public class ClassificationFromSld {
                 throw new IllegalClassificationException( "Could not create list of value ranges" );
             }
         }
-        GROUPINGTYPE gt = GROUPINGTYPE.MANUAL;
-        ClassificationCalculator<Double> classCalculator = new ClassificationCalculator<Double>();
-        if ( isDoubleClassificationEqual( classification,
-                                          classCalculator.calculateEqualInterval( values, classification.size() ) ) ) {
-            gt = GROUPINGTYPE.EQUAL;
-        } else if ( isDoubleClassificationEqual( classification,
-                                                 classCalculator.calculateQuantileClassification( values,
-                                                                                                  classification.size() ) ) ) {
-            gt = GROUPINGTYPE.QUANTILE;
-        } else if ( isDoubleClassificationEqual( classification,
-                                                 classCalculator.calculateQualityClassification( values ) ) ) {
-            gt = GROUPINGTYPE.QUALITY;
 
-        } else if ( isDoubleClassificationEqual( classification, classCalculator.calculateUniqueValues( values ) ) ) {
-            gt = GROUPINGTYPE.UNIQUE;
+        GROUPINGTYPE gt = GROUPINGTYPE.MANUAL;
+        if ( isUnique == ISUNIQUE.TRUE ) {
+            gt = getUniqueClassificationType( classification, values );
+        } else {
+            ClassificationCalculator<Double> classCalculator = new ClassificationCalculator<Double>();
+            if ( isClassificationEqual( classification,
+                                        classCalculator.calculateEqualInterval( values, classification.size() ) ) ) {
+                gt = GROUPINGTYPE.EQUAL;
+            } else if ( isClassificationEqual( classification,
+                                               classCalculator.calculateQuantileClassification( values,
+                                                                                                classification.size() ) ) ) {
+                gt = GROUPINGTYPE.QUANTILE;
+            }
         }
         return new ThematicGroupingInformation<Double>( gt, classification );
-    }
-
-    private static boolean isDoubleClassificationEqual( List<ClassificationTableRow<Double>> classification,
-                                                        List<ValueRange<Double>> origClassification ) {
-        for ( ValueRange<Double> origClass : origClassification ) {
-            boolean isInOrig = false;
-            for ( ClassificationTableRow<Double> classificationTableRow : classification ) {
-                if ( origClass.equals( classificationTableRow.getValue() ) ) {
-                    isInOrig = true;
-                }
-            }
-            if ( !isInOrig ) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -593,28 +562,27 @@ public class ClassificationFromSld {
             }
         }
         GROUPINGTYPE gt = GROUPINGTYPE.MANUAL;
-        ClassificationCalculator<Date> classCalculator = new ClassificationCalculator<Date>();
-        if ( isDateClassificationEqual( classification,
+        if ( isUnique == ISUNIQUE.TRUE ) {
+            gt = getUniqueClassificationType( classification, values );
+        } else {
+            ClassificationCalculator<Date> classCalculator = new ClassificationCalculator<Date>();
+            if ( isClassificationEqual( classification,
                                         classCalculator.calculateEqualInterval( values, classification.size() ) ) ) {
-            gt = GROUPINGTYPE.EQUAL;
-        } else if ( isDateClassificationEqual( classification,
+                gt = GROUPINGTYPE.EQUAL;
+            } else if ( isClassificationEqual( classification,
                                                classCalculator.calculateQuantileClassification( values,
                                                                                                 classification.size() ) ) ) {
-            gt = GROUPINGTYPE.QUANTILE;
-        } else if ( isDateClassificationEqual( classification, classCalculator.calculateQualityClassification( values ) ) ) {
-            gt = GROUPINGTYPE.QUALITY;
-        } else if ( isDateClassificationEqual( classification, classCalculator.calculateUniqueValues( values ) ) ) {
-            gt = GROUPINGTYPE.UNIQUE;
+                gt = GROUPINGTYPE.QUANTILE;
+            }
         }
-
         return new ThematicGroupingInformation<Date>( gt, classification );
     }
 
-    private static boolean isDateClassificationEqual( List<ClassificationTableRow<Date>> classification,
-                                                      List<ValueRange<Date>> origClassification ) {
-        for ( ValueRange<Date> origClass : origClassification ) {
+    private static <V extends Comparable<V>> boolean isClassificationEqual( List<ClassificationTableRow<V>> classification,
+                                                                            List<ValueRange<V>> origClassification ) {
+        for ( ValueRange<V> origClass : origClassification ) {
             boolean isInOrig = false;
-            for ( ClassificationTableRow<Date> classificationTableRow : classification ) {
+            for ( ClassificationTableRow<V> classificationTableRow : classification ) {
                 if ( origClass.equals( classificationTableRow.getValue() ) ) {
                     isInOrig = true;
                 }

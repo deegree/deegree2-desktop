@@ -103,7 +103,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
 
     private StyleDialog styleDialog;
 
-    private GROUPINGTYPE baseType;
+    private GROUPINGTYPE baseType = GROUPINGTYPE.MANUAL;
 
     /**
      * @param thematicGrouping
@@ -499,9 +499,11 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
     /**
      * @param thematicGrouping
      *            the classification to set
+     * @param baseType 
      */
-    public void setThematicGrouping( ThematicGrouping<U> thematicGrouping ) {
+    public void setThematicGrouping( ThematicGrouping<U> thematicGrouping, GROUPINGTYPE baseType ) {
         this.thematicGrouping = thematicGrouping;
+        this.baseType = baseType;
     }
 
     /**

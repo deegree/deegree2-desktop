@@ -52,7 +52,7 @@ public class ThematicGroupingInformation<U extends Comparable<U>> {
 
     public static enum GROUPINGTYPE {
 
-        UNIQUE, EQUAL( true ), QUANTILE( true ), MANUAL( true ), QUALITY( true );
+        UNIQUE, EQUAL( true ), QUANTILE( true ), MANUAL( true ), QUALITY;
 
         private boolean changesAffectsOtherRows = false;
 
