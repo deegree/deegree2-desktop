@@ -302,11 +302,7 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
                 while ( reader.isStartElement() && new QName( setNS, "Graphic", "set" ).equals( reader.getName() ) ) {
                     String name = reader.getAttributeValue( null, "name" );
                     String url = reader.getAttributeValue( null, "file" );
-                    try {
-                        graphicOptions.addSymbolDefinition( name, url );
-                    } catch ( MalformedURLException e ) {
-                        LOG.logInfo( "Could not resolve URL for symbol with name: " + name );
-                    }
+                    addSymbol( name, url, 1 );
                     do {
                         reader.next();
                     } while ( !reader.isStartElement() && reader.getEventType() != XMLStreamReader.END_DOCUMENT );
@@ -328,6 +324,25 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
                     } catch ( IOException e ) {
                     }
             }
+        }
+    }
+
+    private void addSymbol( String name, String url, int index ) {
+        try {
+            GraphicSymbol symbol = graphicOptions.getSymboldefinition( name );
+            if ( symbol != null && !symbol.getUrl().equals( new URL( url ) ) ) {
+                String tmpName = name + " (" + index + ')';
+                symbol = graphicOptions.getSymboldefinition( tmpName );
+                while ( symbol != null && !symbol.getUrl().equals( new URL( url ) ) ) {
+                    tmpName = name + " (" + index++ + ')';
+                }
+                addSymbol( tmpName, url, index++ );
+            } else {
+                graphicOptions.addSymbolDefinition( name, url );
+            }
+
+        } catch ( MalformedURLException e ) {
+            LOG.logInfo( "Could not resolve URL for symbol with name: " + name );
         }
     }
 

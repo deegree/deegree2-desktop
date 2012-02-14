@@ -651,13 +651,27 @@ public class ClassificationFromSld {
                     ExternalGraphic eg = (ExternalGraphic) marksAndExtGrapics[0];
                     GraphicSymbol gs = null;
                     try {
+                        GraphicSymbol gsWithSameName = null;
+                        GraphicSymbol gsWithSameUrl = null;
                         Map<String, GraphicSymbol> symbols = settings.getGraphicOptions().getSymbolDefinitions();
                         for ( String symbolName : symbols.keySet() ) {
                             GraphicSymbol graphicSymbol = symbols.get( symbolName );
-                            if ( graphicSymbol.getUrl().equals( eg.getOnlineResource() ) ) {
+                            if ( ( ( eg.getTitle() != null && eg.getTitle().equals( graphicSymbol.getName() ) ) || eg.getTitle() == null )
+                                 && graphicSymbol.getUrl().equals( eg.getOnlineResource() ) ) {
                                 gs = graphicSymbol;
                                 break;
+                            } else if ( gsWithSameName != null && eg.getTitle() != null
+                                        && eg.getTitle().equals( graphicSymbol.getName() ) ) {
+                                gsWithSameName = graphicSymbol;
+                            } else if ( gsWithSameUrl != null && graphicSymbol.getUrl().equals( eg.getOnlineResource() ) ) {
+                                gsWithSameUrl = graphicSymbol;
                             }
+                        }
+                        if ( gs == null ) {
+                            gs = gsWithSameUrl;
+                        }
+                        if ( gs == null ) {
+                            gs = gsWithSameName;
                         }
                     } catch ( MalformedURLException e ) {
                         LOG.logDebug( "Could not find the symbol with URL " + eg.getOnlineResource() );

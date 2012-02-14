@@ -129,7 +129,7 @@ public class SldFromClassification<U extends Comparable<U>> {
             Symbol s = row.getSymbol();
             if ( s instanceof GraphicSymbol ) {
                 eg = StyleFactory.createExternalGraphic( ( (GraphicSymbol) s ).getUrl(),
-                                                         ( (GraphicSymbol) s ).getFormat() );
+                                                         ( (GraphicSymbol) s ).getFormat(), ( (GraphicSymbol) s ).getName() );
             } else if ( s instanceof WellKnownMark ) {
                 wkm = StyleFactory.createMark( ( (WellKnownMark) s ).getSldName() );
                 wkm.setFill( getFill( row ) );
@@ -368,7 +368,7 @@ public class SldFromClassification<U extends Comparable<U>> {
             fill.setFill( (Color) row.getFillColor() );
         } else if ( row.getFillColor() instanceof GraphicSymbol ) {
             GraphicSymbol fp = (GraphicSymbol) row.getFillColor();
-            ExternalGraphic eg = StyleFactory.createExternalGraphic( fp.getUrl(), fp.getFormat() );
+            ExternalGraphic eg = StyleFactory.createExternalGraphic( fp.getUrl(), fp.getFormat(), fp.getName() );
             Graphic graphic = StyleFactory.createGraphic( eg, null, SldValues.getDefaultOpacity(),
                                                           SldValues.getDefaultSize(), SldValues.getDefaultRotation() );
             double fillGraphicSize = fp.getSize();

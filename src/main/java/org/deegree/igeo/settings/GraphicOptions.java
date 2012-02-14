@@ -199,6 +199,13 @@ public class GraphicOptions extends ElementSettings {
         }
 
     }
+    
+    
+    public GraphicSymbol getSymboldefinition(String name) throws MalformedURLException{
+        List<Graphic> graphics = graphicsType.getSymbolDefinitions().getGraphic();
+        createSymbolDefinitionsMap( graphics );
+        return symbolDefinitions.get( name );
+    }
 
     /**
      * 

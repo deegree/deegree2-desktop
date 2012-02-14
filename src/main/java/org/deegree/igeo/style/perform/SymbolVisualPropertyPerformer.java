@@ -121,7 +121,7 @@ public class SymbolVisualPropertyPerformer extends AbstractVisualPropertyPerform
             break;
         case URL:
             if ( symbol != null && symbol.getUrl() != null && symbol.getFormat() != null ) {
-                graphicObject = StyleFactory.createExternalGraphic( symbol.getUrl(), symbol.getFormat() );
+                graphicObject = StyleFactory.createExternalGraphic( symbol.getUrl(), symbol.getFormat(), symbol.getName() );
             }
             break;
         case DYNAMIC:
