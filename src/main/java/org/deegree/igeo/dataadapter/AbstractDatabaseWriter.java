@@ -43,7 +43,7 @@ import java.util.Iterator;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.StringTools;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.io.DBConnectionPool;
@@ -81,7 +81,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         LOG.logDebug( "DELETE features SQL: ", sb );
         FeatureType ft = featureCollection.getFeature( 0 ).getFeatureType();
         PropertyType[] pt = ft.getProperties();
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         Connection conn = null;
         PreparedStatement stmt = null;
         Iterator<Feature> iterator = featureCollection.iterator();
@@ -133,7 +133,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         sb.append( "?)" );
         LOG.logDebug( "INSERT Statement: ", sb );
         Iterator<Feature> iterator = featureCollection.iterator();
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -188,7 +188,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         sb.append( pt[pt.length - 1].getName().getLocalName() ).append( " = ? " );
         sb.append( " WHERE " ).append( datasource.getPrimaryKeyFieldName() ).append( " = ?" );
         LOG.logDebug( "UPDATE features SQL: ", sb );
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         Connection conn = null;
         PreparedStatement stmt = null;
         Iterator<Feature> iterator = featureCollection.iterator();
@@ -218,7 +218,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         }
         return featureCollection.size();
     }
-    
+
     /**
      * @param sqlTemplate
      * @return name of the table addressed by passed sql (SELECT-) statement
@@ -235,7 +235,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         return tableName;
     }
 
-    protected void releaseConnection( JDBCConnectionType jdbc, Connection conn ) {
+    protected void releaseConnection( JDBCConnection jdbc, Connection conn ) {
         try {
             DBConnectionPool pool = DBConnectionPool.getInstance();
             pool.releaseConnection( conn, jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
@@ -244,7 +244,7 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         }
     }
 
-    protected Connection acquireConnection( JDBCConnectionType jdbc )
+    protected Connection acquireConnection( JDBCConnection jdbc )
                             throws DBPoolException, SQLException {
         DBConnectionPool pool = DBConnectionPool.getInstance();
         return pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
@@ -253,8 +253,8 @@ abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
     abstract protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
                                             PropertyType[] pt )
                             throws Exception;
-    
-    abstract protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource, PropertyType[] pt,
-                                    Feature feature, int index )
+
+    abstract protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource,
+                                               PropertyType[] pt, Feature feature, int index )
                             throws SQLException;
 }

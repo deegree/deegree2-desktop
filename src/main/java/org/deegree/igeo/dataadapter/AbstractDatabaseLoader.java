@@ -44,7 +44,9 @@ import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameter;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameterCache;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
@@ -133,10 +135,15 @@ abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
      * @param jdbc
      * @param conn
      */
-    protected void releaseConnection( JDBCConnectionType jdbc, Connection conn ) {
+    protected void releaseConnection( JDBCConnection jdbc, Connection conn ) {
         try {
             DBConnectionPool pool = DBConnectionPool.getInstance();
-            pool.releaseConnection( conn, jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
+            JdbcConnectionParameter connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
+                                                                                                                       jdbc.getUrl(),
+                                                                                                                       jdbc.getUser(),
+                                                                                                                       jdbc.getPassword() );
+            pool.releaseConnection( conn, connParam.getDriver(), connParam.getUrl(), connParam.getUser(),
+                                    connParam.getPasswd() );
         } catch ( DBPoolException e ) {
             LOG.logWarning( "", e );
         }

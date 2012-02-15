@@ -51,7 +51,9 @@ import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.GeometryUtils;
 import org.deegree.framework.util.StringTools;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameter;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameterCache;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
@@ -115,14 +117,13 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
     public PostgisDataLoader( DatabaseDatasource datasource ) {
         this.datasource = datasource;
     }
-    
 
     /**
      * @param envelope
      * @return featurecollection loaded from a postgis database
      */
     public FeatureCollection load( Envelope envelope ) {
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         PreparedStatement stmt = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -204,7 +205,7 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
                             LOG.logInfo( "skip row because geometry is null" );
                             break;
                         }
-                        value = PGgeometryAdapter.wrap( (PGgeometry) value, crs );              
+                        value = PGgeometryAdapter.wrap( (PGgeometry) value, crs );
                         if ( value instanceof MultiPrimitive && ( (MultiPrimitive) value ).getAll().length == 1 ) {
                             value = ( (MultiPrimitive) value ).getAll()[0];
                         }
@@ -258,7 +259,7 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
 
     public FeatureType getFeatureType() {
         FeatureType featureType = null;
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         Statement stmt = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -306,15 +307,19 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         return featureType;
     }
 
-    private Connection acquireConnection( JDBCConnectionType jdbc )
+    private Connection acquireConnection( JDBCConnection jdbc )
                             throws DBPoolException, SQLException {
+        JdbcConnectionParameter connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
+                                                                                                                   jdbc.getUrl(),
+                                                                                                                   jdbc.getUser(),
+                                                                                                                   jdbc.getPassword() );
         Connection conn;
         DBConnectionPool pool = DBConnectionPool.getInstance();
-        conn = pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
+        conn = pool.acquireConnection( connParam.getDriver(), connParam.getUrl(), connParam.getUser(),
+                                       connParam.getPasswd() );
         PGConnection pgConn = (PGConnection) conn;
         pgConn.addDataType( GEOMETRY_DATATYPE_NAME, pgGeometryClass );
         pgConn.addDataType( BOX3D_DATATYPE_NAME, pgBox3dClass );
         return conn;
     }
-
 }

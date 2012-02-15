@@ -67,7 +67,7 @@ import javax.swing.SwingUtilities;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.framework.util.StringTools;
+import org.deegree.igeo.config.DatabaseDriverUtils;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.config.LinkedDatabaseTableType;
 import org.deegree.igeo.i18n.Messages;
@@ -88,7 +88,7 @@ import org.deegree.io.DBPoolException;
 public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
 
     private static final long serialVersionUID = -6844190629872583902L;
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( DatabaseSelectPanel.class );
 
     private JLabel lbDBDriver;
@@ -214,8 +214,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
                                                               0, 0 ) );
             }
             {
-                String s = Messages.getMessage( getLocale(), "$MD11542" );
-                cbDBDriver = new JComboBox( new DefaultComboBoxModel( StringTools.toArray( s, ",;", false ) ) );
+                cbDBDriver = new JComboBox( new DefaultComboBoxModel( DatabaseDriverUtils.getDriverLabels() ) );
                 cbDBDriver.addActionListener( new ActionListener() {
 
                     public void actionPerformed( ActionEvent e ) {
@@ -253,9 +252,9 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
                                                                 new Insets( 0, 0, 0, 0 ), 0, 0 ) );
             }
             {
-                cbSave = new JCheckBox(Messages.getMessage( getLocale(), "$MD11543" ));
+                cbSave = new JCheckBox( Messages.getMessage( getLocale(), "$MD11543" ) );
                 this.add( cbSave,
-                          new GridBagConstraints( 2, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+                          new GridBagConstraints( 1, 6, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
                                                   GridBagConstraints.HORIZONTAL, new Insets( 0, 9, 0, 0 ), 0, 0 ) );
             }
             {
@@ -268,7 +267,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
                 String s = Messages.getMessage( getLocale(), "$MD11544" );
                 ComboBoxModel cbTablesModel = new DefaultComboBoxModel( new String[] { s } );
                 cbTables = new JComboBox();
-                this.add( cbTables, new GridBagConstraints( 1, 7, 2, 1, 0.0, 0.0, GridBagConstraints.NORTH,
+                this.add( cbTables, new GridBagConstraints( 1, 8, 2, 1, 0.0, 0.0, GridBagConstraints.NORTH,
                                                             GridBagConstraints.HORIZONTAL, new Insets( 5, 0, 0, 9 ), 0,
                                                             0 ) );
                 cbTables.setModel( cbTablesModel );
@@ -277,21 +276,6 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-    }
-
-    private String getDriver() {
-        String driver = null;
-        String s = cbDBDriver.getSelectedItem().toString().toLowerCase();
-        if ( s.indexOf( "postgis" ) > -1 ) {
-            driver = "org.postgresql.Driver";
-        } else if ( s.indexOf( "oracle" ) > -1 ) {
-            driver = "oracle.jdbc.OracleDriver";
-        } else if ( s.indexOf( "mysql" ) > -1 ) {
-            driver = "com.mysql.jdbc.Driver";
-        } else if ( s.indexOf( "sqlserver" ) > -1 ) {
-            driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        }
-        return driver;
     }
 
     private String getConnectionString() {
@@ -317,7 +301,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
      * 
      */
     private void testConnection() {
-        String driver = getDriver();
+        String driver = DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() );
         String database = getConnectionString();
         try {
             DriverManager.registerDriver( (Driver) Class.forName( driver ).newInstance() );
@@ -325,12 +309,12 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
             Connection conn = DriverManager.getConnection( database, tfDBUserName.getText(),
                                                            new String( pwDBPassword.getPassword() ) );
             conn.close();
-            DialogFactory.openInformationDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                       "$MD11456" ),
+            DialogFactory.openInformationDialog( appCont.getViewPlatform(), this,
+                                                 Messages.getMessage( getLocale(), "$MD11456" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                 "$MD11452" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11457", database ), e );
         }
     }
@@ -340,7 +324,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
      */
     private void connectToDatabase() {
         DBConnectionPool pool = DBConnectionPool.getInstance();
-        String driver = getDriver();
+        String driver = DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() );
         String database = getConnectionString();
         Connection conn = null;
         try {
@@ -348,8 +332,8 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
                                            new String( pwDBPassword.getPassword() ) );
             readAvailableTables( conn );
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                 "$MD11452" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11458", e.getMessage() ), e );
         } finally {
             try {
@@ -426,7 +410,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         String table = cbTables.getSelectedItem().toString();
         linkedTable.setEditable( false );
         JDBCConnectionType conType = new JDBCConnectionType();
-        conType.setDriver( getDriver() );
+        conType.setDriver( DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() ) );
         conType.setUrl( getConnectionString() );
         conType.setUser( tfDBUserName.getText() );
         conType.setPassword( new String( pwDBPassword.getPassword() ) );
@@ -491,11 +475,13 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         SwingUtilities.updateComponentTreeUI( lbDBName );
         readConnectionInfoFromCache();
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.deegree.igeo.views.swing.linkeddata.AbstractLinkedDataPanel#getDescription()
      */
-    String getDescription() {        
-        return  Messages.getMessage( getLocale(), "$MD11575" );
+    String getDescription() {
+        return Messages.getMessage( getLocale(), "$MD11575" );
     }
 }

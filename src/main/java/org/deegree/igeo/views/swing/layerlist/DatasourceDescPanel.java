@@ -55,9 +55,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,23 +70,27 @@ import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.UpdateDatasource;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.DatabaseDriverUtils;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.dataadapter.WFSFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Datasource;
+import org.deegree.igeo.mapmodel.Datasource.DS_PARAMETER;
 import org.deegree.igeo.mapmodel.FileDatasource;
 import org.deegree.igeo.mapmodel.MemoryDatasource;
 import org.deegree.igeo.mapmodel.WCSDatasource;
 import org.deegree.igeo.mapmodel.WFSDatasource;
 import org.deegree.igeo.mapmodel.WMSDatasource;
-import org.deegree.igeo.mapmodel.Datasource.DS_PARAMETER;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.CursorRegistry;
 import org.deegree.igeo.views.swing.util.IconRegistry;
-import org.deegree.io.JDBCConnection;
 import org.deegree.kernel.Command;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * panel for displaying and manipulating the datasource(s) of a layer
@@ -123,7 +127,7 @@ public class DatasourceDescPanel extends JPanel {
         setLayout( new BorderLayout() );
 
         JPanel panel = new JPanel();
-        panel.setLayout( new BoxLayout( panel, BoxLayout.PAGE_AXIS ) );      
+        panel.setLayout( new BoxLayout( panel, BoxLayout.PAGE_AXIS ) );
 
         // data source specific informations
         if ( datasource instanceof FileDatasource ) {
@@ -131,15 +135,15 @@ public class DatasourceDescPanel extends JPanel {
             datasourcePanel = new FileDatasourcePanel( fd );
         } else if ( datasource instanceof WMSDatasource ) {
             WMSDatasource wd = (WMSDatasource) datasource;
-            datasourcePanel = new WMSDatasourcePanel( wd )  ;          
+            datasourcePanel = new WMSDatasourcePanel( wd );
         } else if ( datasource instanceof WFSDatasource ) {
-            datasourcePanel = new WFSDatasourcePanel( (WFSFeatureAdapter)dataAccessAdapter );
+            datasourcePanel = new WFSDatasourcePanel( (WFSFeatureAdapter) dataAccessAdapter );
         } else if ( datasource instanceof WCSDatasource ) {
             WCSDatasource wd = (WCSDatasource) datasource;
             datasourcePanel = new WCSDatasourcePanel( wd.getCapabilitiesURL(), wd.getCoverage() );
         } else if ( datasource instanceof DatabaseDatasource ) {
             DatabaseDatasource dbd = (DatabaseDatasource) datasource;
-            datasourcePanel = new DBDatasourcePanel( dbd.getJdbc() );
+            datasourcePanel = new DBDatasourcePanel( dbd.getJdbc(), dbd.isSaveLogin() );
         } else if ( datasource instanceof MemoryDatasource ) {
             datasourcePanel = new MemDatasourcePanel();
         }
@@ -169,6 +173,7 @@ public class DatasourceDescPanel extends JPanel {
                     parameters = readParamsFromForms();
                 } catch ( Exception e ) {
                     // leave method without performing command
+                    LOG.logError( e );
                     return;
                 }
                 Command command = new UpdateDatasource( dataAccessAdapter, parameters );
@@ -191,33 +196,35 @@ public class DatasourceDescPanel extends JPanel {
                             throws Exception {
         Map<DS_PARAMETER, Object> parameters = new HashMap<DS_PARAMETER, Object>();
         DatasourceCorePanel dscp = datasourcePanel.getDatasourceCorePanel();
-        parameters.put( DS_PARAMETER.extent, dscp.getEnvelope() );
-        parameters.put( DS_PARAMETER.minScaleDenom, dscp.getMin() );
-        parameters.put( DS_PARAMETER.maxScaleDenom, dscp.getMax() );
-        // TODO
-        parameters.put( DS_PARAMETER.authenticationInfo, null );
-        parameters.put( DS_PARAMETER.name, dscp.getDSName() );
+        if ( dscp != null ) {
+            parameters.put( DS_PARAMETER.extent, dscp.getEnvelope() );
+            parameters.put( DS_PARAMETER.minScaleDenom, dscp.getMin() );
+            parameters.put( DS_PARAMETER.maxScaleDenom, dscp.getMax() );
+            // TODO
+            parameters.put( DS_PARAMETER.authenticationInfo, null );
+            parameters.put( DS_PARAMETER.name, dscp.getDSName() );
+        }
         Datasource datasource = dataAccessAdapter.getDatasource();
         if ( datasource instanceof FileDatasource ) {
-            parameters.put( DS_PARAMETER.file, new File( ((FileDatasourcePanel)datasourcePanel).getFileName() ) );
-            parameters.put( DS_PARAMETER.lazyLoading, ((FileDatasourcePanel)datasourcePanel).isLazyLoading() );
+            parameters.put( DS_PARAMETER.file, new File( ( (FileDatasourcePanel) datasourcePanel ).getFileName() ) );
+            parameters.put( DS_PARAMETER.lazyLoading, ( (FileDatasourcePanel) datasourcePanel ).isLazyLoading() );
         } else if ( datasource instanceof WMSDatasource ) {
             URL url = null;
             try {
-                url = new URL( ((WMSDatasourcePanel)datasourcePanel).getCapabilitiesURL() );
+                url = new URL( ( (WMSDatasourcePanel) datasourcePanel ).getCapabilitiesURL() );
             } catch ( MalformedURLException e ) {
                 DialogFactory.openWarningDialog( "Application", this,
                                                  Messages.getMessage( getLocale(), "$MD10293", url ),
                                                  Messages.getMessage( getLocale(), "$MD10294" ) );
                 throw e;
             }
-            String baseReq = ((WMSDatasourcePanel)datasourcePanel).getBaseRequest();
+            String baseReq = ( (WMSDatasourcePanel) datasourcePanel ).getBaseRequest();
             parameters.put( DS_PARAMETER.capabilitiesURL, url );
             parameters.put( DS_PARAMETER.baseRequest, baseReq );
         } else if ( datasource instanceof WFSDatasource ) {
             URL url = null;
             try {
-                url = new URL( ((WFSDatasourcePanel)datasourcePanel).getCapabilitiesURL() );
+                url = new URL( ( (WFSDatasourcePanel) datasourcePanel ).getCapabilitiesURL() );
             } catch ( MalformedURLException e ) {
                 DialogFactory.openWarningDialog( "Application", this,
                                                  Messages.getMessage( getLocale(), "$MD10295", url ),
@@ -225,13 +232,13 @@ public class DatasourceDescPanel extends JPanel {
                 throw e;
             }
             parameters.put( DS_PARAMETER.capabilitiesURL, url );
-            parameters.put( DS_PARAMETER.geomProperty, ((WFSDatasourcePanel)datasourcePanel).getGeometryProperty() );
-            parameters.put( DS_PARAMETER.getFeature, ((WFSDatasourcePanel)datasourcePanel).getGetFeature() );
-            parameters.put( DS_PARAMETER.lazyLoading, ((WFSDatasourcePanel)datasourcePanel).isLazyLoading() );
+            parameters.put( DS_PARAMETER.geomProperty, ( (WFSDatasourcePanel) datasourcePanel ).getGeometryProperty() );
+            parameters.put( DS_PARAMETER.getFeature, ( (WFSDatasourcePanel) datasourcePanel ).getGetFeature() );
+            parameters.put( DS_PARAMETER.lazyLoading, ( (WFSDatasourcePanel) datasourcePanel ).isLazyLoading() );
         } else if ( datasource instanceof WCSDatasource ) {
             URL url = null;
             try {
-                url = new URL( ((WCSDatasourcePanel)datasourcePanel).getCapabilitiesURL() );
+                url = new URL( ( (WCSDatasourcePanel) datasourcePanel ).getCapabilitiesURL() );
             } catch ( MalformedURLException e ) {
                 DialogFactory.openWarningDialog( "Application", this,
                                                  Messages.getMessage( getLocale(), "$MD10297", url ),
@@ -239,13 +246,14 @@ public class DatasourceDescPanel extends JPanel {
                 throw e;
             }
             parameters.put( DS_PARAMETER.capabilitiesURL, url );
-            parameters.put( DS_PARAMETER.coverage, ((WCSDatasourcePanel)datasourcePanel).getCoverageName() );
+            parameters.put( DS_PARAMETER.coverage, ( (WCSDatasourcePanel) datasourcePanel ).getCoverageName() );
         } else if ( datasource instanceof DatabaseDatasource ) {
-            String user = ((DBDatasourcePanel)datasourcePanel).getUser();
-            String password = ((DBDatasourcePanel)datasourcePanel).getPassword();
-            String driver = ((DBDatasourcePanel)datasourcePanel).getDriver();
-            String url = ((DBDatasourcePanel)datasourcePanel).getConnectionURL();
-            parameters.put( DS_PARAMETER.jdbc, new JDBCConnection( driver, url, user, password, null, null, null ) );
+            String user = ( (DBDatasourcePanel) datasourcePanel ).getUser();
+            String password = ( (DBDatasourcePanel) datasourcePanel ).getPassword();
+            String driver = ( (DBDatasourcePanel) datasourcePanel ).getDriver();
+            String url = ( (DBDatasourcePanel) datasourcePanel ).getConnectionURL();
+            boolean saveLogin = ( (DBDatasourcePanel) datasourcePanel ).getSaveLogin();
+            parameters.put( DS_PARAMETER.jdbc, new JDBCConnection( driver, url, user, password, saveLogin ) );
             // TODO
             // SQL Template
             parameters.put( DS_PARAMETER.sqlTemplate, null );
@@ -257,7 +265,7 @@ public class DatasourceDescPanel extends JPanel {
     // /////////////////////////////////////////////////////////////////////////
     // inner classes
     // /////////////////////////////////////////////////////////////////////////
-   
+
     /**
      * panel for displaying/manipulating parameters of a WCS datasource
      * 
@@ -372,87 +380,62 @@ public class DatasourceDescPanel extends JPanel {
 
         private static final long serialVersionUID = -7755536883165950555L;
 
-        private JTextField usertf;
+        private JTextField user;
 
-        private JPasswordField passwordtf;
+        private JPasswordField password;
 
         private JTextField connectionURL;
 
         private JComboBox database;
 
-        private Map<String, String> nameDriver;
+        private JCheckBox saveLogin;
 
         /**
          * 
          * @param jdbc
+         * @param saveLogin
          */
-        DBDatasourcePanel( JDBCConnectionType jdbc ) {
-            initGUI( jdbc );
+        DBDatasourcePanel( JDBCConnection jdbc, boolean isSaveLogin ) {
+            initGUI( jdbc, isSaveLogin );
         }
 
-        private void initGUI( JDBCConnectionType jdbc ) {
-            try {
-                setPreferredSize( new Dimension( 400, 300 ) );
-                this.setLayout( null );
+        private void initGUI( JDBCConnection jdbc, boolean isSaveLogin ) {
+            FormLayout fl = new FormLayout( "left:min, $rgap, fill:150dlu:grow(1.0)",
+                                            "center:15dlu, center:25dlu, center:15dlu, center:15dlu, center:15dlu, center:15dlu" );
+            DefaultFormBuilder builder = new DefaultFormBuilder( fl );
+            CellConstraints cc = new CellConstraints();
 
-                JLabel jLabel1 = new JLabel();
-                this.add( jLabel1 );
-                jLabel1.setText( Messages.getMessage( Locale.getDefault(), "$MD10095" ) );
-                jLabel1.setBounds( 0, 12, 143, 14 );
-                jLabel1.setForeground( Color.RED );
+            JLabel header = new JLabel();
+            header.setText( Messages.getMessage( Locale.getDefault(), "$MD10095" ) );
+            header.setForeground( Color.RED );
+            builder.add( header, cc.xyw( 1, 1, 3 ) );
 
-                JLabel jLabel2 = new JLabel();
-                this.add( jLabel2 );
-                jLabel2.setText( "database: " );
-                jLabel2.setBounds( 12, 32, 100, 14 );
+            builder.addLabel( Messages.getMessage( Locale.getDefault(), "$MD11850" ), cc.xy( 1, 2 ) );
+            database = new JComboBox( new DefaultComboBoxModel( DatabaseDriverUtils.getDriverLabels() ) );
+            database.setSelectedItem( jdbc.getDriver() );
+            builder.add( database, cc.xy( 3, 2 ) );
 
-                nameDriver = appContainer.getSettings().getDatabaseDrivers();
-                String[] dbs = nameDriver.keySet().toArray( new String[nameDriver.size()] );
-                ComboBoxModel databaseModel = new DefaultComboBoxModel( dbs );
+            builder.addLabel( Messages.getMessage( Locale.getDefault(), "$MD10096" ), cc.xy( 1, 3 ) );
+            connectionURL = new JTextField();
+            connectionURL.setText( jdbc.getUrl() );
+            builder.add( connectionURL, cc.xy( 3, 3 ) );
 
-                Map<String, String> driverName = new HashMap<String, String>( dbs.length );
-                for ( int i = 0; i < dbs.length; i++ ) {
-                    driverName.put( nameDriver.get( dbs[i] ), dbs[i] );
-                }
-                databaseModel.setSelectedItem( driverName.get( jdbc.getDriver() ) );
-                database = new JComboBox();
-                this.add( database );
-                database.setModel( databaseModel );
-                database.setBounds( 118, 29, 149, 21 );
+            builder.addLabel( Messages.getMessage( Locale.getDefault(), "$MD10097" ), cc.xy( 1, 4 ) );
+            user = new JTextField();
+            user.setText( jdbc.getUser() );
+            builder.add( user, cc.xy( 3, 4 ) );
 
-                JLabel jLabel3 = new JLabel();
-                this.add( jLabel3 );
-                jLabel3.setText( Messages.getMessage( Locale.getDefault(), "$MD10096" ) );
-                jLabel3.setBounds( 12, 59, 100, 14 );
+            builder.addLabel( Messages.getMessage( Locale.getDefault(), "$MD10098" ), cc.xy( 1, 5 ) );
+            password = new JPasswordField();
+            password.setText( jdbc.getPassword() );
+            builder.add( password, cc.xy( 3, 5 ) );
 
-                connectionURL = new JTextField();
-                this.add( connectionURL );
-                connectionURL.setText( jdbc.getUrl() );
-                connectionURL.setBounds( 118, 56, 149, 21 );
+            builder.addLabel( Messages.getMessage( Locale.getDefault(), "$MD11851" ), cc.xy( 1, 6 ) );
+            saveLogin = new JCheckBox();
+            saveLogin.setSelected( isSaveLogin );
+            builder.add( saveLogin, cc.xy( 3, 6 ) );
 
-                JLabel jLabel4 = new JLabel();
-                this.add( jLabel4 );
-                jLabel4.setText( Messages.getMessage( Locale.getDefault(), "$MD10097" ) );
-                jLabel4.setBounds( 12, 86, 100, 14 );
-
-                usertf = new JTextField();
-                this.add( usertf );
-                usertf.setText( jdbc.getUser() );
-                usertf.setBounds( 118, 83, 149, 21 );
-
-                JLabel jLabel5 = new JLabel();
-                this.add( jLabel5 );
-                jLabel5.setText( Messages.getMessage( Locale.getDefault(), "$MD10098" ) );
-                jLabel5.setBounds( 12, 112, 100, 14 );
-
-                passwordtf = new JPasswordField();
-                this.add( passwordtf );
-                passwordtf.setText( jdbc.getPassword() );
-                passwordtf.setBounds( 118, 109, 149, 21 );
-
-            } catch ( Exception e ) {
-                LOG.logError( e.getMessage(), e );
-            }
+            add( builder.getPanel() );
         }
 
         /**
@@ -460,7 +443,7 @@ public class DatasourceDescPanel extends JPanel {
          * @return database driver
          */
         public String getDriver() {
-            return nameDriver.get( database.getSelectedItem() );
+            return DatabaseDriverUtils.getDriver( database.getSelectedItem().toString() );
         }
 
         /**
@@ -476,7 +459,7 @@ public class DatasourceDescPanel extends JPanel {
          * @return database user name
          */
         public String getUser() {
-            return usertf.getText();
+            return user.getText();
         }
 
         /**
@@ -484,7 +467,14 @@ public class DatasourceDescPanel extends JPanel {
          * @return database user's password
          */
         public String getPassword() {
-            return new String( passwordtf.getPassword() );
+            return new String( password.getPassword() );
+        }
+
+        /**
+         * @return true if login should be saved, false otherwise
+         */
+        public boolean getSaveLogin() {
+            return saveLogin.isSelected();
         }
 
     }

@@ -47,6 +47,7 @@ import java.util.List;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
+import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.config.LinkedDatabaseTableType;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
@@ -93,10 +94,12 @@ public class LinkedDatabaseTable extends LinkedTable {
     private void init()
                             throws IOException {
         DBConnectionPool pool = DBConnectionPool.getInstance();
-        String driver = linkedDB.getConnection().getDriver();
-        String url = linkedDB.getConnection().getUrl();
-        String user = linkedDB.getConnection().getUser();
-        String pw = linkedDB.getConnection().getPassword();
+        JDBCConnectionType connection = linkedDB.getConnection();
+        String driver = connection.getDriver();
+        String url = connection.getUrl();
+        String user = connection.getUser();
+        String pw = connection.getPassword();
+        
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -270,10 +273,11 @@ public class LinkedDatabaseTable extends LinkedTable {
     public void startReading()
                             throws Exception {
         stopReading();
-        String driver = linkedDB.getConnection().getDriver();
-        String url = linkedDB.getConnection().getUrl();
-        String user = linkedDB.getConnection().getUser();
-        String pw = linkedDB.getConnection().getPassword();
+        JDBCConnectionType connection = linkedDB.getConnection();
+        String driver = connection.getDriver();
+        String url = connection.getUrl();
+        String user = connection.getUser();
+        String pw = connection.getPassword();
         cursor = 0;
         try {
             conn = pool.acquireConnection( driver, url, user, pw );
@@ -302,10 +306,11 @@ public class LinkedDatabaseTable extends LinkedTable {
     public void stopReading()
                             throws Exception {
         if ( conn != null ) {
-            String driver = linkedDB.getConnection().getDriver();
-            String url = linkedDB.getConnection().getUrl();
-            String user = linkedDB.getConnection().getUser();
-            String pw = linkedDB.getConnection().getPassword();
+            JDBCConnectionType connection = linkedDB.getConnection();
+            String driver = connection.getDriver();
+            String url = connection.getUrl();
+            String user = connection.getUser();
+            String pw = connection.getPassword();
             try {
                 rs.close();
                 stmt.close();

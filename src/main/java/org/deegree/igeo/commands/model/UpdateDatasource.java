@@ -46,16 +46,16 @@ import java.util.Map;
 
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.framework.xml.XMLParsingException;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.mapmodel.AuthenticationInformation;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Datasource;
+import org.deegree.igeo.mapmodel.Datasource.DS_PARAMETER;
 import org.deegree.igeo.mapmodel.FileDatasource;
 import org.deegree.igeo.mapmodel.WCSDatasource;
 import org.deegree.igeo.mapmodel.WFSDatasource;
 import org.deegree.igeo.mapmodel.WMSDatasource;
-import org.deegree.igeo.mapmodel.Datasource.DS_PARAMETER;
 import org.deegree.kernel.AbstractCommand;
 import org.deegree.kernel.Command;
 import org.deegree.model.spatialschema.Envelope;
@@ -109,15 +109,20 @@ public class UpdateDatasource extends AbstractCommand {
 
     private void updateDatasource( Map<Datasource.DS_PARAMETER, Object> newParameters )
                             throws IOException, XMLParsingException {
-        datasource.setAuthenticationInformation( (AuthenticationInformation) newParameters.get( DS_PARAMETER.authenticationInfo ) );
-        datasource.setExtent( (Envelope) newParameters.get( DS_PARAMETER.extent ) );
-        datasource.setMinScaleDenominator( (Double) newParameters.get( DS_PARAMETER.minScaleDenom ) );
-        datasource.setMaxScaleDenominator( (Double) newParameters.get( DS_PARAMETER.maxScaleDenom ) );
-        datasource.setName( (String) newParameters.get( DS_PARAMETER.name ) );
+        if ( newParameters.containsKey( DS_PARAMETER.authenticationInfo ) )
+            datasource.setAuthenticationInformation( (AuthenticationInformation) newParameters.get( DS_PARAMETER.authenticationInfo ) );
+        if ( newParameters.containsKey( DS_PARAMETER.extent ) )
+            datasource.setExtent( (Envelope) newParameters.get( DS_PARAMETER.extent ) );
+        if ( newParameters.containsKey( DS_PARAMETER.minScaleDenom ) )
+            datasource.setMinScaleDenominator( (Double) newParameters.get( DS_PARAMETER.minScaleDenom ) );
+        if ( newParameters.containsKey( DS_PARAMETER.maxScaleDenom ) )
+            datasource.setMaxScaleDenominator( (Double) newParameters.get( DS_PARAMETER.maxScaleDenom ) );
+        if ( newParameters.containsKey( DS_PARAMETER.name ) )
+            datasource.setName( (String) newParameters.get( DS_PARAMETER.name ) );
         if ( datasource instanceof FileDatasource ) {
             FileDatasource ds = (FileDatasource) datasource;
             ds.setFile( (File) newParameters.get( DS_PARAMETER.file ) );
-            ds.setLazyLoading( (Boolean) newParameters.get( DS_PARAMETER.lazyLoading )  );
+            ds.setLazyLoading( (Boolean) newParameters.get( DS_PARAMETER.lazyLoading ) );
         } else if ( datasource instanceof WMSDatasource ) {
             WMSDatasource ds = (WMSDatasource) datasource;
             ds.setCapabilitiesURL( (URL) newParameters.get( DS_PARAMETER.capabilitiesURL ) );
@@ -127,16 +132,16 @@ public class UpdateDatasource extends AbstractCommand {
             ds.setCapabilitiesURL( (URL) newParameters.get( DS_PARAMETER.capabilitiesURL ) );
             ds.setGeometryProperty( (QualifiedName) newParameters.get( DS_PARAMETER.geomProperty ) );
             ds.setGetFeature( (GetFeature) newParameters.get( DS_PARAMETER.getFeature ) );
-            ds.setLazyLoading( (Boolean) newParameters.get( DS_PARAMETER.lazyLoading )  );
+            ds.setLazyLoading( (Boolean) newParameters.get( DS_PARAMETER.lazyLoading ) );
         } else if ( datasource instanceof WCSDatasource ) {
             WCSDatasource ds = (WCSDatasource) datasource;
             ds.setCapabilitiesURL( (URL) newParameters.get( DS_PARAMETER.capabilitiesURL ) );
             ds.setCoverage( (QualifiedName) newParameters.get( DS_PARAMETER.coverage ) );
         } else if ( datasource instanceof DatabaseDatasource ) {
             DatabaseDatasource ds = (DatabaseDatasource) datasource;
-            ds.setJdbc( (JDBCConnectionType) newParameters.get( DS_PARAMETER.jdbc ) );
+            ds.setJdbc( (JDBCConnection) newParameters.get( DS_PARAMETER.jdbc ) );
             // TODO
-            //ds.setSqlTemplate( (String) newParameters.get( DS_PARAMETER.sqlTemplate ) );
+            // ds.setSqlTemplate( (String) newParameters.get( DS_PARAMETER.sqlTemplate ) );
         }
         dataAccessAdapter.invalidate();
         dataAccessAdapter.refresh();

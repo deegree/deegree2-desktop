@@ -238,8 +238,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                     pnDescription = new JPanel();
                     BorderLayout pnDescriptionLayout = new BorderLayout();
                     pnDescription.setLayout( pnDescriptionLayout );
-                    getContentPane().add(
-                                          pnDescription,
+                    getContentPane().add( pnDescription,
                                           new GridBagConstraints( 0, 0, 1, 3, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -258,8 +257,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                 }
                 {
                     pnButtons = new JPanel( new FlowLayout( FlowLayout.LEFT ) );
-                    getContentPane().add(
-                                          pnButtons,
+                    getContentPane().add( pnButtons,
                                           new GridBagConstraints( 0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -290,8 +288,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                     pnHelp = new JPanel();
                     FlowLayout pnHelpLayout = new FlowLayout();
                     pnHelpLayout.setAlignment( FlowLayout.RIGHT );
-                    getContentPane().add(
-                                          pnHelp,
+                    getContentPane().add( pnHelp,
                                           new GridBagConstraints( 2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -312,8 +309,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                 {
                     pnDatabase = new JPanel();
                     GridBagLayout pnDatabaseLayout = new GridBagLayout();
-                    getContentPane().add(
-                                          pnDatabase,
+                    getContentPane().add( pnDatabase,
                                           new GridBagConstraints( 1, 0, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -405,7 +401,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                     }
                     {
                         cbSavePassword = new JCheckBox( Messages.getMessage( getLocale(), "$MD11433" ) );
-                        pnDatabase.add( cbSavePassword, new GridBagConstraints( 2, 5, 1, 1, 0.0, 0.0,
+                        pnDatabase.add( cbSavePassword, new GridBagConstraints( 1, 6, 2, 1, 0.0, 0.0,
                                                                                 GridBagConstraints.CENTER,
                                                                                 GridBagConstraints.HORIZONTAL,
                                                                                 new Insets( 0, 9, 0, 9 ), 0, 0 ) );
@@ -415,7 +411,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                         FlowLayout pnDatabaseButtonsLayout = new FlowLayout();
                         pnDatabaseButtonsLayout.setAlignment( FlowLayout.LEFT );
                         pnDatabaseButtons.setLayout( pnDatabaseButtonsLayout );
-                        pnDatabase.add( pnDatabaseButtons, new GridBagConstraints( 0, 6, 3, 1, 0.0, 0.0,
+                        pnDatabase.add( pnDatabaseButtons, new GridBagConstraints( 0, 7, 3, 1, 0.0, 0.0,
                                                                                    GridBagConstraints.CENTER,
                                                                                    GridBagConstraints.BOTH,
                                                                                    new Insets( 0, 0, 0, 0 ), 0, 0 ) );
@@ -449,13 +445,11 @@ public class AddDatabaseLayerDialog extends JDialog {
                     pnContent = new JPanel();
                     pnContent.setVisible( false );
                     GridBagLayout pnContentLayout = new GridBagLayout();
-                    getContentPane().add(
-                                          pnContent,
+                    getContentPane().add( pnContent,
                                           new GridBagConstraints( 1, 1, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
-                    getContentPane().add(
-                                          getPnLayer(),
+                    getContentPane().add( getPnLayer(),
                                           new GridBagConstraints( 1, 2, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
                                                                   0 ) );
@@ -769,15 +763,15 @@ public class AddDatabaseLayerDialog extends JDialog {
             String user = tfUser.getText();
             String password = new String( pwPassword.getPassword() );
             if ( cbTable.isEnabled() && cbTable.getSelectedIndex() == 0 ) {
-                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                       "$MD11451" ),
+                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                                 Messages.getMessage( getLocale(), "$MD11451" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
                 return;
             }
             String table = cbTable.getSelectedItem().toString();
             if ( cbGeom.isEnabled() && cbGeom.getSelectedItem() == null ) {
-                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                       "$MD11453" ),
+                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                                 Messages.getMessage( getLocale(), "$MD11453" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
                 return;
             }
@@ -789,8 +783,8 @@ public class AddDatabaseLayerDialog extends JDialog {
             geomField = tmp[0];
             String srid = tmp[1].trim().substring( 1, tmp[1].trim().length() - 1 );
             if ( cbNativeCRS.getSelectedIndex() == 0 ) {
-                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                       "$MD11454" ),
+                DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                                 Messages.getMessage( getLocale(), "$MD11454" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
                 return;
             }
@@ -811,7 +805,8 @@ public class AddDatabaseLayerDialog extends JDialog {
             writeConnectionInfoToCache();
             Command command = new AddDatabaseLayerCommand( mapModel, driver, database, user, password, geomField,
                                                            pkColumn, minScale, maxScale, supportTransactions,
-                                                           lazyLoading, nativeCRS, sql, srid, layerName );
+                                                           lazyLoading, nativeCRS, sql, srid, layerName,
+                                                           cbSavePassword.isSelected() );
             getOwner().setCursor( CursorRegistry.WAIT_CURSOR );
             setCursor( CursorRegistry.WAIT_CURSOR );
             // final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor(
@@ -842,8 +837,8 @@ public class AddDatabaseLayerDialog extends JDialog {
             getOwner().setCursor( CursorRegistry.DEFAULT_CURSOR );
             dispose();
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                 "$MD11452" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11455" ), e );
         }
 
@@ -926,12 +921,12 @@ public class AddDatabaseLayerDialog extends JDialog {
             Connection conn = DriverManager.getConnection( database, tfUser.getText(),
                                                            new String( pwPassword.getPassword() ) );
             conn.close();
-            DialogFactory.openInformationDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                       "$MD11456" ),
+            DialogFactory.openInformationDialog( appCont.getViewPlatform(), this,
+                                                 Messages.getMessage( getLocale(), "$MD11456" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                 "$MD11452" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11457", database ), e );
         }
     }
@@ -997,8 +992,8 @@ public class AddDatabaseLayerDialog extends JDialog {
             readAvailableTables( conn );
             pnContent.setVisible( true );
         } catch ( Exception e ) {
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                 "$MD11452" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11458", e.getMessage() ), e );
         } finally {
             try {

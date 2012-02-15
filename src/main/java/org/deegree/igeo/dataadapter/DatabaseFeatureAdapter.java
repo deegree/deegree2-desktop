@@ -48,6 +48,7 @@ import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Layer;
@@ -75,7 +76,7 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
 
     private boolean isLazyLoading;
 
-    private JDBCConnectionType jdbc;
+    private JDBCConnection jdbc;
 
     private Envelope lastEnv;
 

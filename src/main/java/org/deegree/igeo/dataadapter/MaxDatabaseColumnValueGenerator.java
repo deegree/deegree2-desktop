@@ -44,7 +44,7 @@ import java.sql.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.IDGenerator;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.model.feature.ValueGenerator;
 
@@ -57,10 +57,10 @@ import org.deegree.model.feature.ValueGenerator;
  * @version $Revision$, $Date$
  */
 public class MaxDatabaseColumnValueGenerator implements ValueGenerator {
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( MaxDatabaseColumnValueGenerator.class );
 
-    private JDBCConnectionType jdbc;
+    private JDBCConnection jdbc;
 
     private String table;
 
@@ -71,7 +71,7 @@ public class MaxDatabaseColumnValueGenerator implements ValueGenerator {
      * @param table
      * @param column
      */
-    public MaxDatabaseColumnValueGenerator( JDBCConnectionType jdbc, String table, String column ) {
+    public MaxDatabaseColumnValueGenerator( JDBCConnection jdbc, String table, String column ) {
         super();
         this.jdbc = jdbc;
         this.table = table;

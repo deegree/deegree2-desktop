@@ -40,6 +40,7 @@ package org.deegree.igeo.mapmodel;
 import net.sf.ehcache.Cache;
 
 import org.deegree.igeo.config.DatabaseDatasourceType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.JDBCConnectionType;
 
 /**
@@ -53,32 +54,59 @@ import org.deegree.igeo.config.JDBCConnectionType;
  */
 public class DatabaseDatasource extends Datasource {
 
+    private JDBCConnection jdbc;
+
     /**
      * 
      * @param dsType
      * @param authenticationInformation
      * @param cache
-     * @param jdbc
+     * @param saveLogin
+     */
+    public DatabaseDatasource( DatabaseDatasourceType dsType, AuthenticationInformation authenticationInformation,
+                               Cache cache, boolean saveLogin ) {
+        super( dsType, authenticationInformation, cache );
+        setJdbc( new JDBCConnection( dsType.getConnection().getDriver(), dsType.getConnection().getUrl(),
+                                        dsType.getConnection().getUser(), dsType.getConnection().getPassword(),
+                                        saveLogin ) );
+    }
+
+    /**
+     * Create a DatabaseDatasource. SaveLogin depends on the the {@link DatabaseDatasourceType#getConnection()}: if user
+     * and password are not null, saveLogin = true otherwise false
+     * 
+     * @param dsType
+     * @param authenticationInformation
+     * @param cache
      */
     public DatabaseDatasource( DatabaseDatasourceType dsType, AuthenticationInformation authenticationInformation,
                                Cache cache ) {
-        super( dsType, authenticationInformation, cache );
+        this( dsType, authenticationInformation, cache,
+              ( dsType.getConnection().getUser() != null && dsType.getConnection().getPassword() != null ) );
     }
 
     /**
      * 
      * @return connection information
      */
-    public JDBCConnectionType getJdbc() {
-        return ( (DatabaseDatasourceType) dsType ).getConnection();
+    public JDBCConnection getJdbc() {
+        return jdbc;
     }
 
     /**
      * @param jdbc
      *            the database connection description to set
      */
-    public void setJdbc( JDBCConnectionType jdbc ) {
-        ( (DatabaseDatasourceType) dsType ).setConnection( jdbc );
+    public void setJdbc( JDBCConnection jdbc ) {
+        this.jdbc = jdbc;
+        JDBCConnectionType connectionType = new JDBCConnectionType();
+        connectionType.setDriver( jdbc.getDriver() );
+        connectionType.setUrl( jdbc.getUrl() );
+        if ( jdbc.isSaveLogin() ) {
+            connectionType.setUser( jdbc.getUser() );
+            connectionType.setPassword( jdbc.getPassword() );
+        }
+        ( (DatabaseDatasourceType) dsType ).setConnection( connectionType );
     }
 
     /**
@@ -146,6 +174,10 @@ public class DatabaseDatasource extends Datasource {
      */
     public void setSRID( String srid ) {
         ( (DatabaseDatasourceType) dsType ).getGeometryField().setSrs( srid );
+    }
+
+    public boolean isSaveLogin() {
+        return jdbc.isSaveLogin();
     }
 
 }

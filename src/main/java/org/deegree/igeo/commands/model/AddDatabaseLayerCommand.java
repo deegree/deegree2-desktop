@@ -43,10 +43,10 @@ import net.sf.ehcache.Cache;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.graphics.sld.UserStyle;
 import org.deegree.igeo.config.DatabaseDatasourceType;
+import org.deegree.igeo.config.DatabaseDatasourceType.GeometryField;
 import org.deegree.igeo.config.DirectStyleType;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.config.Util;
-import org.deegree.igeo.config.DatabaseDatasourceType.GeometryField;
 import org.deegree.igeo.mapmodel.AuthenticationInformation;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Datasource;
@@ -61,7 +61,7 @@ import org.deegree.kernel.Command;
 import org.deegree.model.Identifier;
 
 /**
- * {@link Command} implementation for adding a layer reading its data from a database 
+ * {@link Command} implementation for adding a layer reading its data from a database
  * 
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
@@ -81,7 +81,7 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
     private String password;
 
     private String geomField;
-    
+
     private String pkField;
 
     private String sql;
@@ -106,6 +106,8 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
 
     private Layer newLayer;
 
+    private final boolean saveLogin;
+
     /**
      * 
      * @param mapModel
@@ -124,8 +126,9 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
      * @param layerName
      */
     public AddDatabaseLayerCommand( MapModel mapModel, String driver, String database, String user, String password,
-                                    String geomField, String pkField, double minScale, double maxScale, boolean supportTransactions,
-                                    boolean lazyLoading, String nativeCRS, String sql, String srid, String layerName ) {
+                                    String geomField, String pkField, double minScale, double maxScale,
+                                    boolean supportTransactions, boolean lazyLoading, String nativeCRS, String sql,
+                                    String srid, String layerName, boolean savePasswd ) {
         this.mapModel = mapModel;
         this.driver = driver;
         this.database = database;
@@ -141,6 +144,8 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         this.lazyLoading = lazyLoading;
         this.nativeCRS = nativeCRS;
         this.srid = srid;
+        this.saveLogin = savePasswd;
+
     }
 
     /*
@@ -168,7 +173,7 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         GeometryField gf = new GeometryField();
         gf.setValue( geomField );
         gf.setSrs( srid );
-        dsType.setGeometryField( gf);
+        dsType.setGeometryField( gf );
         dsType.setPrimaryKeyField( pkField );
         JDBCConnectionType jdbc = new JDBCConnectionType();
         jdbc.setDriver( driver );
@@ -177,10 +182,10 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         jdbc.setUser( user );
         dsType.setConnection( jdbc );
         dsType.setSqlTemplate( sql );
-
         dsType.setNativeCRS( nativeCRS );
-
-        datasources.add( new DatabaseDatasource( dsType, authenticationInformation, cache ) );
+System.out.println(saveLogin);
+        DatabaseDatasource dbDatasource = new DatabaseDatasource( dsType, authenticationInformation, cache, saveLogin );
+        datasources.add( dbDatasource );
 
         newLayer = new Layer( mapModel, new Identifier( layerName ), layerName, null, datasources, null );
         List<NamedStyle> styles = new ArrayList<NamedStyle>();
@@ -193,7 +198,7 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         dst.setAbstract( us.getAbstract() );
         dst.setCurrent( true );
         styles.add( new DirectStyle( dst, us, newLayer ) );
-        //styles.add( new NamedStyle( dst, newLayer )  );
+        // styles.add( new NamedStyle( dst, newLayer ) );
         newLayer.setStyles( styles );
         newLayer.setMinScaleDenominator( minScale );
         newLayer.setMaxScaleDenominator( maxScale );

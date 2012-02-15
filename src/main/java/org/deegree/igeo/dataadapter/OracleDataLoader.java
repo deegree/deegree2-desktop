@@ -50,6 +50,7 @@ import java.util.UUID;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.GeometryUtils;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.io.DBConnectionPool;
@@ -91,7 +92,7 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
      * @return feature collection loaded from a oracle database
      */
     public FeatureCollection load( Envelope envelope ) {
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         PreparedStatement stmt = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -227,7 +228,7 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
 
     public FeatureType getFeatureType() {
         FeatureType featureType = null;
-        JDBCConnectionType jdbc = datasource.getJdbc();
+        JDBCConnection jdbc = datasource.getJdbc();
         Statement stmt = null;
         Connection conn = null;
         ResultSet rs = null;
@@ -273,7 +274,7 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
         return featureType;
     }
 
-    private Connection acquireConnection( JDBCConnectionType jdbc )
+    private Connection acquireConnection( JDBCConnection jdbc )
                             throws DBPoolException, SQLException {
         DBConnectionPool pool = DBConnectionPool.getInstance();
         return pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
