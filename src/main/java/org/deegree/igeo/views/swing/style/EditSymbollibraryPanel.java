@@ -81,7 +81,6 @@ import org.deegree.igeo.style.model.GraphicSymbol;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.igeo.views.swing.util.IGeoFileFilter;
-import org.deegree.igeo.views.swing.util.panels.PanelDialog;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -161,10 +160,13 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
 
         symbolTableModel = new SymbolTableModel();
         symbolTable = new JTable( symbolTableModel );
+        symbolTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
         TableColumn iconCol = symbolTable.getColumnModel().getColumn( 0 );
-        iconCol.setWidth( 25 );
+        iconCol.setPreferredWidth( 50 );
         iconCol.setCellRenderer( new SymbolRenderer() );
-        symbolTable.getColumnModel().getColumn( 1 ).setWidth( 50 );
+        symbolTable.getColumnModel().getColumn( 1 ).setPreferredWidth( 75 );
+        symbolTable.getColumnModel().getColumn( 2 ).setPreferredWidth( 500 );
+        symbolTable.getColumnModel().getColumn( 2 ).setCellRenderer( new URLCellRenderer() );
         symbolTable.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
             @Override
             public void valueChanged( ListSelectionEvent arg0 ) {
@@ -295,7 +297,7 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
             XMLStreamReader reader = null;
             try {
                 fis = new FileInputStream( file );
-                reader = XMLInputFactory.newInstance().createXMLStreamReader( fis );
+                reader = XMLInputFactory.newInstance().createXMLStreamReader( fis, "UTF-8" );
                 reader.nextTag();
                 reader.require( XMLStreamReader.START_ELEMENT, setNS, "SymbolDefinitions" );
                 reader.nextTag();
@@ -358,8 +360,8 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
                 XMLStreamWriter writer = null;
                 try {
                     fos = new FileOutputStream( file );
-                    writer = XMLOutputFactory.newInstance().createXMLStreamWriter( fos );
-                    writer.writeStartDocument();
+                    writer = XMLOutputFactory.newInstance().createXMLStreamWriter( fos, "UTF-8" );
+                    writer.writeStartDocument( "UTF-8", "1.0" );
                     writer.writeStartElement( "set", "SymbolDefinitions", setNS );
 
                     writer.writeNamespace( "set", setNS );
@@ -494,9 +496,18 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
         }
     }
 
-    public static void main( String[] args ) {
-        StyleDialogUtils.prepareFormConstants();
-        PanelDialog dlg = new PanelDialog( new EditSymbollibraryPanel( null ), false );
-        dlg.setVisible( true );
+    private class URLCellRenderer extends DefaultTableCellRenderer {
+
+        private static final long serialVersionUID = -1533887940199153148L;
+
+        @Override
+        public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected,
+                                                        boolean hasFocus, int row, int column ) {
+            if ( value instanceof URL ) {
+                setToolTipText( ( (URL) value ).toExternalForm().substring( ( (URL) value ).toExternalForm().lastIndexOf( "/" ) + 1 ) );
+            }
+            return super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );
+        }
     }
+
 }
