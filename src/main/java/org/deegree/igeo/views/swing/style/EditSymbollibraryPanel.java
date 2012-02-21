@@ -239,6 +239,22 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
     private void addSymbol() {
         String url = newSymbolTF.getText();
         String name = newSymbolNameTF.getText();
+        if ( name == null || name.length() == 0 ) {
+            JOptionPane.showMessageDialog( this, get( "$MD11856" ), get( "$MD11857" ), JOptionPane.INFORMATION_MESSAGE );
+            return;
+        } else
+            try {
+                if ( graphicOptions.getSymboldefinition( name ) != null ) {
+                    int showConfirmDialog = JOptionPane.showConfirmDialog( this, get( "$MD11858" ), get( "$MD11859" ),
+                                                                           JOptionPane.YES_NO_OPTION );
+                    if ( showConfirmDialog == JOptionPane.NO_OPTION ) {
+                        return;
+                    }
+                }
+            } catch ( MalformedURLException e ) {
+                LOG.logInfo( "Could not read graphicOptions: {}", e.getMessage() );
+            }
+
         boolean invalidURL = false;
         if ( url != null && url.length() > 0 ) {
             try {
