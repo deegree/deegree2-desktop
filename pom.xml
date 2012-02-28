@@ -121,7 +121,6 @@
     </plugins>
   </build>
 
-
   <profiles>
     <profile>
       <id>default</id>
@@ -151,7 +150,7 @@
                 <unix>.sh</unix>
                 <windows>.bat</windows>
               </binFileExtensions>
-              <extraJvmArguments>-Xmn256m -Xmx1024m</extraJvmArguments>
+              <extraJvmArguments>-Xmn256m -Xms1024m -Xmx1024m</extraJvmArguments>
               <includeConfigurationDirectoryInClasspath>false</includeConfigurationDirectoryInClasspath>
             </configuration>
           </plugin>
@@ -173,6 +172,26 @@
                 <configuration>
                   <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <configuration>
+                  <tasks>
+                    <chmod perm="+x">
+                      <fileset dir="target/appassembler/bin">
+                        <include name="iGeoDesktop.*" />
+                      </fileset>
+                    </chmod>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
