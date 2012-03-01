@@ -1,107 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dgp:Module xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
+<dgp:Module 
+xmlns:dgp="http://www.deegree.org/project" 
+xmlns:cmm="http://www.deegree.org/coremapmodel" 
+xmlns:set="http://www.deegree.org/settings" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
 	<dgp:name>MapModule</dgp:name>
 	<cmm:identifier>
 		<cmm:value>F2</cmm:value>
 	</cmm:identifier>
 	<dgp:className>org.deegree.igeo.modules.DefaultMapModule</dgp:className>
 	<dgp:ViewForm>
-		<dgp:InnerFrameViewForm resizeable="true">
-			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapInnerFrame
-			</dgp:containerClass>
+	<dgp:InnerFrameViewForm resizeable="true">
+			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapInnerFrame</dgp:containerClass>
 			<dgp:ComponentState active="true" modal="false">
 				<dgp:windowState>normal</dgp:windowState>
 			</dgp:ComponentState>
 			<dgp:frameTitle>$F4.FrameTitle</dgp:frameTitle>
 		</dgp:InnerFrameViewForm>
+		<!--dgp:PaneViewForm>
+			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapComponent</dgp:containerClass>
+			<dgp:ComponentState active="false" modal="false">
+				<dgp:windowState>normal</dgp:windowState>
+			</dgp:ComponentState>
+			<dgp:paneTitle>$F4.FrameTitle</dgp:paneTitle>
+		</dgp:PaneViewForm-->
 		<dgp:Layout>
-			<dgp:NoneLayout/>
+			<dgp:NoneLayout />
 		</dgp:Layout>
 	</dgp:ViewForm>
 	<dgp:Menu>
 		<cmm:identifier>
-			<cmm:value>MM1_MB13</cmm:value>
-		</cmm:identifier>
-		<dgp:parent>
-			<cmm:value>MB1view</cmm:value>
-		</dgp:parent>
-		<dgp:name/>
-		<dgp:MenuItem>
-			<dgp:name>$Back</dgp:name>
-			<dgp:assignedAction>historyBackward</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/arrow_left.png"/>
-		</dgp:MenuItem>
-		<dgp:MenuItem>
-			<dgp:name>$For</dgp:name>
-			<dgp:assignedAction>historyForward</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/arrow_right.png"/>
-		</dgp:MenuItem>
-	</dgp:Menu>
-	<dgp:Menu>
-		<cmm:identifier>
-			<cmm:value>MM1_MB0</cmm:value>
-		</cmm:identifier>
-		<dgp:parent>
-			<cmm:value>MB1view</cmm:value>
-		</dgp:parent>
-		<dgp:name>$MM1_MB0.name</dgp:name>
-		<dgp:MenuItem assignedGroup="ZoomGroup">
-			<dgp:name>$MB33.name</dgp:name>
-			<dgp:assignedAction>pan</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/pan.png"/>
-			<dgp:entryType>RadioButtonItem</dgp:entryType>
-		</dgp:MenuItem>
-		<dgp:MenuItem assignedGroup="ZoomGroup">
-			<dgp:name>$MB31.name</dgp:name>
-			<dgp:assignedAction>zoomIn</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/zoomin.png"/>
-			<dgp:entryType>RadioButtonItem</dgp:entryType>
-		</dgp:MenuItem>
-		<dgp:MenuItem assignedGroup="ZoomGroup">
-			<dgp:name>$MB32.name</dgp:name>
-			<dgp:assignedAction>zoomOut</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/zoomout.png"/>
-			<dgp:entryType>RadioButtonItem</dgp:entryType>
-		</dgp:MenuItem>
-		<dgp:MenuItem assignedGroup="ZoomGroup">
-			<dgp:name>$MB34.name</dgp:name>
-			<dgp:assignedAction>center</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/s_center.png"/>
-			<dgp:entryType>RadioButtonItem</dgp:entryType>
-		</dgp:MenuItem>
-		<dgp:MenuItem>
-			<dgp:name>$ZoomExtent</dgp:name>
-			<dgp:assignedAction>zoomToFullExtent</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/s_zoomtofullextent.png"/>
-		</dgp:MenuItem>
-	</dgp:Menu>
-	<dgp:Menu>
-		<cmm:identifier>
-			<cmm:value>MM1_MB10</cmm:value>
-		</cmm:identifier>
-		<dgp:parent>
-			<cmm:value>MB1view</cmm:value>
-		</dgp:parent>
-		<dgp:name/>
-		<dgp:MenuItem>
-			<dgp:name>$ZoomLayer</dgp:name>
-			<dgp:assignedAction>zoomToSelectedLayers</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/zoomToLayers.png"/>
-		</dgp:MenuItem>
-		<dgp:MenuItem>
-			<dgp:name>$ZoomToFeatures</dgp:name>
-			<dgp:assignedAction>zoomToSelectedFeatures</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/s_zoomtofeature.png"/>
-		</dgp:MenuItem>
-	</dgp:Menu>
-	<dgp:Menu>
-		<cmm:identifier>
-			<cmm:value>MM_B14</cmm:value>
+			<cmm:value>MM_B15</cmm:value>
 		</cmm:identifier>
 		<dgp:parent>
 			<cmm:value>MB1</cmm:value>
 		</dgp:parent>
-		<dgp:name>LayerExport</dgp:name>
+		<dgp:name/>	
 		<dgp:MenuItem>
 			<dgp:name>$ExportLayer</dgp:name>
 			<dgp:assignedAction>exportLayer</dgp:assignedAction>
@@ -117,10 +53,6 @@
 			<dgp:assignedAction>commitAll</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/s_commit_all.png"/>
 		</dgp:MenuItem>
-        <dgp:MenuItem>
-            <dgp:name>-</dgp:name>
-            <dgp:assignedAction>dummy</dgp:assignedAction>
-        </dgp:MenuItem>
 		<dgp:MenuItem>
 			<dgp:name>$ExportMapAsImage</dgp:name>
 			<dgp:assignedAction>exportAsImage</dgp:assignedAction>
@@ -131,91 +63,69 @@
 			<dgp:assignedAction>exportToClipBoard</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/map_copy.png"/>
 		</dgp:MenuItem>
-        <dgp:MenuItem>
+		<dgp:MenuItem>
             <dgp:name>-</dgp:name>
             <dgp:assignedAction>dummy</dgp:assignedAction>
         </dgp:MenuItem>
 	</dgp:Menu>
 	<dgp:Menu>
 		<cmm:identifier>
-			<cmm:value>MB3967</cmm:value>
+			<cmm:value>MM1_MB19</cmm:value>
 		</cmm:identifier>
 		<dgp:parent>
 			<cmm:value>MB1tools</cmm:value>
 		</dgp:parent>
 		<dgp:name/>
+		<!--dgp:MenuItem>
+			<dgp:name>$HyperlinkTool</dgp:name>
+			<dgp:assignedAction>activateHyperlink</dgp:assignedAction>
+			<dgp:icon xlink:href="../icons/link_go.png"/>
+		</dgp:MenuItem-->
+		<dgp:MenuItem>
+			<dgp:name>$selectByAttributes</dgp:name>
+			<dgp:assignedAction>selectByAttributes</dgp:assignedAction>
+			<dgp:icon xlink:href="../icons/attribut_search.png"/>
+		</dgp:MenuItem>
 		<dgp:MenuItem>
 			<dgp:name>$addLinkedTable</dgp:name>
-			<!--dgp:tooltip>$addLinkedTable.tooltip</dgp:tooltip-->
 			<dgp:assignedAction>addLinkedTable</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/table_add.png"/>
 		</dgp:MenuItem>
 	</dgp:Menu>
-	<dgp:Menu>
-		<cmm:identifier>
-			<cmm:value>MM1_MB15</cmm:value>
-		</cmm:identifier>
-		<dgp:parent>
-			<cmm:value>MB1tools</cmm:value>
-		</dgp:parent>
-		<dgp:name/>
-		<dgp:MenuItem>
-			<dgp:name>$HyperlinkTool</dgp:name>
-			<dgp:assignedAction>activateHyperlink</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/link_go.png"/>
-		</dgp:MenuItem>
-	</dgp:Menu>
-	<dgp:Menu>
-		<cmm:identifier>
-			<cmm:value>selectByAttributes</cmm:value>
-		</cmm:identifier>
-		<dgp:parent>
-			<cmm:value>MB1tools</cmm:value>
-		</dgp:parent>
-		<dgp:name/>
-		<dgp:MenuItem>
-			<dgp:name>$selectByAttributes</dgp:name>
-			<!--dgp:tooltip>$addLinkedTable.tooltip</dgp:tooltip-->
-			<dgp:assignedAction>selectByAttributes</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/attribut_search.png"/>
-		</dgp:MenuItem>
-	</dgp:Menu>
-	
-	
-	<dgp:PopUpEntry assignedGroup="ZoomGroup">
-		<cmm:identifier>
-			<cmm:value>PUMM44</cmm:value>
-		</cmm:identifier>
-		<dgp:name>$MB33.name</dgp:name>
-		<dgp:assignedAction>pan</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/pan.png"/>
-		<dgp:entryType>RadioButtonItem</dgp:entryType>
-	</dgp:PopUpEntry>
-	<dgp:PopUpEntry assignedGroup="ZoomGroup">
+	<dgp:PopUpEntry assignedGroup="PUZoomGroup">
 		<cmm:identifier>
 			<cmm:value>PUMM42</cmm:value>
 		</cmm:identifier>
 		<dgp:name>$MB31.name</dgp:name>
 		<dgp:assignedAction>zoomIn</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/zoomin.png"/>
+		<dgp:icon xlink:href="../icons/zoomin.png" />
 		<dgp:entryType>RadioButtonItem</dgp:entryType>
 	</dgp:PopUpEntry>
-	<dgp:PopUpEntry assignedGroup="ZoomGroup">
+	<dgp:PopUpEntry assignedGroup="PUZoomGroup">
 		<cmm:identifier>
 			<cmm:value>PUMM43</cmm:value>
 		</cmm:identifier>
 		<dgp:name>$MB32.name</dgp:name>
 		<dgp:assignedAction>zoomOut</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/zoomout.png"/>
+		<dgp:icon xlink:href="../icons/zoomout.png" />
 		<dgp:entryType>RadioButtonItem</dgp:entryType>
 	</dgp:PopUpEntry>
-	<dgp:PopUpEntry assignedGroup="ZoomGroup">
+	<dgp:PopUpEntry assignedGroup="PUZoomGroup">
+		<cmm:identifier>
+			<cmm:value>PUMM44</cmm:value>
+		</cmm:identifier>
+		<dgp:name>$MB33.name</dgp:name>
+		<dgp:assignedAction>pan</dgp:assignedAction>
+		<dgp:icon xlink:href="../icons/pan.png" />
+		<dgp:entryType>RadioButtonItem</dgp:entryType>
+	</dgp:PopUpEntry>
+	<dgp:PopUpEntry assignedGroup="PUZoomGroup">
 		<cmm:identifier>
 			<cmm:value>PUMM45</cmm:value>
 		</cmm:identifier>
 		<dgp:name>$MB34.name</dgp:name>
 		<dgp:assignedAction>center</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/s_center.png"/>
+		<dgp:icon xlink:href="../icons/s_center.png" />
 		<dgp:entryType>RadioButtonItem</dgp:entryType>
 	</dgp:PopUpEntry>
 	<dgp:PopUpEntry>
@@ -224,15 +134,7 @@
 		</cmm:identifier>
 		<dgp:name>$ZoomExtent</dgp:name>
 		<dgp:assignedAction>zoomToFullExtent</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/s_zoomtofullextent.png"/>
-	</dgp:PopUpEntry>
-	<dgp:PopUpEntry>
-		<cmm:identifier>
-			<cmm:value>PUMM50</cmm:value>
-		</cmm:identifier>
-		<dgp:name>$ZoomToFeatures</dgp:name>
-		<dgp:assignedAction>zoomToSelectedFeatures</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/s_zoomtofeature.png"/>
+		<dgp:icon xlink:href="../icons/s_zoomtofullextent.png" />
 	</dgp:PopUpEntry>
 	<dgp:PopUpEntry>
 		<cmm:identifier>
@@ -247,12 +149,12 @@
 		<cmm:identifier>
 			<cmm:value>MB3967</cmm:value>
 		</cmm:identifier>
-		<dgp:name>addLinkedTable</dgp:name>
+		<<dgp:name>addLinkedTable</dgp:name>
 		<dgp:tooltip>$addLinkedTable.tooltip</dgp:tooltip>
 		<dgp:assignedAction>addLinkedTable</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/table_link.png"/>
+		<dgp:icon xlink:href="../icons/table_add.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry-->	
+	</dgp:ToolBarEntry-->		
 	
 	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
 		<cmm:identifier>
@@ -302,26 +204,6 @@
 	</dgp:ToolBarEntry>
 	<dgp:ToolBarEntry>
 		<cmm:identifier>
-			<cmm:value>MB307</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$zoomToLayers.tooltip</dgp:tooltip>
-		<dgp:assignedAction>zoomToSelectedLayers</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/zoomToLayers.png"/>
-		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry>
-	<dgp:ToolBarEntry assignedGroup="TBSelectGroup">
-		<cmm:identifier>
-			<cmm:value>identifier765</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$ZoomToSelectedFeatures.tooltip</dgp:tooltip>
-		<dgp:assignedAction>zoomToSelectedFeatures</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/zoomtofeature.png"/>
-		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry>
-	<dgp:ToolBarEntry>
-		<cmm:identifier>
 			<cmm:value>TB42</cmm:value>
 		</cmm:identifier>
 		<dgp:name/>
@@ -340,52 +222,14 @@
 		<dgp:icon xlink:href="../icons/arrow_right.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
 	</dgp:ToolBarEntry>
-	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
-		<cmm:identifier>
-			<cmm:value>MB34</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$selectAnObject.tooltip</dgp:tooltip>
-		<dgp:assignedAction>select</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/selectObject.png"/>
-	</dgp:ToolBarEntry>
-	<!--dgp:ToolBarEntry>
-		<cmm:identifier>
-			<cmm:value>selectByAttributes</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$selectByAttributes.tooltip</dgp:tooltip>
-		<dgp:assignedAction>selectByAttributes</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/attribut_search.png"></dgp:icon>
-		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry-->
-	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
-		<cmm:identifier>
-			<cmm:value>MB40</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$ObjectInfo.tooltip</dgp:tooltip>
-		<dgp:assignedAction>objectInfo</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/objectInfo.png"/>
-	</dgp:ToolBarEntry>
 	<dgp:ToolBarEntry>
 		<cmm:identifier>
-			<cmm:value>commitAll</cmm:value>
+			<cmm:value>MB307</cmm:value>
 		</cmm:identifier>
 		<dgp:name/>
-		<dgp:tooltip>$commitAll.tooltip</dgp:tooltip>
-		<dgp:assignedAction>commitAll</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/commit_all.png"/>
-		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry>
-	<dgp:ToolBarEntry>
-		<cmm:identifier>
-			<cmm:value>commitSelected</cmm:value>
-		</cmm:identifier>
-		<dgp:name/>
-		<dgp:tooltip>$commitSelected.tooltip</dgp:tooltip>
-		<dgp:assignedAction>commitSelected</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/commit_selected.png"/>
+		<dgp:tooltip>$zoomToLayers.tooltip</dgp:tooltip>
+		<dgp:assignedAction>zoomToSelectedLayers</dgp:assignedAction>
+		<dgp:icon xlink:href="../icons/zoomToLayers.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
 	</dgp:ToolBarEntry>
 	<dgp:ToolBarEntry>
@@ -398,20 +242,35 @@
 		<dgp:icon xlink:href="../icons/export_layer.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
 	</dgp:ToolBarEntry>
-	
-	
-	
-	<!--dgp:ToolBarEntry>
+	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
 		<cmm:identifier>
-			<cmm:value>synchronizeMapModels</cmm:value>
+			<cmm:value>MB34</cmm:value>
 		</cmm:identifier>
 		<dgp:name/>
-		<dgp:tooltip>$synchronizeMapModels.tooltip</dgp:tooltip>
-		<dgp:assignedAction>synchronizeMapModels</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/synchronize_maps.png"/>
+		<dgp:tooltip>$selectAnObject.tooltip</dgp:tooltip>
+		<dgp:assignedAction>select</dgp:assignedAction>
+		<dgp:icon xlink:href="../icons/selectObject.png"/>
+	</dgp:ToolBarEntry>
+	<dgp:ToolBarEntry assignedGroup="TBSelectGroup">
+		<cmm:identifier>
+			<cmm:value>identifier765</cmm:value>
+		</cmm:identifier>
+		<dgp:name/>
+		<dgp:tooltip>$ZoomToSelectedFeatures.tooltip</dgp:tooltip>
+		<dgp:assignedAction>zoomToSelectedFeatures</dgp:assignedAction>
+		<dgp:icon xlink:href="../icons/zoomtofeature.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry-->
-	<set:HelpContext>
+	</dgp:ToolBarEntry>
+	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
+		<cmm:identifier>
+			<cmm:value>MB40</cmm:value>
+		</cmm:identifier>
+		<dgp:name/>
+		<dgp:tooltip>$ObjectInfo.tooltip</dgp:tooltip>
+		<dgp:assignedAction>objectInfo</dgp:assignedAction>
+		<dgp:icon xlink:href="../icons/objectInfo.png"/>
+	</dgp:ToolBarEntry>	
+   <set:HelpContext>
     <set:page mainPage="true">
       <cmm:OnlineResource xlink:href="./help/mapmodule/layer.de.html"/>
       <set:keyword>Kartenebene: Allgemein</set:keyword>
@@ -484,8 +343,4 @@
       <set:keyword>Hotlink öffnen </set:keyword>
     </set:page>
   </set:HelpContext>
-	<dgp:init-param>
-		<dgp:name>assignedMapModel</dgp:name>
-		<dgp:value>MM1</dgp:value>
-	</dgp:init-param>
 </dgp:Module>

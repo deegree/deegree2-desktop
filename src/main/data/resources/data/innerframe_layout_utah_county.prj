@@ -13,7 +13,7 @@ language="de">
 	<ns4:View hasFooter="true">
 		<ns4:ViewForm>
 			<ns4:FrameViewForm resizeable="true">
-				<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapInnerFrame</ns4:containerClass>
+				<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.map.DefaultMapFrame</ns4:containerClass>
 				<ns4:ComponentState modal="false" active="true">
 					<ns4:windowState>normal</ns4:windowState>
 				</ns4:ComponentState>
@@ -430,6 +430,7 @@ language="de">
 			</ns4:AbsolutePosition>
 			<ns4:ModuleReference>
 				<OnlineResource ns2:href="./map_module_iframe.mdx"/>
+				<!--OnlineResource ns2:href="./map_module.mdx"/-->
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
 		<!--ZoomByCoordinatesModul-->
@@ -677,20 +678,26 @@ language="de">
 						<ns4:assignedAction>print</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_pdf.png"/>
 					</ns4:MenuItem>
-					<ns4:MenuItem>
+						<ns4:MenuItem>
+						<ns4:name>$MD10348a</ns4:name>
+						<ns4:tooltip>$MD10348a</ns4:tooltip>
+						<ns4:assignedAction>directPrint</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/s_printer.png"/>
+					</ns4:MenuItem>
+					<!--ns4:MenuItem>
 						<ns4:name>$MD10364</ns4:name>
 						<ns4:tooltip>$MD10364</ns4:tooltip>
 						<ns4:assignedAction>editSettings</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_report_edit.png"/>
-					</ns4:MenuItem>
-					<ns4:MenuItem>
+					</ns4:MenuItem-->
+					<!--ns4:MenuItem>
 						<ns4:name>$MD10365</ns4:name>
 						<ns4:tooltip>$MD10365</ns4:tooltip>
 						<ns4:assignedAction>editTemplates</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_ireport.png"/>
-					</ns4:MenuItem>
+					</ns4:MenuItem-->
 				</ns4:Menu>
-				<ns4:ToolBarEntry>
+				<!--ns4:ToolBarEntry>
 					<identifier>
 						<value>TBprint2</value>
 					</identifier>
@@ -698,8 +705,8 @@ language="de">
 					<ns4:assignedAction>directPrint</ns4:assignedAction>
 					<ns4:icon ns2:href="../icons/printer.png"/>
 					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry>
-				<ns4:ToolBarEntry>
+				</ns4:ToolBarEntry-->
+				<!--ns4:ToolBarEntry>
 					<identifier>
 						<value>TBprint</value>
 					</identifier>
@@ -707,7 +714,7 @@ language="de">
 					<ns4:assignedAction>print</ns4:assignedAction>
 					<ns4:icon ns2:href="../icons/pdf.png"/>
 					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry>
+				</ns4:ToolBarEntry-->
 				<ns4:init-param>
 					<ns4:name>templates</ns4:name>
 					<ns4:value>            
