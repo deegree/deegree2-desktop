@@ -71,6 +71,7 @@ import org.deegree.igeo.config.DatabaseDriverUtils;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.config.LinkedDatabaseTableType;
 import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.addlayer.AddDatabaseLayerDialog;
 import org.deegree.io.DBConnectionPool;
@@ -301,7 +302,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
      * 
      */
     private void testConnection() {
-        String driver = DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() );
+        String driver = DatabaseConnectionManager.getDriver( cbDBDriver.getSelectedItem().toString() );
         String database = getConnectionString();
         try {
             DriverManager.registerDriver( (Driver) Class.forName( driver ).newInstance() );
@@ -324,7 +325,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
      */
     private void connectToDatabase() {
         DBConnectionPool pool = DBConnectionPool.getInstance();
-        String driver = DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() );
+        String driver = DatabaseConnectionManager.getDriver( cbDBDriver.getSelectedItem().toString() );
         String database = getConnectionString();
         Connection conn = null;
         try {
@@ -410,7 +411,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         String table = cbTables.getSelectedItem().toString();
         linkedTable.setEditable( false );
         JDBCConnectionType conType = new JDBCConnectionType();
-        conType.setDriver( DatabaseDriverUtils.getDriver( cbDBDriver.getSelectedItem().toString() ) );
+        conType.setDriver( DatabaseConnectionManager.getDriver( cbDBDriver.getSelectedItem().toString() ) );
         conType.setUrl( getConnectionString() );
         conType.setUser( tfDBUserName.getText() );
         conType.setPassword( new String( pwDBPassword.getPassword() ) );

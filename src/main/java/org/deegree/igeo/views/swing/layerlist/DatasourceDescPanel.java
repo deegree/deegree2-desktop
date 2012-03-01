@@ -75,6 +75,7 @@ import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.dataadapter.WFSFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Datasource;
 import org.deegree.igeo.mapmodel.Datasource.DS_PARAMETER;
@@ -443,7 +444,7 @@ public class DatasourceDescPanel extends JPanel {
          * @return database driver
          */
         public String getDriver() {
-            return DatabaseDriverUtils.getDriver( database.getSelectedItem().toString() );
+            return DatabaseConnectionManager.getDriver( database.getSelectedItem().toString() );
         }
 
         /**

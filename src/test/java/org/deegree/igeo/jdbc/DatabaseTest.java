@@ -32,13 +32,8 @@
  http://www.geographie.uni-bonn.de/deegree/
 
  e-mail: info@deegree.org
- ----------------------------------------------------------------------------*/
-package org.deegree.igeo.config;
-
-import java.util.Locale;
-
-import org.deegree.framework.util.StringTools;
-import org.deegree.igeo.i18n.Messages;
+----------------------------------------------------------------------------*/
+package org.deegree.igeo.jdbc;
 
 /**
  * TODO add class documentation here
@@ -48,11 +43,6 @@ import org.deegree.igeo.i18n.Messages;
  * 
  * @version $Revision: $, $Date: $
  */
-public class DatabaseDriverUtils {
+public interface DatabaseTest {
 
-    // TODO: is'nt it part of the project settings?
-    public static String[] getDriverLabels() {
-        String s = Messages.getMessage( Locale.getDefault(), "$MD11542" );
-        return StringTools.toArray( s, ",;", false );
-    }
 }

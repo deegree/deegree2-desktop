@@ -47,8 +47,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -81,6 +79,7 @@ import org.deegree.framework.utils.CRSUtils;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddDatabaseLayerCommand;
 import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.HelpManager;
@@ -876,22 +875,9 @@ public class AddDatabaseLayerDialog extends JDialog {
     }
 
     private String getConnectionString() {
-        String database = null;
-        String s = cbDriver.getSelectedItem().toString().toLowerCase();
-        if ( s.indexOf( "postgis" ) > -1 ) {
-            database = "jdbc:postgresql://" + tfURL.getText() + ':' + ( (Number) spPort.getValue() ).intValue() + '/'
-                       + tfDatabase.getText();
-        } else if ( s.indexOf( "oracle" ) > -1 ) {
-            database = "jdbc:oracle:thin:@" + tfURL.getText() + ':' + ( (Number) spPort.getValue() ).intValue() + ':'
-                       + tfDatabase.getText();
-        } else if ( s.indexOf( "mysql" ) > -1 ) {
-            database = "jdbc:mysql://" + tfURL.getText() + ':' + ( (Number) spPort.getValue() ).intValue() + '/'
-                       + tfDatabase.getText();
-        } else if ( s.indexOf( "sqlserver" ) > -1 ) {
-            database = "jdbc:sqlserver://" + tfURL.getText() + ':' + ( (Number) spPort.getValue() ).intValue()
-                       + ";databaseName=" + tfDatabase.getText() + ";";
-        }
-        return database;
+        return DatabaseConnectionManager.getConnectionUrl( cbDriver.getSelectedItem().toString(), tfURL.getText(),
+                                                           ( (Number) spPort.getValue() ).intValue(),
+                                                           tfDatabase.getText() );
     }
 
     private String getDriver() {
@@ -909,25 +895,24 @@ public class AddDatabaseLayerDialog extends JDialog {
         return driver;
     }
 
-    /**
-     * 
-     */
-    private void testConnection() {
-        String driver = getDriver();
-        String database = getConnectionString();
-        try {
-            DriverManager.registerDriver( (Driver) Class.forName( driver ).newInstance() );
+    private String getUser() {
+        return tfUser.getText();
+    }
 
-            Connection conn = DriverManager.getConnection( database, tfUser.getText(),
-                                                           new String( pwPassword.getPassword() ) );
-            conn.close();
+    private String getPassword() {
+        return new String( pwPassword.getPassword() );
+    }
+
+    private void testConnection() {
+        try {
+            DatabaseConnectionManager.testConnection( getDriver(), getConnectionString(), getUser(), getPassword() );
             DialogFactory.openInformationDialog( appCont.getViewPlatform(), this,
                                                  Messages.getMessage( getLocale(), "$MD11456" ),
                                                  Messages.getMessage( getLocale(), "$MD11452" ) );
         } catch ( Exception e ) {
             DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
                                            Messages.getMessage( getLocale(), "$MD11452" ),
-                                           Messages.getMessage( getLocale(), "$MD11457", database ), e );
+                                           Messages.getMessage( getLocale(), "$MD11457", getConnectionString() ), e );
         }
     }
 
@@ -983,12 +968,10 @@ public class AddDatabaseLayerDialog extends JDialog {
      * 
      */
     private void connectToDatabase() {
-        DBConnectionPool pool = DBConnectionPool.getInstance();
-        String driver = getDriver();
-        String database = getConnectionString();
         Connection conn = null;
         try {
-            conn = pool.acquireConnection( driver, database, tfUser.getText(), new String( pwPassword.getPassword() ) );
+            conn = DatabaseConnectionManager.aquireConnection( getDriver(), getConnectionString(), getUser(),
+                                                               getPassword() );
             readAvailableTables( conn );
             pnContent.setVisible( true );
         } catch ( Exception e ) {
@@ -996,10 +979,13 @@ public class AddDatabaseLayerDialog extends JDialog {
                                            Messages.getMessage( getLocale(), "$MD11452" ),
                                            Messages.getMessage( getLocale(), "$MD11458", e.getMessage() ), e );
         } finally {
-            try {
-                pool.releaseConnection( conn, driver, database, tfUser.getText(), new String( pwPassword.getPassword() ) );
-            } catch ( DBPoolException e ) {
-                e.printStackTrace();
+            if ( conn != null ) {
+                try {
+                    DatabaseConnectionManager.releaseConnection( conn, getDriver(), getConnectionString(), getUser(),
+                                                                 getPassword() );
+                } catch ( DBPoolException e ) {
+                    e.printStackTrace();
+                }
             }
         }
     }
