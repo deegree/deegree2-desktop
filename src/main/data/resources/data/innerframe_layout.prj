@@ -728,19 +728,13 @@
 						<icon ns3:href="../icons/s_pdf.png"/>
 					</MenuItem>
 					<MenuItem>
-						<name>$MD10364</name>
-						<tooltip>$MD10364</tooltip>
-						<assignedAction>editSettings</assignedAction>
-						<icon ns3:href="../icons/s_report_edit.png"/>
-					</MenuItem>
-					<MenuItem>
-						<name>$MD10365</name>
-						<tooltip>$MD10365</tooltip>
-						<assignedAction>editTemplates</assignedAction>
-						<icon ns3:href="../icons/s_ireport.png"/>
+						<name>$MD10348a</name>
+						<tooltip>$MD10348a</tooltip>
+						<assignedAction>directPrint</assignedAction>
+						<icon ns3:href="../icons/s_printer.png"/>
 					</MenuItem>
 				</Menu>
-				<ToolBarEntry>
+				<!--ToolBarEntry>
 					<ns2:identifier>
 						<ns2:value>TBprint</ns2:value>
 					</ns2:identifier>
@@ -748,7 +742,7 @@
 					<assignedAction>openVectorPrint</assignedAction>
 					<icon ns3:href="../icons/pdf.png"/>
 					<entryType>PushButton</entryType>
-				</ToolBarEntry>
+				</ToolBarEntry-->
 				<init-param>
 					<name>templates</name>
 					<value>            
