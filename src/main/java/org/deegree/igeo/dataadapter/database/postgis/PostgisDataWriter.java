@@ -33,7 +33,7 @@
 
  e-mail: info@deegree.org
  ----------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database.postgis;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,6 +43,8 @@ import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
+import org.deegree.igeo.dataadapter.database.DatabaseDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;

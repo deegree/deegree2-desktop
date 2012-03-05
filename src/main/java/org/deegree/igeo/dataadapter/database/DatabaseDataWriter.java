@@ -33,42 +33,50 @@
 
  e-mail: info@deegree.org
 ----------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database;
 
+import org.deegree.igeo.mapmodel.DatabaseDatasource;
+import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.model.feature.FeatureCollection;
-import org.deegree.model.feature.schema.FeatureType;
-import org.deegree.model.spatialschema.Envelope;
 
 /**
- * Interfaces that have to implemented by classes for accessing data from databases
+ * Interfaces that have to implemented by classes writing data into databases
  * 
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
  */
-public interface DatabaseDataLoader {
-    
+public interface DatabaseDataWriter {
     /**
-     * @param envelope
-     * @return loaded feature collection
+     * @param datasource
+     * @param featureCollection
+     * @param layer
      */
-    FeatureCollection load(Envelope envelope);
+    void insertFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
     
     /**
      * 
-     * @param timeout timeout for accessing WFS 
+     * @param datasource
+     * @param featureCollection
+     * @param layer
+     * @return number of features that has been updated
      */
-    void setTimeout(int timeout);
-
+    int updateFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
+    
     /**
-     * @param maxFeatures
+     * 
+     * @param datasource
+     * @param featureCollection
+     * @param layer
+     * @return number of features that has been deleted
      */
-    void setMaxFeatures( int maxFeatures );
+    int deleteFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
 
     /**
      * 
-     * @return
+     * @param timeout
+     *            timeout for accessing WFS
      */
-    FeatureType getFeatureType();
+    void setTimeout( int timeout );
 }

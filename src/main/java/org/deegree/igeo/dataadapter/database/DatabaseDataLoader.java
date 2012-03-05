@@ -33,50 +33,42 @@
 
  e-mail: info@deegree.org
 ----------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database;
 
-import org.deegree.igeo.mapmodel.DatabaseDatasource;
-import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.schema.FeatureType;
+import org.deegree.model.spatialschema.Envelope;
 
 /**
- * Interfaces that have to implemented by classes writing data into databases
+ * Interfaces that have to implemented by classes for accessing data from databases
  * 
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
  */
-public interface DatabaseDataWriter {
+public interface DatabaseDataLoader {
+    
     /**
-     * @param datasource
-     * @param featureCollection
-     * @param layer
+     * @param envelope
+     * @return loaded feature collection
      */
-    void insertFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
+    FeatureCollection load(Envelope envelope);
     
     /**
      * 
-     * @param datasource
-     * @param featureCollection
-     * @param layer
-     * @return number of features that has been updated
+     * @param timeout timeout for accessing WFS 
      */
-    int updateFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
-    
+    void setTimeout(int timeout);
+
     /**
-     * 
-     * @param datasource
-     * @param featureCollection
-     * @param layer
-     * @return number of features that has been deleted
+     * @param maxFeatures
      */
-    int deleteFeatures(DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer );
+    void setMaxFeatures( int maxFeatures );
 
     /**
      * 
-     * @param timeout
-     *            timeout for accessing WFS
+     * @return
      */
-    void setTimeout( int timeout );
+    FeatureType getFeatureType();
 }

@@ -36,7 +36,7 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +49,14 @@ import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.config.JDBCConnection;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.dataadapter.DataAccessException;
+import org.deegree.igeo.dataadapter.FeatureAdapter;
+import org.deegree.igeo.dataadapter.MaxDatabaseColumnValueGenerator;
+import org.deegree.igeo.dataadapter.UUIDValueGenerator;
+import org.deegree.igeo.dataadapter.database.oracle.OracleDataLoader;
+import org.deegree.igeo.dataadapter.database.oracle.OracleDataWriter;
+import org.deegree.igeo.dataadapter.database.postgis.PostgisDataLoader;
+import org.deegree.igeo.dataadapter.database.postgis.PostgisDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;

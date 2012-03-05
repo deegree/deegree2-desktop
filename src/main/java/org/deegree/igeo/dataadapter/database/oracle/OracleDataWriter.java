@@ -33,13 +33,15 @@
 
  e-mail: info@deegree.org
  ----------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database.oracle;
 
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.deegree.datatypes.Types;
+import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
+import org.deegree.igeo.dataadapter.database.DatabaseDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.schema.PropertyType;

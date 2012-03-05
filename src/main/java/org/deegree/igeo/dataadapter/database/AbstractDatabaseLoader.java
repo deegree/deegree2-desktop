@@ -33,7 +33,7 @@
 
  e-mail: info@deegree.org
  ----------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.database;
 
 import java.net.URI;
 import java.sql.Connection;
@@ -62,7 +62,7 @@ import org.deegree.model.feature.schema.PropertyType;
  * 
  * @version $Revision$, $Date$
  */
-abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
+public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
 
     private static final ILogger LOG = LoggerFactory.getLogger( AbstractDatabaseLoader.class );
 

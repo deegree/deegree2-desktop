@@ -53,6 +53,7 @@ import org.deegree.igeo.config.LinkedDatabaseTableType;
 import org.deegree.igeo.config.LinkedFileTableType;
 import org.deegree.igeo.config.MemoryDatasourceType;
 import org.deegree.igeo.config.Util;
+import org.deegree.igeo.dataadapter.database.DatabaseFeatureAdapter;
 import org.deegree.igeo.dataadapter.wcs.WCSGridCoverageAdapter;
 import org.deegree.igeo.dataadapter.wfs.WFSFeatureAdapter;
 import org.deegree.igeo.dataadapter.wms.WMSGridCoverageAdapter;
