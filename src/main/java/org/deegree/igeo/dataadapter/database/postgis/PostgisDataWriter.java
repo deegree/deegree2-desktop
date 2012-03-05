@@ -42,11 +42,10 @@ import java.sql.SQLException;
 import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
 import org.deegree.igeo.dataadapter.database.DatabaseDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
-import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
 import org.deegree.io.datastore.sql.postgis.PGgeometryAdapter;
 import org.deegree.model.feature.Feature;
@@ -63,7 +62,7 @@ import org.postgresql.PGConnection;
  * 
  * @version $Revision$, $Date$
  */
-public class PostgisDataWriter  extends AbstractDatabaseWriter {
+public class PostgisDataWriter extends AbstractDatabaseWriter {
 
     private static final ILogger LOG = LoggerFactory.getLogger( PostgisDataWriter.class );
 
@@ -93,7 +92,7 @@ public class PostgisDataWriter  extends AbstractDatabaseWriter {
     }
 
     protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                 PropertyType[] pt )
+                                   PropertyType[] pt )
                             throws GeometryException, SQLException {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
@@ -118,9 +117,9 @@ public class PostgisDataWriter  extends AbstractDatabaseWriter {
     }
 
     protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource, PropertyType[] pt,
-                                    Feature feature, int index )
+                                      Feature feature, int index )
                             throws SQLException {
-        for ( int i = 0; i < pt.length; i++ ) {            
+        for ( int i = 0; i < pt.length; i++ ) {
             if ( pt[i].getName().getLocalName().equalsIgnoreCase( datasource.getPrimaryKeyFieldName() ) ) {
                 Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
                 stmt.setObject( index, value, pt[i].getType() );
@@ -129,12 +128,10 @@ public class PostgisDataWriter  extends AbstractDatabaseWriter {
         }
     }
 
-
-    protected Connection acquireConnection( JDBCConnectionType jdbc )
+    @Override
+    protected Connection acquireConnection( JDBCConnection jdbc )
                             throws DBPoolException, SQLException {
-        Connection conn;
-        DBConnectionPool pool = DBConnectionPool.getInstance();
-        conn = pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
+        Connection conn = super.acquireConnection( jdbc );
         PGConnection pgConn = (PGConnection) conn;
         pgConn.addDataType( GEOMETRY_DATATYPE_NAME, pgGeometryClass );
         pgConn.addDataType( BOX3D_DATATYPE_NAME, pgBox3dClass );

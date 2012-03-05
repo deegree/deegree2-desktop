@@ -57,6 +57,8 @@ import org.deegree.igeo.dataadapter.database.oracle.OracleDataLoader;
 import org.deegree.igeo.dataadapter.database.oracle.OracleDataWriter;
 import org.deegree.igeo.dataadapter.database.postgis.PostgisDataLoader;
 import org.deegree.igeo.dataadapter.database.postgis.PostgisDataWriter;
+import org.deegree.igeo.dataadapter.database.sqlserver.SqlServerDataLoader;
+import org.deegree.igeo.dataadapter.database.sqlserver.SqlServerDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
@@ -107,16 +109,7 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
      */
     private void loadSchema() {
         if ( schemas.get( datasource.getName() ) == null ) {
-            String driver = jdbc.getDriver();
-            DatabaseDataLoader loader = null;
-            if ( driver.toUpperCase().indexOf( "POSTGRES" ) > -1 ) {
-                loader = new PostgisDataLoader( (DatabaseDatasource) datasource );
-            } else if ( driver.toUpperCase().indexOf( "ORACLE" ) > -1 ) {
-                loader = new OracleDataLoader( (DatabaseDatasource) datasource );
-            } else {
-                // TODO
-                throw new DataAccessException( "database/driver: " + driver + " is not supported yet" );
-            }
+            DatabaseDataLoader loader = instantiateLoader();
             FeatureType ft = loader.getFeatureType();
             schemas.put( datasource.getName(), ft );
         }
@@ -180,21 +173,33 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
         }
     }
 
+    private DatabaseDataLoader instantiateLoader() {
+        String driver = jdbc.getDriver();
+        if ( driver.toUpperCase().indexOf( "POSTGRES" ) > -1 ) {
+            return new PostgisDataLoader( (DatabaseDatasource) datasource );
+        } else if ( driver.toUpperCase().indexOf( "ORACLE" ) > -1 ) {
+            return new OracleDataLoader( (DatabaseDatasource) datasource );
+        } else if ( driver.toUpperCase().indexOf( "SQLSERVER" ) > -1 ) {
+            return new SqlServerDataLoader( (DatabaseDatasource) datasource );
+        } else {
+            throw new DataAccessException( "database/driver: " + driver + " is not supported yet" );
+        }
+    }
+
     /**
      * @return database write class
      */
     private DatabaseDataWriter instantiateWriter() {
         String driver = jdbc.getDriver();
-        DatabaseDataWriter writer = null;
         if ( driver.toUpperCase().indexOf( "POSTGRES" ) > -1 ) {
-            writer = new PostgisDataWriter();
+            return new PostgisDataWriter();
         } else if ( driver.toUpperCase().indexOf( "ORACLE" ) > -1 ) {
-            writer = new OracleDataWriter();
+            return new OracleDataWriter();
+        } else if ( driver.toUpperCase().indexOf( "SQLSERVER" ) > -1 ) {
+            return new SqlServerDataWriter();
         } else {
-            // TODO
             throw new DataAccessException( "database/driver: " + driver + " is not supported yet" );
         }
-        return writer;
     }
 
     @Override
@@ -209,16 +214,7 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
 
     private void loadData( Envelope envelope ) {
         try {
-            String driver = jdbc.getDriver();
-            DatabaseDataLoader loader = null;
-            if ( driver.toUpperCase().indexOf( "POSTGRES" ) > -1 ) {
-                loader = new PostgisDataLoader( (DatabaseDatasource) datasource );
-            } else if ( driver.toUpperCase().indexOf( "ORACLE" ) > -1 ) {
-                loader = new OracleDataLoader( (DatabaseDatasource) datasource );
-            } else {
-                // TODO
-                throw new DataAccessException( "database/driver: " + driver + " is not supported yet" );
-            }
+            DatabaseDataLoader loader = instantiateLoader();
             FeatureCollection fc = loader.load( envelope );
             fc = transform( fc );
             featureCollections.put( datasource.getName(), fc );

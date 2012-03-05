@@ -266,7 +266,18 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>mssql</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.microsoft</groupId>
+          <artifactId>sqljdbc4</artifactId>
+          <version>3.0</version>
+        </dependency>
+      </dependencies>
+    </profile>
   </profiles>
+  
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
