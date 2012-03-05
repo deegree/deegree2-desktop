@@ -600,7 +600,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                 }
             }
             readConnectionInfoFromCache();
-            this.setSize( 735, 655 );
+            this.setSize( 735, 680 );
         } catch ( Exception e ) {
             e.printStackTrace();
         }
