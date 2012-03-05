@@ -50,7 +50,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.deegree.datatypes.QualifiedName;
-import org.deegree.igeo.dataadapter.WFSFeatureAdapter;
+import org.deegree.igeo.dataadapter.wfs.WFSFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.WFSDatasource;
 import org.deegree.model.feature.schema.GeometryPropertyType;

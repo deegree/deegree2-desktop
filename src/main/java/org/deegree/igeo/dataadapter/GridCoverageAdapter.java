@@ -65,7 +65,7 @@ public abstract class GridCoverageAdapter extends DataAccessAdapter {
      * @param cmmLayer
      * @param cmmMapModel
      */
-    GridCoverageAdapter( Datasource cmmDatasource, Layer cmmLayer, MapModel cmmMapModel ) {
+    public GridCoverageAdapter( Datasource cmmDatasource, Layer cmmLayer, MapModel cmmMapModel ) {
         super( cmmDatasource, cmmLayer, cmmMapModel );
     }
 

@@ -35,59 +35,61 @@
  Germany
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
-
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.wfs;
 
 import java.net.URL;
-import java.util.List;
 
+import org.deegree.datatypes.QualifiedName;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.schema.GMLSchema;
+import org.deegree.model.spatialschema.Envelope;
+import org.deegree.ogcwebservices.wfs.operation.Query;
 
 /**
- * Definition of convenience methods for inserting, updating and deleting Features schema of a WFS. These methods are
- * defined within an interface because concrete realization depends on WFS version
+ * Definition of convenience methods for accessing FeatureCollections and GML application schema from
+ * a WFS. These methods are defined within an interface because concrete realization depends on WFS
+ * version
+ * 
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
- * 
  * @author last edited by: $Author$
  * 
- * @version $Revision$, $Date$
- * 
+ * @version. $Revision$, $Date$
  */
-public interface WFSDataWriter {
-    
-    /**
-     * list if IDs of inserted features
-     * @param wfsURL
-     * @param featureCollection
-     * @param layer
-     * @return ids of inserted features
-     */
-    List<String> insertFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
-    
-    /**
-     * 
-     * @param wfsURL
-     * @param featureCollection
-     * @param layer
-     * @return number of features that has been updated
-     */
-    int updateFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
-    
-    /**
-     * 
-     * @param wfsURL
-     * @param featureCollection
-     * @param layer
-     * @return number of features that has been deleted
-     */
-    int deleteFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
+public interface WFSDataLoader {
 
     /**
+     * reads data from a WFS and returns the result as feature collection. returned data may be
+     * limited by a restricting bounding box and/or a filter expression
      * 
-     * @param timeout
-     *            timeout for accessing WFS
+     * @param wfs
+     * @param property
+     * @param bbox
+     * @param query
+     * @param layer
+     * @return feature collection
      */
-    void setTimeout( int timeout );
+    FeatureCollection readFeatureCollection( URL wfs, QualifiedName property, Envelope bbox, Query query, Layer layer );
+
+    /**
+     * @param wfs
+     * @param layer
+     * @param featureTypes
+     * 
+     * @return GML application schema describing passed feature type
+     */
+    GMLSchema readGMLApplicationSchema( URL wfs, Layer layer, QualifiedName[] featureTypes );
+    
+    /**
+     * 
+     * @param timeout timeout for accessing WFS 
+     */
+    void setTimeout(int timeout);
+
+    /**
+     * @param maxFeatures
+     */
+    void setMaxFeatures( int maxFeatures );
+
 }

@@ -38,7 +38,7 @@
 package org.deegree.igeo.settings;
 
 import org.deegree.igeo.config.ServiceAdapterType;
-import org.deegree.igeo.dataadapter.WCS100CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wcs.WCS100CapabilitiesEvaluator;
 
 /**
  * The <code></code> class TODO add class documentation here.

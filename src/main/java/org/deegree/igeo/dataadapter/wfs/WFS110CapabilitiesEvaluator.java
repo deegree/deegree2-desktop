@@ -35,7 +35,8 @@
  Germany
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
+
+package org.deegree.igeo.dataadapter.wfs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,17 +46,16 @@ import org.deegree.framework.xml.XMLFragment;
 import org.deegree.framework.xml.XMLParsingException;
 import org.deegree.framework.xml.XMLTools;
 import org.deegree.ogcbase.CommonNamespaces;
-import org.deegree.ogcwebservices.OWSUtils;
 
 /**
- * Helper class for extracting access points (URLs) from a WMS 1.1.1 capabilities document
+ * Helper class for extracting access points (URLs) from a WFS 1.1.0 capabilities document
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version. $Revision$, $Date$
  */
-public class WMS130CapabilitiesEvaluator implements WMSCapabilitiesEvaluator {
+public class WFS110CapabilitiesEvaluator implements WFSCapabilitiesEvaluator {
 
     private XMLFragment xml;
 
@@ -64,55 +64,47 @@ public class WMS130CapabilitiesEvaluator implements WMSCapabilitiesEvaluator {
     /*
      * (non-Javadoc)
      * 
-     * @see org.deegree.client.presenter.connector.WMSCapabilitiesEvaluator#getGetLegendGraphicURL()
+     * @see org.deegree.client.presenter.connector.WFSCapabilitiesEvaluator#getDescribeFeatureTypeURL()
      */
-    public URL getGetLegendGraphicURL()
+    public URL getDescribeFeatureTypeURL()
                             throws XMLParsingException, MalformedURLException {
-        String xPathQuery = "//sld:GetLegendGraphic/wms:DCPType/wms:HTTP/wms:Get/wms:OnlineResource/@xlink:href";
+        String xPathQuery = "//ows:Operation[@name='DescribeFeatureType']/ows:DCP/ows:HTTP/ows:Get/@xlink:href";
+        String tmp = XMLTools.getRequiredNodeAsString( xml.getRootElement(), xPathQuery, nsContext );
+        return new URL( tmp );
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.deegree.client.presenter.connector.WFSCapabilitiesEvaluator#getGetFeatureURL()
+     */
+    public URL getGetFeatureURL()
+                            throws XMLParsingException, MalformedURLException {
+        String xPathQuery = "//ows:Operation[@name='GetFeature']/ows:DCP/ows:HTTP/ows:Post/@xlink:href";
+        String tmp = XMLTools.getRequiredNodeAsString( xml.getRootElement(), xPathQuery, nsContext );
+        return new URL( tmp );
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.deegree.client.presenter.connector.WFSCapabilitiesEvaluator#getTransactionURL()
+     */
+    public URL getTransactionURL()
+                            throws XMLParsingException, MalformedURLException {
+        String xPathQuery = "//ows:Operation[@name='Transaction']/ows:DCP/ows:HTTP/ows:Post/@xlink:href";
         String tmp = XMLTools.getNodeAsString( xml.getRootElement(), xPathQuery, nsContext, null );
         if ( tmp == null ) {
-            // GetLegedGraphic is optional
+            // transaction is optional
             return null;
         }
-        tmp = OWSUtils.validateHTTPGetBaseURL( tmp );
         return new URL( tmp );
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see org.deegree.client.presenter.connector.WMSCapabilitiesEvaluator#getGetMapHTTPGetURL()
-     */
-    public URL getGetMapHTTPGetURL()
-                            throws XMLParsingException, MalformedURLException {
-        String xPathQuery = "//wms:GetMap/wms:DCPType/wms:HTTP/wms:Get/wms:OnlineResource/@xlink:href";
-        String tmp = XMLTools.getRequiredNodeAsString( xml.getRootElement(), xPathQuery, nsContext );
-        tmp = OWSUtils.validateHTTPGetBaseURL( tmp );
-        return new URL( tmp );
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.WMSCapabilitiesEvaluator#getGetMapHTTPPostURL()
-     */
-    public URL getGetMapHTTPPostURL()
-                            throws XMLParsingException, MalformedURLException {
-        String xPathQuery = "//wms:GetMap/wms:DCPType/wms:HTTP/wms:Post/wms:OnlineResource/@xlink:href";
-        String tmp = XMLTools.getNodeAsString( xml.getRootElement(), xPathQuery, nsContext, null );
-        if ( tmp == null ) {
-            // GetMap via HTTP Post is optional
-            return null;
-        }        
-        return new URL( tmp );
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.deegree.client.presenter.connector.WMSCapabilitiesEvaluator#setCapabilities(org.deegree.framework.xml.XMLFragment
-     * )
+     * @see org.deegree.client.presenter.connector.WFSCapabilitiesEvaluator#setCapabilities(org.deegree.framework.xml.XMLFragment)
      */
     public void setCapabilities( XMLFragment xml ) {
         this.xml = xml;

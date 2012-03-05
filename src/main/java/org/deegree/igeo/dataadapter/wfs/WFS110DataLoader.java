@@ -36,7 +36,7 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.wfs;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -58,6 +58,7 @@ import org.deegree.framework.util.GeometryUtils;
 import org.deegree.framework.util.HttpUtils;
 import org.deegree.framework.xml.XMLFragment;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.dataadapter.DataAccessException;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.model.feature.Feature;

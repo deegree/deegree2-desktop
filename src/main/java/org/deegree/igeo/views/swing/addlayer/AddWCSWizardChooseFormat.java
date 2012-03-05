@@ -67,7 +67,7 @@ import org.deegree.framework.xml.XMLTools;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddWCSLayerCommand;
 import org.deegree.igeo.dataadapter.DataAccessException;
-import org.deegree.igeo.dataadapter.WCSCapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wcs.WCSCapabilitiesEvaluator;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.settings.WCSGridCoverageAdapterSettings;

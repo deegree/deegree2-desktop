@@ -101,9 +101,9 @@ import org.deegree.igeo.config.ProjectTemplatesType.Template;
 import org.deegree.igeo.config.ServiceAdapterType.CapabilitiesEvaluator;
 import org.deegree.igeo.config.VerticesType.SearchRadius;
 import org.deegree.igeo.config.WFSFeatureAdapterType.DataLoader;
-import org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator;
-import org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator;
-import org.deegree.igeo.dataadapter.WMS130CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wfs.WFS110CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wms.WMS111CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wms.WMS130CapabilitiesEvaluator;
 
 /**
  * Manages settings for a project. If no settings are defined with a project they will be read from the general users

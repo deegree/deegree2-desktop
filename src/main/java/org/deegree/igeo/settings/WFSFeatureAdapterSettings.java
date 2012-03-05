@@ -43,9 +43,9 @@ import java.util.List;
 import org.deegree.igeo.config.WFSFeatureAdapterType;
 import org.deegree.igeo.config.WFSFeatureAdapterType.DataLoader;
 import org.deegree.igeo.config.WFSFeatureAdapterType.DataWriter;
-import org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator;
-import org.deegree.igeo.dataadapter.WFS110DataLoader;
-import org.deegree.igeo.dataadapter.WFS110DataWriter;
+import org.deegree.igeo.dataadapter.wfs.WFS110CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wfs.WFS110DataLoader;
+import org.deegree.igeo.dataadapter.wfs.WFS110DataWriter;
 
 /**
  * The <code></code> class TODO add class documentation here.

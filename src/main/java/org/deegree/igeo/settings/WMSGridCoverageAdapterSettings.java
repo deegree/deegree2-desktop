@@ -40,7 +40,7 @@ package org.deegree.igeo.settings;
 
 import org.deegree.igeo.config.WMSGridCoverageAdapterType;
 import org.deegree.igeo.config.WMSGridCoverageAdapterType.FeatureCount;
-import org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wms.WMS111CapabilitiesEvaluator;
 
 /**
  * The <code></code> class TODO add class documentation here.

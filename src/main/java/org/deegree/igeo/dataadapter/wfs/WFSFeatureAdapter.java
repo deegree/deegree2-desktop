@@ -36,7 +36,7 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.wfs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +56,10 @@ import org.deegree.framework.xml.XMLFragment;
 import org.deegree.framework.xml.XMLParsingException;
 import org.deegree.framework.xml.XMLTools;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.dataadapter.DataAccessException;
+import org.deegree.igeo.dataadapter.FeatureAdapter;
+import org.deegree.igeo.dataadapter.FileFeatureAdapter;
+import org.deegree.igeo.dataadapter.OWSURLUtils;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Datasource;
 import org.deegree.igeo.mapmodel.Layer;
@@ -119,7 +123,7 @@ public class WFSFeatureAdapter extends FeatureAdapter {
      * @param baseURL
      * @param isLazyLoading
      */
-    WFSFeatureAdapter( Datasource datasource, Layer layer, MapModel mapModel, URL baseURL, boolean isLazyLoading ) {
+    public WFSFeatureAdapter( Datasource datasource, Layer layer, MapModel mapModel, URL baseURL, boolean isLazyLoading ) {
         super( datasource, layer, mapModel );
         this.baseURL = baseURL;
 

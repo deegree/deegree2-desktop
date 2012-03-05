@@ -73,7 +73,7 @@ import org.deegree.igeo.commands.model.UpdateDatasource;
 import org.deegree.igeo.config.DatabaseDriverUtils;
 import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
-import org.deegree.igeo.dataadapter.WFSFeatureAdapter;
+import org.deegree.igeo.dataadapter.wfs.WFSFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;

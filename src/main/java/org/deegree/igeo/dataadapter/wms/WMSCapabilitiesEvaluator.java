@@ -35,61 +35,59 @@
  Germany
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
-package org.deegree.igeo.dataadapter;
 
+package org.deegree.igeo.dataadapter.wms;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.deegree.datatypes.QualifiedName;
-import org.deegree.igeo.mapmodel.Layer;
-import org.deegree.model.feature.FeatureCollection;
-import org.deegree.model.feature.schema.GMLSchema;
-import org.deegree.model.spatialschema.Envelope;
-import org.deegree.ogcwebservices.wfs.operation.Query;
+import org.deegree.framework.xml.XMLFragment;
+import org.deegree.framework.xml.XMLParsingException;
 
 /**
- * Definition of convenience methods for accessing FeatureCollections and GML application schema from
- * a WFS. These methods are defined within an interface because concrete realization depends on WFS
- * version
- * 
+ * Definiton of convenience methods for accessing request target URLs from a WMS capabilities
+ * document. These methods are defined within an interface because concrete realization depends on
+ * WMS version
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version. $Revision$, $Date$
  */
-public interface WFSDataLoader {
+public interface WMSCapabilitiesEvaluator {
 
     /**
-     * reads data from a WFS and returns the result as feature collection. returned data may be
-     * limited by a restricting bounding box and/or a filter expression
+     * sets XML document representing WFS capabilities
      * 
-     * @param wfs
-     * @param property
-     * @param bbox
-     * @param query
-     * @param layer
-     * @return feature collection
+     * @param xml
      */
-    FeatureCollection readFeatureCollection( URL wfs, QualifiedName property, Envelope bbox, Query query, Layer layer );
+    void setCapabilities( XMLFragment xml );
 
     /**
-     * @param wfs
-     * @param layer
-     * @param featureTypes
      * 
-     * @return GML application schema describing passed feature type
+     * @return target URL for performing GetMap requests via HTTP Get
+     * @throws XMLParsingException
+     * @throws MalformedURLException
      */
-    GMLSchema readGMLApplicationSchema( URL wfs, Layer layer, QualifiedName[] featureTypes );
-    
-    /**
-     * 
-     * @param timeout timeout for accessing WFS 
-     */
-    void setTimeout(int timeout);
+    URL getGetMapHTTPGetURL()
+                            throws XMLParsingException, MalformedURLException;
 
     /**
-     * @param maxFeatures
+     * 
+     * @return target URL for performing GetMap requests via HTTP Post
+     * @throws XMLParsingException
+     * @throws MalformedURLException
      */
-    void setMaxFeatures( int maxFeatures );
+    URL getGetMapHTTPPostURL()
+                            throws XMLParsingException, MalformedURLException;
+
+    /**
+     * 
+     * @return target URL for performing GetLegendGrapgic requests
+     * @throws XMLParsingException
+     * @throws MalformedURLException
+     */
+    public URL getGetLegendGraphicURL()
+                            throws XMLParsingException, MalformedURLException;
 
 }

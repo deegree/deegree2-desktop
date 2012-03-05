@@ -36,58 +36,58 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.wfs;
 
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-import org.deegree.framework.xml.XMLFragment;
-import org.deegree.framework.xml.XMLParsingException;
+import org.deegree.igeo.mapmodel.Layer;
+import org.deegree.model.feature.FeatureCollection;
 
 /**
- * Definiton of convenience methods for accessing request target URLs from a WMS capabilities
- * document. These methods are defined within an interface because concrete realization depends on
- * WMS version
+ * Definition of convenience methods for inserting, updating and deleting Features schema of a WFS. These methods are
+ * defined within an interface because concrete realization depends on WFS version
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
+ * 
  * @author last edited by: $Author$
  * 
- * @version. $Revision$, $Date$
+ * @version $Revision$, $Date$
+ * 
  */
-public interface WMSCapabilitiesEvaluator {
-
+public interface WFSDataWriter {
+    
     /**
-     * sets XML document representing WFS capabilities
-     * 
-     * @param xml
+     * list if IDs of inserted features
+     * @param wfsURL
+     * @param featureCollection
+     * @param layer
+     * @return ids of inserted features
      */
-    void setCapabilities( XMLFragment xml );
-
-    /**
-     * 
-     * @return target URL for performing GetMap requests via HTTP Get
-     * @throws XMLParsingException
-     * @throws MalformedURLException
-     */
-    URL getGetMapHTTPGetURL()
-                            throws XMLParsingException, MalformedURLException;
-
+    List<String> insertFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
+    
     /**
      * 
-     * @return target URL for performing GetMap requests via HTTP Post
-     * @throws XMLParsingException
-     * @throws MalformedURLException
+     * @param wfsURL
+     * @param featureCollection
+     * @param layer
+     * @return number of features that has been updated
      */
-    URL getGetMapHTTPPostURL()
-                            throws XMLParsingException, MalformedURLException;
+    int updateFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
+    
+    /**
+     * 
+     * @param wfsURL
+     * @param featureCollection
+     * @param layer
+     * @return number of features that has been deleted
+     */
+    int deleteFeatures(URL wfsURL, FeatureCollection featureCollection, Layer layer );
 
     /**
      * 
-     * @return target URL for performing GetLegendGrapgic requests
-     * @throws XMLParsingException
-     * @throws MalformedURLException
+     * @param timeout
+     *            timeout for accessing WFS
      */
-    public URL getGetLegendGraphicURL()
-                            throws XMLParsingException, MalformedURLException;
-
+    void setTimeout( int timeout );
 }

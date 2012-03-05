@@ -60,7 +60,7 @@ import org.deegree.igeo.config.QualifiedNameType;
 import org.deegree.igeo.config.WCSDatasourceType;
 import org.deegree.igeo.config.ServiceDatasourceType.CapabilitiesURL;
 import org.deegree.igeo.dataadapter.DataAccessException;
-import org.deegree.igeo.dataadapter.WCSCapabilitiesEvaluator;
+import org.deegree.igeo.dataadapter.wcs.WCSCapabilitiesEvaluator;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.AuthenticationInformation;
 import org.deegree.igeo.mapmodel.Datasource;

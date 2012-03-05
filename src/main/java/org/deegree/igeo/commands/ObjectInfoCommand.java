@@ -46,7 +46,7 @@ import org.deegree.datatypes.QualifiedName;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.dataadapter.FeatureAdapter;
-import org.deegree.igeo.dataadapter.WMSGridCoverageAdapter;
+import org.deegree.igeo.dataadapter.wms.WMSGridCoverageAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;

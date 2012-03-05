@@ -36,7 +36,7 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.dataadapter;
+package org.deegree.igeo.dataadapter.wcs;
 
 import static org.deegree.framework.util.MapUtils.DEFAULT_PIXEL_SIZE;
 
@@ -60,6 +60,8 @@ import org.deegree.framework.xml.XMLFragment;
 import org.deegree.framework.xml.XMLParsingException;
 import org.deegree.framework.xml.XMLTools;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.dataadapter.DataAccessException;
+import org.deegree.igeo.dataadapter.GridCoverageAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Datasource;
 import org.deegree.igeo.mapmodel.Layer;
@@ -108,7 +110,7 @@ public class WCSGridCoverageAdapter extends GridCoverageAdapter {
      * @param cmmLayer
      * @param cmmMapModel
      */
-    WCSGridCoverageAdapter( Datasource cmmDatasource, Layer cmmLayer, MapModel cmmMapModel, URL baseURL ) {
+    public WCSGridCoverageAdapter( Datasource cmmDatasource, Layer cmmLayer, MapModel cmmMapModel, URL baseURL ) {
         super( cmmDatasource, cmmLayer, cmmMapModel );
         Envelope bbox = mapModel.getEnvelope();
         datasource.setExtent( bbox );
