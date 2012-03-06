@@ -37,6 +37,9 @@ package org.deegree.igeo.dataadapter.database.sqlserver;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
@@ -45,7 +48,9 @@ import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.model.crs.CoordinateSystem;
 import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.spatialschema.Envelope;
+import org.deegree.model.spatialschema.GeometryFactory;
 import org.deegree.model.spatialschema.JTSAdapter;
+import org.deegree.model.spatialschema.WKTAdapter;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKBReader;
@@ -69,8 +74,6 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
     @Override
     protected Object handleGeometryValue( Object value, CoordinateSystem crs )
                             throws Exception {
-        // ResultSet rs = stmt.executeQuery( "select geom.STAsText(), geom.STAsBinary()  from testtable" );
-        // byte[] b = (byte[]) rs.getObject( 2 );
         WKBReader reader = new WKBReader();
         Geometry geom = reader.read( (byte[]) value );
         return JTSAdapter.wrap( geom );
@@ -94,10 +97,33 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
             envelope = gt.transform( envelope, coordinateSystem );
         }
         // geom.STIntersects( geometry::STGeomFromText(?, 0) ) = 1" )
-        String query = "geometry.STIntersects( geometry::STGeomFromText(?, 0) ) = 1";
+        String query = datasource.getGeometryFieldName() + ".STIntersects( geometry::STGeomFromText(?, 0) ) = 1";
 
         String completeQuery;
         String sqlTemplate = datasource.getSqlTemplate();
+        Pattern p = Pattern.compile( "\\s*select\\s+[*]\\s+from\\s+([a-zA-Z_0-9.]+)\\s*", Pattern.CASE_INSENSITIVE );
+        Matcher m = p.matcher( sqlTemplate );
+        if ( m.find() ) {
+
+            String tableNamePattern = m.group( 1 );
+            ResultSet columns = conn.getMetaData().getColumns( null, null, tableNamePattern, "%" );
+            String cols = "";
+            boolean isFirst = true;
+            while ( columns.next() ) {
+                String columnName = columns.getString( "COLUMN_NAME" );
+                if ( datasource.getGeometryFieldName().equalsIgnoreCase( columnName ) ) {
+                    columnName = columnName + ".STAsBinary() as " + columnName;
+                }
+                if ( !isFirst ) {
+                    cols += ",";
+                }
+                cols += columnName;
+                isFirst = false;
+            }
+            if ( cols.length() > 0 ) {
+                sqlTemplate = sqlTemplate.replace( "*", cols );
+            }
+        }
         if ( sqlTemplate.trim().toUpperCase().endsWith( " WHERE" ) ) {
             LOG.logDebug( "performed SQL: ", sqlTemplate );
             completeQuery = sqlTemplate + query;
@@ -109,19 +135,11 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
             completeQuery = sqlTemplate + " AND " + query;
         }
         PreparedStatement stmt = conn.prepareStatement( completeQuery );
-        LOG.logInfo(completeQuery);
-        
-        // POLYGON ((425593 4503920,425593 4505159,427138 4505159,427138 4503920,425593 4503920))
-        StringBuffer geomAsString = new StringBuffer( 500 );
-        geomAsString.append( "POLYGON ((" );
-        geomAsString.append( envelope.getMin().getX() ).append( ' ' ).append( envelope.getMin().getY() ).append( ',' );
-        geomAsString.append( envelope.getMin().getX() ).append( ' ' ).append( envelope.getMin().getY() ).append( ',' );
-        geomAsString.append( envelope.getMin().getX() ).append( ' ' ).append( envelope.getMax().getY() ).append( ',' );
-        geomAsString.append( envelope.getMax().getX() ).append( ' ' ).append( envelope.getMax().getY() ).append( ',' );
-        geomAsString.append( envelope.getMax().getX() ).append( ' ' ).append( envelope.getMin().getY() ).append( ',' );
-        geomAsString.append( envelope.getMin().getX() ).append( ' ' ).append( envelope.getMin().getY() );
-        geomAsString.append( "))" );
-        stmt.setString( 1, geomAsString.toString() );
+        LOG.logInfo( completeQuery );
+        String queryEnv = WKTAdapter.export( GeometryFactory.createSurface( envelope,
+                                                                            datasource.getNativeCoordinateSystem() ) ).toString();
+        stmt.setString( 1, queryEnv );
+        LOG.logInfo( queryEnv );
 
         // TODO
         // if connection is not available ask user updated connection parameters
