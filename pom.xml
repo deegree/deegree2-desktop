@@ -21,6 +21,11 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>deegree-restricted</id>
+      <name>deegree-restricted</name>
+      <url>http://artefacts.deegree.org/ext-libs-restricted</url>
+    </repository>
   </repositories>
 
   <scm>
@@ -266,40 +271,6 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>mssql</id>
-      <repositories>
-        <repository>
-          <id>deegree-restricted</id>
-          <name>deegree-restricted</name>
-          <url>http://artefacts.deegree.org/ext-libs-restricted</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>com.microsoft</groupId>
-          <artifactId>sqljdbc4</artifactId>
-          <version>3.0</version>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>oracle</id>
-      <repositories>
-        <repository>
-          <id>deegree-restricted</id>
-          <name>deegree-restricted</name>
-          <url>http://artefacts.deegree.org/ext-libs-restricted</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>com.oracle</groupId>
-          <artifactId>ojdbc6</artifactId>
-          <version>11.2.0.2</version>
-        </dependency>
-      </dependencies>
-    </profile>
   </profiles>
 
   <dependencies>
@@ -396,6 +367,18 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>1.9.0</version>
+    </dependency>
+    <dependency>
+      <!-- TODO: move dependency to profile -->
+      <groupId>com.microsoft</groupId>
+      <artifactId>sqljdbc4</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <!-- TODO: move dependency to profile -->
+    <dependency>
+      <groupId>org.deegree2</groupId>
+      <artifactId>deegree2-oracle</artifactId>
+      <version>2.6-pre1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
