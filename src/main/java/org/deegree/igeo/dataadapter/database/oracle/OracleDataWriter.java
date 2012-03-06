@@ -35,17 +35,20 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.dataadapter.database.oracle;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import oracle.spatial.geometry.JGeometry;
 
 import org.deegree.datatypes.Types;
 import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
 import org.deegree.igeo.dataadapter.database.DatabaseDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
+import org.deegree.io.datastore.sql.oracle.JGeometryAdapter;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.schema.PropertyType;
+import org.deegree.model.spatialschema.Geometry;
 
 /**
  * concrete {@link DatabaseDataWriter} for Oracle Spatial
@@ -56,21 +59,17 @@ import org.deegree.model.feature.schema.PropertyType;
  * @version $Revision$, $Date$
  */
 public class OracleDataWriter extends AbstractDatabaseWriter {
-   
+
     protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                 PropertyType[] pt, String table, Connection conn )
+                                  PropertyType[] pt, String table, Connection conn )
                             throws Exception {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
             if ( value != null ) {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
-                    Class<?> clzz = Class.forName( "org.deegree.io.datastore.sql.oracle.JGeometryAdapter" );
-                    Class<?>[] p = new Class[] { Class.forName( "org.deegree.model.spatialschema.Geometry" ),
-                                                Class.forName( "java.lang.Integer" ) };
-                    Method m = clzz.getMethod( "load", p );
-                    value = m.invoke( null, new Object[] { value }, Integer.parseInt( datasource.getSRID() ) );
-                    // value = JGeometryAdapter.export( (Geometry) value, Integer.parseInt( datasource.getSRID() ) );
-                    stmt.setObject( i + 1, value );
+                    JGeometry jgeom = JGeometryAdapter.export( (Geometry) value,
+                                                               Integer.parseInt( datasource.getSRID() ) );
+                    stmt.setObject( i + 1, JGeometry.store( jgeom, conn ) );
                 } else {
                     stmt.setObject( i + 1, value, pt[i].getType() );
                 }
@@ -86,7 +85,7 @@ public class OracleDataWriter extends AbstractDatabaseWriter {
     }
 
     protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource, PropertyType[] pt,
-                                    Feature feature, int index )
+                                      Feature feature, int index )
                             throws SQLException {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();

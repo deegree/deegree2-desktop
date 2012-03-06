@@ -42,10 +42,14 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import oracle.spatial.geometry.JGeometry;
+import oracle.sql.STRUCT;
+
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.dataadapter.database.AbstractDatabaseLoader;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
+import org.deegree.io.datastore.sql.oracle.JGeometryAdapter;
 import org.deegree.model.crs.CoordinateSystem;
 import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.spatialschema.Envelope;
@@ -101,9 +105,6 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
             envelope = gt.transform( envelope, envelope.getCoordinateSystem() );
         }
         Surface surface = GeometryFactory.createSurface( envelope, envelope.getCoordinateSystem() );
-        Class<?> clzz = Class.forName( "oracle.spatial.geometry.JGeometry" );
-        Method m = clzz.getMethod( "export", new Class[] { Geometry.class, Integer.class } );
-        Object jgeom = m.invoke( null, new Object[] { surface, Integer.parseInt( nativeCRS ) } );
         StringBuffer query = new StringBuffer( 1000 );
         query.append( " MDSYS.SDO_RELATE(" );
         query.append( datasource.getGeometryFieldName() );
@@ -125,9 +126,8 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
         }
 
         LOG.logDebug( "Converting JGeometry to STRUCT." );
-        m = clzz.getMethod( "store",
-                            new Class[] { Class.forName( "oracle.spatial.geometry.JGeometry" ), conn.getClass() } );
-        Object struct = m.invoke( null, new Object[] { jgeom, conn } );
+        JGeometry jgeom = JGeometryAdapter.export( surface, Integer.parseInt( nativeCRS ) );
+        STRUCT struct = JGeometry.store( jgeom, conn);
         stmt.setObject( 1, struct, java.sql.Types.STRUCT );
 
         // TODO
