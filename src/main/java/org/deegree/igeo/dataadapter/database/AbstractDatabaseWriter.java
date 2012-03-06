@@ -38,7 +38,9 @@ package org.deegree.igeo.dataadapter.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
@@ -133,29 +135,32 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             FeatureType ft = featureCollection.getFeature( 0 ).getFeatureType();
             PropertyType[] pt = ft.getProperties();
             boolean isFirst = true;
+            List<String> sqlSnippets = new ArrayList<String>();
             int noOfValuesToInsert = 0;
             for ( int i = 0; i < pt.length; i++ ) {
                 String columnName = pt[i].getName().getLocalName();
-                if ( useValue( columnName, table, conn ) ) {
+                String sqlSnippet = getSqlSnippet( columnName, table, conn, datasource );
+                if ( sqlSnippet != null ) {
                     if ( !isFirst ) {
                         sb.append( ',' );
                     }
                     sb.append( columnName );
                     noOfValuesToInsert++;
                     isFirst = false;
+                    sqlSnippets.add( sqlSnippet );
                 }
             }
             sb.append( ") VALUES (" );
             isFirst = true;
-            for ( int i = 0; i < noOfValuesToInsert; i++ ) {
+            for ( String sqlSnippet : sqlSnippets ) {
                 if ( !isFirst ) {
                     sb.append( ',' );
                 }
 
-                sb.append( "?" );
+                sb.append( sqlSnippet );
                 isFirst = false;
             }
-            sb.append(")");
+            sb.append( ")" );
             LOG.logDebug( "INSERT Statement: ", sb );
 
             stmt = conn.prepareStatement( sb.toString() );
@@ -180,8 +185,9 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         }
     }
 
-    protected boolean useValue( String columnName, String tableName, Connection connection ) {
-        return true;
+    protected String getSqlSnippet( String columnName, String tableName, Connection connection,
+                                    DatabaseDatasource datasource ) {
+        return "?";
     }
 
     /*
@@ -217,16 +223,16 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             int noOfValuesToInsert = 0;
             for ( int i = 0; i < pt.length; i++ ) {
                 String columnName = pt[i].getName().getLocalName();
-                if ( useValue( columnName, table, conn ) ) {
+                String sqlSnipppet = getSqlSnippet( columnName, table, conn, datasource );
+                if ( sqlSnipppet != null ) {
                     if ( !isFirst ) {
                         sb.append( ',' );
                     }
-                    sb.append( columnName ).append( " = ?" );
+                    sb.append( columnName ).append( " = " ).append( sqlSnipppet );
                     noOfValuesToInsert++;
                     isFirst = false;
                 }
             }
-            // sb.append( pt[pt.length - 1].getName().getLocalName() ).append( " = ? " );
             sb.append( " WHERE " ).append( datasource.getPrimaryKeyFieldName() ).append( " = ?" );
             LOG.logDebug( "UPDATE features SQL: ", sb );
 
@@ -235,8 +241,8 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             // stmt.setQueryTimeout( timeout );
             while ( iterator.hasNext() ) {
                 Feature feature = iterator.next();
-                setFieldValues( stmt, datasource, feature, pt, table, conn );
-                setWhereCondition( stmt, datasource, pt, feature, pt.length + 1 );
+                int lastIndex = setFieldValues( stmt, datasource, feature, pt, table, conn );
+                setWhereCondition( stmt, datasource, pt, feature, lastIndex );
                 stmt.execute();
             }
             conn.commit();
@@ -285,8 +291,8 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         return pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
     }
 
-    abstract protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                            PropertyType[] pt, String table, Connection conn )
+    abstract protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
+                                           PropertyType[] pt, String table, Connection conn )
                             throws Exception;
 
     abstract protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource,

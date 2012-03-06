@@ -65,9 +65,10 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
     private static final ILogger LOG = LoggerFactory.getLogger( SqlServerDataWriter.class );
 
     @Override
-    protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
+    protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
                                    PropertyType[] pt, String tableName, Connection connection )
                             throws Exception {
+        int index = 1;
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
             if ( pt[i].getName().getLocalName().equalsIgnoreCase( datasource.getPrimaryKeyFieldName() ) ) {
@@ -75,25 +76,24 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
             }
             if ( value != null ) {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
-                    // TODO
-                    // value = ;
                     Geometry geom = (Geometry) value;
                     WKBWriter writer = new WKBWriter();
                     byte[] write = writer.write( JTSAdapter.export( geom ) );
-                    stmt.setObject( i + 1, write );
+                    stmt.setObject( index++, write );
                 } else {
-                    if ( useValue( pt[i].getName().getLocalName(), tableName, connection ) ) {
-                        stmt.setObject( i + 1, value, pt[i].getType() );
+                    if ( !ignoreValue( pt[i].getName().getLocalName(), tableName, connection ) ) {
+                        stmt.setObject( index++, value, pt[i].getType() );
                     }
                 }
             } else {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
-                    stmt.setNull( i + 1, Types.OTHER );
+                    stmt.setNull( index++, Types.OTHER );
                 } else {
-                    stmt.setNull( i + 1, pt[i].getType() );
+                    stmt.setNull( index++, pt[i].getType() );
                 }
             }
         }
+        return index;
     }
 
     @Override
@@ -109,21 +109,38 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter#getSqlSnippet(java.lang.String,
+     * java.lang.String, java.sql.Connection, org.deegree.igeo.mapmodel.DatabaseDatasource)
+     */
     @Override
-    protected boolean useValue( String columnName, String tableName, Connection connection ) {
+    protected String getSqlSnippet( String columnName, String tableName, Connection connection,
+                                    DatabaseDatasource datasource ) {
+        if ( columnName.equalsIgnoreCase( datasource.getGeometryFieldName() ) ) {
+            return "geometry::STGeomFromWKB(?, 0)";
+        }
+        if ( ignoreValue( columnName, tableName, connection ) ) {
+            return null;
+        }
+        return super.getSqlSnippet( columnName, tableName, connection, datasource );
+    }
+
+    private boolean ignoreValue( String columnName, String tableName, Connection connection ) {
         ResultSet columns;
         try {
             columns = connection.getMetaData().getColumns( null, null, tableName, columnName );
             while ( columns.next() ) {
                 if ( columnName.equalsIgnoreCase( columns.getString( "COLUMN_NAME" ) ) ) {
                     String isAutoincrement = columns.getString( "IS_AUTOINCREMENT" );
-                    return !"YES".equalsIgnoreCase( isAutoincrement );
+                    return "YES".equalsIgnoreCase( isAutoincrement );
                 }
             }
         } catch ( SQLException e ) {
             LOG.logDebug( "Could not determine id column is autoincrement: " + e.getMessage() );
         }
-        return true;
+        return false;
     }
 
 }

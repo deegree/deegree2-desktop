@@ -91,7 +91,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
         }
     }
 
-    protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
+    protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
                                    PropertyType[] pt, String table, Connection conn )
                             throws GeometryException, SQLException {
         for ( int i = 0; i < pt.length; i++ ) {
@@ -114,6 +114,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
                 }
             }
         }
+        return pt.length;
     }
 
     protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource, PropertyType[] pt,
