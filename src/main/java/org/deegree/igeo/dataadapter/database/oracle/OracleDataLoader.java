@@ -53,7 +53,6 @@ import org.deegree.io.datastore.sql.oracle.JGeometryAdapter;
 import org.deegree.model.crs.CoordinateSystem;
 import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.spatialschema.Envelope;
-import org.deegree.model.spatialschema.Geometry;
 import org.deegree.model.spatialschema.GeometryFactory;
 import org.deegree.model.spatialschema.Surface;
 
@@ -127,7 +126,7 @@ public class OracleDataLoader extends AbstractDatabaseLoader {
 
         LOG.logDebug( "Converting JGeometry to STRUCT." );
         JGeometry jgeom = JGeometryAdapter.export( surface, Integer.parseInt( nativeCRS ) );
-        STRUCT struct = JGeometry.store( jgeom, conn);
+        STRUCT struct = JGeometry.store( jgeom, conn );
         stmt.setObject( 1, struct, java.sql.Types.STRUCT );
 
         // TODO
