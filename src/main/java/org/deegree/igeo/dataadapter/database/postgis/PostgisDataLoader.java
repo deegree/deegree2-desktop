@@ -38,7 +38,6 @@
 
 package org.deegree.igeo.dataadapter.database.postgis;
 
-import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -85,7 +84,6 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
     private static Class<?> pgBox3dClass;
 
     static {
-        namespace = URI.create( "http://www.deegree.org/igeodesktop" );
         try {
             pgGeometryClass = Class.forName( PG_GEOMETRY_CLASS_NAME );
         } catch ( ClassNotFoundException e ) {
@@ -165,7 +163,7 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         stmt.setMaxRows( maxFeatures );
         // seems that not every postgres version supports this
         // stmt.setQueryTimeout( timeout );
-        System.out.println(stmt);
+        System.out.println( stmt );
         return stmt;
     }
 

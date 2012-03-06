@@ -78,7 +78,7 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
 
     private static final ILogger LOG = LoggerFactory.getLogger( AbstractDatabaseLoader.class );
 
-    protected static URI namespace;
+    protected static URI namespace = URI.create( "http://www.deegree.org/igeodesktop" );
 
     private DatabaseDatasource datasource;
 
