@@ -168,7 +168,7 @@ public class Dictionary {
                 e1.printStackTrace();
             }
             if ( tmp != null ) {
-                //read dictionary from a remote location
+                // read dictionary from a remote location
                 list = handleIndirect( tmp, qn, langague );
             } else {
                 list = readCodeList( xml.getRootElement(), qn, langague );
@@ -186,11 +186,11 @@ public class Dictionary {
      */
     private List<Pair<String, String>> readCodeList( Element root, QualifiedName qn, String language ) {
         if ( language == null ) {
-           language = Locale.getDefault().getLanguage();
+            language = Locale.getDefault().getLanguage();
         }
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>( 50 );
-        String c = "[gml:csName/@codeSpace = '" + qn.getNamespace().toASCIIString() + "' and gml:csName = '"
-                   + qn.getLocalName() + "']";
+        String c = "[" + qn.getNamespace() != null ? ( "gml:csName/@codeSpace = '" + qn.getNamespace().toASCIIString() + "' and " )
+                                                  : "" + "gml:csName = '" + qn.getLocalName() + "']";
         String xpath = "//gml:DefinitionCollection" + c + "/gml:dictionaryEntry/gml:Definition";
         try {
             List<Node> nodes = XMLTools.getNodes( root, xpath, nsc );
