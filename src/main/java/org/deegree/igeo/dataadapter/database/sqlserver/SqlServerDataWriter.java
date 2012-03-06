@@ -43,6 +43,10 @@ import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.schema.PropertyType;
+import org.deegree.model.spatialschema.Geometry;
+import org.deegree.model.spatialschema.JTSAdapter;
+
+import com.vividsolutions.jts.io.WKBWriter;
 
 /**
  * TODO add class documentation here
@@ -67,7 +71,10 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
                     // TODO
                     // value = ;
-                    stmt.setObject( i + 1, value );
+                    Geometry geom = (Geometry)value;
+                    WKBWriter writer = new WKBWriter();
+                    byte[] write = writer.write( JTSAdapter.export( geom ) );
+                    stmt.setObject( i + 1, write );
                 } else {
                     stmt.setObject( i + 1, value, pt[i].getType() );
                 }
