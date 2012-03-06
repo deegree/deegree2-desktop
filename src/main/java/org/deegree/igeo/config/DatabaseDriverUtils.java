@@ -51,8 +51,9 @@ import org.deegree.igeo.i18n.Messages;
 public class DatabaseDriverUtils {
 
     // TODO: is'nt it part of the project settings?
+    // TODO: only the supported!!!
     public static String[] getDriverLabels() {
-        String s = Messages.getMessage( Locale.getDefault(), "$MD11542" );
+        String s = Messages.getMessage( Locale.getDefault(), "$MD11432" );
         return StringTools.toArray( s, ",;", false );
     }
 }
