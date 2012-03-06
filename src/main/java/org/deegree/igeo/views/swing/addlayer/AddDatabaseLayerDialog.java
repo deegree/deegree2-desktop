@@ -78,6 +78,7 @@ import org.deegree.framework.util.StringTools;
 import org.deegree.framework.utils.CRSUtils;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddDatabaseLayerCommand;
+import org.deegree.igeo.config.DatabaseDriverUtils;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.MapModel;
@@ -356,8 +357,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                                                                             new Insets( 0, 9, 0, 0 ), 0, 0 ) );
                     }
                     {
-                        String s = Messages.getMessage( getLocale(), "$MD11432" );
-                        cbDriver = new JComboBox( new DefaultComboBoxModel( StringTools.toArray( s, ",;", true ) ) );
+                        cbDriver = new JComboBox( new DefaultComboBoxModel( DatabaseDriverUtils.getDriverLabels() ) );
                         pnDatabase.add( cbDriver, new GridBagConstraints( 1, 0, 2, 1, 0.0, 0.0,
                                                                           GridBagConstraints.CENTER,
                                                                           GridBagConstraints.HORIZONTAL,
@@ -702,8 +702,13 @@ public class AddDatabaseLayerDialog extends JDialog {
                 // TODO
                 LOG.logWarning( "MY SQL is not Supported yet" );
             } else if ( s.indexOf( "sqlserver" ) > -1 ) {
-                // TODO
-                LOG.logWarning( "SQL Server is not Supported yet" );
+                stmt = conn.prepareStatement( "select column_name from information_schema.columns where TABLE_NAME = ? and DATA_TYPE = 'geometry'" );
+                stmt.setString( 1, cbTable.getSelectedItem().toString() );
+                rs = stmt.executeQuery();
+                while ( rs.next() ) {
+                    String geomCol = rs.getString( 1 );
+                    list.add( geomCol + " (0)");
+                }
             }
             cbGeom.setModel( new DefaultComboBoxModel( list.toArray() ) );
         } catch ( Exception e ) {
@@ -881,18 +886,7 @@ public class AddDatabaseLayerDialog extends JDialog {
     }
 
     private String getDriver() {
-        String driver = null;
-        String s = cbDriver.getSelectedItem().toString().toLowerCase();
-        if ( s.indexOf( "postgis" ) > -1 ) {
-            driver = "org.postgresql.Driver";
-        } else if ( s.indexOf( "oracle" ) > -1 ) {
-            driver = "oracle.jdbc.OracleDriver";
-        } else if ( s.indexOf( "mysql" ) > -1 ) {
-            driver = "com.mysql.jdbc.Driver";
-        } else if ( s.indexOf( "sqlserver" ) > -1 ) {
-            driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        }
-        return driver;
+        return DatabaseConnectionManager.getDriver( cbDriver.getSelectedItem().toString() );
     }
 
     private String getUser() {
@@ -1008,7 +1002,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                       + "   JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace"
                       + "   JOIN pg_type ON pg_attribute.atttypid = pg_type.oid"
                       + "  WHERE pg_attribute.attstattarget <> 0 and pg_type.typname ='geometry' order by 1,2";
-                System.out.println("..." + sql);
+                System.out.println( "..." + sql );
                 rs = stmt.executeQuery( sql );
                 while ( rs.next() ) {
                     String table = rs.getString( 1 );
@@ -1025,8 +1019,11 @@ public class AddDatabaseLayerDialog extends JDialog {
                 // TODO
                 LOG.logWarning( "MY SQL is not Supported yet" );
             } else if ( s.indexOf( "sqlserver" ) > -1 ) {
-                // TODO
-                LOG.logWarning( "SQLServer is not Supported yet" );
+                sql = "select TABLE_NAME from information_schema.tables where TABLE_TYPE = 'BASE TABLE'";
+                rs = stmt.executeQuery( sql );
+                while ( rs.next() ) {
+                    tables.add( rs.getString( 1 ) );
+                }
             }
         } catch ( Exception e ) {
             throw e;
