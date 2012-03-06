@@ -126,7 +126,9 @@ public class MaxDatabaseColumnValueGenerator implements ValueGenerator {
             throw new RuntimeException( e );
         } finally {
             try {
-                stmt.close();
+                if ( stmt != null ) {
+                    stmt.close();
+                }
             } catch ( Exception e2 ) {
                 LOG.logWarning( "", e2 );
             }
