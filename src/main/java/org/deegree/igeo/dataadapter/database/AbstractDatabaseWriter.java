@@ -120,19 +120,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
      */
     public void insertFeatures( DatabaseDatasource datasource, FeatureCollection featureCollection, Layer layer ) {
         String table = extractTableName( datasource.getSqlTemplate() );
-        StringBuilder sb = new StringBuilder( 2000 );
-        sb.append( "INSERT INTO " ).append( table ).append( " (" );
-        FeatureType ft = featureCollection.getFeature( 0 ).getFeatureType();
-        PropertyType[] pt = ft.getProperties();
-        for ( int i = 0; i < pt.length - 1; i++ ) {
-            sb.append( pt[i].getName().getLocalName() ).append( ',' );
-        }
-        sb.append( pt[pt.length - 1].getName().getLocalName() ).append( ") VALUES (" );
-        for ( int i = 0; i < pt.length - 1; i++ ) {
-            sb.append( "?," );
-        }
-        sb.append( "?)" );
-        LOG.logDebug( "INSERT Statement: ", sb );
         Iterator<Feature> iterator = featureCollection.iterator();
         JDBCConnection jdbc = datasource.getJdbc();
         Connection conn = null;
@@ -140,12 +127,43 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         try {
             conn = acquireConnection( jdbc );
             conn.setAutoCommit( false );
+
+            StringBuilder sb = new StringBuilder( 2000 );
+            sb.append( "INSERT INTO " ).append( table ).append( " (" );
+            FeatureType ft = featureCollection.getFeature( 0 ).getFeatureType();
+            PropertyType[] pt = ft.getProperties();
+            boolean isFirst = true;
+            int noOfValuesToInsert = 0;
+            for ( int i = 0; i < pt.length; i++ ) {
+                String columnName = pt[i].getName().getLocalName();
+                if ( useValue( columnName, table, conn ) ) {
+                    if ( !isFirst ) {
+                        sb.append( ',' );
+                    }
+                    sb.append( columnName );
+                    noOfValuesToInsert++;
+                    isFirst = false;
+                }
+            }
+            sb.append( ") VALUES (" );
+            isFirst = true;
+            for ( int i = 0; i < noOfValuesToInsert; i++ ) {
+                if ( !isFirst ) {
+                    sb.append( ',' );
+                }
+
+                sb.append( "?" );
+                isFirst = false;
+            }
+            sb.append(")");
+            LOG.logDebug( "INSERT Statement: ", sb );
+
             stmt = conn.prepareStatement( sb.toString() );
             // seems that not every oracle version supports this
             // stmt.setQueryTimeout( timeout );
             while ( iterator.hasNext() ) {
                 Feature feature = iterator.next();
-                setFieldValues( stmt, datasource, feature, pt );
+                setFieldValues( stmt, datasource, feature, pt, table, conn );
                 stmt.execute();
             }
             conn.commit();
@@ -160,6 +178,10 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
                 LOG.logError( e );
             }
         }
+    }
+
+    protected boolean useValue( String columnName, String tableName, Connection connection ) {
+        return true;
     }
 
     /*
@@ -181,14 +203,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         String table = extractTableName( datasource.getSqlTemplate() );
         FeatureType ft = featureCollection.getFeature( 0 ).getFeatureType();
         PropertyType[] pt = ft.getProperties();
-        StringBuilder sb = new StringBuilder( 1000 );
-        sb.append( "UPDATE " ).append( table ).append( " SET " );
-        for ( int i = 0; i < pt.length - 1; i++ ) {
-            sb.append( pt[i].getName().getLocalName() ).append( " = ?," );
-        }
-        sb.append( pt[pt.length - 1].getName().getLocalName() ).append( " = ? " );
-        sb.append( " WHERE " ).append( datasource.getPrimaryKeyFieldName() ).append( " = ?" );
-        LOG.logDebug( "UPDATE features SQL: ", sb );
         JDBCConnection jdbc = datasource.getJdbc();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -196,12 +210,32 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         try {
             conn = acquireConnection( jdbc );
             conn.setAutoCommit( false );
+
+            StringBuilder sb = new StringBuilder( 1000 );
+            sb.append( "UPDATE " ).append( table ).append( " SET " );
+            boolean isFirst = true;
+            int noOfValuesToInsert = 0;
+            for ( int i = 0; i < pt.length; i++ ) {
+                String columnName = pt[i].getName().getLocalName();
+                if ( useValue( columnName, table, conn ) ) {
+                    if ( !isFirst ) {
+                        sb.append( ',' );
+                    }
+                    sb.append( columnName ).append( " = ?" );
+                    noOfValuesToInsert++;
+                    isFirst = false;
+                }
+            }
+            // sb.append( pt[pt.length - 1].getName().getLocalName() ).append( " = ? " );
+            sb.append( " WHERE " ).append( datasource.getPrimaryKeyFieldName() ).append( " = ?" );
+            LOG.logDebug( "UPDATE features SQL: ", sb );
+
             stmt = conn.prepareStatement( sb.toString() );
             // seems that not every postgres version supports this
             // stmt.setQueryTimeout( timeout );
             while ( iterator.hasNext() ) {
                 Feature feature = iterator.next();
-                setFieldValues( stmt, datasource, feature, pt );
+                setFieldValues( stmt, datasource, feature, pt, table, conn );
                 setWhereCondition( stmt, datasource, pt, feature, pt.length + 1 );
                 stmt.execute();
             }
@@ -252,7 +286,7 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
     }
 
     abstract protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                            PropertyType[] pt )
+                                            PropertyType[] pt, String table, Connection conn )
                             throws Exception;
 
     abstract protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource,

@@ -36,6 +36,7 @@
 package org.deegree.igeo.dataadapter.database.oracle;
 
 import java.lang.reflect.Method;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -57,7 +58,7 @@ import org.deegree.model.feature.schema.PropertyType;
 public class OracleDataWriter extends AbstractDatabaseWriter {
    
     protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                 PropertyType[] pt )
+                                 PropertyType[] pt, String table, Connection conn )
                             throws Exception {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();

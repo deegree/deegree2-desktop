@@ -92,7 +92,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
     }
 
     protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                   PropertyType[] pt )
+                                   PropertyType[] pt, String table, Connection conn )
                             throws GeometryException, SQLException {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();

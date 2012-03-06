@@ -35,10 +35,14 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.dataadapter.database.sqlserver;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.deegree.datatypes.Types;
+import org.deegree.framework.log.ILogger;
+import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.dataadapter.database.AbstractDatabaseWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.model.feature.Feature;
@@ -58,9 +62,11 @@ import com.vividsolutions.jts.io.WKBWriter;
  */
 public class SqlServerDataWriter extends AbstractDatabaseWriter {
 
+    private static final ILogger LOG = LoggerFactory.getLogger( SqlServerDataWriter.class );
+
     @Override
     protected void setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                   PropertyType[] pt )
+                                   PropertyType[] pt, String tableName, Connection connection )
                             throws Exception {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
@@ -71,12 +77,14 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
                     // TODO
                     // value = ;
-                    Geometry geom = (Geometry)value;
+                    Geometry geom = (Geometry) value;
                     WKBWriter writer = new WKBWriter();
                     byte[] write = writer.write( JTSAdapter.export( geom ) );
                     stmt.setObject( i + 1, write );
                 } else {
-                    stmt.setObject( i + 1, value, pt[i].getType() );
+                    if ( useValue( pt[i].getName().getLocalName(), tableName, connection ) ) {
+                        stmt.setObject( i + 1, value, pt[i].getType() );
+                    }
                 }
             } else {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
@@ -99,6 +107,23 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
                 break;
             }
         }
+    }
+
+    @Override
+    protected boolean useValue( String columnName, String tableName, Connection connection ) {
+        ResultSet columns;
+        try {
+            columns = connection.getMetaData().getColumns( null, null, tableName, columnName );
+            while ( columns.next() ) {
+                if ( columnName.equalsIgnoreCase( columns.getString( "COLUMN_NAME" ) ) ) {
+                    String isAutoincrement = columns.getString( "IS_AUTOINCREMENT" );
+                    return !"YES".equalsIgnoreCase( isAutoincrement );
+                }
+            }
+        } catch ( SQLException e ) {
+            LOG.logDebug( "Could not determine id column is autoincrement: " + e.getMessage() );
+        }
+        return true;
     }
 
 }

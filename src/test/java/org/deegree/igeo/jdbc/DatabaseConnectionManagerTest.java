@@ -74,14 +74,17 @@ public class DatabaseConnectionManagerTest {
 
     @BeforeClass
     public static void init() {
-        driverLabel = "PosTGis";
-        driverClass = "org.postgresql.Driver";
-        host = "localhost";
-        port = 5433;
-        database = "igeodesktop";
-        user = "postgres";
-        password = "postgres";
-        connectionUrl = "jdbc:postgresql://" + host + ':' + port + '/' + database;
+        driverLabel = "SqlSerVEr";
+        driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        host = "sqlserver2008";
+        port = 1433;
+        database = "deegreedesktop";
+        user = "deegreedesktop";
+        password = "deegreedesktop";
+        connectionUrl = "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + database + ";";
+        // TODO:suer/password required?
+        // ";user=" + user + ";password=" + password;
+        // "jdbc:postgresql://" + host + ':' + port + '/' + database;
     }
 
     @Category(DatabaseTest.class)
