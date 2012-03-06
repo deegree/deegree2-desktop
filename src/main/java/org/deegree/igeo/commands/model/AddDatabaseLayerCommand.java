@@ -183,7 +183,7 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         dsType.setConnection( jdbc );
         dsType.setSqlTemplate( sql );
         dsType.setNativeCRS( nativeCRS );
-System.out.println(saveLogin);
+
         DatabaseDatasource dbDatasource = new DatabaseDatasource( dsType, authenticationInformation, cache, saveLogin );
         datasources.add( dbDatasource );
 
