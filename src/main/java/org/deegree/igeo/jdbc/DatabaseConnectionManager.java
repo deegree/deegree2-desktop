@@ -86,19 +86,23 @@ public class DatabaseConnectionManager {
      * Connect to the database. Throws exception if connection could not be aquired.
      * 
      * @param driver
-     *            the class name of the database driver
+     *            the class name of the database driver, not <code>null</code>
      * @param connectionUrl
-     *            the connection url
+     *            the connection url, not <code>null</code>
      * @param user
-     *            the user
+     *            the user, may be <code>null</code>
      * @param password
-     *            the passord
+     *            the password, may be <code>null</code>
      * @return a {@link Connection} to the database
      * @throws DBPoolException
      *             if the connection could not be aquired
      */
     public static Connection aquireConnection( String driver, String connectionUrl, String user, String password )
                             throws DBPoolException {
+        if ( user == null )
+            user = "";
+        if ( password == null )
+            password = "";
         DBConnectionPool pool = DBConnectionPool.getInstance();
         return pool.acquireConnection( driver, connectionUrl, user, password );
     }

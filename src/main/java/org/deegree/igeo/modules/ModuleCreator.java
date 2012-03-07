@@ -72,6 +72,7 @@ import org.deegree.igeo.config.DatabaseDatasourceType;
 import org.deegree.igeo.config.DatasourceType;
 import org.deegree.igeo.config.DirectStyleType;
 import org.deegree.igeo.config.FileDatasourceType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.LayerGroupType;
 import org.deegree.igeo.config.LayerType;
 import org.deegree.igeo.config.MapModelCollectionType;
@@ -89,6 +90,7 @@ import org.deegree.igeo.config.WCSDatasourceType;
 import org.deegree.igeo.config.WFSDatasourceType;
 import org.deegree.igeo.config.WMSDatasourceType;
 import org.deegree.igeo.config._ComponentPositionType;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameterCache;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.io.FileSystemAccess;
 import org.deegree.igeo.io.FileSystemAccessFactory;
@@ -625,8 +627,7 @@ public class ModuleCreator<T> {
         File fl = new File( cnfFds.getFile().trim() );
         fl = getAbsoluteFilePath( fl );
 
-        Class<FileSystemAccess> fsaCL = appContainer.getSettings().getFileAccessOptions().getFileSystemAccess(
-                                                                                                               FILECHOOSERTYPE.geoDataFile );
+        Class<FileSystemAccess> fsaCL = appContainer.getSettings().getFileAccessOptions().getFileSystemAccess( FILECHOOSERTYPE.geoDataFile );
 
         if ( !fl.exists() && fsaCL.equals( LocalFSAccess.class ) ) {
             String s = DialogFactory.openNewReferenceDialog( appContainer, Messages.get( "$MD11203", fl ),
@@ -672,6 +673,11 @@ public class ModuleCreator<T> {
         DatabaseDatasource dbds = null;
         Cache cache = createCache( cnfDbds.getCache() );
         dbds = new DatabaseDatasource( cnfDbds, null, cache );
+        JDBCConnection jdbcConnection = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( cnfDbds.getConnection().getDriver(),
+                                                                                                               cnfDbds.getConnection().getUrl(),
+                                                                                                               cnfDbds.getConnection().getUser(),
+                                                                                                               cnfDbds.getConnection().getPassword() );
+        dbds.setJdbc( jdbcConnection );
         dbds.setExtent( Util.convertEnvelope( cnfDbds.getExtent() ) );
         return dbds;
     }

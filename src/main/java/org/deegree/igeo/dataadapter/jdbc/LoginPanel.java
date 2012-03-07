@@ -44,8 +44,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.deegree.igeo.views.swing.util.panels.PanelDialog;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -66,7 +64,7 @@ class LoginPanel extends JPanel {
 
     private JPasswordField passwdTF;
 
-    LoginPanel( String driver, String url, String user, String passwd, boolean isFirstAttempt ) {
+    LoginPanel( String driver, String url, String user, String passwd, String exception ) {
         FormLayout fl = new FormLayout( "left:min, $ugap, fill:default:grow(1)", "100dlu, 20dlu, 20dlu" );
         DefaultFormBuilder builder = new DefaultFormBuilder( fl );
         CellConstraints cc = new CellConstraints();
@@ -85,7 +83,8 @@ class LoginPanel extends JPanel {
         passwdTF.setMaximumSize( new Dimension( 150, 20 ) );
         passwdTF.setText( passwd );
 
-        JTextArea text = new JTextArea( isFirstAttempt ? get( "$MD11852", url, driver ) : get( "$MD11853", url, driver ) );
+        JTextArea text = new JTextArea( exception != null ? get( "$MD11853", url, driver, exception )
+                                                         : get( "$MD11852", url, driver ) );
         text.setWrapStyleWord( true );
         text.setLineWrap( true );
         text.setEditable( false );
@@ -112,9 +111,4 @@ class LoginPanel extends JPanel {
         return userTF.getText();
     }
 
-    public static void main( String[] args ) {
-        LoginPanel panel = new LoginPanel( "eins", "zwei", null, null, true );
-        PanelDialog pd = new PanelDialog( panel, true );
-        pd.setVisible( true );
-    }
 }

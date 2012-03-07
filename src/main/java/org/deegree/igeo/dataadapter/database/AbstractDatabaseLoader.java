@@ -51,8 +51,8 @@ import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.GeometryUtils;
 import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessException;
-import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameter;
 import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameterCache;
+import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
@@ -154,12 +154,12 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
     protected void releaseConnection( JDBCConnection jdbc, Connection conn ) {
         try {
             DBConnectionPool pool = DBConnectionPool.getInstance();
-            JdbcConnectionParameter connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
-                                                                                                                       jdbc.getUrl(),
-                                                                                                                       jdbc.getUser(),
-                                                                                                                       jdbc.getPassword() );
+            JDBCConnection connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
+                                                                                                              jdbc.getUrl(),
+                                                                                                              jdbc.getUser(),
+                                                                                                              jdbc.getPassword() );
             pool.releaseConnection( conn, connParam.getDriver(), connParam.getUrl(), connParam.getUser(),
-                                    connParam.getPasswd() );
+                                    connParam.getPassword() );
         } catch ( DBPoolException e ) {
             LOG.logWarning( "", e );
         }
@@ -296,15 +296,8 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
 
     protected Connection acquireConnection( JDBCConnection jdbc )
                             throws DBPoolException, SQLException {
-        JdbcConnectionParameter connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
-                                                                                                                   jdbc.getUrl(),
-                                                                                                                   jdbc.getUser(),
-                                                                                                                   jdbc.getPassword() );
-        Connection conn;
-        DBConnectionPool pool = DBConnectionPool.getInstance();
-        conn = pool.acquireConnection( connParam.getDriver(), connParam.getUrl(), connParam.getUser(),
-                                       connParam.getPasswd() );
-        return conn;
+        return DatabaseConnectionManager.aquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(),
+                                                           jdbc.getPassword() );
     }
 
     /**

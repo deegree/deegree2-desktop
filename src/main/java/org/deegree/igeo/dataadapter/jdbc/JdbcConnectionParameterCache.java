@@ -35,35 +35,37 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.dataadapter.jdbc;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.deegree.framework.log.ILogger;
+import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
+import org.deegree.igeo.config.JDBCConnection;
+import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.views.swing.util.panels.PanelDialog;
-import org.deegree.io.DBConnectionPool;
-import org.deegree.io.DBPoolException;
 
 public class JdbcConnectionParameterCache {
+
+    private static final ILogger LOG = LoggerFactory.getLogger( JdbcConnectionParameterCache.class );
 
     // driverToUrlToLogin
     private static Map<String, Map<String, Pair<String, String>>> cache = new HashMap<String, Map<String, Pair<String, String>>>();
 
     private static JdbcConnectionParameterCache connCache;
-    
-    private JdbcConnectionParameterCache(){
-        
+
+    private JdbcConnectionParameterCache() {
+
     }
-    
-    public static JdbcConnectionParameterCache getInstance(){
-        if (connCache == null){
+
+    public static JdbcConnectionParameterCache getInstance() {
+        if ( connCache == null ) {
             connCache = new JdbcConnectionParameterCache();
         }
         return connCache;
     }
-    
-    public JdbcConnectionParameter getJdbcConnectionParameter( String driver, String url, String user,
-                                                                      String passwd ) {
+
+    public JDBCConnection getJdbcConnectionParameter( String driver, String url, String user, String passwd ) {
         if ( !cache.containsKey( driver ) ) {
             cache.put( driver, new HashMap<String, Pair<String, String>>() );
         }
@@ -72,19 +74,29 @@ public class JdbcConnectionParameterCache {
             String u = user;
             String p = passwd;
             if ( u == null && p == null ) {
-                Pair<String, String> askLoginParameter = askLoginParameter( driver, url, user, passwd, true );
+                Pair<String, String> askLoginParameter = askLoginParameter( driver, url, user, passwd, null );
                 u = askLoginParameter.first;
                 p = askLoginParameter.second;
             }
             urlToLogin.put( url, new Pair<String, String>( u, p ) );
         }
         Pair<String, String> pair = urlToLogin.get( url );
-        return new JdbcConnectionParameter( driver, url, pair.first, pair.second );
+        return new JDBCConnection( driver, url, pair.first, pair.second, false );
     }
 
+    /**
+     * 
+     * @param driver
+     * @param url
+     * @param user
+     * @param passwd
+     * @param exception
+     *            my be null, if it is the first attemp
+     * @return
+     */
     private Pair<String, String> askLoginParameter( String driver, String url, String user, String passwd,
-                                                           boolean isFirstAttempt ) {
-        LoginPanel panel = new LoginPanel( driver, url, user, passwd, isFirstAttempt );
+                                                    String exception ) {
+        LoginPanel panel = new LoginPanel( driver, url, user, passwd, exception );
         PanelDialog pd = new PanelDialog( panel, true );
         pd.setVisible( true );
         String pw = null;
@@ -95,21 +107,12 @@ public class JdbcConnectionParameterCache {
         } else {
             return new Pair<String, String>();
         }
-        DBConnectionPool pool = DBConnectionPool.getInstance();
-        Connection conn = null;
+
         try {
-            conn = pool.acquireConnection( driver, url, u, pw );
+            DatabaseConnectionManager.testConnection( driver, url, u, pw );
         } catch ( Exception e ) {
-            // try again
-        }
-        if ( conn == null ) {
-            return askLoginParameter( driver, url, u, pw, false );
-        } else {
-            try {
-                pool.releaseConnection( conn, driver, url, u, pw );
-            } catch ( DBPoolException e ) {
-                // try again
-            }
+            LOG.logInfo( "Connection failed: " + e.getMessage() );
+            return askLoginParameter( driver, url, u, pw, e.getMessage() );
         }
         return new Pair<String, String>( u, pw );
     }
