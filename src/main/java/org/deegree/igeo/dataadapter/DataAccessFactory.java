@@ -234,7 +234,7 @@ public class DataAccessFactory {
         if ( datasource.getLinkedTables().size() > 0 ) {
             for ( AbstractLinkedTableType lk : datasource.getLinkedTables() ) {
                 LinkedTable lt = createLinkedTable( lk );
-                // notice that the returned DataAccessAdapter will be passed to the 
+                // notice that the returned DataAccessAdapter will be passed to the
                 // method in next iteration
                 daa = new LinkedTableAdapter( (FeatureAdapter) daa, lt );
             }
@@ -257,11 +257,11 @@ public class DataAccessFactory {
             String s = ( (LinkedFileTableType) lk ).getFile();
             try {
                 if ( s.toLowerCase().endsWith( ".dbf" ) ) {
-                    lt = new LinkedDBaseTable( lk, new File( s ) );
+                    lt = new LinkedDBaseTable( (LinkedFileTableType) lk, new File( s ) );
                 } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
-                    lt = new LinkedCSVTable( lk, new File( s ) );
+                    lt = new LinkedCSVTable( (LinkedFileTableType) lk, new File( s ) );
                 } else if ( s.toLowerCase().endsWith( ".xls" ) || s.toLowerCase().endsWith( ".xlsx" ) ) {
-                    lt = new LinkedExcelTable( lk, new File( s ) );
+                    lt = new LinkedExcelTable( (LinkedFileTableType) lk, new File( s ) );
                 }
             } catch ( IOException e ) {
                 LOG.logError( e );

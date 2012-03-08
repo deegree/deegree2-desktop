@@ -47,8 +47,10 @@ import java.util.List;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.config.LinkedDatabaseTableType;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionCreator;
 import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
 
@@ -64,11 +66,9 @@ public class LinkedDatabaseTable extends LinkedTable {
 
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedDatabaseTable.class );
 
-    private String[] columnNames;
+    private String[] columnNames = new String[0];
 
-    private int[] types;
-
-    private LinkedDatabaseTableType linkedDB;
+    private int[] types = new int[0];
 
     private ResultSet rs;
 
@@ -80,13 +80,17 @@ public class LinkedDatabaseTable extends LinkedTable {
 
     private int cursor;
 
+    public LinkedDatabaseTable() {
+        super( new LinkedDatabaseTableType() );
+        pool = DBConnectionPool.getInstance();
+    }
+
     /**
      * @param linkedTableType
      * @throws Exception
      */
     public LinkedDatabaseTable( LinkedDatabaseTableType linkedTableType ) throws IOException {
         super( linkedTableType );
-        linkedDB = (LinkedDatabaseTableType) linkedTableType;
         pool = DBConnectionPool.getInstance();
         init();
     }
@@ -94,19 +98,20 @@ public class LinkedDatabaseTable extends LinkedTable {
     private void init()
                             throws IOException {
         DBConnectionPool pool = DBConnectionPool.getInstance();
-        JDBCConnectionType connection = linkedDB.getConnection();
+        JDBCConnectionType connection = ( (LinkedDatabaseTableType) getLinkedTableType() ).getConnection();
         String driver = connection.getDriver();
         String url = connection.getUrl();
         String user = connection.getUser();
         String pw = connection.getPassword();
-        
+
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
         try {
             conn = pool.acquireConnection( driver, url, user, pw );
             stmt = conn.createStatement();
-            rs = stmt.executeQuery( linkedDB.getSqlTemplate() + " WHERE 1 = 2" );
+            rs = stmt.executeQuery( ( (LinkedDatabaseTableType) getLinkedTableType() ).getSqlTemplate()
+                                    + " WHERE 1 = 2" );
             ResultSetMetaData rsmd = rs.getMetaData();
             int cnt = rsmd.getColumnCount();
             types = new int[cnt];
@@ -273,7 +278,7 @@ public class LinkedDatabaseTable extends LinkedTable {
     public void startReading()
                             throws Exception {
         stopReading();
-        JDBCConnectionType connection = linkedDB.getConnection();
+        JDBCConnectionType connection = ( (LinkedDatabaseTableType) getLinkedTableType() ).getConnection();
         String driver = connection.getDriver();
         String url = connection.getUrl();
         String user = connection.getUser();
@@ -282,16 +287,19 @@ public class LinkedDatabaseTable extends LinkedTable {
         try {
             conn = pool.acquireConnection( driver, url, user, pw );
             stmt = conn.createStatement();
-            rs = stmt.executeQuery( linkedDB.getSqlTemplate() );
-        } catch ( Exception e ) {            
+            rs = stmt.executeQuery( ( (LinkedDatabaseTableType) getLinkedTableType() ).getSqlTemplate() );
+        } catch ( Exception e ) {
             try {
-                rs.close();
-                stmt.close();
+                if ( rs != null )
+                    rs.close();
+                if ( stmt != null )
+                    stmt.close();
             } catch ( Exception e1 ) {
                 LOG.logWarning( "", e1 );
             }
             try {
-                pool.releaseConnection( conn, driver, url, user, pw );
+                if ( conn != null )
+                    pool.releaseConnection( conn, driver, url, user, pw );
             } catch ( DBPoolException e1 ) {
                 LOG.logWarning( "", e1 );
             }
@@ -306,7 +314,7 @@ public class LinkedDatabaseTable extends LinkedTable {
     public void stopReading()
                             throws Exception {
         if ( conn != null ) {
-            JDBCConnectionType connection = linkedDB.getConnection();
+            JDBCConnectionType connection = ( (LinkedDatabaseTableType) getLinkedTableType() ).getConnection();
             String driver = connection.getDriver();
             String url = connection.getUrl();
             String user = connection.getUser();
@@ -325,4 +333,12 @@ public class LinkedDatabaseTable extends LinkedTable {
             conn = null;
         }
     }
+
+    public void setConnection( JDBCConnection jdbcConnection, String sqlTemplate )
+                            throws IOException {
+        ( (LinkedDatabaseTableType) getLinkedTableType() ).setConnection( JdbcConnectionCreator.getAsJDBCConnectionType( jdbcConnection ) );
+        ( (LinkedDatabaseTableType) getLinkedTableType() ).setSqlTemplate( sqlTemplate );
+        init();
+    }
+
 }

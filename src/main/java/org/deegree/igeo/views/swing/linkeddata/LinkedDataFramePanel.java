@@ -43,8 +43,6 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -53,13 +51,6 @@ import javax.swing.SwingUtilities;
 
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.LinkTableCommand;
-import org.deegree.igeo.config.LinkedDatabaseTableType;
-import org.deegree.igeo.config.LinkedFileTableType;
-import org.deegree.igeo.dataadapter.LinkedCSVTable;
-import org.deegree.igeo.dataadapter.LinkedDBaseTable;
-import org.deegree.igeo.dataadapter.LinkedDatabaseTable;
-import org.deegree.igeo.dataadapter.LinkedExcelTable;
-import org.deegree.igeo.dataadapter.LinkedTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.modules.IModule;
 
@@ -89,7 +80,7 @@ public class LinkedDataFramePanel extends JPanel {
     private AbstractLinkedDataPanel current;
 
     private ApplicationContainer<Container> appCont;
-    
+
     private JEditorPane descriptionArea;
 
     private Window parent;
@@ -174,35 +165,35 @@ public class LinkedDataFramePanel extends JPanel {
 
                         public void actionPerformed( ActionEvent e ) {
 
-                            LinkedTable lk = null;
-                            if ( current.getLinkedTable() instanceof LinkedFileTableType ) {
-                                String s = ( (LinkedFileTableType) current.getLinkedTable() ).getFile();
-                                try {
-                                    if ( s.toLowerCase().endsWith( ".dbf" ) ) {
-                                        lk = new LinkedDBaseTable( current.getLinkedTable(), new File( s ) );
-                                    } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
-                                        lk = new LinkedCSVTable( current.getLinkedTable(), new File( s ) );
-                                    } else if ( s.toLowerCase().endsWith( ".xls" )
-                                                || s.toLowerCase().endsWith( ".xlsx" ) ) {
-                                        lk = new LinkedExcelTable( current.getLinkedTable(), new File( s ) );
-                                    }
-                                } catch ( IOException ex ) {
-                                    // TODO Auto-generated catch block
-                                    ex.printStackTrace();
-                                    parent.dispose();
-                                    return;
-                                }
-                            } else if ( current.getLinkedTable() instanceof LinkedDatabaseTableType ) {
-                                try {
-                                    lk = new LinkedDatabaseTable( (LinkedDatabaseTableType) current.getLinkedTable() );
-                                } catch ( IOException e1 ) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                            }
+                            // LinkedTable lk = null;
+                            // if ( current.getLinkedTable() instanceof LinkedFileTableType ) {
+                            // String s = ( (LinkedFileTableType) current.getLinkedTable() ).getFile();
+                            // try {
+                            // if ( s.toLowerCase().endsWith( ".dbf" ) ) {
+                            // lk = new LinkedDBaseTable( current.getLinkedTable(), new File( s ) );
+                            // } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
+                            // lk = new LinkedCSVTable( current.getLinkedTable(), new File( s ) );
+                            // } else if ( s.toLowerCase().endsWith( ".xls" )
+                            // || s.toLowerCase().endsWith( ".xlsx" ) ) {
+                            // lk = new LinkedExcelTable( current.getLinkedTable(), new File( s ) );
+                            // }
+                            // } catch ( IOException ex ) {
+                            // // TODO Auto-generated catch block
+                            // ex.printStackTrace();
+                            // parent.dispose();
+                            // return;
+                            // }
+                            // } else if ( current.getLinkedTable() instanceof LinkedDatabaseTableType ) {
+                            // try {
+                            // lk = new LinkedDatabaseTable( (LinkedDatabaseTableType) current.getLinkedTable() );
+                            // } catch ( IOException e1 ) {
+                            // // TODO Auto-generated catch block
+                            // e1.printStackTrace();
+                            // }
+                            // }
                             LinkTableCommand cmd = new LinkTableCommand();
                             cmd.setView( current.isView() );
-                            cmd.setLinkedTable( lk );
+                            cmd.setLinkedTable( current.getLinkedTable() );
                             cmd.setMapModel( appCont.getMapModel( null ) );
                             String title = ( (NamesPanel) current ).getLayerTitle();
                             if ( title != null ) {

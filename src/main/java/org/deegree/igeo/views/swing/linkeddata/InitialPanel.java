@@ -48,8 +48,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import org.deegree.igeo.config.LinkedDatabaseTableType;
-import org.deegree.igeo.config.LinkedFileTableType;
+import org.deegree.igeo.dataadapter.LinkedDatabaseTable;
+import org.deegree.igeo.dataadapter.LinkedFileTable;
 import org.deegree.igeo.i18n.Messages;
 
 /**
@@ -105,7 +105,7 @@ class InitialPanel extends AbstractLinkedDataPanel {
                 this.add( pnLinageType,
                           new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                                                   GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0, 0 ) );
-                pnLinageType.setBorder( BorderFactory.createTitledBorder(  Messages.getMessage( getLocale(), "$MD11579" ) ) );
+                pnLinageType.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(), "$MD11579" ) ) );
                 {
                     rbLinkageView = new JRadioButton( Messages.getMessage( getLocale(), "$MD11552" ) );
                     pnLinageType.add( rbLinkageView );
@@ -162,7 +162,6 @@ class InitialPanel extends AbstractLinkedDataPanel {
         return bgDatasourceType;
     }
 
-   
     /*
      * (non-Javadoc)
      * 
@@ -173,14 +172,14 @@ class InitialPanel extends AbstractLinkedDataPanel {
         AbstractLinkedDataPanel p = null;
         if ( rbDsFile.isSelected() ) {
             p = new FileSelectPanel();
-            if ( linkedTable == null || linkedTable instanceof LinkedDatabaseTableType ) {
-                linkedTable = new LinkedFileTableType();
+            if ( linkedTable == null || linkedTable instanceof LinkedDatabaseTable ) {
+                linkedTable = new LinkedFileTable();
             }
         }
         if ( rbDsDatabase.isSelected() ) {
             p = new DatabaseSelectPanel();
-            if ( linkedTable == null || linkedTable instanceof LinkedFileTableType ) {
-                linkedTable = new LinkedDatabaseTableType();
+            if ( linkedTable == null || linkedTable instanceof LinkedFileTable ) {
+                linkedTable = new LinkedDatabaseTable();
             }
         }
         p.setLinkedTable( linkedTable );
@@ -189,12 +188,14 @@ class InitialPanel extends AbstractLinkedDataPanel {
         p.setView( rbLinkageView.isSelected() );
         return p;
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.deegree.igeo.views.swing.linkeddata.AbstractLinkedDataPanel#getDescription()
      */
-    String getDescription() {        
-        return  Messages.getMessage( getLocale(), "$MD11573" );
+    String getDescription() {
+        return Messages.getMessage( getLocale(), "$MD11573" );
     }
 
 }

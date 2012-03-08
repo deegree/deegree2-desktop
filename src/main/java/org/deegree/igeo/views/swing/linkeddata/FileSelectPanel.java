@@ -51,12 +51,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.deegree.igeo.config.LinkedFileTableType;
+import org.deegree.igeo.dataadapter.LinkedFileTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
-import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 
 /**
  * 
@@ -121,8 +121,7 @@ class FileSelectPanel extends AbstractLinkedDataPanel {
                     btOpenFileDlg.addActionListener( new ActionListener() {
 
                         public void actionPerformed( ActionEvent e ) {
-                            File file = GenericFileChooser.showOpenDialog(
-                                                                           FILECHOOSERTYPE.geoDataFile,
+                            File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.geoDataFile,
                                                                            null,
                                                                            FileSelectPanel.this,
                                                                            Preferences.systemNodeForPackage( FileSelectPanel.class ),
@@ -148,23 +147,25 @@ class FileSelectPanel extends AbstractLinkedDataPanel {
      */
     AbstractLinkedDataPanel getNext() {
         if ( tfFileName.getText() == null || tfFileName.getText().trim().length() == 0 ) {
-            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                   "$MD11550" ),
+            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                             Messages.getMessage( getLocale(), "$MD11550" ),
                                              Messages.getMessage( getLocale(), "$MD11551" ) );
             return null;
         }
-        ( (LinkedFileTableType) linkedTable ).setEditable( false );
-        ( (LinkedFileTableType) linkedTable ).setFile( tfFileName.getText() );
+        ( (LinkedFileTable) linkedTable ).setEditable( false );
+        ( (LinkedFileTable) linkedTable ).setFile( tfFileName.getText() );
         AbstractLinkedDataPanel p = new DefineKeysPanel( appCont, linkedTable );
         p.setPrevious( this );
         p.setView( isView() );
         return p;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.deegree.igeo.views.swing.linkeddata.AbstractLinkedDataPanel#getDescription()
      */
-    String getDescription() {        
-        return  Messages.getMessage( getLocale(), "$MD11574" );
+    String getDescription() {
+        return Messages.getMessage( getLocale(), "$MD11574" );
     }
 }

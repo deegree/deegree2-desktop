@@ -41,6 +41,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -68,8 +69,8 @@ import javax.swing.SwingUtilities;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.config.DatabaseDriverUtils;
-import org.deegree.igeo.config.JDBCConnectionType;
-import org.deegree.igeo.config.LinkedDatabaseTableType;
+import org.deegree.igeo.config.JDBCConnection;
+import org.deegree.igeo.dataadapter.LinkedDatabaseTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.views.DialogFactory;
@@ -410,13 +411,16 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         }
         String table = cbTables.getSelectedItem().toString();
         linkedTable.setEditable( false );
-        JDBCConnectionType conType = new JDBCConnectionType();
-        conType.setDriver( DatabaseConnectionManager.getDriver( cbDBDriver.getSelectedItem().toString() ) );
-        conType.setUrl( getConnectionString() );
-        conType.setUser( tfDBUserName.getText() );
-        conType.setPassword( new String( pwDBPassword.getPassword() ) );
-        ( (LinkedDatabaseTableType) linkedTable ).setConnection( conType );
-        ( (LinkedDatabaseTableType) linkedTable ).setSqlTemplate( "select * from " + table );
+        // TODO: save passowrd
+        JDBCConnection conType = new JDBCConnection(
+                                                     DatabaseConnectionManager.getDriver( cbDBDriver.getSelectedItem().toString() ),
+                                                     getConnectionString(), tfDBUserName.getText(),
+                                                     new String( pwDBPassword.getPassword() ), true );
+        try {
+            ( (LinkedDatabaseTable) linkedTable ).setConnection( conType, "select * from " + table );
+        } catch ( IOException e ) {
+            LOG.logError( "Could not connect to database: ", e );
+        }
         AbstractLinkedDataPanel p = new DefineKeysPanel( appCont, linkedTable );
         p.setPrevious( this );
         p.setView( isView() );

@@ -47,7 +47,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -59,16 +58,9 @@ import javax.swing.SwingUtilities;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.framework.util.Pair;
 import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.config.AbstractLinkedTableType;
-import org.deegree.igeo.config.LinkedDatabaseTableType;
-import org.deegree.igeo.config.LinkedFileTableType;
 import org.deegree.igeo.config.RelationKeyType;
 import org.deegree.igeo.config.Util;
 import org.deegree.igeo.dataadapter.FeatureAdapter;
-import org.deegree.igeo.dataadapter.LinkedCSVTable;
-import org.deegree.igeo.dataadapter.LinkedDBaseTable;
-import org.deegree.igeo.dataadapter.LinkedDatabaseTable;
-import org.deegree.igeo.dataadapter.LinkedExcelTable;
 import org.deegree.igeo.dataadapter.LinkedTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
@@ -104,7 +96,7 @@ class DefineKeysPanel extends AbstractLinkedDataPanel {
      * @param appCont
      * @param linkedTable
      */
-    DefineKeysPanel( ApplicationContainer<Container> appCont, AbstractLinkedTableType linkedTable ) {
+    DefineKeysPanel( ApplicationContainer<Container> appCont, LinkedTable linkedTable ) {
         this.appCont = appCont;
         this.linkedTable = linkedTable;
         initGUI();
@@ -210,20 +202,20 @@ class DefineKeysPanel extends AbstractLinkedDataPanel {
      */
     private String[] getTableColumns()
                             throws IOException {
-        LinkedTable lk = null;
-        if ( linkedTable instanceof LinkedFileTableType ) {
-            String s = ( (LinkedFileTableType) linkedTable ).getFile();
-            if ( s.toLowerCase().endsWith( ".dbf" ) ) {
-                lk = new LinkedDBaseTable( linkedTable, new File( s ) );
-            } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
-                lk = new LinkedCSVTable( linkedTable, new File( s ) );
-            } else if ( s.toLowerCase().endsWith( ".xls" ) || s.toLowerCase().endsWith( ".xlsx" ) ) {
-                lk = new LinkedExcelTable( linkedTable, new File( s ) );
-            }
-        } else if ( linkedTable instanceof LinkedDatabaseTableType ) {
-            lk = new LinkedDatabaseTable( (LinkedDatabaseTableType) linkedTable );
-        }
-        return lk.getColumnNames();
+        // LinkedTable lk = null;
+        // if ( linkedTable instanceof LinkedFileTableType ) {
+        // String s = ( (LinkedFileTableType) linkedTable ).getFile();
+        // if ( s.toLowerCase().endsWith( ".dbf" ) ) {
+        // lk = new LinkedDBaseTable( linkedTable, new File( s ) );
+        // } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
+        // lk = new LinkedCSVTable( linkedTable, new File( s ) );
+        // } else if ( s.toLowerCase().endsWith( ".xls" ) || s.toLowerCase().endsWith( ".xlsx" ) ) {
+        // lk = new LinkedExcelTable( linkedTable, new File( s ) );
+        // }
+        // } else if ( linkedTable instanceof LinkedDatabaseTable ) {
+        // lk = new LinkedDatabaseTable( (LinkedDatabaseTable) linkedTable );
+        // }
+        return linkedTable.getColumnNames();
     }
 
     private FeatureType getSelectedFeatureType() {
@@ -246,10 +238,12 @@ class DefineKeysPanel extends AbstractLinkedDataPanel {
         return p;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.deegree.igeo.views.swing.linkeddata.AbstractLinkedDataPanel#getDescription()
      */
-    String getDescription() {        
-        return  Messages.getMessage( getLocale(), "$MD11576" );
+    String getDescription() {
+        return Messages.getMessage( getLocale(), "$MD11576" );
     }
 }

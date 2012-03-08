@@ -52,7 +52,7 @@ import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
-import org.deegree.igeo.config.AbstractLinkedTableType;
+import org.deegree.igeo.config.LinkedFileTableType;
 
 /**
  * concrect {@link LinkedTable} for accessing Excel tables
@@ -62,7 +62,7 @@ import org.deegree.igeo.config.AbstractLinkedTableType;
  * 
  * @version $Revision$, $Date$
  */
-public class LinkedExcelTable extends LinkedTable {
+public class LinkedExcelTable extends LinkedFileTable {
 
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedExcelTable.class );
 
@@ -81,7 +81,7 @@ public class LinkedExcelTable extends LinkedTable {
      * @param sheetName
      * @throws IOException
      */
-    public LinkedExcelTable( AbstractLinkedTableType linkedTableType, File file ) throws IOException {
+    public LinkedExcelTable( LinkedFileTableType linkedTableType, File file ) throws IOException {
         super( linkedTableType );
         if ( file.getAbsolutePath().toLowerCase().endsWith( ".xls" ) ) {
             workbook = new HSSFWorkbook( new FileInputStream( file ) );

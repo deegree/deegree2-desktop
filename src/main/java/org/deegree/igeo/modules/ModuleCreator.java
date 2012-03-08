@@ -682,12 +682,11 @@ public class ModuleCreator<T> {
     private DatabaseDatasource createDatabaseDatasource( DatabaseDatasourceType cnfDbds ) {
         DatabaseDatasource dbds = null;
         Cache cache = createCache( cnfDbds.getCache() );
-        dbds = new DatabaseDatasource( cnfDbds, null, cache );
         JDBCConnection jdbcConnection = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( cnfDbds.getConnection().getDriver(),
                                                                                                                cnfDbds.getConnection().getUrl(),
                                                                                                                cnfDbds.getConnection().getUser(),
                                                                                                                cnfDbds.getConnection().getPassword() );
-        dbds.setJdbc( jdbcConnection );
+        dbds = new DatabaseDatasource( cnfDbds, null, cache, jdbcConnection );
         dbds.setExtent( Util.convertEnvelope( cnfDbds.getExtent() ) );
         return dbds;
     }

@@ -45,7 +45,7 @@ import org.deegree.graphics.sld.UserStyle;
 import org.deegree.igeo.config.DatabaseDatasourceType;
 import org.deegree.igeo.config.DatabaseDatasourceType.GeometryField;
 import org.deegree.igeo.config.DirectStyleType;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.Util;
 import org.deegree.igeo.mapmodel.AuthenticationInformation;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
@@ -175,16 +175,11 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         gf.setSrs( srid );
         dsType.setGeometryField( gf );
         dsType.setPrimaryKeyField( pkField );
-        JDBCConnectionType jdbc = new JDBCConnectionType();
-        jdbc.setDriver( driver );
-        jdbc.setPassword( password );
-        jdbc.setUrl( database );
-        jdbc.setUser( user );
-        dsType.setConnection( jdbc );
+        JDBCConnection jdbc = new JDBCConnection( driver, database, user, password, saveLogin );
         dsType.setSqlTemplate( sql );
         dsType.setNativeCRS( nativeCRS );
 
-        DatabaseDatasource dbDatasource = new DatabaseDatasource( dsType, authenticationInformation, cache, saveLogin );
+        DatabaseDatasource dbDatasource = new DatabaseDatasource( dsType, authenticationInformation, cache, jdbc );
         datasources.add( dbDatasource );
 
         newLayer = new Layer( mapModel, new Identifier( layerName ), layerName, null, datasources, null );

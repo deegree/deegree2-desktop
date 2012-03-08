@@ -59,7 +59,7 @@ import org.deegree.model.feature.FeatureCollection;
  * @version $Revision$, $Date$
  */
 public abstract class LinkedTable {
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedTable.class );
 
     private List<Pair<QualifiedName, String>> relationKeys;
@@ -125,6 +125,20 @@ public abstract class LinkedTable {
     }
 
     /**
+     * @return
+     */
+    public List<RelationKeyType> getRelationKey() {
+        return linkedTableType.getRelationKey();
+    }
+
+    /**
+     * @param editiable
+     */
+    public void setEditable( boolean editiable ) {
+        linkedTableType.setEditable( editiable );
+    }
+
+    /**
      * 
      * @param changeList
      * @throws IOException
@@ -185,7 +199,7 @@ public abstract class LinkedTable {
      */
     private void delete( FeatureCollection fc ) {
         // TODO Auto-generated method stub
-        // shall be abstract        
+        // shall be abstract
         LOG.logWarning( "delete not supported: " + fc );
     }
 

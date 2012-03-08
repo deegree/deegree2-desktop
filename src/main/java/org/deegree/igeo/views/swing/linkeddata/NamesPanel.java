@@ -50,7 +50,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.config.AbstractLinkedTableType;
+import org.deegree.igeo.dataadapter.LinkedTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.views.DialogFactory;
 
@@ -90,7 +90,7 @@ public class NamesPanel extends AbstractLinkedDataPanel {
      * @param appCont
      * @param linkedTable
      */
-    NamesPanel( ApplicationContainer<Container> appCont, AbstractLinkedTableType linkedTable ) {
+    NamesPanel( ApplicationContainer<Container> appCont, LinkedTable linkedTable ) {
         this.appCont = appCont;
         this.linkedTable = linkedTable;
         initGUI();
@@ -171,8 +171,8 @@ public class NamesPanel extends AbstractLinkedDataPanel {
 
     String getLayerTitle() {
         if ( tfLayerTitle.getText() == null || tfLayerTitle.getText().trim().length() == 0 ) {
-            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                   "$MD11569" ),
+            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                             Messages.getMessage( getLocale(), "$MD11569" ),
                                              Messages.getMessage( getLocale(), "$MD11570" ) );
             return null;
         }
@@ -180,11 +180,11 @@ public class NamesPanel extends AbstractLinkedDataPanel {
     }
 
     @Override
-    public AbstractLinkedTableType getLinkedTable() {
+    public LinkedTable getLinkedTable() {
 
         if ( tfColumnPostfix.getText() == null || tfColumnPostfix.getText().trim().length() == 0 ) {
-            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this, Messages.getMessage( getLocale(),
-                                                                                                   "$MD11571" ),
+            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
+                                             Messages.getMessage( getLocale(), "$MD11571" ),
                                              Messages.getMessage( getLocale(), "$MD11572" ) );
             return null;
         }

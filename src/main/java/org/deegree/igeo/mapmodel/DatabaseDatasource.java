@@ -41,7 +41,7 @@ import net.sf.ehcache.Cache;
 
 import org.deegree.igeo.config.DatabaseDatasourceType;
 import org.deegree.igeo.config.JDBCConnection;
-import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionCreator;
 
 /**
  * data source description for databases
@@ -64,25 +64,9 @@ public class DatabaseDatasource extends Datasource {
      * @param saveLogin
      */
     public DatabaseDatasource( DatabaseDatasourceType dsType, AuthenticationInformation authenticationInformation,
-                               Cache cache, boolean saveLogin ) {
+                               Cache cache, JDBCConnection jdbc ) {
         super( dsType, authenticationInformation, cache );
-        setJdbc( new JDBCConnection( dsType.getConnection().getDriver(), dsType.getConnection().getUrl(),
-                                        dsType.getConnection().getUser(), dsType.getConnection().getPassword(),
-                                        saveLogin ) );
-    }
-
-    /**
-     * Create a DatabaseDatasource. SaveLogin depends on the the {@link DatabaseDatasourceType#getConnection()}: if user
-     * and password are not null, saveLogin = true otherwise false
-     * 
-     * @param dsType
-     * @param authenticationInformation
-     * @param cache
-     */
-    public DatabaseDatasource( DatabaseDatasourceType dsType, AuthenticationInformation authenticationInformation,
-                               Cache cache ) {
-        this( dsType, authenticationInformation, cache,
-              ( dsType.getConnection().getUser() != null && dsType.getConnection().getPassword() != null ) );
+        setJdbc( jdbc );
     }
 
     /**
@@ -99,14 +83,7 @@ public class DatabaseDatasource extends Datasource {
      */
     public void setJdbc( JDBCConnection jdbc ) {
         this.jdbc = jdbc;
-        JDBCConnectionType connectionType = new JDBCConnectionType();
-        connectionType.setDriver( jdbc.getDriver() );
-        connectionType.setUrl( jdbc.getUrl() );
-        if ( jdbc.isSaveLogin() ) {
-            connectionType.setUser( jdbc.getUser() );
-            connectionType.setPassword( jdbc.getPassword() );
-        }
-        ( (DatabaseDatasourceType) dsType ).setConnection( connectionType );
+        ( (DatabaseDatasourceType) dsType ).setConnection( JdbcConnectionCreator.getAsJDBCConnectionType( jdbc ) );
     }
 
     /**

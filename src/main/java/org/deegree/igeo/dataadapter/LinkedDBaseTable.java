@@ -42,7 +42,7 @@ import java.util.List;
 
 import org.deegree.datatypes.Types;
 import org.deegree.framework.util.Pair;
-import org.deegree.igeo.config.AbstractLinkedTableType;
+import org.deegree.igeo.config.LinkedFileTableType;
 import org.xBaseJ.DBF;
 import org.xBaseJ.xBaseJException;
 import org.xBaseJ.fields.DateField;
@@ -58,7 +58,7 @@ import org.xBaseJ.fields.NumField;
  * 
  * @version $Revision$, $Date$
  */
-public class LinkedDBaseTable extends LinkedTable {
+public class LinkedDBaseTable extends LinkedFileTable {
 
     private String[] columnNames;
 
@@ -71,7 +71,7 @@ public class LinkedDBaseTable extends LinkedTable {
      * @throws IOException
      * @throws xBaseJException
      */
-    public LinkedDBaseTable( AbstractLinkedTableType linkedTableType, File file ) throws IOException {
+    public LinkedDBaseTable( LinkedFileTableType linkedTableType, File file ) throws IOException {
         super( linkedTableType );
         try {
             classDB = new DBF( file.getAbsolutePath() );

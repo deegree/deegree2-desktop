@@ -49,7 +49,7 @@ import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
 import org.deegree.framework.util.StringTools;
-import org.deegree.igeo.config.AbstractLinkedTableType;
+import org.deegree.igeo.config.LinkedFileTableType;
 
 /**
  * concrete {@link LinkedTable} for accessing CSV files
@@ -59,7 +59,7 @@ import org.deegree.igeo.config.AbstractLinkedTableType;
  * 
  * @version $Revision$, $Date$
  */
-public class LinkedCSVTable extends LinkedTable {
+public class LinkedCSVTable extends LinkedFileTable {
 
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedCSVTable.class );
 
@@ -73,7 +73,7 @@ public class LinkedCSVTable extends LinkedTable {
      * @param linkedTableType
      * @throws IOException
      */
-    public LinkedCSVTable( AbstractLinkedTableType linkedTableType, File file ) throws IOException {
+    public LinkedCSVTable( LinkedFileTableType linkedTableType, File file ) throws IOException {
         super( linkedTableType );
         csv = new CSV( file.getAbsolutePath() );
         columnNames = csv.getHeader();

@@ -40,7 +40,7 @@ import java.awt.Container;
 import javax.swing.JPanel;
 
 import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.config.AbstractLinkedTableType;
+import org.deegree.igeo.dataadapter.LinkedTable;
 
 /**
  * TODO add class documentation here
@@ -54,7 +54,7 @@ abstract class AbstractLinkedDataPanel extends JPanel {
 
     private static final long serialVersionUID = -1895716362692393288L;
 
-    protected AbstractLinkedTableType linkedTable;
+    protected LinkedTable linkedTable;
 
     private boolean view;
 
@@ -81,7 +81,7 @@ abstract class AbstractLinkedDataPanel extends JPanel {
     /**
      * @return the linkedTable
      */
-    public AbstractLinkedTableType getLinkedTable() {
+    public LinkedTable getLinkedTable() {
         return linkedTable;
     }
 
@@ -89,7 +89,7 @@ abstract class AbstractLinkedDataPanel extends JPanel {
      * @param linkedTable
      *            the linkedTable to set
      */
-    public void setLinkedTable( AbstractLinkedTableType linkedTable ) {
+    public void setLinkedTable( LinkedTable linkedTable ) {
         this.linkedTable = linkedTable;
     }
 
@@ -116,7 +116,6 @@ abstract class AbstractLinkedDataPanel extends JPanel {
         this.previous = previous;
         this.previous.setLinkedTable( linkedTable );
     }
-    
 
     AbstractLinkedDataPanel getPrevious() {
         return previous;
@@ -126,7 +125,6 @@ abstract class AbstractLinkedDataPanel extends JPanel {
      * @return next panel
      */
     abstract AbstractLinkedDataPanel getNext();
-
 
     /**
      * 
