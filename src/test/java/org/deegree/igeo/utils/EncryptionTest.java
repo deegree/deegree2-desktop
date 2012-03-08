@@ -70,7 +70,7 @@ public class EncryptionTest {
     public void encryptWithPropertiesFileTest() {
         // arrange / build
         String origText = "original text";
-        String expText = "15���g��e�k�";
+        String expText = "MTWjwR8LsmcZ3eFlFJBrug==";
         // act / operate
         String encText = Encryption.encrypt( origText );
         // assert / check
@@ -92,7 +92,7 @@ public class EncryptionTest {
     @Test
     public void decryptWithPropertiesFileTest() {
         // arrange / build
-        String origText = "15���g��e�k�";
+        String origText = "MTWjwR8LsmcZ3eFlFJBrug==";
         String expText = "original text";
         // act / operate
         String decText = Encryption.decrypt( origText );

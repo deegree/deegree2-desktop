@@ -37,12 +37,20 @@ package org.deegree.igeo.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.deegree.framework.log.ILogger;
+import org.deegree.framework.log.LoggerFactory;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * Utility class to encrypt and decrypt text.
@@ -54,6 +62,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class Encryption {
 
+    private static final ILogger LOG = LoggerFactory.getLogger( Encryption.class );
+
     private static final String ciph = "DES";
 
     private static final String passFilename = "/passphrase.properties";
@@ -61,63 +71,60 @@ public class Encryption {
     /**
      * Encrpyts text
      * 
-     * @param text
+     * @param textToEncrypt
      * @return encrypted text
      */
-    public static String encrypt( String text) {
-        return encrypt (text, ciph, passFilename);
+    public static String encrypt( String textToEncrypt ) {
+        return encrypt( textToEncrypt, ciph, passFilename );
     }
+
     /**
      * Encrpyts text
      * 
-     * @param text
+     * @param textToEncrypt
      * @return encrypted text
      */
-    public static String encrypt( String text, String ciph, String passFilename ) {
+    public static String encrypt( String textToEncrypt, String ciph, String passFilename ) {
         try {
             Cipher cipher = Cipher.getInstance( ciph );
             Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.ENCRYPT_MODE, key );
-            byte[] encrypted = cipher.doFinal( text.getBytes() );
-            return new String( encrypted );
+
+            byte[] encrypted = cipher.doFinal( textToEncrypt.getBytes() );
+            return new BASE64Encoder().encode( encrypted );
         } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            System.err.println( "no valid key provided" );
-            return text;
+            LOG.logError( "Could not encrypt, return original text:" + e.getMessage() );
+            return textToEncrypt;
         }
     }
 
+    /**
+     * Decrypts text
+     * 
+     * @param textToDecrypt
+     * @return decrypted text
+     */
+    public static String decrypt( String textToDecrypt ) {
+        return decrypt( textToDecrypt, ciph, passFilename );
+    }
 
     /**
      * Decrypts text
      * 
-     * @param text
-     * @return decrypted text
-     */
-    public static String decrypt( String text ) {
-        return decrypt ( text, ciph, passFilename);
-    }
-    
-    /**
-     * Decrypts text
-     * 
-     * @param text
+     * @param textToDecryt
      * @param ciph
      * @return decrypted text
      */
-    public static String decrypt( String text, String ciph, String passFilename ) {
+    public static String decrypt( String textToDecryt, String ciph, String passFilename ) {
         try {
             Cipher cipher = Cipher.getInstance( ciph );
             Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.DECRYPT_MODE, key );
-            System.out.println ("CY");
-            byte[] decrypted = cipher.doFinal();
+            byte[] decrypted = cipher.doFinal( new BASE64Decoder().decodeBuffer( textToDecryt ) );
             return new String( decrypted );
         } catch ( Exception e ) {
-            // TODO Auto-generated catch block
-            System.err.println( "no valid key provided" );
-            e.printStackTrace();
-            return text;
+            LOG.logError( "Could not decrypt, return original text:" + e.getMessage() );
+            return textToDecryt;
         }
     }
 
@@ -127,9 +134,12 @@ public class Encryption {
      * @param cipher
      * @return key for decryption and encryption, if provided.
      * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws InvalidKeyException
      */
-    public static Key loadKey (String cipher, String passFilename)
-                            throws IOException {
+    public static Key loadKey( String cipher, String passFilename )
+                            throws IOException, InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
         Properties prop = new Properties();
         InputStream is = Encryption.class.getResourceAsStream( passFilename );
         prop.load( is );
