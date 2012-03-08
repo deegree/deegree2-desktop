@@ -32,14 +32,8 @@
  http://www.geographie.uni-bonn.de/deegree/
 
  e-mail: info@deegree.org
-----------------------------------------------------------------------------*/
+ ----------------------------------------------------------------------------*/
 package org.deegree.igeo.utils;
-
-import static org.junit.Assert.*;
-import java.security.Key;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -65,7 +59,6 @@ public class EncryptionTest {
         Assert.assertEquals( expText, encText );
     }
 
-
     @Test
     public void encryptWithPropertiesFileTest() {
         // arrange / build
@@ -76,7 +69,7 @@ public class EncryptionTest {
         // assert / check
         Assert.assertEquals( expText, encText );
     }
-    
+
     @Test
     public void decryptWithNoPropertiesFileTest() {
         // arrange / build
@@ -87,7 +80,6 @@ public class EncryptionTest {
         // assert / check
         Assert.assertEquals( expText, encText );
     }
-
 
     @Test
     public void decryptWithPropertiesFileTest() {
