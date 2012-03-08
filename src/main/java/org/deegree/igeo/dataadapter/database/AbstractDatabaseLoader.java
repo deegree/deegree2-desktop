@@ -275,17 +275,23 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
             throw new DataAccessException( e );
         } finally {
             try {
-                rs.close();
+                if ( rs != null ) {
+                    rs.close();
+                }
             } catch ( Exception e ) {
                 LOG.logWarning( "", e );
             }
             try {
-                stmt.close();
+                if ( stmt != null ) {
+                    stmt.close();
+                }
             } catch ( Exception e ) {
                 LOG.logWarning( "", e );
             }
             try {
-                conn.setAutoCommit( ac );
+                if ( conn != null ) {
+                    conn.setAutoCommit( ac );
+                }
             } catch ( SQLException e ) {
                 LOG.logWarning( "", e );
             }
