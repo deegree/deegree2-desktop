@@ -202,19 +202,6 @@ class DefineKeysPanel extends AbstractLinkedDataPanel {
      */
     private String[] getTableColumns()
                             throws IOException {
-        // LinkedTable lk = null;
-        // if ( linkedTable instanceof LinkedFileTableType ) {
-        // String s = ( (LinkedFileTableType) linkedTable ).getFile();
-        // if ( s.toLowerCase().endsWith( ".dbf" ) ) {
-        // lk = new LinkedDBaseTable( linkedTable, new File( s ) );
-        // } else if ( s.toLowerCase().endsWith( ".csv" ) || s.toLowerCase().endsWith( ".tab" ) ) {
-        // lk = new LinkedCSVTable( linkedTable, new File( s ) );
-        // } else if ( s.toLowerCase().endsWith( ".xls" ) || s.toLowerCase().endsWith( ".xlsx" ) ) {
-        // lk = new LinkedExcelTable( linkedTable, new File( s ) );
-        // }
-        // } else if ( linkedTable instanceof LinkedDatabaseTable ) {
-        // lk = new LinkedDatabaseTable( (LinkedDatabaseTable) linkedTable );
-        // }
         return linkedTable.getColumnNames();
     }
 

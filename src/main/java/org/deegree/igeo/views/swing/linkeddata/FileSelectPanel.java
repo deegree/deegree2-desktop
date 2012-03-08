@@ -51,7 +51,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.deegree.igeo.dataadapter.LinkedFileTable;
+import org.deegree.igeo.config.LinkedFileTableType;
+import org.deegree.igeo.dataadapter.LinkedCSVTable;
+import org.deegree.igeo.dataadapter.LinkedDBaseTable;
+import org.deegree.igeo.dataadapter.LinkedExcelTable;
+import org.deegree.igeo.dataadapter.LinkedTable;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
@@ -152,8 +156,28 @@ class FileSelectPanel extends AbstractLinkedDataPanel {
                                              Messages.getMessage( getLocale(), "$MD11551" ) );
             return null;
         }
-        ( (LinkedFileTable) linkedTable ).setEditable( false );
-        ( (LinkedFileTable) linkedTable ).setFile( tfFileName.getText() );
+        String fileName = tfFileName.getText();
+        LinkedTable lk = null;
+        try {
+            if ( fileName.toLowerCase().endsWith( ".dbf" ) ) {
+                lk = new LinkedDBaseTable( new LinkedFileTableType(), new File( fileName ) );
+            } else if ( fileName.toLowerCase().endsWith( ".csv" ) || fileName.toLowerCase().endsWith( ".tab" ) ) {
+                lk = new LinkedCSVTable( new LinkedFileTableType(), new File( fileName ) );
+            } else if ( fileName.toLowerCase().endsWith( ".xls" ) || fileName.toLowerCase().endsWith( ".xlsx" ) ) {
+                lk = new LinkedExcelTable( new LinkedFileTableType(), new File( fileName ) );
+            } else {
+                DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                               Messages.getMessage( getLocale(), "$MD11864" ),
+                                               Messages.getMessage( getLocale(), "$MD11865" ) );
+            }
+            lk.setEditable( false );
+            setLinkedTable( lk );
+        } catch ( Exception e ) {
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), this,
+                                           Messages.getMessage( getLocale(), "$MD11862" ),
+                                           Messages.getMessage( getLocale(), "$MD11863" ), e );
+            return null;
+        }
         AbstractLinkedDataPanel p = new DefineKeysPanel( appCont, linkedTable );
         p.setPrevious( this );
         p.setView( isView() );
