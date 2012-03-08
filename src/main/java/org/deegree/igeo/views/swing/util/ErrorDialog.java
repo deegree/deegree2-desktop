@@ -99,7 +99,7 @@ public class ErrorDialog extends javax.swing.JDialog {
         setTitle( "ERROR" );
         initGUI( name, message, stacktrace );
         setModal( true );
-        setLocation( 300, 300 );
+//        setLocation( 300, 300 );
         setVisible( true );
         toFront();
         setAlwaysOnTop( true );     
