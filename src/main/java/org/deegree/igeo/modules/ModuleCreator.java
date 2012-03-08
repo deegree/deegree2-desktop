@@ -383,6 +383,16 @@ public class ModuleCreator<T> {
             }
         }
 
+        StringBuilder sb = new StringBuilder();
+        for ( Layer layer : layerGroup.getLayers() ) {
+            for ( String layerName : layer.getDataAccessExceptions().keySet() ) {
+                sb.append( Messages.get( "$MD11860", layerName, layer.getDataAccessExceptions().get( layerName ) ) ).append( "\n\n" );
+            }
+        }
+        if ( sb.length() > 0 ) {
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), null, Messages.get( "$MD11861" ),
+                                           sb.toString(), false );
+        }
         return layerGroup;
     }
 

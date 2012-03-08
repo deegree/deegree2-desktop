@@ -136,6 +136,19 @@ public class DialogFactory {
         }
     }
 
+    public static void openErrorDialog( String viewplatform, Component parent, final String title,
+                                        final String message, boolean invokeLater ) {
+        if ( invokeLater ) {
+            openErrorDialog( viewplatform, parent, message, title );
+        } else {
+            if ( "Application".equalsIgnoreCase( viewplatform ) ) {
+                new ErrorDialog( title, message, "-" );
+            } else {
+                LOG.logWarning( "viewplatform not supported: " + viewplatform );
+            }
+        }
+    }
+
     /**
      * @param viewplatform
      * @param parent
@@ -190,7 +203,7 @@ public class DialogFactory {
         }
         return s;
     }
-    
+
     /**
      * opens a dialog with a predefined value that expects a user to enter a string
      * 
@@ -219,8 +232,8 @@ public class DialogFactory {
      * @param asURL
      * @return URL/file or <code>null</code>
      */
-    public static String openNewReferenceDialog( ApplicationContainer<?> appCont, String message,
-                                                 String reference, boolean asURL ) {
+    public static String openNewReferenceDialog( ApplicationContainer<?> appCont, String message, String reference,
+                                                 boolean asURL ) {
         String s = null;
         if ( "Application".equalsIgnoreCase( appCont.getViewPlatform() ) ) {
             NewReferenceDialog nud = new NewReferenceDialog( appCont, message, reference );

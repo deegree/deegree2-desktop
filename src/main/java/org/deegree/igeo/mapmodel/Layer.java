@@ -44,19 +44,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.framework.util.ImageUtils;
 import org.deegree.framework.util.CollectionUtils.Mapper;
-import org.deegree.framework.utils.HashCodeUtil;
+import org.deegree.framework.util.ImageUtils;
 import org.deegree.graphics.sld.AbstractLayer;
 import org.deegree.graphics.sld.AbstractStyle;
 import org.deegree.graphics.sld.NamedLayer;
@@ -72,8 +73,10 @@ import org.deegree.igeo.config.ExternalResourceType;
 import org.deegree.igeo.config.FileDatasourceType;
 import org.deegree.igeo.config.IdentifierType;
 import org.deegree.igeo.config.LayerType;
+import org.deegree.igeo.config.LayerType.MetadataURL;
 import org.deegree.igeo.config.MemoryDatasourceType;
 import org.deegree.igeo.config.NamedStyleType;
+import org.deegree.igeo.config.NamedStyleType.LegendURL;
 import org.deegree.igeo.config.ObjectFactory;
 import org.deegree.igeo.config.OnlineResourceType;
 import org.deegree.igeo.config.StyleType;
@@ -81,8 +84,6 @@ import org.deegree.igeo.config.Util;
 import org.deegree.igeo.config.WCSDatasourceType;
 import org.deegree.igeo.config.WFSDatasourceType;
 import org.deegree.igeo.config.WMSDatasourceType;
-import org.deegree.igeo.config.LayerType.MetadataURL;
-import org.deegree.igeo.config.NamedStyleType.LegendURL;
 import org.deegree.igeo.dataadapter.Adapter;
 import org.deegree.igeo.dataadapter.AdapterEvent;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
@@ -129,6 +130,8 @@ public class Layer implements MapModelEntry {
     private List<NamedStyle> styles;
 
     private List<DataAccessAdapter> dataAccess;
+
+    private Map<String, DataAccessException> dataAccessExceptions = new HashMap<String, DataAccessException>();
 
     transient private FeatureCollection selectedFeatures;
 
@@ -255,6 +258,13 @@ public class Layer implements MapModelEntry {
     }
 
     /**
+     * @return a list of exceptions occured during trying to access a datasource
+     */
+    public Map<String, DataAccessException> getDataAccessExceptions() {
+        return dataAccessExceptions;
+    }
+
+    /**
      * adds a data source to a layer
      * 
      * @param datasource
@@ -306,9 +316,14 @@ public class Layer implements MapModelEntry {
         } else {
             this.dataAccess.clear();
         }
+        this.dataAccessExceptions.clear();
         layerType.getDatasource().clear();
         for ( Datasource datasource : datasources ) {
-            addDatasource( datasource );
+            try {
+                addDatasource( datasource );
+            } catch ( DataAccessException e ) {
+                this.dataAccessExceptions.put( datasource.getName(), e );
+            }
         }
     }
 
@@ -1022,7 +1037,7 @@ public class Layer implements MapModelEntry {
         }
         return getIdentifier().equals( ( (Layer) other ).getIdentifier() );
     }
-    
+
     @Override
     public int hashCode() {
         return getIdentifier().hashCode();
