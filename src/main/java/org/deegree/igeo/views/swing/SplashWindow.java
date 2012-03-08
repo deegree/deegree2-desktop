@@ -40,7 +40,11 @@ package org.deegree.igeo.views.swing;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -59,10 +63,10 @@ import org.deegree.kernel.ProcessMonitor;
  * 
  * @version. $Revision$, $Date$
  */
-public class SplashWindow extends JWindow implements ProcessMonitor {
+public class SplashWindow extends JWindow implements ProcessMonitor, MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = 4526103047947164641L;
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( SplashWindow.class );
 
     private boolean canceled = false;
@@ -84,24 +88,26 @@ public class SplashWindow extends JWindow implements ProcessMonitor {
         getContentPane().add( label );
         getContentPane().add( contents );
 
+        addMouseListener( this );
+        addMouseMotionListener( this );
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension labelSize = contents.getPreferredSize();
         setLocation( ( screenSize.width / 2 ) - ( labelSize.width / 2 ), ( screenSize.height / 2 )
                                                                          - ( labelSize.height / 2 ) );
         new Thread( this ).start();
     }
-    
-    
 
-    /* (non-Javadoc)
-     * @see org.deegree.kernel.ProcessMonitor#init(java.lang.String, java.lang.String, int, int, org.deegree.kernel.Command)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.deegree.kernel.ProcessMonitor#init(java.lang.String, java.lang.String, int, int,
+     * org.deegree.kernel.Command)
      */
     public void init( String title, String message, int min, int max, Command command ) {
         setMinimumValue( min );
-        setMaximumValue( max );        
+        setMaximumValue( max );
     }
-
-
 
     /*
      * (non-Javadoc)
@@ -139,7 +145,7 @@ public class SplashWindow extends JWindow implements ProcessMonitor {
     public boolean isCanceled() {
         return canceled;
     }
-     
+
     /*
      * (non-Javadoc)
      * 
@@ -174,6 +180,46 @@ public class SplashWindow extends JWindow implements ProcessMonitor {
             }
         }
         dispose();
+    }
+
+    private Point location;
+
+    private int pressedX;
+
+    private int pressedY;
+
+    @Override
+    public void mouseDragged( MouseEvent e ) {
+        location = getLocation( location );
+        int x = location.x - pressedX + e.getX();
+        int y = location.y - pressedY + e.getY();
+        setLocation( x, y );
+    }
+
+    @Override
+    public void mouseMoved( MouseEvent e ) {
+    }
+
+    @Override
+    public void mouseClicked( MouseEvent e ) {
+    }
+
+    @Override
+    public void mousePressed( MouseEvent e ) {
+        pressedX = e.getX();
+        pressedY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased( MouseEvent e ) {
+    }
+
+    @Override
+    public void mouseEntered( MouseEvent e ) {
+    }
+
+    @Override
+    public void mouseExited( MouseEvent e ) {
     }
 
 }
