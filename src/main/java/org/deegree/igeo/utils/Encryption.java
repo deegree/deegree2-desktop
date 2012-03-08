@@ -37,6 +37,7 @@ package org.deegree.igeo.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.Key;
 import java.util.Properties;
 
@@ -63,10 +64,19 @@ public class Encryption {
      * @param text
      * @return encrypted text
      */
-    public static String encrypt( String text ) {
+    public static String encrypt( String text) {
+        return encrypt (text, ciph, passFilename);
+    }
+    /**
+     * Encrpyts text
+     * 
+     * @param text
+     * @return encrypted text
+     */
+    public static String encrypt( String text, String ciph, String passFilename ) {
         try {
             Cipher cipher = Cipher.getInstance( ciph );
-            Key key = loadKey( ciph );
+            Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.ENCRYPT_MODE, key );
             byte[] encrypted = cipher.doFinal( text.getBytes() );
             return new String( encrypted );
@@ -77,6 +87,7 @@ public class Encryption {
         }
     }
 
+
     /**
      * Decrypts text
      * 
@@ -84,15 +95,28 @@ public class Encryption {
      * @return decrypted text
      */
     public static String decrypt( String text ) {
+        return decrypt ( text, ciph, passFilename);
+    }
+    
+    /**
+     * Decrypts text
+     * 
+     * @param text
+     * @param ciph
+     * @return decrypted text
+     */
+    public static String decrypt( String text, String ciph, String passFilename ) {
         try {
             Cipher cipher = Cipher.getInstance( ciph );
-            Key key = loadKey( ciph );
+            Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.DECRYPT_MODE, key );
-            byte[] decrypted = cipher.doFinal( text.getBytes() );
+            System.out.println ("CY");
+            byte[] decrypted = cipher.doFinal();
             return new String( decrypted );
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
             System.err.println( "no valid key provided" );
+            e.printStackTrace();
             return text;
         }
     }
@@ -104,7 +128,7 @@ public class Encryption {
      * @return key for decryption and encryption, if provided.
      * @throws IOException
      */
-    private static Key loadKey( String cipher )
+    public static Key loadKey (String cipher, String passFilename)
                             throws IOException {
         Properties prop = new Properties();
         InputStream is = Encryption.class.getResourceAsStream( passFilename );
