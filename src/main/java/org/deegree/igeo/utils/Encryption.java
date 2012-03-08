@@ -32,7 +32,7 @@
  http://www.geographie.uni-bonn.de/deegree/
 
  e-mail: info@deegree.org
-----------------------------------------------------------------------------*/
+ ----------------------------------------------------------------------------*/
 package org.deegree.igeo.utils;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Utility class to encrypt and decrypt text. 
+ * Utility class to encrypt and decrypt text.
  * 
  * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author last edited by: $Author: wanhoff $
@@ -53,62 +53,64 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class Encryption {
 
-	private String ciph = "DES";
-	private String passFilename = "passphrase.properties";
+    private static final String ciph = "DES";
 
-	/**
-	 * Encrpyts text
-	 * 
-	 * @param text
-	 * @return encrypted text
-	 */
-	public String encrypt(String text) {
-		try {
-			Cipher cipher = Cipher.getInstance(ciph);
-			Key key = loadKey(ciph);
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-			byte[] encrypted = cipher.doFinal(text.getBytes());
-			return new String(encrypted);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("no valid key provided");
-			return text;
-		}
-	}
+    private static final String passFilename = "/passphrase.properties";
 
-	/**
-	 * Decrypts text
-	 * 
-	 * @param text
-	 * @return decrypted text
-	 */
-	public String decrypt(String text) {
-		try {
-			Cipher cipher = Cipher.getInstance(ciph);
-			Key key = loadKey(ciph);
-			cipher.init(Cipher.DECRYPT_MODE, key);
-			byte[] decrypted = cipher.doFinal(text.getBytes());
-			return new String(decrypted);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("no valid key provided");
-			return text;
-		}
-	}
+    /**
+     * Encrpyts text
+     * 
+     * @param text
+     * @return encrypted text
+     */
+    public static String encrypt( String text ) {
+        try {
+            Cipher cipher = Cipher.getInstance( ciph );
+            Key key = loadKey( ciph );
+            cipher.init( Cipher.ENCRYPT_MODE, key );
+            byte[] encrypted = cipher.doFinal( text.getBytes() );
+            return new String( encrypted );
+        } catch ( Exception e ) {
+            // TODO Auto-generated catch block
+            System.err.println( "no valid key provided" );
+            return text;
+        }
+    }
 
-	/**
-	 * loads passphrase to generate key
-	 * 
-	 * @param cipher
-	 * @return key for decryption and encryption, if provided. 
-	 * @throws IOException
-	 */
-	private Key loadKey(String cipher) throws IOException {
-		Properties prop = new Properties();
-		InputStream is = this.getClass().getResourceAsStream(passFilename);
-		prop.load(is);
-		is.close();
-		String pass = prop.getProperty("passphrase");
-		return new SecretKeySpec(pass.getBytes(), cipher);
-	}
+    /**
+     * Decrypts text
+     * 
+     * @param text
+     * @return decrypted text
+     */
+    public static String decrypt( String text ) {
+        try {
+            Cipher cipher = Cipher.getInstance( ciph );
+            Key key = loadKey( ciph );
+            cipher.init( Cipher.DECRYPT_MODE, key );
+            byte[] decrypted = cipher.doFinal( text.getBytes() );
+            return new String( decrypted );
+        } catch ( Exception e ) {
+            // TODO Auto-generated catch block
+            System.err.println( "no valid key provided" );
+            return text;
+        }
+    }
+
+    /**
+     * loads passphrase to generate key
+     * 
+     * @param cipher
+     * @return key for decryption and encryption, if provided.
+     * @throws IOException
+     */
+    private static Key loadKey( String cipher )
+                            throws IOException {
+        Properties prop = new Properties();
+        InputStream is = Encryption.class.getResourceAsStream( passFilename );
+        prop.load( is );
+        is.close();
+        String pass = prop.getProperty( "passphrase" );
+        return new SecretKeySpec( pass.getBytes(), cipher );
+    }
 }

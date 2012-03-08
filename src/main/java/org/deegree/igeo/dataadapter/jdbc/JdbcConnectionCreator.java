@@ -37,9 +37,10 @@ package org.deegree.igeo.dataadapter.jdbc;
 
 import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.config.JDBCConnectionType;
+import org.deegree.igeo.utils.Encryption;
 
 /**
- * TODO add class documentation here
+ * Create internal used {@link JDBCConnection} from config {@link JDBCConnectionType} and vice versa.
  * 
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  * @author last edited by: $Author: lyn $
@@ -54,14 +55,17 @@ public class JdbcConnectionCreator {
         connectionType.setUrl( jdbcConnection.getUrl() );
         if ( jdbcConnection.isSaveLogin() ) {
             connectionType.setUser( jdbcConnection.getUser() );
-            connectionType.setPassword( jdbcConnection.getPassword() );
+            String password = jdbcConnection.getPassword();
+            connectionType.setPassword( password != null ? Encryption.encrypt( password ) : null );
         }
         return connectionType;
     }
 
     public static JDBCConnection getFromJDBCConnectionType( JDBCConnectionType connectionType ) {
+        String password = connectionType.getPassword();
         return new JDBCConnection( connectionType.getDriver(), connectionType.getUrl(), connectionType.getUser(),
-                                   connectionType.getPassword(), connectionType.getPassword() != null );
+                                   password != null ? Encryption.decrypt( password ) : null,
+                                   connectionType.getPassword() != null );
     }
 
 }
