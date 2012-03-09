@@ -42,7 +42,9 @@ import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
 import org.deegree.igeo.config.JDBCConnection;
+import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
+import org.deegree.igeo.utils.Encryption;
 import org.deegree.igeo.views.swing.util.panels.PanelDialog;
 
 public class JdbcConnectionParameterCache {
@@ -72,11 +74,11 @@ public class JdbcConnectionParameterCache {
         Map<String, Pair<String, String>> urlToLogin = cache.get( driver );
         if ( !urlToLogin.containsKey( url ) ) {
             String u = user;
-            String p = passwd;
+            String p = Encryption.decrypt( passwd);  // decrypt stored password
             if ( u == null && p == null ) {
                 Pair<String, String> askLoginParameter = askLoginParameter( driver, url, user, passwd, null );
                 u = askLoginParameter.first;
-                p = askLoginParameter.second;
+                p = askLoginParameter.second; // no need to decrypt password
             }
             urlToLogin.put( url, new Pair<String, String>( u, p ) );
         }
