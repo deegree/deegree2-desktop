@@ -11,38 +11,45 @@
 	<fileSets>		
 		<fileSet>
 			<directory>target/appassembler/bin</directory>
-			<outputDirectory>.</outputDirectory>
+			<outputDirectory>bin</outputDirectory>
 		</fileSet>
+        <fileSet>
+            <directory>target/appassembler/repo</directory>
+            <outputDirectory>repo</outputDirectory>
+        </fileSet>
 		<fileSet>
             <directory>${basedir}/src/main/libs</directory>
             <outputDirectory>repo</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${basedir}/src/main/data</directory>
-            <outputDirectory>.</outputDirectory>
+            <outputDirectory>data</outputDirectory>
         </fileSet>        
 	</fileSets>
+  <!-- 
 	<files>
 	   <file>
 	       <source>${basedir}/src/main/resources/default.prj</source>
-	       <outputDirectory>.</outputDirectory>
+	       <outputDirectory>bin</outputDirectory>
 	   </file>
 	   <file>
            <source>${basedir}/src/main/resources/log4j.properties</source>
-           <outputDirectory>.</outputDirectory>
+           <outputDirectory>bin</outputDirectory>
        </file>
        <file>
            <source>${basedir}/src/main/resources/messages_de.properties</source>
-           <outputDirectory>.</outputDirectory>
+           <outputDirectory>bin</outputDirectory>
        </file>
        <file>
            <source>${basedir}/src/main/resources/messages_en.properties</source>
-           <outputDirectory>.</outputDirectory>
+           <outputDirectory>bin</outputDirectory>
        </file>       
 	</files>
+   -->
+  <!-- 
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>repo</outputDirectory>
 		</dependencySet>
-	</dependencySets>
+	</dependencySets> -->
 </assembly>
