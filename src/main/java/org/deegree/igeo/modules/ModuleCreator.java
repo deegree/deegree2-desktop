@@ -116,6 +116,7 @@ import org.deegree.igeo.mapmodel.VectorFileDatasource;
 import org.deegree.igeo.mapmodel.WCSDatasource;
 import org.deegree.igeo.mapmodel.WFSDatasource;
 import org.deegree.igeo.mapmodel.WMSDatasource;
+import org.deegree.igeo.utils.Encryption;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.kernel.ProcessMonitor;
@@ -682,10 +683,12 @@ public class ModuleCreator<T> {
     private DatabaseDatasource createDatabaseDatasource( DatabaseDatasourceType cnfDbds ) {
         DatabaseDatasource dbds = null;
         Cache cache = createCache( cnfDbds.getCache() );
+        String password = cnfDbds.getConnection().getPassword();
         JDBCConnection jdbcConnection = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( cnfDbds.getConnection().getDriver(),
                                                                                                                cnfDbds.getConnection().getUrl(),
                                                                                                                cnfDbds.getConnection().getUser(),
-                                                                                                               cnfDbds.getConnection().getPassword() );
+                                                                                                               password != null ? Encryption.decrypt( password )
+                                                                                                                               : null );
         dbds = new DatabaseDatasource( cnfDbds, null, cache, jdbcConnection );
         dbds.setExtent( Util.convertEnvelope( cnfDbds.getExtent() ) );
         return dbds;

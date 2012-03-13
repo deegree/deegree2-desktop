@@ -51,10 +51,8 @@ import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.GeometryUtils;
 import org.deegree.igeo.config.JDBCConnection;
 import org.deegree.igeo.dataadapter.DataAccessException;
-import org.deegree.igeo.dataadapter.jdbc.JdbcConnectionParameterCache;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
-import org.deegree.io.DBConnectionPool;
 import org.deegree.io.DBPoolException;
 import org.deegree.model.crs.CoordinateSystem;
 import org.deegree.model.feature.FeatureCollection;
@@ -153,13 +151,8 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
      */
     protected void releaseConnection( JDBCConnection jdbc, Connection conn ) {
         try {
-            DBConnectionPool pool = DBConnectionPool.getInstance();
-            JDBCConnection connParam = JdbcConnectionParameterCache.getInstance().getJdbcConnectionParameter( jdbc.getDriver(),
-                                                                                                              jdbc.getUrl(),
-                                                                                                              jdbc.getUser(),
-                                                                                                              jdbc.getPassword() );
-            pool.releaseConnection( conn, connParam.getDriver(), connParam.getUrl(), connParam.getUser(),
-                                    connParam.getPassword() );
+            DatabaseConnectionManager.releaseConnection( conn, jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(),
+                                                         jdbc.getPassword() );
         } catch ( DBPoolException e ) {
             LOG.logWarning( "", e );
         }

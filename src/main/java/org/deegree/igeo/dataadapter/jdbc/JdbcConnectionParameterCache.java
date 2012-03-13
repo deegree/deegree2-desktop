@@ -42,9 +42,7 @@ import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.Pair;
 import org.deegree.igeo.config.JDBCConnection;
-import org.deegree.igeo.config.JDBCConnectionType;
 import org.deegree.igeo.jdbc.DatabaseConnectionManager;
-import org.deegree.igeo.utils.Encryption;
 import org.deegree.igeo.views.swing.util.panels.PanelDialog;
 
 public class JdbcConnectionParameterCache {
@@ -67,6 +65,17 @@ public class JdbcConnectionParameterCache {
         return connCache;
     }
 
+    /**
+     * @param driver
+     *            the driver class of the jdbc connection
+     * @param url
+     *            the connection url
+     * @param user
+     *            the user name
+     * @param passwd
+     *            the decrypted password
+     * @return the {@link JDBCConnection}
+     */
     public JDBCConnection getJdbcConnectionParameter( String driver, String url, String user, String passwd ) {
         if ( !cache.containsKey( driver ) ) {
             cache.put( driver, new HashMap<String, Pair<String, String>>() );
@@ -74,11 +83,11 @@ public class JdbcConnectionParameterCache {
         Map<String, Pair<String, String>> urlToLogin = cache.get( driver );
         if ( !urlToLogin.containsKey( url ) ) {
             String u = user;
-            String p = Encryption.decrypt( passwd);  // decrypt stored password
+            String p = passwd;
             if ( u == null && p == null ) {
                 Pair<String, String> askLoginParameter = askLoginParameter( driver, url, user, passwd, null );
                 u = askLoginParameter.first;
-                p = askLoginParameter.second; // no need to decrypt password
+                p = askLoginParameter.second;
             }
             urlToLogin.put( url, new Pair<String, String>( u, p ) );
         }
