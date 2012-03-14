@@ -41,17 +41,24 @@ import static org.deegree.igeo.i18n.Messages.get;
 
 import java.awt.Component;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
+import org.deegree.framework.xml.XMLFragment;
+import org.deegree.framework.xml.XMLTools;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
-import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.igeo.views.swing.util.IGeoFileFilter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * TODO add class documentation here
@@ -87,6 +94,14 @@ public class SldIO {
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter( new FileWriter( file ) );
+                // try to pretty print
+                try {
+                    DocumentBuilder builder = XMLTools.getDocumentBuilder();
+                    Document doc = builder.parse( new ByteArrayInputStream( sld.getBytes() ) );
+                    sld = new XMLFragment( (Element) doc.getFirstChild() ).getAsPrettyString();
+                } catch ( Exception e ) {
+                    LOG.logDebug( "Could not pretty print the sld: {}", e.getMessage() );
+                }
                 writer.write( sld );
             } catch ( IOException e ) {
                 LOG.logError( get( "$DG10097", file ) );
