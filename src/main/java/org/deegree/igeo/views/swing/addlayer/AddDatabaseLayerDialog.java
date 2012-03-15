@@ -707,7 +707,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                 rs = stmt.executeQuery();
                 while ( rs.next() ) {
                     String geomCol = rs.getString( 1 );
-                    list.add( geomCol + " (0)");
+                    list.add( geomCol + " (0)" );
                 }
             }
             cbGeom.setModel( new DefaultComboBoxModel( list.toArray() ) );
@@ -793,7 +793,7 @@ public class AddDatabaseLayerDialog extends JDialog {
                 return;
             }
             String nativeCRS = cbNativeCRS.getSelectedItem().toString();
-            if ( sql == null ) {
+            if ( sql == null || sql.trim().length() == 0 ) {
                 // sql is not null if expert mode has been used
                 sql = "select * from " + table;
             }
