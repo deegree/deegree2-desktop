@@ -96,8 +96,9 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
             GeoTransformer gt = new GeoTransformer( nativeCRS );
             envelope = gt.transform( envelope, coordinateSystem );
         }
-        // geom.STIntersects( geometry::STGeomFromText(?, 0) ) = 1" )
-        String query = datasource.getGeometryFieldName() + ".STIntersects( geometry::STGeomFromText(?, 0) ) = 1";
+        System.out.println(nativeCRS);
+        String query = datasource.getGeometryFieldName() + ".STIntersects( geometry::STGeomFromText(?, " + nativeCRS
+                       + ") ) = 1";
 
         String completeQuery;
         String sqlTemplate = datasource.getSqlTemplate();
