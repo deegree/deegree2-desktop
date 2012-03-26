@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Project xmlns="http://www.deegree.org/project" 
+<Project 
+		xmlns="http://www.deegree.org/project" 
 		xmlns:ns2="http://www.deegree.org/coremapmodel" 
 		xmlns:ns3="http://www.w3.org/1999/xlink" 
 		xmlns:ns4="http://www.deegree.org/settings" 
@@ -633,7 +634,7 @@
 				</init-param>
 			</Module>
 		</ModuleRegister>
-			<!-- Intersection. Erzeugt verschiedene Verschneidungen. -->
+		<!-- Intersection. Erzeugt verschiedene Verschneidungen. -->
 		<ModuleRegister>
 			<AbsolutePosition>
 				<Window width="520" height="250" top="150" left="270"/>
@@ -723,17 +724,13 @@
 						<icon ns3:href="../icons/s_pdf.png"/>
 					</MenuItem>
 					<MenuItem>
-						<name>$MD10364</name>
-						<tooltip>$MD10364</tooltip>
-						<assignedAction>editSettings</assignedAction>
-						<icon ns3:href="../icons/s_report_edit.png"/>
+						<MenuItem>
+						<name>$MD10348a</name>
+						<tooltip>$MD10348a</tooltip>
+						<assignedAction>directPrint</assignedAction>
+						<icon ns3:href="../icons/s_printer.png"/>
 					</MenuItem>
-					<MenuItem>
-						<name>$MD10365</name>
-						<tooltip>$MD10365</tooltip>
-						<assignedAction>editTemplates</assignedAction>
-						<icon ns3:href="../icons/s_ireport.png"/>
-					</MenuItem>
+				</MenuItem>
 				</Menu>
 				<ToolBarEntry>
 					<ns2:identifier>
@@ -1271,9 +1268,9 @@
 			</ns4:WCSGridCoverageAdapter>
 		</ns4:DataAdapter>
 		<ns4:ProjectTemplates>
-			<ns4:Template desc="project with pane layout" file="src/main/data/resources/templates/default" name="pane layout"/>
-            <ns4:Template desc="project with innerframe layout" file="src/main/data/resources/templates/empty_innerframelayout" name="innerframe layout"/>
-	        <ns4:Template desc="project with frame layout" file="src/main/data/resources/templates/frame_layout" name="frame layout"/>	
+			<ns4:Template desc="project with pane layout" file="resources/templates/default" name="pane layout"/>
+            <ns4:Template desc="project with innerframe layout" file="resources/templates/empty_innerframelayout" name="innerframe layout"/>
+	        <ns4:Template desc="project with frame layout" file="resources/templates/frame_layout" name="frame layout"/>	
         </ns4:ProjectTemplates>
 		<ns4:FileFilter>
 			<ns4:Format desc="georeferenced jpeg image" extension="jpg" name="JPEG image"/>

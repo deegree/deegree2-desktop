@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dgp:Module 
-xmlns:dgp="http://www.deegree.org/project" 
-xmlns:cmm="http://www.deegree.org/coremapmodel" 
-xmlns:set="http://www.deegree.org/settings" 
-xmlns:xlink="http://www.w3.org/1999/xlink" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
+<dgp:Module xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
 	<dgp:name>MapModule</dgp:name>
 	<cmm:identifier>
 		<cmm:value>F2</cmm:value>
 	</cmm:identifier>
 	<dgp:className>org.deegree.igeo.modules.DefaultMapModule</dgp:className>
 	<dgp:ViewForm>
-	<dgp:InnerFrameViewForm resizeable="true">
-			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapInnerFrame</dgp:containerClass>
-			<dgp:ComponentState active="true" modal="false">
-				<dgp:windowState>normal</dgp:windowState>
-			</dgp:ComponentState>
-			<dgp:frameTitle>$F4.FrameTitle</dgp:frameTitle>
-		</dgp:InnerFrameViewForm>
-		<!--dgp:PaneViewForm>
+		<dgp:PaneViewForm>
 			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapComponent</dgp:containerClass>
 			<dgp:ComponentState active="false" modal="false">
 				<dgp:windowState>normal</dgp:windowState>
 			</dgp:ComponentState>
 			<dgp:paneTitle>$F4.FrameTitle</dgp:paneTitle>
-		</dgp:PaneViewForm-->
+		</dgp:PaneViewForm>
 		<dgp:Layout>
 			<dgp:NoneLayout />
 		</dgp:Layout>
@@ -38,6 +26,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<cmm:value>MB1</cmm:value>
 		</dgp:parent>
 		<dgp:name/>	
+        <dgp:MenuItem>
+            <dgp:name>-</dgp:name>
+            <dgp:assignedAction>dummy</dgp:assignedAction>
+        </dgp:MenuItem>
 		<dgp:MenuItem>
 			<dgp:name>$ExportLayer</dgp:name>
 			<dgp:assignedAction>exportLayer</dgp:assignedAction>
@@ -53,6 +45,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<dgp:assignedAction>commitAll</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/s_commit_all.png"/>
 		</dgp:MenuItem>
+        <dgp:MenuItem>
+            <dgp:name>-</dgp:name>
+            <dgp:assignedAction>dummy</dgp:assignedAction>
+        </dgp:MenuItem>
 		<dgp:MenuItem>
 			<dgp:name>$ExportMapAsImage</dgp:name>
 			<dgp:assignedAction>exportAsImage</dgp:assignedAction>
@@ -63,10 +59,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<dgp:assignedAction>exportToClipBoard</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/map_copy.png"/>
 		</dgp:MenuItem>
-		<dgp:MenuItem>
-            <dgp:name>-</dgp:name>
-            <dgp:assignedAction>dummy</dgp:assignedAction>
-        </dgp:MenuItem>
 	</dgp:Menu>
 	<dgp:Menu>
 		<cmm:identifier>
@@ -76,20 +68,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<cmm:value>MB1tools</cmm:value>
 		</dgp:parent>
 		<dgp:name/>
-		<!--dgp:MenuItem>
+		<dgp:MenuItem>
 			<dgp:name>$HyperlinkTool</dgp:name>
 			<dgp:assignedAction>activateHyperlink</dgp:assignedAction>
 			<dgp:icon xlink:href="../icons/link_go.png"/>
-		</dgp:MenuItem-->
-		<dgp:MenuItem>
-			<dgp:name>$selectByAttributes</dgp:name>
-			<dgp:assignedAction>selectByAttributes</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/attribut_search.png"/>
-		</dgp:MenuItem>
-		<dgp:MenuItem>
-			<dgp:name>$addLinkedTable</dgp:name>
-			<dgp:assignedAction>addLinkedTable</dgp:assignedAction>
-			<dgp:icon xlink:href="../icons/table_add.png"/>
 		</dgp:MenuItem>
 	</dgp:Menu>
 	<dgp:PopUpEntry assignedGroup="PUZoomGroup">
@@ -136,25 +118,17 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 		<dgp:assignedAction>zoomToFullExtent</dgp:assignedAction>
 		<dgp:icon xlink:href="../icons/s_zoomtofullextent.png" />
 	</dgp:PopUpEntry>
-	<dgp:PopUpEntry>
-		<cmm:identifier>
-			<cmm:value>PUMM66</cmm:value>
-		</cmm:identifier>
-		<dgp:name>$ExtractFeatureToLayer.tooltip</dgp:name>
-		<dgp:assignedAction>$module:CPModule#selectedFeaturesToLayer</dgp:assignedAction>
-		<dgp:icon xlink:href="../icons/feature_to_layer.png"/>
-	</dgp:PopUpEntry>
 	
-    <!--dgp:ToolBarEntry>
+    <dgp:ToolBarEntry>
 		<cmm:identifier>
 			<cmm:value>MB3967</cmm:value>
 		</cmm:identifier>
-		<<dgp:name>addLinkedTable</dgp:name>
+		<!--dgp:name>addLinkedTable</dgp:name-->
 		<dgp:tooltip>$addLinkedTable.tooltip</dgp:tooltip>
 		<dgp:assignedAction>addLinkedTable</dgp:assignedAction>
 		<dgp:icon xlink:href="../icons/table_add.png"/>
 		<dgp:entryType>PushButton</dgp:entryType>
-	</dgp:ToolBarEntry-->		
+	</dgp:ToolBarEntry>		
 	
 	<dgp:ToolBarEntry assignedGroup="ZoomGroup">
 		<cmm:identifier>
