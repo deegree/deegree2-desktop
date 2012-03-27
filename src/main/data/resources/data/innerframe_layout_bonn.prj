@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns4:Project xmlns="http://www.deegree.org/coremapmodel" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.deegree.org/jdbc" xmlns:ns4="http://www.deegree.org/project" xmlns:ns5="http://www.deegree.org/settings" language="de">
+<ns4:Project 
+xmlns="http://www.deegree.org/coremapmodel" 
+xmlns:ns2="http://www.w3.org/1999/xlink" 
+xmlns:ns3="http://www.deegree.org/jdbc" 
+xmlns:ns4="http://www.deegree.org/project"
+ xmlns:ns5="http://www.deegree.org/settings" 
+ language="de"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
 	<ns4:name>TestProject</ns4:name>
 	<identifier>
 		<value>TP1</value>
@@ -1181,7 +1189,7 @@
 				<ns5:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
 			</ns5:WFSFeatureAdapter>
 			<ns5:WMSGridCoverageAdapter>
-				<ns5:CapabilitiesEvaluator/>
+				<ns5:CapabilitiesEvaluator val="" xsi:nil="true"/>
 				<ns5:Timeout val="10000"/>
 				<ns5:featureCount val="2"/>
 			</ns5:WMSGridCoverageAdapter>
@@ -1233,9 +1241,6 @@
 		</ns5:CursorDefinitions>
 		<ns5:Clipboard maxObjects="1000" format="text/xml; subtype=gml/3.1.1"/>
 		<ns5:Graphics>
-			<ns5:SymbolDefinitions/>
-			<ns5:FillGraphicDefinitions/>
-			<ns5:DashArrayDefinitions/>
 			<ns5:SymbolizerPreset name="Klassifikation">
 				<ns5:Preset>&lt;PolygonSymbolizer&gt;&lt;Fill&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#000000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;</ns5:Preset>
 			</ns5:SymbolizerPreset>

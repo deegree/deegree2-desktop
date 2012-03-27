@@ -5,7 +5,9 @@ xmlns:ns2="http://www.deegree.org/coremapmodel"
 xmlns:ns3="http://www.w3.org/1999/xlink" 
 xmlns:ns4="http://www.deegree.org/settings" 
 xmlns:ns5="http://www.deegree.org/jdbc" 
-language="de">
+language="de"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
 	<name>Test Project with Frame Layout</name>
 	<ns2:identifier>
 		<ns2:value>TP1</ns2:value>
@@ -508,92 +510,92 @@ language="de">
 			</Module>
 		</ModuleRegister>
 <!--PrintModul-->
-		<ns4:ModuleRegister>
-			<ns4:AbsolutePosition>
-				<ns4:Window width="364" height="390" top="252" left="535"/>
-			</ns4:AbsolutePosition>
-			<ns4:Module>
-				<ns4:name>Print</ns4:name>
-				<identifier>
-					<value>PrintID</value>
-				</identifier>
-				<ns4:className>org.deegree.igeo.modules.PrintModule</ns4:className>
-				<ns4:ViewForm>
-					<ns4:FrameViewForm>
-						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
-						</ns4:containerClass>
-						<ns4:ComponentState modal="true" active="true">
-							<ns4:windowState>closed</ns4:windowState>
-						</ns4:ComponentState>
-						<ns4:frameTitle>$MD10348</ns4:frameTitle>
-					</ns4:FrameViewForm>
-				</ns4:ViewForm>
-				<ns4:Menu>
-					<identifier>
-						<value>printmodule</value>
-					</identifier>
-					<ns4:parent>
-						<value>MB1</value>
-					</ns4:parent>
-					<ns4:name>$MB1.name</ns4:name>
-					<ns4:MenuItem>
-						<ns4:name>$MD10348</ns4:name>
-						<ns4:tooltip>$MD10348</ns4:tooltip>
-						<ns4:assignedAction>print</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_pdf.png"/>
-					</ns4:MenuItem>
-					<!--ns4:MenuItem>
-						<ns4:name>$MD10364</ns4:name>
-						<ns4:tooltip>$MD10364</ns4:tooltip>
-						<ns4:assignedAction>editSettings</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_report_edit.png"/>
-					</ns4:MenuItem-->
-					<!--ns4:MenuItem>
-						<ns4:name>$MD10365</ns4:name>
-						<ns4:tooltip>$MD10365</ns4:tooltip>
-						<ns4:assignedAction>editTemplates</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_ireport.png"/>
-					</ns4:MenuItem-->
-				</ns4:Menu>
-				<ns4:ToolBarEntry>
-					<identifier>
-						<value>TBprint2</value>
-					</identifier>
-					<ns4:tooltip>$MD10348a</ns4:tooltip>
-					<ns4:assignedAction>directPrint</ns4:assignedAction>
-					<ns4:icon ns2:href="../icons/printer.png"/>
-					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry>
-				<ns4:ToolBarEntry>
-					<identifier>
-						<value>TBprint</value>
-					</identifier>
-					<ns4:tooltip>$MD10348</ns4:tooltip>
-					<ns4:assignedAction>print</ns4:assignedAction>
-					<ns4:icon ns2:href="../icons/pdf.png"/>
-					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry>
-				<ns4:init-param>
-					<ns4:name>templates</ns4:name>
-					<ns4:value>            
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="364" height="390" top="252" left="535"/>
+			</AbsolutePosition>
+			<Module>
+				<name>Print</name>
+				<ns2:identifier>
+					<ns2:value>PrintID</ns2:value>
+				</ns2:identifier>
+				<className>org.deegree.igeo.modules.PrintModule</className>
+				<ViewForm>
+					<FrameViewForm>
+						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
+						</containerClass>
+						<ComponentState modal="true" active="true">
+							<windowState>closed</windowState>
+						</ComponentState>
+						<frameTitle>$MD10348</frameTitle>
+					</FrameViewForm>
+				</ViewForm>
+				<Menu>
+					<ns2:identifier>
+						<ns2:value>printmodule</ns2:value>
+					</ns2:identifier>
+					<parent>
+						<ns2:value>MB1</ns2:value>
+					</parent>
+					<name>$MB1.name</name>
+					<MenuItem>
+						<name>$MD10348</name>
+						<tooltip>$MD10348</tooltip>
+						<assignedAction>print</assignedAction>
+						<icon ns3:href="../icons/s_pdf.png"/>
+					</MenuItem>
+					<!--MenuItem>
+						<name>$MD10364</name>
+						<tooltip>$MD10364</tooltip>
+						<assignedAction>editSettings</assignedAction>
+						<icon ns2:href="../icons/s_report_edit.png"/>
+					</MenuItem-->
+					<!--MenuItem>
+						<name>$MD10365</name>
+						<tooltip>$MD10365</tooltip>
+						<assignedAction>editTemplates</assignedAction>
+						<icon ns2:href="../icons/s_ireport.png"/>
+					</MenuItem-->
+				</Menu>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>TBprint2</ns2:value>
+					</ns2:identifier>
+					<tooltip>$MD10348a</tooltip>
+					<assignedAction>directPrint</assignedAction>
+					<icon ns3:href="../icons/printer.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>TBprint</ns2:value>
+					</ns2:identifier>
+					<tooltip>$MD10348</tooltip>
+					<assignedAction>print</assignedAction>
+					<icon ns3:href="../icons/pdf.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry>
+				<init-param>
+					<name>templates</name>
+					<value>            
 					Hochformat; ../jaspertemplates/report1.jrxml; ../jaspertemplates/hochformat.jpg, 
                     Querformat; ../jaspertemplates/super.jrxml; ../jaspertemplates/querformat.jpg
-					  </ns4:value>
-				</ns4:init-param>
-				<ns4:init-param>
-					<ns4:name>noTemplateImage</ns4:name>
-					<ns4:value>../jaspertemplates/querformat.jpg</ns4:value>
-				</ns4:init-param>
-				<ns4:init-param>
-					<ns4:name>ireportLocation</ns4:name>
-					<ns4:value>../../../../iReport-3.0.0/</ns4:value>
-				</ns4:init-param>
-				<ns4:init-param>
-					<ns4:name>dpi</ns4:name>
-					<ns4:value>400</ns4:value>
-				</ns4:init-param>
-			</ns4:Module>
-		</ns4:ModuleRegister>		
+					  </value>
+				</init-param>
+				<init-param>
+					<name>noTemplateImage</name>
+					<value>../jaspertemplates/querformat.jpg</value>
+				</init-param>
+				<init-param>
+					<name>ireportLocation</name>
+					<value>../../../../iReport-3.0.0/</value>
+				</init-param>
+				<init-param>
+					<name>dpi</name>
+					<value>400</value>
+				</init-param>
+			</Module>
+		</ModuleRegister>		
 		
 		<ModuleRegister>
 			<AbsolutePosition>
@@ -699,19 +701,19 @@ language="de">
 		</ns4:Validation>
 		<ns4:DataAdapter>
 			<ns4:WFSFeatureAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator"/>
-				<ns4:Timeout val="10000"/>
-				<ns4:MaxFeature val="5000"/>
+				<ns4:CapabilitiesEvaluator xsi:nil="true" val="org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator"/>
+				<ns4:Timeout xsi:nil="true" val="10000"/>
+				<ns4:MaxFeature xsi:nil="true" val="5000"/>
 				<ns4:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
 			</ns4:WFSFeatureAdapter>
 			<ns4:WMSGridCoverageAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
-				<ns4:Timeout val="10000"/>
-				<ns4:featureCount val="2"/>
+				<ns4:CapabilitiesEvaluator  xsi:nil="true" val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
+				<ns4:Timeout xsi:nil="true" val="10000"/>
+				<ns4:featureCount xsi:nil="true" val="2"/>
 			</ns4:WMSGridCoverageAdapter>
 			<ns4:WCSGridCoverageAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WCS100CapabilitiesEvaluator"/>
-				<ns4:Timeout val="10000"/>
+				<ns4:CapabilitiesEvaluator  xsi:nil="true" val="org.deegree.igeo.dataadapter.WCS100CapabilitiesEvaluator"/>
+				<ns4:Timeout xsi:nil="true" val="10000"/>
 			</ns4:WCSGridCoverageAdapter>
 		</ns4:DataAdapter>
 		<ns4:ProjectTemplates>
@@ -761,11 +763,6 @@ language="de">
 			<ns4:Cursor name="default" action="default"/>
 		</ns4:CursorDefinitions>
 		<ns4:Clipboard maxObjects="1000" format="text/xml; subtype=gml/3.1.1"/>
-		<ns4:Graphics>
-			<ns4:SymbolDefinitions/>
-			<ns4:FillGraphicDefinitions/>
-			<ns4:DashArrayDefinitions/>
-		</ns4:Graphics>
 		<ns4:Formats changeable="true">
 			<ns4:Format pattern="##.000" name="number"/>
 		</ns4:Formats>
