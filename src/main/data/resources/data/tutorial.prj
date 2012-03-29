@@ -721,6 +721,12 @@
 						<assignedAction>openVectorPrint</assignedAction>
 						<icon ns3:href="../icons/s_pdf.png"/>
 					</MenuItem>
+                    <MenuItem>
+                      <name>$MD10348a</name>
+                      <tooltip>$MD10348a</tooltip>
+                      <assignedAction>directPrint</assignedAction>
+                      <icon ns3:href="../icons/s_printer.png"/>
+                    </MenuItem>
 				</Menu>
 				<ToolBarEntry>
 					<ns2:identifier>

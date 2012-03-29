@@ -629,6 +629,13 @@ xmlns:ns4="http://www.deegree.org/project"
 						<ns4:assignedAction>print</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_pdf.png"/>
 					</ns4:MenuItem>
+                    <ns4:MenuItem>
+                        <ns4:name>$MD10348a</ns4:name>
+                        <ns4:tooltip>$MD10348a</ns4:tooltip>
+                        <ns4:assignedAction>directPrint</ns4:assignedAction>
+                        <ns4:icon ns2:href="../icons/s_printer.png"/>
+                    </ns4:MenuItem>
+          <!--
 					<ns4:MenuItem>
 						<ns4:name>$MD10364</ns4:name>
 						<ns4:tooltip>$MD10364</ns4:tooltip>
@@ -641,6 +648,7 @@ xmlns:ns4="http://www.deegree.org/project"
 						<ns4:assignedAction>editTemplates</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_ireport.png"/>
 					</ns4:MenuItem>
+            -->
 				</ns4:Menu>
 				<ns4:ToolBarEntry>
 					<identifier>

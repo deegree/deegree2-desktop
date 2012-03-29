@@ -35,7 +35,7 @@
 				<splitterPosition>right</splitterPosition>
 			</SplitterPosition>
 			<ModuleReference>
-				<ns2:OnlineResource ns3:href="./map_module.mdx"/>
+				<ns2:OnlineResource ns3:href="./map_module_paneview.mdx"/>
 			</ModuleReference>
 		</ModuleRegister>
 		<!-- Analysis. Berechnet Objektstatistik. -->
@@ -547,6 +547,13 @@
 						<assignedAction>print</assignedAction>
 						<icon ns3:href="../icons/s_pdf.png"/>
 					</MenuItem>
+                    <MenuItem>
+                      <name>$MD10348a</name>
+                      <tooltip>$MD10348a</tooltip>
+                      <assignedAction>directPrint</assignedAction>
+                      <icon ns3:href="../icons/s_printer.png"/>
+                    </MenuItem>
+          <!-- 
 					<MenuItem>
 						<name>$MD10364</name>
 						<tooltip>$MD10364</tooltip>
@@ -559,6 +566,7 @@
 						<assignedAction>editTemplates</assignedAction>
 						<icon ns3:href="../icons/s_ireport.png"/>
 					</MenuItem>
+           -->
 				</Menu>
 				<init-param>
 					<name>templates</name>
