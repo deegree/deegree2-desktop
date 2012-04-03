@@ -211,6 +211,7 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
                     // because feature IDs are not important in case of database data source
                     // it is just 'ID' as prefix plus a number of current row
                     fc.add( FeatureFactory.createFeature( "ID_" + pk, featureType, properties ) );
+                    k++;
                 }
                 if ( pk == null ) {
                     LOG.logInfo( "skip row because primary key is null" );
