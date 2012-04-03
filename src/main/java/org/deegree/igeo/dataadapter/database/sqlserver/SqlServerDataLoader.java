@@ -96,7 +96,6 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
             GeoTransformer gt = new GeoTransformer( nativeCRS );
             envelope = gt.transform( envelope, coordinateSystem );
         }
-        System.out.println(nativeCRS);
         String query = datasource.getGeometryFieldName() + ".STIntersects( geometry::STGeomFromText(?, " + nativeCRS
                        + ") ) = 1";
 
@@ -142,8 +141,6 @@ public class SqlServerDataLoader extends AbstractDatabaseLoader {
         stmt.setString( 1, queryEnv );
         LOG.logInfo( queryEnv );
 
-        // TODO
-        // if connection is not available ask user updated connection parameters
         stmt.setMaxRows( maxFeatures );
         return stmt;
     }
