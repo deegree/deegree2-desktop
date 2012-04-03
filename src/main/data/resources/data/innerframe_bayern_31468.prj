@@ -1288,7 +1288,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
                         &lt;ogc:Literal&gt;gml:_Point&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                     &lt;ogc:PropertyIsInstanceOf&gt;
-                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:geom&lt;/ogc:PropertyName&gt;
+                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:GEOM&lt;/ogc:PropertyName&gt;
                         &lt;ogc:Literal&gt;gml:_Point&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                 &lt;/ogc:Or&gt;
@@ -1319,7 +1319,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
                         &lt;ogc:Literal&gt;gml:_Curve&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                     &lt;ogc:PropertyIsInstanceOf&gt;
-                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:geom&lt;/ogc:PropertyName&gt;
+                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:GEOM&lt;/ogc:PropertyName&gt;
                         &lt;ogc:Literal&gt;gml:_Curve&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                 &lt;/ogc:Or&gt;
@@ -1340,7 +1340,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
                         &lt;ogc:Literal&gt;gml:_Surface&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                     &lt;ogc:PropertyIsInstanceOf&gt;
-                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:geom&lt;/ogc:PropertyName&gt;
+                        &lt;ogc:PropertyName xmlns:db=&quot;http://www.deegree.org/igeodesktop&quot;&gt;db:GEOM&lt;/ogc:PropertyName&gt;
                         &lt;ogc:Literal&gt;gml:_Surface&lt;/ogc:Literal&gt;
                     &lt;/ogc:PropertyIsInstanceOf&gt;
                 &lt;/ogc:Or&gt;
@@ -1364,7 +1364,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 	</ns4:Settings>
 	<MapModelCollection>
 		<name>TestMMC</name>
-		<maxExtent crs="EPSG:31468" maxy="1.1620227790595453E7" maxx="3827231.5413863566" miny="-1.0001437672736807E7" minx="4500101.820802095"/>
+		<maxExtent crs="EPSG:31468" maxy="6107320.842210549" maxx="4694266.263617972" miny="5255636.00748875" minx="4035908.9035206963"/>
 		<externalResource>
 			<OnlineResource ns2:href="./docs/deegree_client_portal_specification.odt"/>
 			<abstract>
@@ -1377,7 +1377,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<externalResourceTitle>deegree client and portal concept and specification</externalResourceTitle>
 			<externalResourceType>Open Office document</externalResourceType>
 		</externalResource>
-		<mapModel current="true">
+		<mapModel current="false">
 			<name>TestMM</name>
 			<identifier>
 				<value>MM1</value>
@@ -1388,8 +1388,8 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<dpi>96</dpi>
 			</targetDevice>
 			<supportedCRS/>
-			<extent crs="EPSG:31468" maxy="1.1620227790595453E7" maxx="1.50968284960041E7" miny="-1.0001437672736807E7" minx="-6769495.13381565"/>
-			<maxExtent crs="EPSG:31468" maxy="1.1620227790595453E7" maxx="3827231.5413863566" miny="-1.0001437672736807E7" minx="4500101.820802095"/>
+			<extent crs="EPSG:31468" maxy="5527984.0359460395" maxx="4363179.525141974" miny="5520737.072219618" minx="4355850.558997149"/>
+			<maxExtent crs="EPSG:31468" maxy="6107320.842210549" maxx="4694266.263617972" miny="5255636.00748875" minx="4035908.9035206963"/>
 			<layerGroup>
 				<identifier>
 					<value>empty Layergroup</value>
