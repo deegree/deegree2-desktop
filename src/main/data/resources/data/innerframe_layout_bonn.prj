@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns4:Project 
-xmlns="http://www.deegree.org/coremapmodel" 
-xmlns:ns2="http://www.w3.org/1999/xlink" 
-xmlns:ns3="http://www.deegree.org/jdbc" 
-xmlns:ns4="http://www.deegree.org/project"
- xmlns:ns5="http://www.deegree.org/settings" 
- language="de"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
- xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
+<ns4:Project xmlns="http://www.deegree.org/coremapmodel" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.deegree.org/jdbc" xmlns:ns4="http://www.deegree.org/project" xmlns:ns5="http://www.deegree.org/settings" language="de">
 	<ns4:name>TestProject</ns4:name>
 	<identifier>
 		<value>TP1</value>
@@ -629,33 +621,28 @@ xmlns:ns4="http://www.deegree.org/project"
 						<ns4:assignedAction>print</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_pdf.png"/>
 					</ns4:MenuItem>
-                    <ns4:MenuItem>
-                        <ns4:name>$MD10348a</ns4:name>
-                        <ns4:tooltip>$MD10348a</ns4:tooltip>
-                        <ns4:assignedAction>directPrint</ns4:assignedAction>
-                        <ns4:icon ns2:href="../icons/s_printer.png"/>
-                    </ns4:MenuItem>
-          <!--
 					<ns4:MenuItem>
-						<ns4:name>$MD10364</ns4:name>
-						<ns4:tooltip>$MD10364</ns4:tooltip>
-						<ns4:assignedAction>editSettings</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_report_edit.png"/>
+						<ns4:name>$MD10348a</ns4:name>
+						<ns4:tooltip>$MD10348a</ns4:tooltip>
+						<ns4:assignedAction>directPrint</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/s_printer.png"/>
 					</ns4:MenuItem>
-					<ns4:MenuItem>
-						<ns4:name>$MD10365</ns4:name>
-						<ns4:tooltip>$MD10365</ns4:tooltip>
-						<ns4:assignedAction>editTemplates</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_ireport.png"/>
-					</ns4:MenuItem>
-            -->
 				</ns4:Menu>
+				<!--ToolBarEntry>
+					<ns2:identifier>
+						<ns2:value>TBprint</ns2:value>
+					</ns2:identifier>
+					<tooltip>$MD10348</tooltip>
+					<assignedAction>openVectorPrint</assignedAction>
+					<icon ns3:href="../icons/pdf.png"/>
+					<entryType>PushButton</entryType>
+				</ToolBarEntry-->
 				<ns4:ToolBarEntry>
 					<identifier>
 						<value>TBprint</value>
 					</identifier>
-					<ns4:tooltip>$MD10348</ns4:tooltip>
-					<ns4:assignedAction>print</ns4:assignedAction>
+					<ns4:tooltip>$MD10348v</ns4:tooltip>
+					<ns4:assignedAction>openVectorPrint</ns4:assignedAction>
 					<ns4:icon ns2:href="../icons/pdf.png"/>
 					<ns4:entryType>PushButton</ns4:entryType>
 				</ns4:ToolBarEntry>
@@ -695,7 +682,7 @@ xmlns:ns4="http://www.deegree.org/project"
 						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.digitize.DefaultDigitizerFrame
 						</ns4:containerClass>
 						<ns4:ComponentState modal="false" active="true">
-							<ns4:windowState>normal</ns4:windowState>
+							<ns4:windowState>closed</ns4:windowState>
 						</ns4:ComponentState>
 						<ns4:frameTitle>$D1.FrameTitle</ns4:frameTitle>
 					</ns4:FrameViewForm>
@@ -936,6 +923,255 @@ xmlns:ns4="http://www.deegree.org/project"
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
+		<ns4:ModuleRegister>
+			<ns4:_ComponentPosition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:AbsolutePositionType">
+				<ns4:Window width="774" height="753" top="57" left="116"/>
+			</ns4:_ComponentPosition>
+			<ns4:Module visible="true">
+				<ns4:name>MapModule</ns4:name>
+				<identifier>
+					<value>c8c444d5-93b3-4ec8-b902-c8436d08ba0c</value>
+				</identifier>
+				<ns4:className>org.deegree.igeo.modules.DefaultMapModule</ns4:className>
+				<ns4:ViewForm>
+					<ns4:InnerFrameViewForm resizeable="true" useHorizontalScrollBar="false" useVerticalScrollBar="false">
+						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.map.DefaultMapInnerFrame</ns4:containerClass>
+						<ns4:ComponentState modal="false" active="false">
+							<ns4:windowState>closed</ns4:windowState>
+							<ns4:order>11</ns4:order>
+						</ns4:ComponentState>
+						<ns4:frameTitle>New Map Module</ns4:frameTitle>
+					</ns4:InnerFrameViewForm>
+				</ns4:ViewForm>
+				<ns4:Menu>
+					<identifier>
+						<value>MM_B15</value>
+					</identifier>
+					<ns4:parent>
+						<value>MB1</value>
+					</ns4:parent>
+					<ns4:name/>
+					<ns4:MenuItem>
+						<ns4:name>$ExportLayer</ns4:name>
+						<ns4:assignedAction>exportLayer</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/export_layer.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>$CommitSelected</ns4:name>
+						<ns4:assignedAction>commitSelected</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/commit_selected.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>$CommitAll</ns4:name>
+						<ns4:assignedAction>commitAll</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/s_commit_all.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>$ExportMapAsImage</ns4:name>
+						<ns4:assignedAction>exportAsImage</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/map_export.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>$ExportMapToClipboard</ns4:name>
+						<ns4:assignedAction>exportToClipBoard</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/map_copy.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>-</ns4:name>
+						<ns4:assignedAction>dummy</ns4:assignedAction>
+					</ns4:MenuItem>
+				</ns4:Menu>
+				<ns4:Menu>
+					<identifier>
+						<value>MM1_MB19</value>
+					</identifier>
+					<ns4:parent>
+						<value>MB1tools</value>
+					</ns4:parent>
+					<ns4:name/>
+					<ns4:MenuItem>
+						<ns4:name>$selectByAttributes</ns4:name>
+						<ns4:assignedAction>selectByAttributes</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/attribut_search.png"/>
+					</ns4:MenuItem>
+					<ns4:MenuItem>
+						<ns4:name>$addLinkedTable</ns4:name>
+						<ns4:assignedAction>addLinkedTable</ns4:assignedAction>
+						<ns4:icon ns2:href="../icons/table_add.png"/>
+					</ns4:MenuItem>
+				</ns4:Menu>
+				<ns4:PopUpEntry assignedGroup="PUZoomGroup">
+					<identifier>
+						<value>PUMM42</value>
+					</identifier>
+					<ns4:name>$MB31.name</ns4:name>
+					<ns4:assignedAction>zoomIn</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomin.png"/>
+					<ns4:entryType>RadioButtonItem</ns4:entryType>
+				</ns4:PopUpEntry>
+				<ns4:PopUpEntry assignedGroup="PUZoomGroup">
+					<identifier>
+						<value>PUMM43</value>
+					</identifier>
+					<ns4:name>$MB32.name</ns4:name>
+					<ns4:assignedAction>zoomOut</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomout.png"/>
+					<ns4:entryType>RadioButtonItem</ns4:entryType>
+				</ns4:PopUpEntry>
+				<ns4:PopUpEntry assignedGroup="PUZoomGroup">
+					<identifier>
+						<value>PUMM44</value>
+					</identifier>
+					<ns4:name>$MB33.name</ns4:name>
+					<ns4:assignedAction>pan</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/pan.png"/>
+					<ns4:entryType>RadioButtonItem</ns4:entryType>
+				</ns4:PopUpEntry>
+				<ns4:PopUpEntry assignedGroup="PUZoomGroup">
+					<identifier>
+						<value>PUMM45</value>
+					</identifier>
+					<ns4:name>$MB34.name</ns4:name>
+					<ns4:assignedAction>center</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/s_center.png"/>
+					<ns4:entryType>RadioButtonItem</ns4:entryType>
+				</ns4:PopUpEntry>
+				<ns4:PopUpEntry>
+					<identifier>
+						<value>PUMM41</value>
+					</identifier>
+					<ns4:name>$ZoomExtent</ns4:name>
+					<ns4:assignedAction>zoomToFullExtent</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/s_zoomtofullextent.png"/>
+				</ns4:PopUpEntry>
+				<ns4:PopUpEntry>
+					<identifier>
+						<value>PUMM66</value>
+					</identifier>
+					<ns4:name>$ExtractFeatureToLayer.tooltip</ns4:name>
+					<ns4:assignedAction>$module:CPModule#selectedFeaturesToLayer</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/feature_to_layer.png"/>
+				</ns4:PopUpEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB39</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$pan.tooltip</ns4:tooltip>
+					<ns4:assignedAction>pan</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/pan.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB35</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$zoomin.tooltip</ns4:tooltip>
+					<ns4:assignedAction>zoomIn</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomin.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB36</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$zoomout.tooltip</ns4:tooltip>
+					<ns4:assignedAction>zoomOut</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomout.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB38</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$center.tooltip</ns4:tooltip>
+					<ns4:assignedAction>center</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/center.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>MB37</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$zoomToFullExtent.tooltip</ns4:tooltip>
+					<ns4:assignedAction>zoomToFullExtent</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomtofullextent.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>TB42</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$historyBackward.tooltip</ns4:tooltip>
+					<ns4:assignedAction>historyBackward</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/arrow_left.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>TB41</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$historyForward.tooltip</ns4:tooltip>
+					<ns4:assignedAction>historyForward</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/arrow_right.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>MB307</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$zoomToLayers.tooltip</ns4:tooltip>
+					<ns4:assignedAction>zoomToSelectedLayers</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomToLayers.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>exportLayer</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$exportLayer.tooltip</ns4:tooltip>
+					<ns4:assignedAction>exportLayer</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/export_layer.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB34</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$selectAnObject.tooltip</ns4:tooltip>
+					<ns4:assignedAction>select</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/selectObject.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="TBSelectGroup">
+					<identifier>
+						<value>identifier765</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$ZoomToSelectedFeatures.tooltip</ns4:tooltip>
+					<ns4:assignedAction>zoomToSelectedFeatures</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/zoomtofeature.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns4:ToolBarEntry assignedGroup="ZoomGroup">
+					<identifier>
+						<value>MB40</value>
+					</identifier>
+					<ns4:name/>
+					<ns4:tooltip>$ObjectInfo.tooltip</ns4:tooltip>
+					<ns4:assignedAction>objectInfo</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/objectInfo.png"/>
+				</ns4:ToolBarEntry>
+				<ns4:init-param>
+					<ns4:name>assignedMapModel</ns4:name>
+					<ns4:value>0236af8b-4135-4da0-b5e2-2c61f9fd1ca8</ns4:value>
+				</ns4:init-param>
+			</ns4:Module>
+		</ns4:ModuleRegister>
 		<ns4:MenuBar>
 			<ns4:Menu>
 				<identifier>
@@ -1093,6 +1329,36 @@ xmlns:ns4="http://www.deegree.org/project"
 				<ns4:icon ns2:href="../icons/s_save_as.png"/>
 				<ns4:entryType>PushButton</ns4:entryType>
 			</ns4:ToolBarEntry>
+			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
+				<identifier>
+					<value>addMM</value>
+				</identifier>
+				<ns4:name/>
+				<ns4:tooltip>$addMM</ns4:tooltip>
+				<ns4:assignedAction>addMapModel</ns4:assignedAction>
+				<ns4:icon ns2:href="../icons/mapwindow_add.png"/>
+				<ns4:entryType>PushButton</ns4:entryType>
+			</ns4:ToolBarEntry>
+			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
+				<identifier>
+					<value>removeMM</value>
+				</identifier>
+				<ns4:name/>
+				<ns4:tooltip>$removeMM</ns4:tooltip>
+				<ns4:assignedAction>removeMapModel</ns4:assignedAction>
+				<ns4:icon ns2:href="../icons/mapwindow_delete.png"/>
+				<ns4:entryType>PushButton</ns4:entryType>
+			</ns4:ToolBarEntry>
+			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
+				<identifier>
+					<value>syncMM</value>
+				</identifier>
+				<ns4:name/>
+				<ns4:tooltip>$synchronizeMM</ns4:tooltip>
+				<ns4:assignedAction>$module:MapModule#synchronizeMapModels</ns4:assignedAction>
+				<ns4:icon ns2:href="../icons/synchronize_maps.png"/>
+				<ns4:entryType>PushButton</ns4:entryType>
+			</ns4:ToolBarEntry>
 		</ns4:ToolBar>
 	</ns4:View>
 	<ns4:Settings>
@@ -1197,14 +1463,14 @@ xmlns:ns4="http://www.deegree.org/project"
 				<ns5:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
 			</ns5:WFSFeatureAdapter>
 			<ns5:WMSGridCoverageAdapter>
-				<ns5:CapabilitiesEvaluator val="" xsi:nil="true"/>
+				<ns5:CapabilitiesEvaluator/>
 				<ns5:Timeout val="10000"/>
 				<ns5:featureCount val="2"/>
 			</ns5:WMSGridCoverageAdapter>
 		</ns5:DataAdapter>
 		<ns5:ProjectTemplates>
-			<ns5:Template desc="default project with pane layout" file="src/main/data/resources/templates/default" name="default"/>
-			<ns5:Template desc="project with inner frame layout" file="src/main/data/resources/templates/innerframe_layout" name="inner frame"/>
+			<ns5:Template desc="default project with pane layout" file="resources/templates/default" name="default"/>
+			<ns5:Template desc="project with inner frame layout" file="resources/templates/innerframe_layout" name="inner frame"/>
 		</ns5:ProjectTemplates>
 		<ns5:FileFilter>
 			<ns5:Format desc="georeferenced jpeg image" extension="jpg" name="JPEG image"/>
@@ -1288,7 +1554,7 @@ xmlns:ns4="http://www.deegree.org/project"
 			<externalResourceTitle>deegree client and portal concept and specification</externalResourceTitle>
 			<externalResourceType>Open Office document</externalResourceType>
 		</externalResource>
-		<mapModel current="false">
+		<mapModel current="true">
 			<name>TestMM</name>
 			<identifier>
 				<value>MM1</value>
@@ -1299,68 +1565,13 @@ xmlns:ns4="http://www.deegree.org/project"
 				<dpi>96</dpi>
 			</targetDevice>
 			<supportedCRS/>
-			<extent crs="EPSG:31466" maxy="5624323.047268761" maxx="2574583.4765410293" miny="5624023.141961707" minx="2574265.2436874323"/>
+			<extent crs="EPSG:31466" maxy="5624323.085015234" maxx="2574583.5165942307" miny="5624023.1042152345" minx="2574265.203634231"/>
 			<maxExtent crs="EPSG:31466" maxy="5774724.0868" maxx="2843325.6402" miny="5429669.4309" minx="2426872.5076"/>
 			<layerGroup visible="true">
 				<identifier>
 					<value>Bonn</value>
 				</identifier>
 				<title>Bonn</title>
-				<!--layer editable="true" queryable="true" visible="true">
-					<identifier>
-						<value>pfad</value>
-					</identifier>
-					<title>pfad</title>
-					<maxScaleDenominator>9.0E99</maxScaleDenominator>
-					<minScaleDenominator>0.0</minScaleDenominator>
-					<Datasource>
-						<FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
-							<name>pfad.xml</name>
-							<extent crs="EPSG:31466" maxy="5624226.808423111" maxx="2574307.664286368" miny="5624027.3066417305" minx="2574236.561653864"/>
-							<nativeCRS>EPSG:31466</nativeCRS>
-							<minScaleDenominator>0.0</minScaleDenominator>
-							<maxScaleDenominator>9.0E99</maxScaleDenominator>
-							<file>../../../../../../E:/temp/igeodesktop/resources/data/data/pfad.xml</file>
-						</FileDatasource>
-					</Datasource>
-					<Style>
-						<DirectStyle uom="pixel" current="true">
-							<name>default1</name>
-							<title>pfad</title>
-							<abstract>default3</abstract>
-							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAdUlEQVR42sWU2wrAIAxDm7D//+VdHgQZ69pI2EQQSk2O1RphHPs54RS7VoZ5wEn3LeFwRXGKmS4lnJPuGwo6sHJURblS+KfYKA2rBJWUVU0y0cyclbtKyo4IhAag8iQ6cXYuQyHdFlrrVRRdOnsN/xeE6W88ADaqJh+2cX2AAAAAAElFTkSuQmCC</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;pfad&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;pfad&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Pfad&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;9.0E99&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:geom&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#ff0000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;3.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
-						</DirectStyle>
-					</Style>
-				</layer-->
-				<!--layer editable="true" queryable="true" visible="true">
-					<identifier>
-						<value>kunstwerk</value>
-					</identifier>
-					<title>kunstwerk</title>
-					<maxScaleDenominator>9.0E99</maxScaleDenominator>
-					<minScaleDenominator>0.0</minScaleDenominator>
-					<selectedFor>editing</selectedFor>
-					<Datasource>
-						<FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
-							<name>kunstwerk.gml</name>
-							<extent crs="EPSG:31466" maxy="5624134.922174678" maxx="2574504.252088058" miny="5624134.922174678" minx="2574504.252088058"/>
-							<nativeCRS>EPSG:31466</nativeCRS>
-							<minScaleDenominator>0.0</minScaleDenominator>
-							<maxScaleDenominator>9.0E99</maxScaleDenominator>
-							<file>E:\temp\igeodesktop\resources\data\data\kunstwerk.xml</file>
-						</FileDatasource>
-					</Datasource>
-					<Style>
-						<DirectStyle uom="pixel" current="true">
-							<name>default1</name>
-							<title>kunstwerk</title>
-							<abstract>default3</abstract>
-							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAIklEQVR42mM0Nv7/n4GKgImBymDUwFEDRw0cNXDUwKFiIACfAwKM4FzxVAAAAABJRU5ErkJggg==</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;kunstwerk&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;kunstwerk&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:kunstwerk&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;9.0E99&lt;/MaxScaleDenominator&gt;&lt;PointSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:geom&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Graphic&gt;&lt;Mark&gt;&lt;WellKnownName&gt;square&lt;/WellKnownName&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#3333ff&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#000000&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/Mark&gt;&lt;Opacity&gt;1.0&lt;/Opacity&gt;&lt;Size&gt;27.0&lt;/Size&gt;&lt;Rotation&gt;0.0&lt;/Rotation&gt;&lt;/Graphic&gt;&lt;/PointSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
-						</DirectStyle>
-					</Style>
-				</layer-->
 				<layer editable="false" queryable="true" visible="true">
 					<identifier>
 						<value>cbe7c866-8324-409b-8fe6-953cc8723af7</value>
@@ -1373,7 +1584,7 @@ xmlns:ns4="http://www.deegree.org/project"
 					<Datasource>
 						<WMSDatasource supportToolTips="false" editable="false" queryable="true" lazyLoading="true">
 							<name>WMS der Bundesstadt Bonn</name>
-							<extent crs="EPSG:31466" maxy="5624301.862821864" maxx="2574582.525564175" miny="5624044.326408604" minx="2574266.194664287"/>
+							<extent crs="EPSG:31466" maxy="5624323.047268761" maxx="2574583.4765410293" miny="5624023.141961707" minx="2574265.2436874323"/>
 							<nativeCRS>EPSG:31466</nativeCRS>
 							<minScaleDenominator>0.0</minScaleDenominator>
 							<maxScaleDenominator>6000.0</maxScaleDenominator>
@@ -1432,7 +1643,7 @@ xmlns:ns4="http://www.deegree.org/project"
 					<Datasource>
 						<WMSDatasource supportToolTips="false" editable="false" queryable="true" lazyLoading="true">
 							<name>WMS der Bundesstadt Bonn</name>
-							<extent crs="EPSG:31466" maxy="5624301.862821864" maxx="2574582.525564175" miny="5624044.326408604" minx="2574266.194664287"/>
+							<extent crs="EPSG:31466" maxy="5624323.047268761" maxx="2574583.4765410293" miny="5624023.141961707" minx="2574265.2436874323"/>
 							<nativeCRS>EPSG:31466</nativeCRS>
 							<minScaleDenominator>0.0</minScaleDenominator>
 							<maxScaleDenominator>9.0E99</maxScaleDenominator>
@@ -1455,6 +1666,27 @@ xmlns:ns4="http://www.deegree.org/project"
 				</layer>
 			</layerGroup>
 			<description/>
+		</mapModel>
+		<mapModel current="false">
+			<name>ID 1333531796798</name>
+			<identifier>
+				<value>0236af8b-4135-4da0-b5e2-2c61f9fd1ca8</value>
+			</identifier>
+			<targetDevice>
+				<pixelWidth>764</pixelWidth>
+				<pixelHeight>720</pixelHeight>
+				<dpi>96</dpi>
+			</targetDevice>
+			<supportedCRS/>
+			<extent crs="EPSG:31466" maxy="5805435.766849999" maxx="2850758.2435000003" miny="5398957.75085" minx="2419439.9043"/>
+			<maxExtent crs="EPSG:31466" maxy="5774724.0868" maxx="2843325.6402" miny="5429669.4309" minx="2426872.5076"/>
+			<layerGroup supportToolTips="false" queryable="true" visible="true">
+				<identifier>
+					<value>e07d3ca9-6e24-42b2-a338-7cf67398003c</value>
+				</identifier>
+				<title>root</title>
+				<abstract>new layer group</abstract>
+			</layerGroup>
 		</mapModel>
 	</MapModelCollection>
 </ns4:Project>
