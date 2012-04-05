@@ -147,7 +147,7 @@ public abstract class ApplicationContainer<T> {
     protected Map<String, ButtonGroup> btGroups = new LinkedHashMap<String, ButtonGroup>( 10 );
 
     protected Map<String, Object> instanceSettings = new HashMap<String, Object>();
-    
+
     protected JPanel toolbarPanel;
 
     protected MenuBar menuBar;
@@ -205,7 +205,6 @@ public abstract class ApplicationContainer<T> {
      * @throws IOException
      * @throws URISyntaxException
      */
-    @SuppressWarnings("unchecked")
     public void loadProject( URL url, boolean isNew )
                             throws JAXBException, IOException, URISyntaxException {
 
@@ -387,7 +386,7 @@ public abstract class ApplicationContainer<T> {
     public URL resolve( String url )
                             throws MalformedURLException {
         return moduleCreator.resolve( url );
-    }    
+    }
 
     /**
      * removes a module from a project </br> an implementing class may overrides this method to remove all according
@@ -433,12 +432,11 @@ public abstract class ApplicationContainer<T> {
         for ( int i = 0; i < this.modules.size(); i++ ) {
             if ( this.modules.get( i ).getIdentifier().equals( identifier ) ) {
                 return this.modules.get( i );
-            } else {
-                if ( this.modules.get( i ) instanceof IModuleGroup<?> ) {
-                    IModule<T> mod = searchChildren( (IModuleGroup<T>) this.modules.get( i ), identifier );
-                    if ( mod != null ) {
-                        return mod;
-                    }
+            }
+            if ( this.modules.get( i ) instanceof IModuleGroup<?> ) {
+                IModule<T> mod = searchChildren( (IModuleGroup<T>) this.modules.get( i ), identifier );
+                if ( mod != null ) {
+                    return mod;
                 }
             }
         }
@@ -456,10 +454,9 @@ public abstract class ApplicationContainer<T> {
         for ( IModule<T> module : list ) {
             if ( module.getIdentifier().equals( identifier ) ) {
                 return module;
-            } else {
-                if ( module instanceof IModuleGroup<?> ) {
-                    return searchChildren( (IModuleGroup<T>) module, identifier );
-                }
+            }
+            if ( module instanceof IModuleGroup<?> ) {
+                return searchChildren( (IModuleGroup<T>) module, identifier );
             }
         }
         return null;
@@ -530,9 +527,8 @@ public abstract class ApplicationContainer<T> {
         }
         if ( list.size() == 0 ) {
             return null;
-        } else {
-            return (DefaultMapModule<T>) list.get( 0 );
         }
+        return (DefaultMapModule<T>) list.get( 0 );
     }
 
     /**
@@ -699,12 +695,12 @@ public abstract class ApplicationContainer<T> {
         }
         return projectURL.toExternalForm();
     }
-    
+
     /**
      * 
      * @param url
      */
-    public void setProjectURL(URL url) {
+    public void setProjectURL( URL url ) {
         this.projectURL = url;
     }
 
@@ -716,7 +712,6 @@ public abstract class ApplicationContainer<T> {
     public void setLanguage( String language ) {
         proj.setLanguage( language );
     }
-    
 
     /**
      * @return the proj
@@ -731,7 +726,7 @@ public abstract class ApplicationContainer<T> {
     public ProcessMonitor getProcessMonitor() {
         return processMonitor;
     }
-    
+
     /**
      * logs out current instance of igeodesktop by reseting all certificates
      */
@@ -749,7 +744,8 @@ public abstract class ApplicationContainer<T> {
     }
 
     /**
-     * @param isNew the isNew to set
+     * @param isNew
+     *            the isNew to set
      */
     public void setNew( boolean isNew ) {
         this.isNew = isNew;
@@ -762,7 +758,7 @@ public abstract class ApplicationContainer<T> {
     public void setProcessMonitor( ProcessMonitor processMonitor ) {
         this.processMonitor = processMonitor;
     }
-    
+
     /**
      * 
      * @return pane to which GUI container of all root level modules will be added
@@ -770,18 +766,19 @@ public abstract class ApplicationContainer<T> {
     public Container getRootTargetPane() {
         return rootTargetPane;
     }
-    
+
     /**
      * The key of the map contains the name of the listener class separated by an '|' from the name of the menu item:
      * <p>
      * <code>listener.getClass().getName() + "|" + mt.getName()</code>
-     * </p> 
-     * @return all known menu items 
+     * </p>
+     * 
+     * @return all known menu items
      */
     public Map<String, AbstractButton> getMenuItems() {
         return menuItems;
     }
-    
+
     /**
      * initializes iGeoDesktop
      */
@@ -818,48 +815,48 @@ public abstract class ApplicationContainer<T> {
      * 
      */
     public abstract void resetToolbar();
-    
+
     /**
      * @return the platform of the application
      */
     public abstract String getViewPlatform();
-    
+
     /**
      * frees all resources allocated by an instance of ApplicationContainer
      */
     public abstract void cleanUp();
-    
+
     /**
      * 
      * @return main window of the application
      */
     public abstract Container getMainWndow();
-    
+
     /**
-     * performs a login 
+     * performs a login
      * 
      * @param user
      * @param password
      */
     public abstract void login( String user, String password );
-    
 
     /**
      * renders the application
      */
     public abstract void paint();
-    
+
     /**
      * adapts the toolbar to current container size
      */
     public abstract void resizeToolbar();
-    
+
     /**
      * add entries (buttons) to the toolbar assigned to one specific module and its children
+     * 
      * @param module
      */
     public abstract void addToolBarEntries( IModule<Container> module );
-    
+
     /**
      * appends Modules onto the passed contains
      * 

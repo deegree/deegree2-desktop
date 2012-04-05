@@ -680,12 +680,12 @@
                 <ns4:className>org.deegree.igeo.modules.georef.GeoreferencingModule</ns4:className>
                 <ns4:ViewForm>
                     <ns4:FrameViewForm>
-                        <ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
+                        <ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow
                         </ns4:containerClass>
                         <ns4:ComponentState modal="true" active="true">
                             <ns4:windowState>closed</ns4:windowState>
                         </ns4:ComponentState>
-                        <ns4:frameTitle>$MD10348</ns4:frameTitle>
+                        <ns4:frameTitle>$DI10073</ns4:frameTitle>
                     </ns4:FrameViewForm>
                 </ns4:ViewForm>
                 <ns4:ToolBarEntry>

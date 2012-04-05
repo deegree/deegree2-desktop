@@ -131,6 +131,7 @@ import org.deegree.model.Identifier;
 import com.jgoodies.looks.HeaderStyle;
 import com.jgoodies.looks.Options;
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
 /**
@@ -144,14 +145,12 @@ import com.jgoodies.looks.plastic.theme.ExperienceBlue;
  */
 public class IGeoDesktop extends AbstractiGeoDesktop {
 
-    private static final long serialVersionUID = -8423037307095733192L;
-
     private static final ILogger LOG = LoggerFactory.getLogger( IGeoDesktop.class );
 
     private static final String CONTEXT = "Application";
 
     // main window/container
-    private JFrame frame;
+    JFrame frame;
 
     /**
      * @param processMonitor
@@ -169,7 +168,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
                 UIManager.setLookAndFeel( "com.jgoodies.looks.plastic.Plastic3DLookAndFeel" );
                 Plastic3DLookAndFeel laf = new Plastic3DLookAndFeel();
                 ExperienceBlue eb = new ExperienceBlue();
-                Plastic3DLookAndFeel.setPlasticTheme( eb );
+                PlasticLookAndFeel.setPlasticTheme( eb );
                 UIManager.setLookAndFeel( laf );
             }
         } catch ( Exception e ) {
@@ -180,6 +179,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
     /**
      * 
      */
+    @Override
     public void init() {
         toolBarController = new ControlElement( "ToolBar" );
         menuBarController = new ControlElement( "MenuBar" );
@@ -210,6 +210,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * 
      */
+    @Override
     public void paint() {
         if ( this.proj != null ) {
             processMonitor.updateStatus( "initializing frame ..." );
@@ -278,6 +279,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
         }
     }
 
+    @Override
     public void cleanUp() {
         // TODO
         // cleanup all resources
@@ -285,8 +287,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             // if something has been changed use will be asked if changes shall be safed
             // before quitting the program
             if ( getCommandProcessor().availableUndos().size() > 0
-                 && DialogFactory.openConfirmDialogYESNO( "application", frame, Messages.getMessage( frame.getLocale(),
-                                                                                                     "$DI10063" ),
+                 && DialogFactory.openConfirmDialogYESNO( "application", frame,
+                                                          Messages.getMessage( frame.getLocale(), "$DI10063" ),
                                                           Messages.getMessage( frame.getLocale(), "$DI10064" ) ) ) {
                 if ( isNew ) {
                     IGeoDesktopEventHandler.saveProject( this );
@@ -363,8 +365,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             @Override
             public void componentResized( ComponentEvent event ) {
                 WindowType wt = proj.getView().getWindow();
-                wt.setWidth( (int) event.getComponent().getWidth() );
-                wt.setHeight( (int) event.getComponent().getHeight() );
+                wt.setWidth( event.getComponent().getWidth() );
+                wt.setHeight( event.getComponent().getHeight() );
                 resizeToolbar();
             }
 
@@ -420,6 +422,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * @param targetPane
      */
+    @Override
     public void appendModules( List<IModule<Container>> modules, Container targetPane ) {
 
         for ( IModule<Container> module : modules ) {
@@ -539,6 +542,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * @param module
      */
+    @Override
     public void addToolBarEntries( IModule<Container> module ) {
         if ( module instanceof IModuleGroup<?> ) {
             for ( IModule<Container> childModule : ( (IModuleGroup<Container>) module ).getChildModules() ) {
@@ -790,6 +794,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed( ActionEvent event ) {
         IGeoDesktopEventHandler.actionPerformed( this, event );
     }
@@ -800,6 +805,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * @param user
      * @param password
      */
+    @Override
     public void login( String user, String password ) {
 
         if ( user == null || user.length() < 3 ) {
@@ -822,8 +828,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             clzz = Class.forName( method );
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
-            DialogFactory.openWarningDialog( "application", frame, Messages.getMessage( frame.getLocale(), "$MD10884",
-                                                                                        method ),
+            DialogFactory.openWarningDialog( "application", frame,
+                                             Messages.getMessage( frame.getLocale(), "$MD10884", method ),
                                              Messages.getMessage( frame.getLocale(), "$MD10885" ) );
             return;
         }
@@ -847,8 +853,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             command = (Command) construtctor.newInstance( values );
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
-            DialogFactory.openWarningDialog( "application", frame, Messages.getMessage( frame.getLocale(), "$MD10886",
-                                                                                        method ),
+            DialogFactory.openWarningDialog( "application", frame,
+                                             Messages.getMessage( frame.getLocale(), "$MD10886", method ),
                                              Messages.getMessage( frame.getLocale(), "$MD10887" ) );
             return;
         }
@@ -862,8 +868,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             // command that just says if a user/password combination is valid has been performed
             if ( command.getResult() instanceof Boolean && ( (Boolean) command.getResult() ) == false ) {
                 // user could not be authenticated using his user/password
-                DialogFactory.openWarningDialog( "application", frame, Messages.getMessage( frame.getLocale(),
-                                                                                            "$MD10882" ),
+                DialogFactory.openWarningDialog( "application", frame,
+                                                 Messages.getMessage( frame.getLocale(), "$MD10882" ),
                                                  Messages.getMessage( frame.getLocale(), "$MD10883" ) );
                 return;
             }
@@ -898,6 +904,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * @return main window of the application
      */
+    @Override
     public Container getMainWndow() {
         return frame;
     }
@@ -905,6 +912,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
     /**
      * adapts the toolbar to current container size
      */
+    @Override
     public void resizeToolbar() {
         Component[] comps = toolbarPanel.getComponents();
         int w = 0;
@@ -926,6 +934,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
      * 
      * @see org.deegree.igeo.ApplicationContainer#resetToolbar()
      */
+    @Override
     public void resetToolbar() {
 
         Collection<ButtonGroup> gr = btGroups.values();
@@ -1004,10 +1013,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
 
     /**
      * @param args
-     * @throws Exception
      */
-    public static void main( String[] args )
-                            throws Exception {
+    public static void main( String[] args ) {
         initProxy();
 
         SplashWindow spw = null;
@@ -1024,7 +1031,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
                 if ( args[0].startsWith( "http://" ) ) {
                     url = new URL( args[0] );
                 } else {
-                    url = new File( args[0] ).toURL();
+                    url = new File( args[0] ).toURI().toURL();
                 }
             }
             g.init();
@@ -1045,7 +1052,5 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             LOG.logError( e );
         }
     }
-
-  
 
 }
