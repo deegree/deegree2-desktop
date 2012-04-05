@@ -48,8 +48,11 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
+
+import org.deegree.igeo.modules.georef.ControlPointModel;
 
 /**
  * 
@@ -109,7 +112,8 @@ public class GeoreferencingControlPanel extends JPanel {
         ++gb.gridy;
         gb.gridwidth = 6;
         gb.fill = BOTH;
-        add( new JTable(), gb );
+        JTable table = new JTable( new ControlPointModel() );
+        add( new JScrollPane( table ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;

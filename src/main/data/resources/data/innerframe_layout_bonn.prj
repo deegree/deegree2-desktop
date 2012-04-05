@@ -670,7 +670,7 @@
 
         <ns4:ModuleRegister>
             <ns4:AbsolutePosition>
-                <ns4:Window width="364" height="390" top="252" left="535"/>
+                <ns4:Window width="400" height="300" top="252" left="535"/>
             </ns4:AbsolutePosition>
             <ns4:Module>
                 <ns4:name>Georeferencing</ns4:name>

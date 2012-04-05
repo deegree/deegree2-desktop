@@ -35,7 +35,14 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.views.swing.georef;
 
-import javax.swing.JFrame;
+import java.awt.event.ComponentAdapter;
+
+import javax.swing.event.InternalFrameAdapter;
+
+import org.deegree.igeo.config.ViewFormType;
+import org.deegree.igeo.modules.IModule;
+import org.deegree.igeo.modules.georef.GeoreferencingModule;
+import org.deegree.igeo.views.swing.DefaultInnerFrame;
 
 /**
  * 
@@ -44,13 +51,27 @@ import javax.swing.JFrame;
  * 
  * @version $Revision: $, $Date: $
  */
-public class GeoreferencingControlWindow extends JFrame {
+public class GeoreferencingControlWindow extends DefaultInnerFrame {
 
     private static final long serialVersionUID = 7946421962675754576L;
 
-    public GeoreferencingControlWindow() {
+    private final GeoreferencingModule module;
+
+    public GeoreferencingControlWindow( GeoreferencingModule module ) {
+        this.module = module;
+    }
+
+    @Override
+    public void init( ViewFormType viewForm )
+                            throws Exception {
+        super.init( viewForm );
         getContentPane().add( new GeoreferencingControlPanel() );
         pack();
+        registerModule( (IModule) module );
+        addComponentListener( new ComponentAdapter() {
+        } );
+        addInternalFrameListener( new InternalFrameAdapter() {
+        } );
     }
 
 }

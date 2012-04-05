@@ -35,10 +35,11 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.modules.georef;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyVetoException;
 
 import org.deegree.igeo.modules.DefaultModule;
-import org.deegree.igeo.views.swing.georef.GeoreferencingControlPanel;
 import org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow;
 
 /**
@@ -48,15 +49,23 @@ import org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow;
  * 
  * @version $Revision: $, $Date: $
  */
-public class GeoreferencingModule<T> extends DefaultModule<T> {
+public class GeoreferencingModule extends DefaultModule<Container> {
 
     private GeoreferencingControlWindow view;
 
     @Override
     public void actionPerformed( ActionEvent e ) {
-//        getViewForm().setVisible(true );
+        // getViewForm().setVisible(true );
         System.out.println( getViewForm() );
-//        System.out.println( "action" );
+        try {
+            getViewForm().setClosed(false);
+            getViewForm().setVisible(true);
+            
+        } catch ( PropertyVetoException e1 ) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        // System.out.println( "action" );
     }
 
     public void open() {
@@ -67,9 +76,11 @@ public class GeoreferencingModule<T> extends DefaultModule<T> {
     public GeoreferencingControlWindow getViewForm() {
         synchronized ( this ) {
             if ( view == null ) {
-                view = new GeoreferencingControlWindow();
+                view = new GeoreferencingControlWindow(this);
+                view.registerModule(this );
             }
         }
+        view.setVisible( false );
         return view;
     }
 
