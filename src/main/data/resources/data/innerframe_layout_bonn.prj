@@ -667,6 +667,39 @@
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
+
+        <ns4:ModuleRegister>
+            <ns4:AbsolutePosition>
+                <ns4:Window width="364" height="390" top="252" left="535"/>
+            </ns4:AbsolutePosition>
+            <ns4:Module>
+                <ns4:name>Georeferencing</ns4:name>
+                <identifier>
+                    <value>GeoreferencingID</value>
+                </identifier>
+                <ns4:className>org.deegree.igeo.modules.georef.GeoreferencingModule</ns4:className>
+                <ns4:ViewForm>
+                    <ns4:FrameViewForm>
+                        <ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
+                        </ns4:containerClass>
+                        <ns4:ComponentState modal="true" active="true">
+                            <ns4:windowState>closed</ns4:windowState>
+                        </ns4:ComponentState>
+                        <ns4:frameTitle>$MD10348</ns4:frameTitle>
+                    </ns4:FrameViewForm>
+                </ns4:ViewForm>
+                <ns4:ToolBarEntry>
+                    <identifier>
+                        <value>TBgeoref</value>
+                    </identifier>
+                    <ns4:tooltip>fdskldsjhfsdjgf</ns4:tooltip>
+                    <ns4:assignedAction>open</ns4:assignedAction>
+                    <ns4:icon ns2:href="../icons/pdf.png"/>
+                    <ns4:entryType>PushButton</ns4:entryType>
+                </ns4:ToolBarEntry>
+            </ns4:Module>
+        </ns4:ModuleRegister>
+
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="351" height="434" top="443" left="1121"/>
@@ -1572,7 +1605,7 @@
 					<value>Bonn</value>
 				</identifier>
 				<title>Bonn</title>
-				<layer editable="false" queryable="true" visible="true">
+				<!--layer editable="false" queryable="true" visible="true">
 					<identifier>
 						<value>cbe7c866-8324-409b-8fe6-953cc8723af7</value>
 					</identifier>
@@ -1604,7 +1637,7 @@
 							</legendURL>
 						</NamedStyle>
 					</Style>
-				</layer>
+				</layer-->
 				<layer editable="true" queryable="true" visible="true">
 					<identifier>
 						<value>building_bonn</value>
@@ -1632,7 +1665,7 @@
 						</DirectStyle>
 					</Style>
 				</layer>
-				<layer editable="false" queryable="true" visible="true">
+				<!--layer editable="false" queryable="true" visible="true">
 					<identifier>
 						<value>19453f35-f57b-47a4-909d-aa078cf16afe</value>
 					</identifier>
@@ -1663,7 +1696,7 @@
 							</legendURL>
 						</NamedStyle>
 					</Style>
-				</layer>
+				</layer-->
 			</layerGroup>
 			<description/>
 		</mapModel>
