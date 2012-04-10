@@ -36,8 +36,6 @@
 package org.deegree.igeo.modules.georef;
 
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyVetoException;
 
 import org.deegree.igeo.modules.DefaultModule;
 import org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow;
@@ -51,37 +49,13 @@ import org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow;
  */
 public class GeoreferencingModule extends DefaultModule<Container> {
 
-    private GeoreferencingControlWindow view;
-
-    @Override
-    public void actionPerformed( ActionEvent e ) {
-        // getViewForm().setVisible(true );
-        System.out.println( getViewForm() );
-        try {
-            getViewForm().setClosed(false);
-            getViewForm().setVisible(true);
-            
-        } catch ( PropertyVetoException e1 ) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        // System.out.println( "action" );
-    }
-
     public void open() {
-        System.out.println( "opening" );
-    }
+        this.componentStateAdapter.setClosed( false );
+        createIView();
 
-    @Override
-    public GeoreferencingControlWindow getViewForm() {
-        synchronized ( this ) {
-            if ( view == null ) {
-                view = new GeoreferencingControlWindow(this);
-                view.registerModule(this );
-            }
-        }
-        view.setVisible( false );
-        return view;
+        // whyever one needs to set the window visible oneself (digitizer does not seem to need to do it)
+        GeoreferencingControlWindow wnd = (GeoreferencingControlWindow) getViewForm();
+        wnd.setVisible( true );
     }
 
 }

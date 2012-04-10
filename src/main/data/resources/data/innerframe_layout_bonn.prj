@@ -682,7 +682,7 @@
                     <ns4:FrameViewForm>
                         <ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow
                         </ns4:containerClass>
-                        <ns4:ComponentState modal="true" active="true">
+                        <ns4:ComponentState modal="false" active="true">
                             <ns4:windowState>closed</ns4:windowState>
                         </ns4:ComponentState>
                         <ns4:frameTitle>$DI10073</ns4:frameTitle>
