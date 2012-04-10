@@ -44,6 +44,12 @@ import static org.deegree.igeo.i18n.Messages.get;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -52,8 +58,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 
+import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.commands.model.AddFileLayerCommand;
+import org.deegree.igeo.desktop.IGeoDesktop;
+import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.ControlPointModel;
+import org.deegree.igeo.views.swing.util.GenericFileChooser;
+import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.igeo.views.swing.util.IGeoFileFilter;
+import org.deegree.kernel.CommandProcessedEvent;
+import org.deegree.kernel.CommandProcessedListener;
+import org.deegree.kernel.ProcessMonitor;
+import org.deegree.kernel.ProcessMonitorFactory;
 
 /**
  * 
@@ -62,9 +80,15 @@ import org.deegree.igeo.modules.georef.ControlPointModel;
  * 
  * @version $Revision: $, $Date: $
  */
-public class GeoreferencingControlPanel extends JPanel {
+public class GeoreferencingControlPanel extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = 7031021591515735164L;
+
+    private DefaultMapModule<?> mapModule;
+
+    private MapModel mapModel;
+
+    private Buttons buttons = new Buttons();
 
     public GeoreferencingControlPanel() {
         setLayout( new GridBagLayout() );
@@ -75,7 +99,8 @@ public class GeoreferencingControlPanel extends JPanel {
         gb.gridwidth = 2;
         gb.anchor = CENTER;
         gb.insets = new Insets( 2, 2, 2, 2 );
-        add( new JButton( get( "$DI10074" ) ), gb );
+        add( buttons.load = new JButton( get( "$DI10074" ) ), gb );
+        buttons.load.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
@@ -131,9 +156,60 @@ public class GeoreferencingControlPanel extends JPanel {
         add( new JButton( get( "$DI10083" ) ), gb );
     }
 
-    public void setMapModel( MapModel mm ) {
-        // TODO Auto-generated method stub
-        
+    public void setMapModel( DefaultMapModule<?> mapModule, MapModel mapModel ) {
+        this.mapModule = mapModule;
+        this.mapModel = mapModel;
+    }
+
+    @Override
+    public void actionPerformed( ActionEvent e ) {
+        if ( e.getSource() == buttons.load ) {
+            loadRaster();
+        }
+    }
+
+    private void loadRaster() {
+        ApplicationContainer<?> appContainer = mapModule.getApplicationContainer();
+        File file = null;
+        if ( "Application".equalsIgnoreCase( appContainer.getViewPlatform() ) ) {
+            Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
+            List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+
+            ff.add( IGeoFileFilter.TIFF );
+            ff.add( IGeoFileFilter.PNG );
+
+            file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.geoDataFile, appContainer,
+                                                      ( (IGeoDesktop) appContainer ).getMainWndow(), prefs,
+                                                      "geoDataFile", ff );
+
+        }
+        if ( file != null ) {
+
+            AddFileLayerCommand command = new AddFileLayerCommand( mapModel, file, null, null, null,
+                                                                   mapModel.getCoordinateSystem().getPrefixedName() );
+
+            final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( appContainer.getViewPlatform(),
+                                                                                        Messages.get( "$MD11264" ),
+                                                                                        Messages.get( "$MD11265", file ),
+                                                                                        0, -1, command );
+            command.setProcessMonitor( pm );
+            command.addListener( new CommandProcessedListener() {
+                @Override
+                public void commandProcessed( CommandProcessedEvent event ) {
+                    try {
+                        pm.cancel();
+                    } catch ( Exception e ) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } );
+            appContainer.getCommandProcessor().executeASychronously( command );
+        }
+    }
+
+    static class Buttons {
+        JButton load;
     }
 
 }

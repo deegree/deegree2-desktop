@@ -84,7 +84,7 @@ public class GeoreferencingControlWindow extends DefaultFrame {
     public void setMapModel( DefaultMapModule<?> dmm, MapModel mm ) {
         this.mapModel = mm;
         this.mapModule = dmm;
-        panel.setMapModel( mm );
+        panel.setMapModel( dmm, mm );
     }
 
 }
