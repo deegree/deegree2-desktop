@@ -53,6 +53,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -119,6 +120,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb.fill = BOTH;
         JPanel panel = new JPanel();
         panel.setBorder( createTitledBorder( get( "$DI10085" ) ) );
+        panel.add( new JLabel( get( "$DI10086" ) ) );
         add( panel, gb );
 
         gb = (GridBagConstraints) gb.clone();
