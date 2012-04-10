@@ -89,7 +89,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private MapModel mapModel;
 
-    private Buttons buttons = new Buttons();
+    Buttons buttons = new Buttons();
 
     public GeoreferencingControlPanel() {
         setLayout( new GridBagLayout() );
@@ -105,12 +105,12 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
-        JComboBox box = new JComboBox( new String[] { get( "$DI10075" ) } );
-        add( box, gb );
+        buttons.transformList = new JComboBox( new String[] { get( "$DI10075" ) } );
+        add( buttons.transformList, gb );
 
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
-        add( new JToggleButton( get( "$DI10076" ) ), gb );
+        add( buttons.activate = new JToggleButton( get( "$DI10076" ) ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 2;
@@ -129,33 +129,35 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb.gridwidth = 3;
         gb.gridheight = 1;
         gb.fill = NONE;
-        add( new JButton( get( "$DI10077" ) ), gb );
+        add( buttons.loadTable = new JButton( get( "$DI10077" ) ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 3;
-        add( new JButton( get( "$DI10078" ) ), gb );
+        add( buttons.saveTable = new JButton( get( "$DI10078" ) ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 0;
         ++gb.gridy;
         gb.gridwidth = 6;
         gb.fill = BOTH;
-        JTable table = new JTable( new ControlPointModel() );
-        add( new JScrollPane( table ), gb );
+        buttons.table = new JTable( new ControlPointModel() );
+        add( new JScrollPane( buttons.table ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
         gb.gridwidth = 2;
         gb.fill = NONE;
-        add( new JButton( get( "$DI10081" ) ), gb );
+        add( buttons.delete = new JButton( get( "$DI10081" ) ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx += 2;
-        add( new JButton( get( "$DI10082" ) ), gb );
+        add( buttons.reset = new JButton( get( "$DI10082" ) ), gb );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx += 2;
-        add( new JButton( get( "$DI10083" ) ), gb );
+        add( buttons.start = new JButton( get( "$DI10083" ) ), gb );
+
+        buttons.enable( false );
     }
 
     public void setMapModel( DefaultMapModule<?> mapModule, MapModel mapModel ) {
@@ -198,6 +200,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             command.addListener( new CommandProcessedListener() {
                 @Override
                 public void commandProcessed( CommandProcessedEvent event ) {
+                    buttons.enable( true );
                     try {
                         pm.cancel();
                     } catch ( Exception e ) {
@@ -211,7 +214,24 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
     }
 
     static class Buttons {
-        JButton load;
+        JButton load, loadTable, saveTable, delete, reset, start;
+
+        JToggleButton activate;
+
+        JComboBox transformList;
+
+        JTable table;
+
+        void enable( boolean b ) {
+            loadTable.setEnabled( b );
+            saveTable.setEnabled( b );
+            delete.setEnabled( b );
+            reset.setEnabled( b );
+            start.setEnabled( b );
+            activate.setEnabled( b );
+            transformList.setEnabled( b );
+            table.setEnabled( b );
+        }
     }
 
 }
