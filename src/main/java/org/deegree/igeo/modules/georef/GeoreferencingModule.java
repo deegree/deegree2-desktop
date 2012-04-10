@@ -38,6 +38,8 @@ package org.deegree.igeo.modules.georef;
 import java.awt.Container;
 
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.ChangeListener;
+import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.desktop.IGeoDesktopEventHandler;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.mapmodel.MapModelCollection;
@@ -91,6 +93,13 @@ public class GeoreferencingModule extends DefaultModule<Container> {
             }
         }
 
+        dmm.getMapTool().addChangeListener(new ChangeListener(){
+            @Override
+            public void valueChanged( ValueChangedEvent event ) {
+                System.out.println("yep");
+            }
+        });
+        
         Container c = (Container) dmm.getViewForm();
         c.setVisible( true );
 
