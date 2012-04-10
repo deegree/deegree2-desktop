@@ -52,6 +52,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 
+import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.georef.ControlPointModel;
 
 /**
@@ -128,6 +129,11 @@ public class GeoreferencingControlPanel extends JPanel {
         gb = (GridBagConstraints) gb.clone();
         gb.gridx += 2;
         add( new JButton( get( "$DI10083" ) ), gb );
+    }
+
+    public void setMapModel( MapModel mm ) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

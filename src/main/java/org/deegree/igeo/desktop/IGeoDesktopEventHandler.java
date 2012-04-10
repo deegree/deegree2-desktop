@@ -331,8 +331,8 @@ public class IGeoDesktopEventHandler {
                             frame.setCursor( CursorRegistry.DEFAULT_CURSOR );
                         } catch ( Exception e ) {
                             LOG.logError( e.getMessage(), e );
-                            DialogFactory.openErrorDialog( "Application", frame, "can not read project: "
-                                                                                 + e.getMessage(),
+                            DialogFactory.openErrorDialog( "Application", frame,
+                                                           "can not read project: " + e.getMessage(),
                                                            "error reading project", e );
                             processMonitor.dispose();
                         }
@@ -420,11 +420,15 @@ public class IGeoDesktopEventHandler {
      * @param igeo
      */
     static void addMapModel( ApplicationContainer<Container> igeo ) {
+        // first a new map model must be created and registered to iGeoDesktop and JAXB classes
+        String id = JOptionPane.showInputDialog( Messages.getMessage( igeo.getMainWndow().getLocale(), "$DI10072" ),
+                                                 "ID " + System.currentTimeMillis() );
+        addMapModel( igeo, id );
+    }
+
+    public static void addMapModel( ApplicationContainer<Container> igeo, String id ) {
         try {
             // first a new map model must be created and registered to iGeoDesktop and JAXB classes
-            String id = JOptionPane.showInputDialog(
-                                                     Messages.getMessage( igeo.getMainWndow().getLocale(), "$DI10072" ),
-                                                     "ID " + System.currentTimeMillis() );
             if ( id == null || id.trim().length() == 0 ) {
                 id = "ID " + System.currentTimeMillis();
             }
@@ -453,11 +457,11 @@ public class IGeoDesktopEventHandler {
             // register menu bar/item entries/listeners
             Iterator<String> iterator = igeo.getMenuItems().keySet().iterator();
             while ( iterator.hasNext() ) {
-                String tmp = (String) iterator.next();
+                String tmp = iterator.next();
                 String s = StringTools.toArray( tmp, "|", false )[0];
                 if ( s.equals( dmm.getClass().getName() ) ) {
                     AbstractButton menuItem = igeo.getMenuItems().get( tmp );
-                    menuItem.addActionListener( (ActionListener) dmm );
+                    menuItem.addActionListener( dmm );
                 }
             }
             if ( dmm.getViewForm() instanceof JInternalFrame ) {
@@ -591,8 +595,8 @@ public class IGeoDesktopEventHandler {
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
             Container parent = igeo.getMainWndow();
-            DialogFactory.openWarningDialog( igeo.getViewPlatform(), parent, Messages.getMessage( parent.getLocale(),
-                                                                                                  "$DI10011", action ),
+            DialogFactory.openWarningDialog( igeo.getViewPlatform(), parent,
+                                             Messages.getMessage( parent.getLocale(), "$DI10011", action ),
                                              Messages.getMessage( parent.getLocale(), "$DI10012" ) );
         }
     }
@@ -618,10 +622,9 @@ public class IGeoDesktopEventHandler {
             }
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
-            Container parent = igeo.getMainWndow();            
-            DialogFactory.openWarningDialog( igeo.getViewPlatform(), parent, Messages.getMessage( parent.getLocale(),
-                                                                                                  "$DI10013",
-                                                                                                  actionName ),
+            Container parent = igeo.getMainWndow();
+            DialogFactory.openWarningDialog( igeo.getViewPlatform(), parent,
+                                             Messages.getMessage( parent.getLocale(), "$DI10013", actionName ),
                                              Messages.getMessage( parent.getLocale(), "$DI10014" ) );
         }
 
@@ -629,6 +632,7 @@ public class IGeoDesktopEventHandler {
 
     /**
      * creates a new iGeoDesktop project from loading a data file (shape or GML)
+     * 
      * @param igeo
      */
     static void createNewProjectByDataFile( ApplicationContainer<Container> igeo ) {
@@ -657,7 +661,7 @@ public class IGeoDesktopEventHandler {
 
                 parent.setCursor( CursorRegistry.WAIT_CURSOR );
                 bbox = bbox.getBuffer( Math.pow( bbox.getHeight() * bbox.getHeight() + bbox.getWidth()
-                                                 * bbox.getWidth(), 0.5 ) );
+                                                                         * bbox.getWidth(), 0.5 ) );
 
                 igeo.init();
                 SwingUtilities.updateComponentTreeUI( igeo.getMainWndow() );

@@ -35,7 +35,13 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.views.swing.georef;
 
+import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import org.deegree.igeo.config.ViewFormType;
+import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.views.swing.DefaultFrame;
 
 /**
@@ -49,12 +55,36 @@ public class GeoreferencingControlWindow extends DefaultFrame {
 
     private static final long serialVersionUID = 7946421962675754576L;
 
+    private GeoreferencingControlPanel panel;
+
+    MapModel mapModel;
+
+    DefaultMapModule<?> mapModule;
+
     @Override
     public void init( ViewFormType viewForm )
                             throws Exception {
         super.init( viewForm );
-        getContentPane().add( new GeoreferencingControlPanel() );
+        panel = new GeoreferencingControlPanel();
+        getContentPane().add( panel );
         pack();
+        addWindowListener( new WindowAdapter() {
+            @Override
+            public void windowClosed( WindowEvent evt ) {
+                // this seems to remove the map module!
+                Container c = (Container) mapModule.getViewForm();
+                c.setVisible( false );
+
+                // so remove the map model (which is not automatically removed)...
+                owner.getApplicationContainer().getMapModelCollection().removeMapModel( mapModel );
+            }
+        } );
+    }
+
+    public void setMapModel( DefaultMapModule<?> dmm, MapModel mm ) {
+        this.mapModel = mm;
+        this.mapModule = dmm;
+        panel.setMapModel( mm );
     }
 
 }

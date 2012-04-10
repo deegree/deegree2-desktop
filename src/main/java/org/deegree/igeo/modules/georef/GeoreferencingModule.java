@@ -37,7 +37,13 @@ package org.deegree.igeo.modules.georef;
 
 import java.awt.Container;
 
+import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.desktop.IGeoDesktopEventHandler;
+import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.mapmodel.MapModelCollection;
+import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.DefaultModule;
+import org.deegree.igeo.modules.IModule;
 import org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow;
 
 /**
@@ -56,6 +62,39 @@ public class GeoreferencingModule extends DefaultModule<Container> {
         // whyever one needs to set the window visible oneself (digitizer does not seem to need to do it)
         GeoreferencingControlWindow wnd = (GeoreferencingControlWindow) getViewForm();
         wnd.setVisible( true );
+
+        ApplicationContainer<Container> igeo = getApplicationContainer();
+        MapModelCollection mms = igeo.getMapModelCollection();
+        MapModel mm = null;
+        for ( MapModel mm2 : mms.getMapModels() ) {
+            if ( mm2.getName().equals( "georef" ) ) {
+                mm = mm2;
+            }
+        }
+
+        if ( mm == null ) {
+            IGeoDesktopEventHandler.addMapModel( igeo, "georef" );
+            for ( MapModel mm2 : mms.getMapModels() ) {
+                if ( mm2.getName().equals( "georef" ) ) {
+                    mm = mm2;
+                }
+            }
+        }
+
+        DefaultMapModule<?> dmm = null;
+        for ( IModule<?> m : igeo.getModules() ) {
+            if ( m instanceof DefaultMapModule ) {
+                DefaultMapModule<?> dmm2 = (DefaultMapModule<?>) m;
+                if ( dmm2.getInitParameter( "assignedMapModel" ).equals( mm.getIdentifier().getValue() ) ) {
+                    dmm = dmm2;
+                }
+            }
+        }
+
+        Container c = (Container) dmm.getViewForm();
+        c.setVisible( true );
+
+        wnd.setMapModel( dmm, mm );
     }
 
 }
