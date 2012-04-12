@@ -35,11 +35,13 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.modules.georef;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.deegree.igeo.modules.georef.ControlPointModel.State.Left;
+import static org.deegree.igeo.modules.georef.ControlPointModel.State.Right;
+
+import java.util.LinkedList;
 
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 import org.deegree.igeo.i18n.Messages;
 
@@ -50,9 +52,13 @@ import org.deegree.igeo.i18n.Messages;
  * 
  * @version $Revision: $, $Date: $
  */
-public class ControlPointModel implements TableModel {
+public class ControlPointModel extends AbstractTableModel {
 
-    private List<Point> points = new ArrayList<Point>();
+    private static final long serialVersionUID = -4947856920124504250L;
+
+    private LinkedList<Point> points = new LinkedList<Point>();
+
+    private State state = Left;
 
     @Override
     public int getRowCount() {
@@ -131,44 +137,79 @@ public class ControlPointModel implements TableModel {
             p.y1 = val;
             break;
         }
-    }
-
-    @Override
-    public void addTableModelListener( TableModelListener l ) {
-
-    }
-
-    @Override
-    public void removeTableModelListener( TableModelListener l ) {
-
+        fireTableDataChanged();
     }
 
     public void newPoint() {
         points.add( new Point() );
+        state = Left;
+        fireTableDataChanged();
     }
 
     public void removeAll() {
         points.clear();
+        state = Left;
+        fireTableDataChanged();
     }
 
     public void setLeft( int idx, double x, double y ) {
         Point p = points.get( idx );
         p.x0 = x;
         p.y0 = y;
+        if ( idx == ( points.size() - 1 ) && p.x1 == null ) {
+            state = Right;
+        }
+        fireTableDataChanged();
     }
 
     public void setRight( int idx, double x, double y ) {
         Point p = points.get( idx );
         p.x1 = x;
         p.y1 = y;
+        if ( idx == ( points.size() - 1 ) ) {
+            state = Left;
+        }
+        fireTableDataChanged();
     }
 
     public void remove( int idx ) {
+        if ( points.size() == ( idx - 1 ) ) {
+            state = Left;
+        }
         points.remove( idx );
+        fireTableDataChanged();
+    }
+
+    public void next( double x, double y ) {
+        if ( points.isEmpty() ) {
+            newPoint();
+        }
+        switch ( state ) {
+        case Left:
+            state = Right;
+            points.getLast().x0 = x;
+            points.getLast().y0 = y;
+            break;
+        case Right:
+            points.getLast().x1 = x;
+            points.getLast().y1 = y;
+            newPoint();
+            state = Left;
+            break;
+        }
+        fireTableDataChanged();
     }
 
     static class Point {
         Double x0, y0, x1, y1, resx, resy;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public static enum State {
+        Left, Right
     }
 
 }

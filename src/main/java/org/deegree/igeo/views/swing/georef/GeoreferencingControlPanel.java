@@ -62,13 +62,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
+import javax.xml.namespace.QName;
 
+import org.deegree.datatypes.QualifiedName;
+import org.deegree.datatypes.UnknownTypeException;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
 import org.deegree.igeo.config.EnvelopeType;
 import org.deegree.igeo.config.LayerType.MetadataURL;
 import org.deegree.igeo.config.MemoryDatasourceType;
+import org.deegree.igeo.dataadapter.MemoryFeatureAdapter;
 import org.deegree.igeo.desktop.IGeoDesktop;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Datasource;
@@ -78,6 +82,7 @@ import org.deegree.igeo.mapmodel.MemoryDatasource;
 import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.ControlPointModel;
+import org.deegree.igeo.modules.georef.ControlPointModel.State;
 import org.deegree.igeo.views.swing.map.DefaultMapComponent;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
@@ -87,8 +92,14 @@ import org.deegree.kernel.CommandProcessedListener;
 import org.deegree.kernel.ProcessMonitor;
 import org.deegree.kernel.ProcessMonitorFactory;
 import org.deegree.model.Identifier;
+import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureFactory;
+import org.deegree.model.feature.FeatureProperty;
+import org.deegree.model.feature.schema.FeatureType;
+import org.deegree.model.feature.schema.PropertyType;
 import org.deegree.model.spatialschema.Envelope;
+import org.deegree.model.spatialschema.GeometryFactory;
+import org.deegree.model.spatialschema.Point;
 
 /**
  * 
@@ -101,11 +112,29 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private static final long serialVersionUID = 7031021591515735164L;
 
+    private static FeatureType GEOREF_FTYPE;
+
+    static {
+        try {
+            QualifiedName ptname = new QualifiedName( new QName( "http://www.opengis.net/gml", "GeometryPropertyType" ) );
+            PropertyType pt = FeatureFactory.createPropertyType( new QualifiedName( new QName( "geometry" ) ), ptname,
+                                                                 false );
+            GEOREF_FTYPE = FeatureFactory.createFeatureType( "georef", false, new PropertyType[] { pt } );
+        } catch ( UnknownTypeException e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     private DefaultMapModule<?> leftModule, rightModule;
+
+    Layer leftLayer, rightLayer;
 
     MapModel left, right;
 
     Buttons buttons = new Buttons();
+
+    ControlPointModel points;
 
     public GeoreferencingControlPanel() {
         setLayout( new GridBagLayout() );
@@ -156,7 +185,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         ++gb.gridy;
         gb.gridwidth = 6;
         gb.fill = BOTH;
-        buttons.table = new JTable( new ControlPointModel() );
+        buttons.table = new JTable( points = new ControlPointModel() );
         add( new JScrollPane( buttons.table ), gb );
 
         gb = (GridBagConstraints) gb.clone();
@@ -183,25 +212,45 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         this.rightModule = rightModule;
         this.right = right;
 
-        addPointsLayer( left );
-        addPointsLayer( right );
+        leftLayer = addPointsLayer( left );
+        rightLayer = addPointsLayer( right );
 
         DefaultMapComponent mc = (DefaultMapComponent) rightModule.getMapContainer();
         mc.addMouseListener( new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent e ) {
-                System.out.println( "clicked right" );
-                GeoTransform gt = GeoreferencingControlPanel.this.right.getToTargetDeviceTransformation();
-                System.out.println( gt.getSourceX( e.getX() ) + "/" + gt.getSourceY( e.getY() ) );
+                if ( points.getState() == State.Right ) {
+                    GeoTransform gt = GeoreferencingControlPanel.this.right.getToTargetDeviceTransformation();
+                    double x = gt.getSourceX( e.getX() );
+                    double y = gt.getSourceY( e.getY() );
+                    points.next( x, y );
+                    Point p = GeometryFactory.createPoint( x, y, null );
+                    FeatureProperty prop = FeatureFactory.createFeatureProperty( new QualifiedName(
+                                                                                                    new QName(
+                                                                                                               "geometry" ) ),
+                                                                                 p );
+                    Feature f = FeatureFactory.createFeature( null, GEOREF_FTYPE, new FeatureProperty[] { prop } );
+                    ( (MemoryFeatureAdapter) rightLayer.getDataAccess().get( 0 ) ).insertFeature( f );
+                }
             }
         } );
         mc = (DefaultMapComponent) leftModule.getMapContainer();
         mc.addMouseListener( new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent e ) {
-                System.out.println( "clicked left" );
-                GeoTransform gt = GeoreferencingControlPanel.this.left.getToTargetDeviceTransformation();
-                System.out.println( gt.getSourceX( e.getX() ) + "/" + gt.getSourceY( e.getY() ) );
+                if ( points.getState() == State.Left ) {
+                    GeoTransform gt = GeoreferencingControlPanel.this.left.getToTargetDeviceTransformation();
+                    double x = gt.getSourceX( e.getX() );
+                    double y = gt.getSourceY( e.getY() );
+                    points.next( x, y );
+                    Point p = GeometryFactory.createPoint( x, y, null );
+                    FeatureProperty prop = FeatureFactory.createFeatureProperty( new QualifiedName(
+                                                                                                    new QName(
+                                                                                                               "geometry" ) ),
+                                                                                 p );
+                    Feature f = FeatureFactory.createFeature( null, GEOREF_FTYPE, new FeatureProperty[] { prop } );
+                    ( (MemoryFeatureAdapter) leftLayer.getDataAccess().get( 0 ) ).insertFeature( f );
+                }
             }
         } );
     }
@@ -254,7 +303,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
     }
 
-    private static void addPointsLayer( MapModel mm ) {
+    private static Layer addPointsLayer( MapModel mm ) {
         Envelope env = mm.getEnvelope();
         MemoryDatasourceType mdst = new MemoryDatasourceType();
         EnvelopeType et = new EnvelopeType();
@@ -277,6 +326,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         newLayer.setVisible( true );
 
         mm.insert( newLayer, mm.getLayerGroups().get( 0 ), null, true );
+        return newLayer;
     }
 
     static class Buttons {
