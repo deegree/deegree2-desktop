@@ -148,11 +148,7 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.kernel.Command#execute()
-     */
+    @Override
     public void execute()
                             throws Exception {
         List<Datasource> datasources = new ArrayList<Datasource>();
@@ -213,20 +209,12 @@ public class AddDatabaseLayerCommand extends AbstractCommand {
         fireCommandProcessedEvent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.kernel.Command#getName()
-     */
+    @Override
     public QualifiedName getName() {
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.kernel.Command#getResult()
-     */
+    @Override
     public Object getResult() {
         return null;
     }
