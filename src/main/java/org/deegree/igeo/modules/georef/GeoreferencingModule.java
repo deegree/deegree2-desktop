@@ -38,8 +38,6 @@ package org.deegree.igeo.modules.georef;
 import java.awt.Container;
 
 import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.ChangeListener;
-import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.desktop.IGeoDesktopEventHandler;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.mapmodel.MapModelCollection;
@@ -67,43 +65,41 @@ public class GeoreferencingModule extends DefaultModule<Container> {
 
         ApplicationContainer<Container> igeo = getApplicationContainer();
         MapModelCollection mms = igeo.getMapModelCollection();
-        MapModel mm = null;
+        MapModel right = null;
+        MapModel left = null;
         for ( MapModel mm2 : mms.getMapModels() ) {
             if ( mm2.getName().equals( "georef" ) ) {
-                mm = mm2;
+                right = mm2;
+            } else {
+                left = mm2;
             }
         }
 
-        if ( mm == null ) {
+        if ( right == null ) {
             IGeoDesktopEventHandler.addMapModel( igeo, "georef" );
             for ( MapModel mm2 : mms.getMapModels() ) {
                 if ( mm2.getName().equals( "georef" ) ) {
-                    mm = mm2;
+                    right = mm2;
                 }
             }
         }
 
-        DefaultMapModule<?> dmm = null;
+        DefaultMapModule<?> rightModule = null, leftModule = null;
         for ( IModule<?> m : igeo.getModules() ) {
             if ( m instanceof DefaultMapModule ) {
                 DefaultMapModule<?> dmm2 = (DefaultMapModule<?>) m;
-                if ( dmm2.getInitParameter( "assignedMapModel" ).equals( mm.getIdentifier().getValue() ) ) {
-                    dmm = dmm2;
+                if ( dmm2.getInitParameter( "assignedMapModel" ).equals( right.getIdentifier().getValue() ) ) {
+                    rightModule = dmm2;
+                } else {
+                    leftModule = dmm2;
                 }
             }
         }
 
-        dmm.getMapTool().addChangeListener(new ChangeListener(){
-            @Override
-            public void valueChanged( ValueChangedEvent event ) {
-                System.out.println("yep");
-            }
-        });
-        
-        Container c = (Container) dmm.getViewForm();
+        Container c = (Container) rightModule.getViewForm();
         c.setVisible( true );
 
-        wnd.setMapModel( dmm, mm );
+        wnd.setMapModel( leftModule, left, rightModule, right );
     }
 
 }

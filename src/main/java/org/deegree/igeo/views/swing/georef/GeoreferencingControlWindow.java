@@ -57,9 +57,9 @@ public class GeoreferencingControlWindow extends DefaultFrame {
 
     private GeoreferencingControlPanel panel;
 
-    MapModel mapModel;
+    MapModel right;
 
-    DefaultMapModule<?> mapModule;
+    DefaultMapModule<?> rightModule;
 
     @Override
     public void init( ViewFormType viewForm )
@@ -72,19 +72,20 @@ public class GeoreferencingControlWindow extends DefaultFrame {
             @Override
             public void windowClosed( WindowEvent evt ) {
                 // this seems to remove the map module!
-                Container c = (Container) mapModule.getViewForm();
+                Container c = (Container) rightModule.getViewForm();
                 c.setVisible( false );
 
                 // so remove the map model (which is not automatically removed)...
-                owner.getApplicationContainer().getMapModelCollection().removeMapModel( mapModel );
+                owner.getApplicationContainer().getMapModelCollection().removeMapModel( right );
             }
         } );
     }
 
-    public void setMapModel( DefaultMapModule<?> dmm, MapModel mm ) {
-        this.mapModel = mm;
-        this.mapModule = dmm;
-        panel.setMapModel( dmm, mm );
+    public void setMapModel( DefaultMapModule<?> leftModule, MapModel left, DefaultMapModule<?> rightModule,
+                             MapModel right ) {
+        this.right = right;
+        this.rightModule = rightModule;
+        panel.setMapModel( leftModule, left, rightModule, right );
     }
 
 }

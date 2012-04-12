@@ -46,6 +46,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 
+import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
 import org.deegree.igeo.desktop.IGeoDesktop;
@@ -66,6 +69,7 @@ import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.ControlPointModel;
+import org.deegree.igeo.views.swing.map.DefaultMapComponent;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.igeo.views.swing.util.IGeoFileFilter;
@@ -85,9 +89,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private static final long serialVersionUID = 7031021591515735164L;
 
-    private DefaultMapModule<?> mapModule;
+    private DefaultMapModule<?> leftModule, rightModule;
 
-    private MapModel mapModel;
+    MapModel left, right;
 
     Buttons buttons = new Buttons();
 
@@ -160,9 +164,30 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         buttons.enable( false );
     }
 
-    public void setMapModel( DefaultMapModule<?> mapModule, MapModel mapModel ) {
-        this.mapModule = mapModule;
-        this.mapModel = mapModel;
+    public void setMapModel( DefaultMapModule<?> leftModule, MapModel left, DefaultMapModule<?> rightModule,
+                             MapModel right ) {
+        this.leftModule = leftModule;
+        this.left = left;
+        this.rightModule = rightModule;
+        this.right = right;
+        DefaultMapComponent mc = (DefaultMapComponent) rightModule.getMapContainer();
+        mc.addMouseListener( new MouseAdapter() {
+            @Override
+            public void mouseClicked( MouseEvent e ) {
+                System.out.println( "clicked right" );
+                GeoTransform gt = GeoreferencingControlPanel.this.right.getToTargetDeviceTransformation();
+                System.out.println( gt.getSourceX( e.getX() ) + "/" + gt.getSourceY( e.getY() ) );
+            }
+        } );
+        mc = (DefaultMapComponent) leftModule.getMapContainer();
+        mc.addMouseListener( new MouseAdapter() {
+            @Override
+            public void mouseClicked( MouseEvent e ) {
+                System.out.println( "clicked left" );
+                GeoTransform gt = GeoreferencingControlPanel.this.left.getToTargetDeviceTransformation();
+                System.out.println( gt.getSourceX( e.getX() ) + "/" + gt.getSourceY( e.getY() ) );
+            }
+        } );
     }
 
     @Override
@@ -173,7 +198,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
     }
 
     private void loadRaster() {
-        ApplicationContainer<?> appContainer = mapModule.getApplicationContainer();
+        ApplicationContainer<?> appContainer = rightModule.getApplicationContainer();
         File file = null;
         if ( "Application".equalsIgnoreCase( appContainer.getViewPlatform() ) ) {
             Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
@@ -189,8 +214,8 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
         if ( file != null ) {
 
-            AddFileLayerCommand command = new AddFileLayerCommand( mapModel, file, null, null, null,
-                                                                   mapModel.getCoordinateSystem().getPrefixedName() );
+            String crsName = right.getCoordinateSystem().getPrefixedName();
+            AddFileLayerCommand command = new AddFileLayerCommand( right, file, null, null, null, crsName );
 
             final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( appContainer.getViewPlatform(),
                                                                                         Messages.get( "$MD11264" ),

@@ -189,8 +189,9 @@ public class Dictionary {
             language = Locale.getDefault().getLanguage();
         }
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>( 50 );
-        String c = "[" + qn.getNamespace() != null ? ( "gml:csName/@codeSpace = '" + qn.getNamespace().toASCIIString() + "' and " )
-                                                  : "" + "gml:csName = '" + qn.getLocalName() + "']";
+        String c = "["
+                   + ( qn.getNamespace() != null ? ( "gml:csName/@codeSpace = '" + qn.getNamespace().toASCIIString() + "' and " )
+                                                : "" ) + "gml:csName = '" + qn.getLocalName() + "']";
         String xpath = "//gml:DefinitionCollection" + c + "/gml:dictionaryEntry/gml:Definition";
         try {
             List<Node> nodes = XMLTools.getNodes( root, xpath, nsc );

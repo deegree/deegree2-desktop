@@ -39,7 +39,6 @@ package org.deegree.igeo.mapmodel;
 
 import java.io.PrintStream;
 
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,7 +100,7 @@ public class MapModel implements ChangeListener {
     private List<LayerGroup> layerGroups;
 
     private ApplicationContainer<?> appContainer;
-    
+
     private int fHashCode;
 
     /**
@@ -131,7 +130,7 @@ public class MapModel implements ChangeListener {
         return getIdentifier().equals( ( (MapModel) obj ).getIdentifier() );
 
     }
-    
+
     @Override
     public int hashCode() {
         return getIdentifier().hashCode();
@@ -235,7 +234,11 @@ public class MapModel implements ChangeListener {
 
         if ( !envelope.equals( getEnvelope() ) ) {
             EnvelopeType value = new EnvelopeType();
-            value.setCrs( envelope.getCoordinateSystem().getPrefixedName() );
+            CoordinateSystem crs = envelope.getCoordinateSystem();
+            if ( crs == null ) {
+                crs = getCoordinateSystem();
+            }
+            value.setCrs( crs.getPrefixedName() );
             value.setMinx( envelope.getMin().getX() );
             value.setMiny( envelope.getMin().getY() );
             value.setMaxx( envelope.getMax().getX() );
