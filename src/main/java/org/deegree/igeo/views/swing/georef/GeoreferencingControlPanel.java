@@ -38,6 +38,7 @@ package org.deegree.igeo.views.swing.georef;
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.NONE;
+import static java.util.Collections.singletonList;
 import static javax.swing.BorderFactory.createTitledBorder;
 import static org.deegree.igeo.i18n.Messages.get;
 
@@ -50,6 +51,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.prefs.Preferences;
 
@@ -64,9 +66,16 @@ import javax.swing.JToggleButton;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
+import org.deegree.igeo.config.EnvelopeType;
+import org.deegree.igeo.config.LayerType.MetadataURL;
+import org.deegree.igeo.config.MemoryDatasourceType;
 import org.deegree.igeo.desktop.IGeoDesktop;
 import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.mapmodel.Datasource;
+import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.mapmodel.MemoryDatasource;
+import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.ControlPointModel;
 import org.deegree.igeo.views.swing.map.DefaultMapComponent;
@@ -77,6 +86,9 @@ import org.deegree.kernel.CommandProcessedEvent;
 import org.deegree.kernel.CommandProcessedListener;
 import org.deegree.kernel.ProcessMonitor;
 import org.deegree.kernel.ProcessMonitorFactory;
+import org.deegree.model.Identifier;
+import org.deegree.model.feature.FeatureFactory;
+import org.deegree.model.spatialschema.Envelope;
 
 /**
  * 
@@ -170,6 +182,10 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         this.left = left;
         this.rightModule = rightModule;
         this.right = right;
+
+        addPointsLayer( left );
+        addPointsLayer( right );
+
         DefaultMapComponent mc = (DefaultMapComponent) rightModule.getMapContainer();
         mc.addMouseListener( new MouseAdapter() {
             @Override
@@ -236,6 +252,31 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             } );
             appContainer.getCommandProcessor().executeASychronously( command );
         }
+    }
+
+    private static void addPointsLayer( MapModel mm ) {
+        Envelope env = mm.getEnvelope();
+        MemoryDatasourceType mdst = new MemoryDatasourceType();
+        EnvelopeType et = new EnvelopeType();
+        et.setMinx( env.getMin().getX() );
+        et.setMiny( env.getMin().getY() );
+        et.setMaxx( env.getMax().getX() );
+        et.setMaxy( env.getMax().getY() );
+        et.setCrs( mm.getEnvelope().getCoordinateSystem().getPrefixedName() );
+        mdst.setExtent( et );
+        mdst.setMinScaleDenominator( 0d );
+        mdst.setMaxScaleDenominator( 100000000d );
+        Datasource ds = new MemoryDatasource( mdst, null, null, FeatureFactory.createFeatureCollection( null, 0 ) );
+
+        Identifier id = new Identifier( "georef" );
+
+        SystemLayer newLayer = new SystemLayer( mm, id, id.getValue(), "", singletonList( ds ),
+                                                Collections.<MetadataURL> emptyList() );
+        newLayer.setEditable( false );
+        newLayer.setVisibleInLayerTree( false );
+        newLayer.setVisible( true );
+
+        mm.insert( newLayer, mm.getLayerGroups().get( 0 ), null, true );
     }
 
     static class Buttons {

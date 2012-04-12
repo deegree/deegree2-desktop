@@ -53,6 +53,8 @@ import org.deegree.model.Identifier;
  */
 public class SystemLayer extends Layer {
 
+    private boolean visibleInLayerTree = true;
+
     /**
      * @param layerType
      * @param owner
@@ -84,6 +86,14 @@ public class SystemLayer extends Layer {
      */
     public SystemLayer( MapModel owner, Identifier identifier, String title, String abstract1 ) {
         super( owner, identifier, title, abstract1 );
+    }
+
+    public void setVisibleInLayerTree( boolean b ) {
+        this.visibleInLayerTree = b;
+    }
+
+    public boolean isVisibleInLayerTree() {
+        return visibleInLayerTree;
     }
 
 }

@@ -72,8 +72,9 @@ import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.LayerGroup;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.mapmodel.MapModelChangedEvent;
-import org.deegree.igeo.mapmodel.MapModelEntry;
 import org.deegree.igeo.mapmodel.MapModelChangedEvent.CHANGE_TYPE;
+import org.deegree.igeo.mapmodel.MapModelEntry;
+import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.views.swing.DefaultPanel;
 import org.deegree.igeo.views.swing.layerlist.CheckNode.NODE_TYPE;
 import org.deegree.kernel.Command;
@@ -154,7 +155,10 @@ public class LayerTreePanel extends DefaultPanel {
         tree.expandRow( 1 );
     }
 
-    private void addLayerNodes( Layer layer, DefaultMutableTreeNode parent ) {
+    private static void addLayerNodes( Layer layer, DefaultMutableTreeNode parent ) {
+        if ( layer instanceof SystemLayer && !( (SystemLayer) layer ).isVisibleInLayerTree() ) {
+            return;
+        }
         LayerNode cn = new LayerNode( layer, NODE_TYPE.unknown );
         cn.setSelected( layer.isVisible() );
         parent.add( cn );
@@ -327,6 +331,9 @@ public class LayerTreePanel extends DefaultPanel {
         }
 
         private void insertLayerNode( Layer layer ) {
+            if ( layer instanceof SystemLayer && !( (SystemLayer) layer ).isVisibleInLayerTree() ) {
+                return;
+            }
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             DefaultMutableTreeNode ln = findParent( root, layer );
@@ -431,9 +438,9 @@ public class LayerTreePanel extends DefaultPanel {
             this.tree = tree;
         }
 
-        private void handleSelectFor( CheckNode node, String s, int modifier ) {            
+        private void handleSelectFor( CheckNode node, String s, int modifier ) {
             node.setSelectedFor( s, !node.isSelectedFor( s ), KeyEvent.VK_CONTROL != modifier );
-            
+
             if ( node.isSelectedFor( s ) ) {
                 if ( KeyEvent.VK_CONTROL != modifier ) {
                     // remove selection for XXXX from all nodes

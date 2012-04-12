@@ -1451,26 +1451,5 @@
 			</layerGroup>
 			<description/>
 		</mapModel>
-		<mapModel current="false">
-			<name>ID 1333531796798</name>
-			<identifier>
-				<value>0236af8b-4135-4da0-b5e2-2c61f9fd1ca8</value>
-			</identifier>
-			<targetDevice>
-				<pixelWidth>764</pixelWidth>
-				<pixelHeight>720</pixelHeight>
-				<dpi>96</dpi>
-			</targetDevice>
-			<supportedCRS/>
-			<extent crs="EPSG:31466" maxy="5805435.766849999" maxx="2850758.2435000003" miny="5398957.75085" minx="2419439.9043"/>
-			<maxExtent crs="EPSG:31466" maxy="5774724.0868" maxx="2843325.6402" miny="5429669.4309" minx="2426872.5076"/>
-			<layerGroup supportToolTips="false" queryable="true" visible="true">
-				<identifier>
-					<value>e07d3ca9-6e24-42b2-a338-7cf67398003c</value>
-				</identifier>
-				<title>root</title>
-				<abstract>new layer group</abstract>
-			</layerGroup>
-		</mapModel>
 	</MapModelCollection>
 </ns4:Project>
