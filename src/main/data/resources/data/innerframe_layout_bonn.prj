@@ -692,9 +692,9 @@
                     <identifier>
                         <value>TBgeoref</value>
                     </identifier>
-                    <ns4:tooltip>fdskldsjhfsdjgf</ns4:tooltip>
+                    <ns4:tooltip>$georef</ns4:tooltip>
                     <ns4:assignedAction>open</ns4:assignedAction>
-                    <ns4:icon ns2:href="../icons/pdf.png"/>
+                    <ns4:icon ns2:href="../icons/slides.png"/>
                     <ns4:entryType>PushButton</ns4:entryType>
                 </ns4:ToolBarEntry>
             </ns4:Module>
