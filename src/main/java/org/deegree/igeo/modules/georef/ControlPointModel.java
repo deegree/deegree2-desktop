@@ -42,8 +42,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.xml.namespace.QName;
 
+import org.deegree.datatypes.QualifiedName;
+import org.deegree.datatypes.UnknownTypeException;
+import org.deegree.graphics.transformation.GeoTransform;
+import org.deegree.igeo.dataadapter.MemoryFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.mapmodel.Layer;
+import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.model.feature.Feature;
+import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.FeatureFactory;
+import org.deegree.model.feature.FeatureProperty;
+import org.deegree.model.feature.schema.FeatureType;
+import org.deegree.model.feature.schema.PropertyType;
+import org.deegree.model.spatialschema.GeometryFactory;
 
 /**
  * 
@@ -56,9 +70,34 @@ public class ControlPointModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -4947856920124504250L;
 
+    private static FeatureType GEOREF_FTYPE;
+
+    static {
+        try {
+            QualifiedName ptname = new QualifiedName( new QName( "http://www.opengis.net/gml", "GeometryPropertyType" ) );
+            PropertyType pt = FeatureFactory.createPropertyType( new QualifiedName( new QName( "geometry" ) ), ptname,
+                                                                 false );
+            GEOREF_FTYPE = FeatureFactory.createFeatureType( "georef", false, new PropertyType[] { pt } );
+        } catch ( UnknownTypeException e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     private LinkedList<Point> points = new LinkedList<Point>();
 
     private State state = Left;
+
+    private MapModel left, right;
+
+    private Layer leftLayer, rightLayer;
+
+    public void updateMaps( MapModel left, Layer leftLayer, MapModel right, Layer rightLayer ) {
+        this.left = left;
+        this.leftLayer = leftLayer;
+        this.right = right;
+        this.rightLayer = rightLayer;
+    }
 
     @Override
     public int getRowCount() {
@@ -137,6 +176,7 @@ public class ControlPointModel extends AbstractTableModel {
             p.y1 = val;
             break;
         }
+        updateMaps();
         fireTableDataChanged();
     }
 
@@ -200,10 +240,6 @@ public class ControlPointModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    static class Point {
-        Double x0, y0, x1, y1, resx, resy;
-    }
-
     public State getState() {
         return state;
     }
@@ -212,8 +248,75 @@ public class ControlPointModel extends AbstractTableModel {
         return points;
     }
 
+    public void updateMaps() {
+        MemoryFeatureAdapter leftData = (MemoryFeatureAdapter) leftLayer.getDataAccess().get( 0 );
+        MemoryFeatureAdapter rightData = (MemoryFeatureAdapter) rightLayer.getDataAccess().get( 0 );
+        FeatureCollection col = leftData.getFeatureCollection();
+        for ( int i = 0; i < col.size(); ++i ) {
+            leftData.deleteFeature( col.getFeature( i ) );
+        }
+        col = rightData.getFeatureCollection();
+        for ( int i = 0; i < col.size(); ++i ) {
+            rightData.deleteFeature( col.getFeature( i ) );
+        }
+        int cnt = 0;
+        for ( Point p : points ) {
+            ++cnt;
+            if ( p.x0 == null ) {
+                continue;
+            }
+            org.deegree.model.spatialschema.Point geom = GeometryFactory.createPoint( p.x0, p.y0, null );
+            FeatureProperty prop = FeatureFactory.createFeatureProperty( new QualifiedName( new QName( "geometry" ) ),
+                                                                         geom );
+            Feature f = FeatureFactory.createFeature( "left_" + cnt, GEOREF_FTYPE, new FeatureProperty[] { prop } );
+            leftData.insertFeature( f );
+
+            if ( p.x1 == null ) {
+                continue;
+            }
+            geom = GeometryFactory.createPoint( p.x1, p.y1, null );
+            prop = FeatureFactory.createFeatureProperty( new QualifiedName( new QName( "geometry" ) ), geom );
+            f = FeatureFactory.createFeature( "right_" + cnt, GEOREF_FTYPE, new FeatureProperty[] { prop } );
+            rightData.insertFeature( f );
+        }
+    }
+
+    public void clickedLeft( int x, int y ) {
+        if ( state == State.Left ) {
+            GeoTransform gt = left.getToTargetDeviceTransformation();
+            double dx = gt.getSourceX( x );
+            double dy = gt.getSourceY( y );
+            next( dx, dy );
+            org.deegree.model.spatialschema.Point p = GeometryFactory.createPoint( dx, dy, null );
+            FeatureProperty prop = FeatureFactory.createFeatureProperty( new QualifiedName( new QName( "geometry" ) ),
+                                                                         p );
+            Feature f = FeatureFactory.createFeature( "left_" + points.size(), GEOREF_FTYPE,
+                                                      new FeatureProperty[] { prop } );
+            ( (MemoryFeatureAdapter) leftLayer.getDataAccess().get( 0 ) ).insertFeature( f );
+        }
+    }
+
+    public void clickedRight( int x, int y ) {
+        if ( state == State.Right ) {
+            GeoTransform gt = right.getToTargetDeviceTransformation();
+            double dx = gt.getSourceX( x );
+            double dy = gt.getSourceY( y );
+            next( dx, dy );
+            org.deegree.model.spatialschema.Point p = GeometryFactory.createPoint( dx, dy, null );
+            FeatureProperty prop = FeatureFactory.createFeatureProperty( new QualifiedName( new QName( "geometry" ) ),
+                                                                         p );
+            Feature f = FeatureFactory.createFeature( "right_" + points.size(), GEOREF_FTYPE,
+                                                      new FeatureProperty[] { prop } );
+            ( (MemoryFeatureAdapter) rightLayer.getDataAccess().get( 0 ) ).insertFeature( f );
+        }
+    }
+
     public static enum State {
         Left, Right
+    }
+
+    static class Point {
+        Double x0, y0, x1, y1, resx, resy;
     }
 
 }
