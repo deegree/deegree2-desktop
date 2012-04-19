@@ -51,6 +51,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -195,6 +196,8 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             @Override
             public void mouseClicked( MouseEvent e ) {
                 points.clickedRight( e.getX(), e.getY() );
+                AffineTransformation.approximate( points.getPoints() );
+                points.fireTableDataChanged();
             }
         } );
         mc = (DefaultMapComponent) leftModule.getMapContainer();
@@ -202,6 +205,8 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             @Override
             public void mouseClicked( MouseEvent e ) {
                 points.clickedLeft( e.getX(), e.getY() );
+                AffineTransformation.approximate( points.getPoints() );
+                points.fireTableDataChanged();
             }
         } );
 
@@ -214,8 +219,30 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             loadRaster();
         }
         if ( e.getSource() == buttons.start ) {
-            AffineTransformation.approximate( points.getPoints() );
-            points.fireTableDataChanged();
+            startTransformation();
+        }
+    }
+
+    private void startTransformation() {
+        ApplicationContainer<?> appContainer = rightModule.getApplicationContainer();
+        File file = null;
+        if ( "Application".equalsIgnoreCase( appContainer.getViewPlatform() ) ) {
+            Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
+            List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+
+            ff.add( IGeoFileFilter.TIFF );
+            ff.add( IGeoFileFilter.PNG );
+
+            file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.geoDataFile, appContainer,
+                                                      ( (IGeoDesktop) appContainer ).getMainWndow(), prefs,
+                                                      "georefTarget", ff );
+
+        }
+        if ( file != null ) {
+
+            System.out.println( file );
+            System.out.println( Arrays.toString( AffineTransformation.approximate( points.getPoints() ) ) );
+
         }
     }
 
@@ -231,7 +258,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
             file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.geoDataFile, appContainer,
                                                       ( (IGeoDesktop) appContainer ).getMainWndow(), prefs,
-                                                      "geoDataFile", ff );
+                                                      "georefLoad", ff );
 
         }
         if ( file != null ) {

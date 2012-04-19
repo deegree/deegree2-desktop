@@ -55,10 +55,10 @@ import org.deegree.igeo.modules.georef.ControlPointModel.Point;
  */
 public class AffineTransformation {
 
-    public static void approximate( List<Point> points ) {
+    public static double[] approximate( List<Point> points ) {
         int n = points.size() - 1;
         if ( n < 3 ) {
-            return;
+            return null;
         }
 
         List<Point2D_F64> list1 = new ArrayList<Point2D_F64>( n );
@@ -90,6 +90,7 @@ public class AffineTransformation {
             p.resy = p2.y - newp.y;
         }
 
+        return new double[] { t.a11, t.a12, t.a21, t.a22, t.tx, t.ty };
     }
 
 }
