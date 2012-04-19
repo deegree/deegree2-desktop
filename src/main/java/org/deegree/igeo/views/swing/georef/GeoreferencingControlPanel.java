@@ -81,6 +81,7 @@ import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.mapmodel.MemoryDatasource;
 import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.modules.DefaultMapModule;
+import org.deegree.igeo.modules.georef.AffineTransformation;
 import org.deegree.igeo.modules.georef.ControlPointModel;
 import org.deegree.igeo.modules.georef.ControlPointModel.State;
 import org.deegree.igeo.views.swing.map.DefaultMapComponent;
@@ -112,7 +113,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private static final long serialVersionUID = 7031021591515735164L;
 
-    private static FeatureType GEOREF_FTYPE;
+    static FeatureType GEOREF_FTYPE;
 
     static {
         try {
@@ -201,6 +202,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb = (GridBagConstraints) gb.clone();
         gb.gridx += 2;
         add( buttons.start = new JButton( get( "$DI10083" ) ), gb );
+        buttons.start.addActionListener( this );
 
         buttons.enable( false );
     }
@@ -259,6 +261,10 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
     public void actionPerformed( ActionEvent e ) {
         if ( e.getSource() == buttons.load ) {
             loadRaster();
+        }
+        if ( e.getSource() == buttons.start ) {
+            AffineTransformation.approximate( points.getPoints() );
+            points.fireTableDataChanged();
         }
     }
 

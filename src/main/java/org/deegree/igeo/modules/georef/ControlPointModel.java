@@ -39,8 +39,8 @@ import static org.deegree.igeo.modules.georef.ControlPointModel.State.Left;
 import static org.deegree.igeo.modules.georef.ControlPointModel.State.Right;
 
 import java.util.LinkedList;
+import java.util.List;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.deegree.igeo.i18n.Messages;
@@ -206,6 +206,10 @@ public class ControlPointModel extends AbstractTableModel {
 
     public State getState() {
         return state;
+    }
+
+    public List<Point> getPoints() {
+        return points;
     }
 
     public static enum State {
