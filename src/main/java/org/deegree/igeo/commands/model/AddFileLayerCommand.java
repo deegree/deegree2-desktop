@@ -131,11 +131,7 @@ public class AddFileLayerCommand extends AbstractCommand {
         this.crs = crs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.Command#execute()
-     */
+    @Override
     public void execute()
                             throws Exception {
         String name = this.serviceName;
@@ -205,29 +201,17 @@ public class AddFileLayerCommand extends AbstractCommand {
         fireCommandProcessedEvent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.Command#getName()
-     */
+    @Override
     public QualifiedName getName() {
         return commandName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.Command#isUndoSupported()
-     */
+    @Override
     public boolean isUndoSupported() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.Command#undo()
-     */
+    @Override
     public void undo()
                             throws Exception {
         if ( performed ) {
@@ -237,11 +221,7 @@ public class AddFileLayerCommand extends AbstractCommand {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.Command#getResult()
-     */
+    @Override
     public Object getResult() {
         return result;
     }

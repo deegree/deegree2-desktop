@@ -146,8 +146,7 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
             int ih = ( (Integer) rop.getProperty( "image_height" ) ).intValue();
             LOG.logInfo( "size of image: " + url + " -> " + iw + "x" + ih );
             if ( iw * ih > 50000000 ) {
-                boolean ok = DialogFactory.openConfirmDialogYESNO(
-                                                                   mapModel.getApplicationContainer().getViewPlatform(),
+                boolean ok = DialogFactory.openConfirmDialogYESNO( mapModel.getApplicationContainer().getViewPlatform(),
                                                                    null, Messages.get( "$MD11585" ),
                                                                    Messages.get( "$MD11586" ) );
                 if ( !ok ) {
@@ -217,7 +216,7 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
      * @param absolutePath
      * @return
      */
-    private String findWorldFileName( FileSystemAccessFactory fsaf, String fname ) {
+    private static String findWorldFileName( FileSystemAccessFactory fsaf, String fname ) {
         int pos = fname.lastIndexOf( "." );
         URL url = null;
         FileSystemAccess fsa;
@@ -232,25 +231,24 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
             // if a raster file is access via RemoteFSAccess its world file
             // must have extension .wld
             return fname.substring( 0, pos ) + ".wld";
-        } else {
-            String[] ext = new String[] { ".tfw", ".wld", ".jgw", ".gfw", ".gifw", ".pgw", ".pngw" };
-            for ( String extension : ext ) {
-                String tmp = fname.substring( 0, pos ) + extension;
-                try {
-                    url = fsa.getFileURL( tmp );
-                } catch ( Exception e ) {
-                    LOG.logError( e.getMessage(), e );
-                    throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10070", fname,
-                                                                        e.getMessage() ) );
-                }
-                try {
-                    HttpUtils.validateURL( url.toExternalForm() );
-                    // worldfile with current extension exist
-                    return tmp;
-                } catch ( Exception e ) {
-                    // don't do nothing
-                    LOG.logWarning( "", e );
-                }
+        }
+        String[] ext = new String[] { ".tfw", ".wld", ".jgw", ".gfw", ".gifw", ".pgw", ".pngw" };
+        for ( String extension : ext ) {
+            String tmp = fname.substring( 0, pos ) + extension;
+            try {
+                url = fsa.getFileURL( tmp );
+            } catch ( Exception e ) {
+                LOG.logError( e.getMessage(), e );
+                throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10070", fname,
+                                                                    e.getMessage() ) );
+            }
+            try {
+                HttpUtils.validateURL( url.toExternalForm() );
+                // worldfile with current extension exist
+                return tmp;
+            } catch ( Exception e ) {
+                // don't do nothing
+                LOG.logWarning( "", e );
             }
         }
         throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10102", fname ) );
@@ -260,6 +258,7 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
      * 
      * @return adapted coverage
      */
+    @Override
     public GridCoverage getCoverage() {
 
         TargetDeviceType td = mapModel.getTargetDevice();
@@ -310,7 +309,7 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
      * @param scaleY
      * @return the scaled image
      */
-    private BufferedImage scale( BufferedImage img, float scaleX, float scaleY ) {
+    private static BufferedImage scale( BufferedImage img, float scaleX, float scaleY ) {
 
         Interpolation interpolation = new InterpolationBilinear();
 
@@ -379,11 +378,7 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
         this.coverage = new ImageGridCoverage( null, modelBbox, image );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.IMapModelAdapter#refresh()
-     */
+    @Override
     public void refresh() {
         if ( !this.isLazyLoading ) {
             loadFullRaster();

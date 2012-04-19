@@ -177,6 +177,7 @@ public class ControlPointModel extends AbstractTableModel {
             break;
         }
         updateMaps();
+        AffineTransformation.approximate( points );
         fireTableDataChanged();
     }
 

@@ -42,6 +42,7 @@ import static java.util.Collections.singletonList;
 import static javax.swing.BorderFactory.createTitledBorder;
 import static org.deegree.igeo.i18n.Messages.get;
 
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -50,8 +51,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -66,6 +69,7 @@ import javax.swing.JToggleButton;
 
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
+import org.deegree.igeo.commands.model.ZoomCommand;
 import org.deegree.igeo.config.EnvelopeType;
 import org.deegree.igeo.config.LayerType.MetadataURL;
 import org.deegree.igeo.config.MemoryDatasourceType;
@@ -90,6 +94,7 @@ import org.deegree.kernel.ProcessMonitorFactory;
 import org.deegree.model.Identifier;
 import org.deegree.model.feature.FeatureFactory;
 import org.deegree.model.spatialschema.Envelope;
+import org.deegree.model.spatialschema.GeometryFactory;
 
 /**
  * 
@@ -111,6 +116,10 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
     Buttons buttons = new Buttons();
 
     ControlPointModel points;
+
+    private File worldFile;
+
+    private File sourceFile;
 
     public GeoreferencingControlPanel() {
         setLayout( new GridBagLayout() );
@@ -239,10 +248,23 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
         }
         if ( file != null ) {
+            try {
+                PrintStream out = new PrintStream( new FileOutputStream( worldFile ) );
 
-            System.out.println( file );
-            System.out.println( Arrays.toString( AffineTransformation.approximate( points.getPoints() ) ) );
+                // since source projection was identity, we can use the transform directly as .wld
+                double[] trans = AffineTransformation.approximate( points.getPoints() );
+                for ( double d : trans ) {
+                    out.println( d );
+                }
 
+                System.out.println( "gdalwarp -t_srs " + left.getCoordinateSystem().getPrefixedName() + " "
+                                    + sourceFile.toString() + " " + file.toString() + "_tmp" );
+                System.out.println( "gdal_translate -co WORLDFILE=YES -of PNG " + file.toString() + "_tmp "
+                                    + file.toString() );
+            } catch ( FileNotFoundException e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
@@ -262,9 +284,30 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
         }
         if ( file != null ) {
+            try {
+                sourceFile = file;
+                worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld" );
+                PrintStream out = new PrintStream( new FileOutputStream( worldFile ) );
+                // use the image coordinate system here (identity matrix, no translation)
+                out.println( 1 );
+                out.println( 0 );
+                out.println( 0 );
+                out.println( -1 );
+                out.println( 0 );
+                out.println( 0 );
+
+                // zoom to scale = 1, 0/0
+                ZoomCommand cmd = new ZoomCommand( right );
+                Container c = (Container) rightModule.getGUIContainer();
+                Envelope env = GeometryFactory.createEnvelope( 0, -c.getHeight(), c.getWidth(), 0, null );
+                cmd.setZoomBox( env, c.getWidth(), c.getHeight() );
+                appContainer.getCommandProcessor().executeSychronously( cmd, true );
+            } catch ( Throwable e ) {
+                e.printStackTrace();
+            }
 
             String crsName = right.getCoordinateSystem().getPrefixedName();
-            AddFileLayerCommand command = new AddFileLayerCommand( right, file, null, null, null, crsName );
+            final AddFileLayerCommand command = new AddFileLayerCommand( right, file, null, null, null, crsName );
 
             final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( appContainer.getViewPlatform(),
                                                                                         Messages.get( "$MD11264" ),

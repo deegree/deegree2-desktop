@@ -55,6 +55,10 @@ import org.deegree.igeo.modules.georef.ControlPointModel.Point;
  */
 public class AffineTransformation {
 
+    /**
+     * @param points
+     * @return a transformation from right to left (the inverse)
+     */
     public static double[] approximate( List<Point> points ) {
         int n = points.size() - 1;
         if ( n < 3 ) {
@@ -66,8 +70,8 @@ public class AffineTransformation {
         Iterator<Point> iter = points.iterator();
         for ( int i = 0; i < n; ++i ) {
             Point p = iter.next();
-            Point2D_F64 p1 = new Point2D_F64( p.x0, p.y0 );
-            Point2D_F64 p2 = new Point2D_F64( p.x1, p.y1 );
+            Point2D_F64 p1 = new Point2D_F64( p.x0,  p.y0 );
+            Point2D_F64 p2 = new Point2D_F64( p.x1,  p.y1 );
             list1.add( p1 );
             list2.add( p2 );
         }
@@ -89,6 +93,9 @@ public class AffineTransformation {
             p.resx = p2.x - newp.x;
             p.resy = p2.y - newp.y;
         }
+
+        // give back inverse transformation
+        t = new Affine2D_F64(1, 0, 0, -1, 0 ,0).concat(t.invert( null ), null);
 
         return new double[] { t.a11, t.a12, t.a21, t.a22, t.tx, t.ty };
     }
