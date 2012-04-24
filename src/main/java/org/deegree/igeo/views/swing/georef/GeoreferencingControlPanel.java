@@ -442,6 +442,10 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
     }
 
     private static Layer addPointsLayer( MapModel mm ) {
+        if ( mm.getLayerByIdentifier( new Identifier( "georef" ) ) != null ) {
+            return mm.getLayerByIdentifier( new Identifier( "georef" ) );
+        }
+
         Envelope env = mm.getEnvelope();
         MemoryDatasourceType mdst = new MemoryDatasourceType();
         EnvelopeType et = new EnvelopeType();

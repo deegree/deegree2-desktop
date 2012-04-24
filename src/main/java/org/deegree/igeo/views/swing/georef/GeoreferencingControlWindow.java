@@ -55,7 +55,7 @@ public class GeoreferencingControlWindow extends DefaultFrame {
 
     private static final long serialVersionUID = 7946421962675754576L;
 
-    private GeoreferencingControlPanel panel;
+    GeoreferencingControlPanel panel;
 
     MapModel right;
 
@@ -77,6 +77,10 @@ public class GeoreferencingControlWindow extends DefaultFrame {
 
                 // so remove the map model (which is not automatically removed)...
                 owner.getApplicationContainer().getMapModelCollection().removeMapModel( right );
+
+                // also, delete points in left (remaining) map window
+                panel.points.removeAll();
+                panel.points.updateMaps();
             }
         } );
     }
