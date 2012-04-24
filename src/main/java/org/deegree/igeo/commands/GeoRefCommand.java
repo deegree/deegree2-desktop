@@ -40,6 +40,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import org.deegree.datatypes.QualifiedName;
+import org.deegree.framework.log.ILogger;
+import org.deegree.framework.log.LoggerFactory;
+import org.deegree.igeo.i18n.Messages;
 import org.deegree.kernel.AbstractCommand;
 
 /**
@@ -50,6 +53,8 @@ import org.deegree.kernel.AbstractCommand;
  * @version $Revision: $, $Date: $
  */
 public class GeoRefCommand extends AbstractCommand {
+
+    private static final ILogger LOG = LoggerFactory.getLogger( GeoRefCommand.class );
 
     private final String prefix;
 
@@ -79,18 +84,33 @@ public class GeoRefCommand extends AbstractCommand {
         pb.command( prefix + "gdalwarp", "-t_srs", crs, sourceFile.toString(), file.toString() + "_tmp" );
         Process p = pb.start();
         Reader in = new InputStreamReader( p.getInputStream() );
-        while ( (char) in.read() != '\n' )
-            ;
-        while ( (char) in.read() != '\n' )
-            ;
-        while ( (char) in.read() != '\n' )
-            ;
+
+        StringBuilder log = new StringBuilder();
+
+        char c;
+
+        while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
+            log.append( c );
+        log.append( '\n' );
+        while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
+            log.append( c );
+        log.append( '\n' );
+        while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
+            log.append( c );
+        log.append( '\n' );
         int cnt = 0;
-        while ( in.read() != -1 && cnt <= 50 )
+        while ( ( c = ( (char) in.read() ) ) != '\uffff' && cnt <= 50 ) {
+            log.append( c );
             processMonitor.updateStatus( ++cnt, "1" );
-        while ( in.read() != -1 )
-            ;
+        }
+        while ( ( c = ( (char) in.read() ) ) != '\uffff' ) {
+            log.append( c );
+        }
         in.close();
+
+        if ( p.waitFor() != 0 ) {
+            throw new Exception( Messages.get( "$DI10091", log.toString() ) );
+        }
 
         // TODO other output formats except png?
         pb = new ProcessBuilder();
@@ -98,16 +118,27 @@ public class GeoRefCommand extends AbstractCommand {
                     file.toString() );
         p = pb.start();
         in = new InputStreamReader( p.getInputStream() );
-        while ( (char) in.read() != '\n' )
-            ;
-        while ( in.read() != -1 && cnt <= 100 )
+        while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
+            log.append( c );
+        log.append( '\n' );
+        while ( ( c = ( (char) in.read() ) ) != '\uffff' && cnt <= 100 ) {
+            log.append( c );
             processMonitor.updateStatus( ++cnt, "2" );
-        while ( in.read() != -1 )
-            ;
+        }
+        while ( ( c = ( (char) in.read() ) ) != '\uffff' ) {
+            log.append( c );
+        }
         in.close();
+
+        if ( p.waitFor() != 0 ) {
+            throw new Exception( Messages.get( "$DI10091", log.toString() ) );
+        }
 
         // do not forget to delete temporary geotiff
         new File( file.toString() + "_tmp" ).delete();
+
+        LOG.logInfo( "GDAL output:" );
+        LOG.logInfo( log.toString() );
 
         fireCommandProcessedEvent();
     }

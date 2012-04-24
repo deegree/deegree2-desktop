@@ -43,6 +43,7 @@ import static javax.swing.BorderFactory.createTitledBorder;
 import static org.deegree.igeo.i18n.Messages.get;
 
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -64,6 +65,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -111,7 +113,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private static final long serialVersionUID = 7031021591515735164L;
 
-    private DefaultMapModule<?> rightModule;
+    DefaultMapModule<?> rightModule;
 
     Layer leftLayer, rightLayer;
 
@@ -308,6 +310,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                 public void commandProcessed( CommandProcessedEvent event ) {
                     try {
                         pm.cancel();
+                        JOptionPane.showMessageDialog( rightModule.getApplicationContainer().getMainWndow(),
+                                                       Messages.get( "$DI10089" ), Messages.get( "$DI10090" ),
+                                                       JOptionPane.INFORMATION_MESSAGE );
                     } catch ( Exception e ) {
                         e.printStackTrace();
                     }
