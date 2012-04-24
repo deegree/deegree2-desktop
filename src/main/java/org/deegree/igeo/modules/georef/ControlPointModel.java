@@ -253,12 +253,13 @@ public class ControlPointModel extends AbstractTableModel {
         MemoryFeatureAdapter leftData = (MemoryFeatureAdapter) leftLayer.getDataAccess().get( 0 );
         MemoryFeatureAdapter rightData = (MemoryFeatureAdapter) rightLayer.getDataAccess().get( 0 );
         FeatureCollection col = leftData.getFeatureCollection();
-        for ( int i = 0; i < col.size(); ++i ) {
-            leftData.deleteFeature( col.getFeature( i ) );
+        // the memory fa seems to work on the live feature collection...
+        while ( col.size() > 0 ) {
+            leftData.deleteFeature( col.getFeature( 0 ) );
         }
         col = rightData.getFeatureCollection();
-        for ( int i = 0; i < col.size(); ++i ) {
-            rightData.deleteFeature( col.getFeature( i ) );
+        while ( col.size() > 0 ) {
+            rightData.deleteFeature( col.getFeature( 0 ) );
         }
         int cnt = 0;
         for ( Point p : points ) {

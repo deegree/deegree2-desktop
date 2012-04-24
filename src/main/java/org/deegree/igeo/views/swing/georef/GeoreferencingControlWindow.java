@@ -43,6 +43,7 @@ import org.deegree.igeo.config.ViewFormType;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.views.swing.DefaultFrame;
+import org.deegree.igeo.views.swing.map.DefaultMapComponent;
 
 /**
  * 
@@ -59,7 +60,7 @@ public class GeoreferencingControlWindow extends DefaultFrame {
 
     MapModel right;
 
-    DefaultMapModule<?> rightModule;
+    DefaultMapModule<?> leftModule, rightModule;
 
     @Override
     public void init( ViewFormType viewForm )
@@ -81,12 +82,17 @@ public class GeoreferencingControlWindow extends DefaultFrame {
                 // also, delete points in left (remaining) map window
                 panel.points.removeAll();
                 panel.points.updateMaps();
+
+                // delete listeners for left map (right map will be recreated from scratch anyway)
+                DefaultMapComponent mc = (DefaultMapComponent) leftModule.getMapContainer();
+                mc.removeMouseListener( panel.leftMouseAdapter );
             }
         } );
     }
 
     public void setMapModel( DefaultMapModule<?> leftModule, MapModel left, DefaultMapModule<?> rightModule,
                              MapModel right ) {
+        this.leftModule = leftModule;
         this.right = right;
         this.rightModule = rightModule;
         panel.setMapModel( leftModule, left, rightModule, right );

@@ -130,6 +130,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private File sourceFile;
 
+    // needs to be cleaned up upon tool close
+    MouseAdapter leftMouseAdapter;
+
     public GeoreferencingControlPanel() {
         setLayout( new GridBagLayout() );
         GridBagConstraints gb = new GridBagConstraints();
@@ -224,7 +227,8 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             }
         } );
         mc = (DefaultMapComponent) leftModule.getMapContainer();
-        mc.addMouseListener( new MouseAdapter() {
+
+        mc.addMouseListener( this.leftMouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent e ) {
                 if ( !buttons.activate.isSelected() ) {
