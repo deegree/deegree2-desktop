@@ -247,13 +247,19 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             startTransformation();
         }
         if ( e.getSource() == buttons.activate ) {
-            // TODO activate/deactivate map modes (zoomin/out)
             if ( buttons.activate.isSelected() ) {
                 leftModule.getMapTool().resetState();
                 rightModule.getMapTool().resetState();
                 // TODO some proper support from the maptool would be nice
                 Map<String, ButtonGroup> groups = leftModule.getApplicationContainer().getButtonGroups();
                 for ( ToolbarEntryType tp : leftModule.getToolBarEntries() ) {
+                    ButtonGroup bg = groups.get( tp.getAssignedGroup() );
+                    if ( bg != null ) {
+                        bg.clearSelection();
+                        bg.removeSelection();
+                    }
+                }
+                for ( ToolbarEntryType tp : rightModule.getToolBarEntries() ) {
                     ButtonGroup bg = groups.get( tp.getAssignedGroup() );
                     if ( bg != null ) {
                         bg.clearSelection();
