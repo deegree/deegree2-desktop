@@ -147,6 +147,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
         add( buttons.activate = new JToggleButton( get( "$DI10076" ) ), gb );
+        buttons.activate.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 2;
@@ -210,6 +211,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         mc.addMouseListener( new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent e ) {
+                if ( !buttons.activate.isSelected() ) {
+                    return;
+                }
                 points.clickedRight( e.getX(), e.getY() );
                 AffineTransformation.approximate( points.getPoints() );
                 points.fireTableDataChanged();
@@ -219,6 +223,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         mc.addMouseListener( new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent e ) {
+                if ( !buttons.activate.isSelected() ) {
+                    return;
+                }
                 points.clickedLeft( e.getX(), e.getY() );
                 AffineTransformation.approximate( points.getPoints() );
                 points.fireTableDataChanged();
