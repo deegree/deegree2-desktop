@@ -344,7 +344,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                 sourceFile = file;
                 worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld" );
                 PrintStream out = new PrintStream( new FileOutputStream( worldFile ) );
-                // use the image coordinate system here (identity matrix, no translation)
+                // use the image coordinate system here (identity matrix, no translation), just flip
                 out.println( 1 );
                 out.println( 0 );
                 out.println( 0 );
