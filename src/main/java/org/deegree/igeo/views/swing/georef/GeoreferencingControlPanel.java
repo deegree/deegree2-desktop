@@ -64,6 +64,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -270,20 +271,32 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
     }
 
-    private static String findGdal() {
-        String prefix = "";
+    private String findGdal() {
+        Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
+        String prefix = prefs.get( "gdal_location", "" );
         InputStream in = null;
         try {
             ProcessBuilder pb = new ProcessBuilder();
             pb.command( "gdalwarp" );
-            in = pb.start().getInputStream();
+            Process p = pb.start();
+            in = p.getInputStream();
             String s = new String( IOUtils.toByteArray( in ) );
-            if ( !s.startsWith( "Usage:" ) ) {
-                // TODO determine prefix by asking user for gdal location, possibly store it in user prefs
+            if ( p.waitFor() != 2 || !s.startsWith( "Usage:" ) ) {
+                JFileChooser dlg = new JFileChooser( new File( prefix ) );
+                dlg.setDialogTitle( Messages.get( "$DI10092" ) );
+                dlg.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+                int res = dlg.showDialog( this, Messages.get( "$DI10093" ) );
+                if ( res != JFileChooser.APPROVE_OPTION ) {
+                    return null;
+                }
+                if ( !new File( dlg.getSelectedFile(), "gdalwarp" ).exists() ) {
+                    return null;
+                }
+                prefix = dlg.getSelectedFile().toString() + File.separator;
+                prefs.put( "gdal_location", prefix );
             }
-        } catch ( IOException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( Throwable e ) {
+            // ignore this error, message will be given later
         } finally {
             if ( in != null ) {
                 try {
@@ -328,6 +341,13 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             }
 
             String prefix = findGdal();
+
+            if ( prefix == null ) {
+                JOptionPane.showMessageDialog( this, Messages.get( "$DI10094" ) );
+                return;
+            }
+
+            System.out.println( prefix );
 
             GeoRefCommand command = new GeoRefCommand( prefix, left.getCoordinateSystem().getPrefixedName(),
                                                        sourceFile, file );
