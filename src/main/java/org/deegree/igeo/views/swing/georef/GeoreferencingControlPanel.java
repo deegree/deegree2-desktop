@@ -43,7 +43,6 @@ import static javax.swing.BorderFactory.createTitledBorder;
 import static org.deegree.igeo.i18n.Messages.get;
 
 import java.awt.Container;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -60,6 +59,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
@@ -79,6 +79,7 @@ import org.deegree.igeo.commands.model.ZoomCommand;
 import org.deegree.igeo.config.EnvelopeType;
 import org.deegree.igeo.config.LayerType.MetadataURL;
 import org.deegree.igeo.config.MemoryDatasourceType;
+import org.deegree.igeo.config.ToolbarEntryType;
 import org.deegree.igeo.desktop.IGeoDesktop;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Datasource;
@@ -89,6 +90,7 @@ import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.AffineTransformation;
 import org.deegree.igeo.modules.georef.ControlPointModel;
+import org.deegree.igeo.views.swing.ButtonGroup;
 import org.deegree.igeo.views.swing.map.DefaultMapComponent;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
@@ -113,7 +115,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     private static final long serialVersionUID = 7031021591515735164L;
 
-    DefaultMapModule<?> rightModule;
+    DefaultMapModule<?> leftModule, rightModule;
 
     Layer leftLayer, rightLayer;
 
@@ -200,6 +202,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
     public void setMapModel( DefaultMapModule<?> leftModule, MapModel left, DefaultMapModule<?> rightModule,
                              MapModel right ) {
+        this.leftModule = leftModule;
         this.left = left;
         this.rightModule = rightModule;
         this.right = right;
@@ -242,6 +245,22 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
         if ( e.getSource() == buttons.start ) {
             startTransformation();
+        }
+        if ( e.getSource() == buttons.activate ) {
+            // TODO activate/deactivate map modes (zoomin/out)
+            if ( buttons.activate.isSelected() ) {
+                leftModule.getMapTool().resetState();
+                rightModule.getMapTool().resetState();
+                // TODO some proper support from the maptool would be nice
+                Map<String, ButtonGroup> groups = leftModule.getApplicationContainer().getButtonGroups();
+                for ( ToolbarEntryType tp : leftModule.getToolBarEntries() ) {
+                    ButtonGroup bg = groups.get( tp.getAssignedGroup() );
+                    if ( bg != null ) {
+                        bg.clearSelection();
+                        bg.removeSelection();
+                    }
+                }
+            }
         }
     }
 
