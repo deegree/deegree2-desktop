@@ -299,8 +299,8 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                                                        sourceFile, file );
 
             final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( rightModule.getApplicationContainer().getViewPlatform(),
-                                                                                        Messages.get( "$MD11264" ),
-                                                                                        Messages.get( "$MD11265", file ),
+                                                                                        Messages.get( "$DI10087" ),
+                                                                                        Messages.get( "$DI10088", file ),
                                                                                         0, 100, command );
             command.setProcessMonitor( pm );
             command.addListener( new CommandProcessedListener() {
