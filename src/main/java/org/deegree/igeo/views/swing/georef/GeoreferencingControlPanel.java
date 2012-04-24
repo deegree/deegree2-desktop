@@ -347,8 +347,6 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                 return;
             }
 
-            System.out.println( prefix );
-
             GeoRefCommand command = new GeoRefCommand( prefix, left.getCoordinateSystem().getPrefixedName(),
                                                        sourceFile, file );
 
