@@ -53,6 +53,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +69,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 
+import org.apache.poi.util.IOUtils;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.commands.GeoRefCommand;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
 import org.deegree.igeo.commands.model.ZoomCommand;
 import org.deegree.igeo.config.EnvelopeType;
@@ -232,6 +236,32 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
     }
 
+    private static String findGdal() {
+        String prefix = "";
+        InputStream in = null;
+        try {
+            ProcessBuilder pb = new ProcessBuilder();
+            pb.command( "gdalwarp" );
+            in = pb.start().getInputStream();
+            String s = new String( IOUtils.toByteArray( in ) );
+            if ( !s.startsWith( "Usage:" ) ) {
+                // TODO determine prefix by asking user for gdal location, possibly store it in user prefs
+            }
+        } catch ( IOException e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if ( in != null ) {
+                try {
+                    in.close();
+                } catch ( IOException e ) {
+                    // probably was not open
+                }
+            }
+        }
+        return prefix;
+    }
+
     private void startTransformation() {
         ApplicationContainer<?> appContainer = rightModule.getApplicationContainer();
         File file = null;
@@ -248,22 +278,48 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
         }
         if ( file != null ) {
-            try {
-                PrintStream out = new PrintStream( new FileOutputStream( worldFile ) );
+            runGdal( file );
+        }
+    }
 
-                // since source projection was identity, we can use the transform directly as .wld
-                double[] trans = AffineTransformation.approximate( points.getPoints() );
-                for ( double d : trans ) {
-                    out.println( d );
+    private void runGdal( File file ) {
+        PrintStream out = null;
+        try {
+            out = new PrintStream( new FileOutputStream( worldFile ) );
+
+            // since source projection was identity, we can use the transform directly as .wld
+            double[] trans = AffineTransformation.approximate( points.getPoints() );
+            for ( double d : trans ) {
+                out.println( d );
+            }
+
+            String prefix = findGdal();
+
+            GeoRefCommand command = new GeoRefCommand( prefix, left.getCoordinateSystem().getPrefixedName(),
+                                                       sourceFile, file );
+
+            final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( rightModule.getApplicationContainer().getViewPlatform(),
+                                                                                        Messages.get( "$MD11264" ),
+                                                                                        Messages.get( "$MD11265", file ),
+                                                                                        0, 100, command );
+            command.setProcessMonitor( pm );
+            command.addListener( new CommandProcessedListener() {
+                @Override
+                public void commandProcessed( CommandProcessedEvent event ) {
+                    try {
+                        pm.cancel();
+                    } catch ( Exception e ) {
+                        e.printStackTrace();
+                    }
                 }
 
-                System.out.println( "gdalwarp -t_srs " + left.getCoordinateSystem().getPrefixedName() + " "
-                                    + sourceFile.toString() + " " + file.toString() + "_tmp" );
-                System.out.println( "gdal_translate -co WORLDFILE=YES -of PNG " + file.toString() + "_tmp "
-                                    + file.toString() );
-            } catch ( FileNotFoundException e ) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } );
+            rightModule.getApplicationContainer().getCommandProcessor().executeASychronously( command );
+        } catch ( FileNotFoundException e ) {
+            // unlikely, as the parent directory exists for sure
+        } finally {
+            if ( out != null ) {
+                out.close();
             }
         }
     }
