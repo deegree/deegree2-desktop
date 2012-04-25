@@ -113,7 +113,7 @@ public class PreviewPanel extends JPanel {
     protected void paintComponent( Graphics g ) {
         super.paintComponent( g );
         int w = getWidth();
-        int h = getHeight();
+        int h = getHeight() - 10;
         g.setColor( Color.white );
         if ( pageSize == null ) {
             // will be the case at first invocation
