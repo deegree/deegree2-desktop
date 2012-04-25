@@ -220,8 +220,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
 
             this.frame.setResizable( ( (FrameViewFormType) vfc ).isResizeable() );
             String name = ( (FrameViewFormType) vfc ).getFrameTitle();
-            this.frame.setTitle( Messages.getMessage( Locale.getDefault(), name ) );
-            // this.frame.setTitle( "test version 2009-12-02T14:34" );
+            this.frame.setTitle( Messages.getMessage( Locale.getDefault(), name, this.proj.getName() ) );
 
             if ( modules.size() > 0 && modules.get( 0 ).getViewForm() instanceof JInternalFrame ) {
                 // if at least one child module is an JInternalFrame the current content
