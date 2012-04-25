@@ -37,6 +37,9 @@
 
 package org.deegree.igeo.views.swing.style.editor;
 
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.QUALITY;
+import static org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE.UNIQUE;
+
 import java.awt.Component;
 import java.util.Locale;
 
@@ -79,18 +82,23 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
         super( new JTextField() );
         this.dummy = dummy;
     }
-    
+
     @Override
     public boolean stopCellEditing() {
         String text = ( (JTextField) getComponent() ).getText();
         try {
             Intervallable<U> value = dummy.getAsIntervallable( text );
             // check if value has changed
-            if ( !valueRange.getMin().equals( value ) ) {
-                // keep classification type 'unique' (expressed by equal min/max values) 
+            if ( UNIQUE.equals( valueRange.getGroupingType() ) ||  QUALITY.equals( valueRange.getGroupingType() ) ) {
+                valueRange.setMax( value );
+                valueRange.setMin( value );
+            } else if ( valueRange.getMin() != null && !valueRange.getMin().equals( value ) ) {
+                // keep classification type 'unique' (expressed by equal min/max values)
                 if ( valueRange.getMin().equals( valueRange.getMax() ) ) {
                     valueRange.setMax( value );
                 }
+                valueRange.setMin( value );
+            } else if ( valueRange.getMin() == null && valueRange.getMax() == null ) {
                 valueRange.setMin( value );
             } else {
                 // otherwise cancel cell editing
@@ -98,10 +106,10 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
                 return false;
             }
         } catch ( Exception e ) {
+            LOG.logError( e );
             String msg = dummy.getInvalidMessage( text );
             JOptionPane.showMessageDialog( getComponent(), msg, Messages.getMessage( Locale.getDefault(), "$MD10751" ),
                                            JOptionPane.ERROR_MESSAGE );
-            LOG.logError( e );
             return false;
         }
 
@@ -137,6 +145,6 @@ public class ClassificationValuesEditor<U extends Comparable<U>> extends Default
      */
     public void setValueRange( ValueRange<U> valueRange ) {
         this.valueRange = valueRange;
-    }    
+    }
 
 }

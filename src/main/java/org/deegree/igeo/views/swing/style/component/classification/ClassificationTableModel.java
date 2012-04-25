@@ -499,7 +499,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
     /**
      * @param thematicGrouping
      *            the classification to set
-     * @param baseType 
+     * @param baseType
      */
     public void setThematicGrouping( ThematicGrouping<U> thematicGrouping, GROUPINGTYPE baseType ) {
         this.thematicGrouping = thematicGrouping;
@@ -537,7 +537,7 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
      *            the index of the selected row
      */
     public void addRowBefore( int selectedRow ) {
-        ClassificationTableRow<U> newRow = new ClassificationTableRow<U>();
+        ClassificationTableRow<U> newRow = new ClassificationTableRow<U>( baseType );
         // fillColor
         Fill fillColor = thematicGrouping.getFillColor();
         if ( fillColor instanceof FillColor ) {
@@ -910,9 +910,9 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
             }
 
             editor.setValueRange( vr );
-            sort( COLUMNTYPE.VALUE, true );
-            updatedCount();
         }
+        sort( COLUMNTYPE.VALUE, true );
+        updatedCount();
     }
 
     /**

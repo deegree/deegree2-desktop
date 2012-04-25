@@ -38,6 +38,8 @@
 package org.deegree.igeo.style.model.classification;
 
 import static org.deegree.igeo.i18n.Messages.get;
+
+import org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE;
 import org.deegree.model.filterencoding.ComplexFilter;
 import org.deegree.model.filterencoding.Filter;
 import org.deegree.model.filterencoding.Literal;
@@ -62,6 +64,10 @@ public class ValueRange<U extends Comparable<U>> implements Comparable<ValueRang
 
     private int count;
 
+    // Be careful: this variable is currently used only to check if the groupingType is UNIQUE to set the values after
+    // inserting a new in classification, so it can be null!
+    private GROUPINGTYPE groupingType;
+
     public ValueRange() {
     }
 
@@ -74,6 +80,13 @@ public class ValueRange<U extends Comparable<U>> implements Comparable<ValueRang
         this.min = min;
         this.max = max;
         this.count = count;
+    }
+
+    /**
+     * @param groupingType
+     */
+    public ValueRange( GROUPINGTYPE groupingType ) {
+        this.groupingType = groupingType;
     }
 
     /**
@@ -112,6 +125,10 @@ public class ValueRange<U extends Comparable<U>> implements Comparable<ValueRang
 
     public void setCount( int count ) {
         this.count = count;
+    }
+    
+    public GROUPINGTYPE getGroupingType(){
+        return groupingType;
     }
 
     /**

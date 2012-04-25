@@ -37,7 +37,28 @@
 
 package org.deegree.igeo.style.model.classification;
 
-import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.*;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.ANCHORPOINT;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.COUNT;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.DISPLACEMENT;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FILLCOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FILLTRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTCOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTFAMILY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTSIZE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTSTYLE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTTRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.FONTWEIGHT;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.HALOCOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.HALORADIUS;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINECAP;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINECOLOR;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINESTYLE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINETRANSPARENCY;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.LINEWIDTH;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.ROTATION;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.SIZE;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.SYMBOL;
+import static org.deegree.igeo.style.model.classification.Column.COLUMNTYPE.VALUE;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -49,6 +70,7 @@ import org.deegree.igeo.style.model.SldProperty;
 import org.deegree.igeo.style.model.SldValues;
 import org.deegree.igeo.style.model.Symbol;
 import org.deegree.igeo.style.model.classification.Column.COLUMNTYPE;
+import org.deegree.igeo.style.model.classification.ThematicGroupingInformation.GROUPINGTYPE;
 
 /**
  * <code>ClassificationTableRow</code> represents one row in the classification table
@@ -65,8 +87,23 @@ public class ClassificationTableRow<U extends Comparable<U>> {
 
     private String label;
 
-    public ClassificationTableRow() {
-        values.put( VALUE, new ValueRange<U>() );
+    /**
+     * Creates a new {@link ClassificationTableRow} instance with a value of the passed groupingType
+     * 
+     * @param groupingType
+     *            the groupingType of the value of the new {@link ClassificationTableRow} instance
+     */
+    public ClassificationTableRow( GROUPINGTYPE groupingType ) {
+        this( new ValueRange<U>( groupingType ) );
+    }
+
+    /**
+     * 
+     * @param value
+     * @param fillColor
+     */
+    public ClassificationTableRow( ValueRange<U> value ) {
+        values.put( VALUE, value );
         values.put( FILLCOLOR, SldValues.getDefaultColor() );
         values.put( FILLTRANSPARENCY, SldValues.getOpacityInPercent( SldValues.getDefaultOpacity() ) );
         values.put( LINECOLOR, SldValues.getDefaultLineColor() );
@@ -87,17 +124,6 @@ public class ClassificationTableRow<U extends Comparable<U>> {
         values.put( ANCHORPOINT, SldValues.getDefaultAnchorPoint() );
         values.put( DISPLACEMENT, SldValues.getDefaultDisplacement() );
         values.put( ROTATION, SldValues.getDefaultRotation() );
-    }
-
-    /**
-     * 
-     * @param value
-     * @param fillColor
-     */
-    public ClassificationTableRow( ValueRange<U> value ) {
-        this();
-        values.put( VALUE, value );
-
     }
 
     /**
