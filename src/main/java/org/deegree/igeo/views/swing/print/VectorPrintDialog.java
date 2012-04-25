@@ -1049,10 +1049,10 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             String scl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:Scale/@label", nsc, null );
             String tf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:TargetFilet", nsc, "" );
 
-            spHeight.setValue( new Integer( ah ) );
-            spWidth.setValue( new Integer( aw ) );
-            spLeft.setValue( new Integer( al ) );
-            spTop.setValue( new Integer( at ) );
+            spHeight.setValue( ah );
+            spWidth.setValue( aw );
+            spLeft.setValue(  al  );
+            spTop.setValue( at  );
             cbDPI.setSelectedItem( new Integer( dpi ) );
             spMapLeft.setValue( new Double( ml ) );
             spMapBottom.setValue( new Double( mb ) );
