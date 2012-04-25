@@ -66,7 +66,7 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
 
     @Override
     protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                   PropertyType[] pt, String tableName, Connection connection )
+                                  PropertyType[] pt, String tableName, Connection connection )
                             throws Exception {
         int index = 1;
         for ( int i = 0; i < pt.length; i++ ) {
@@ -119,7 +119,7 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
     protected String getSqlSnippet( String columnName, String tableName, Connection connection,
                                     DatabaseDatasource datasource ) {
         if ( columnName.equalsIgnoreCase( datasource.getGeometryFieldName() ) ) {
-            return "geometry::STGeomFromWKB(?, 0)";
+            return "geometry::STGeomFromWKB(?, " + datasource.getNativeCoordinateSystem().getLocalName() + ")";
         }
         if ( ignoreValue( columnName, tableName, connection ) ) {
             return null;
