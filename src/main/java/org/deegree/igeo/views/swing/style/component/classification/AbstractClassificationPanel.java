@@ -985,7 +985,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 editor = new SpinnerTableCellEditor( opAsInt, 0, 100, 1 );
                 break;
             case LINEWIDTH:
-                editor = new SpinnerTableCellEditor( SldValues.getDefaultLineWidth(), 0.0, 100.0, 0.5 );
+                editor = new SpinnerTableCellEditor( SldValues.getDefaultLineWidth(), 0.0, Integer.MAX_VALUE, 0.5 );
                 break;
             case LINESTYLE:
                 JComboBox lineStyleCB = new JComboBox();
