@@ -105,7 +105,7 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
 
     private JButton okBt;
 
-    private JButton cancelBt;
+    // private JButton cancelBt;
 
     private JButton helpBt;
 
@@ -149,13 +149,10 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
         this.setTitle( get( "$MD10586", this.rule.getRuleName() ) );
         initComponents();
         init();
-//        initValues( rules, featureType, geomtype );
+        // initValues( rules, featureType, geomtype );
         setResizable( true );
         addWindowListener( this );
     }
-    
-    
-    
 
     /**
      * @param panelToSetIcon
@@ -188,8 +185,8 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
         okBt = new JButton( get( "$DI10001" ), IconRegistry.getIcon( "accept.png" ) );
         okBt.addActionListener( this );
 
-        cancelBt = new JButton( get( "$DI10002" ), IconRegistry.getIcon( "cancel.png" ) );
-        cancelBt.addActionListener( this );
+        // cancelBt = new JButton( get( "$DI10002" ), IconRegistry.getIcon( "cancel.png" ) );
+        // cancelBt.addActionListener( this );
 
         helpBt = new JButton( get( "$DI10016" ), IconRegistry.getIcon( "help.png" ) );
         helpBt.addActionListener( this );
@@ -339,7 +336,8 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
 
     private JPanel buildMainButtonBar() {
         ButtonBarBuilder bbBuilder = new ButtonBarBuilder();
-        bbBuilder.addGriddedButtons( new JButton[] { okBt, cancelBt } );
+        // bbBuilder.addGriddedButtons( new JButton[] { okBt, cancelBt } );
+        bbBuilder.addGriddedButtons( new JButton[] { okBt } );
         bbBuilder.addUnrelatedGap();
         bbBuilder.addGlue();
         bbBuilder.addGridded( helpBt );
@@ -448,9 +446,10 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
     public void actionPerformed( ActionEvent e ) {
         if ( e.getSource() instanceof JButton ) {
             JButton srcBt = (JButton) e.getSource();
-            if ( srcBt == cancelBt ) {
-                dispose();
-            } else if ( srcBt == helpBt && appContainer != null ) {
+            // if ( srcBt == cancelBt ) {
+            // dispose();
+            // } else
+            if ( srcBt == helpBt && appContainer != null ) {
                 HelpFrame hf = HelpFrame.getInstance( new HelpManager( appContainer ) );
                 hf.setVisible( true );
                 hf.gotoKeyword( "style:EditStyle" );
