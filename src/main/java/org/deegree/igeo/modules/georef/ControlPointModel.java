@@ -241,6 +241,9 @@ public class ControlPointModel extends AbstractTableModel {
     }
 
     public void updateMaps() {
+        if ( leftLayer == null || rightLayer == null ) {
+            return;
+        }
         MemoryFeatureAdapter leftData = (MemoryFeatureAdapter) leftLayer.getDataAccess().get( 0 );
         MemoryFeatureAdapter rightData = (MemoryFeatureAdapter) rightLayer.getDataAccess().get( 0 );
         FeatureCollection col = leftData.getFeatureCollection();
