@@ -112,10 +112,13 @@ public class GeoRefCommand extends AbstractCommand {
             throw new Exception( Messages.get( "$DI10091", log.toString() ) );
         }
 
-        // TODO other output formats except png?
         pb = new ProcessBuilder();
-        pb.command( prefix + "gdal_translate", "-co", "WORLDFILE=YES", "-of", "PNG", file.toString() + "_tmp",
-                    file.toString() );
+        if ( file.getName().toLowerCase().endsWith( ".png" ) ) {
+            pb.command( prefix + "gdal_translate", "-co", "WORLDFILE=YES", "-of", "PNG", file.toString() + "_tmp",
+                        file.toString() );
+        } else {
+            pb.command( prefix + "gdal_translate", "-co", "TFW=YES", file.toString() + "_tmp", file.toString() );
+        }
         p = pb.start();
         in = new InputStreamReader( p.getInputStream() );
         while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
