@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>deegree2-igeodesktop</artifactId>
   <name>deegree2-igeodesktop</name>
-  <version>0.4.3-pre1-SNAPSHOT</version>
+  <version>${deegreedesktop.version}-pre1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <parent>
@@ -37,6 +37,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+    <deegreedesktop.version>0.4.3</deegreedesktop.version>
   </properties>
 
   <build>
@@ -158,11 +159,11 @@
                   <maxHeapSize>1024</maxHeapSize>
                 </jre>
                 <versionInfo>
-                  <fileVersion>0.4.3.0</fileVersion>
+                  <fileVersion>${deegreedesktop.version}.0</fileVersion>
                   <txtFileVersion>-pre1</txtFileVersion>
                   <fileDescription>deegreeDesktop release</fileDescription>
                   <copyright>LGPL</copyright>
-                  <productVersion>0.4.3.0</productVersion>
+                  <productVersion>${deegreedesktop.version}.0</productVersion>
                   <txtProductVersion>-pre1</txtProductVersion>
                   <productName>deegree Desktop</productName>
                   <internalName>deegreeDesktop</internalName>
