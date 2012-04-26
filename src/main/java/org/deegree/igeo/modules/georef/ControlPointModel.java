@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -199,32 +200,16 @@ public class ControlPointModel extends AbstractTableModel {
         updateMaps();
     }
 
-    public void setLeft( int idx, double x, double y ) {
-        Point p = points.get( idx );
-        p.x0 = x;
-        p.y0 = y;
-        if ( idx == ( points.size() - 1 ) && p.x1 == null ) {
-            state = Right;
+    public void remove( int[] idx ) {
+        List<Point> list = new ArrayList<Point>();
+        for ( int i : idx ) {
+            list.add( points.get( i ) );
         }
+        points.removeAll( list );
         fireTableDataChanged();
-    }
-
-    public void setRight( int idx, double x, double y ) {
-        Point p = points.get( idx );
-        p.x1 = x;
-        p.y1 = y;
-        if ( idx == ( points.size() - 1 ) ) {
-            state = Left;
+        if ( points.getLast().x0 != null && points.getLast().x1 != null ) {
+            newPoint();
         }
-        fireTableDataChanged();
-    }
-
-    public void remove( int idx ) {
-        if ( points.size() == ( idx - 1 ) ) {
-            state = Left;
-        }
-        points.remove( idx );
-        fireTableDataChanged();
     }
 
     public void next( double x, double y ) {
