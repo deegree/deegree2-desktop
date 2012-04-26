@@ -193,6 +193,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb.gridwidth = 2;
         gb.fill = NONE;
         add( buttons.delete = new JButton( get( "$DI10081" ) ), gb );
+        buttons.delete.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx += 2;
@@ -261,6 +262,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         }
         if ( e.getSource() == buttons.saveTable ) {
             saveCsv();
+        }
+        if ( e.getSource() == buttons.delete ) {
+            points.removeAll();
         }
     }
 

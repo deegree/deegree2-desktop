@@ -126,9 +126,9 @@ public class ControlPointModel extends AbstractTableModel {
         case 3:
             return "<html>" + Messages.get( "$DI10080" ) + "<br>y";
         case 4:
-            return "<html>" + Messages.get( "$DI10084" ) + "<br>x";
+            return "<html>" + Messages.get( "$DI10084" ) + "<br>x (m)";
         case 5:
-            return "<html>" + Messages.get( "$DI10084" ) + "<br>y";
+            return "<html>" + Messages.get( "$DI10084" ) + "<br>y (m)";
         }
         return null;
     }
@@ -196,6 +196,7 @@ public class ControlPointModel extends AbstractTableModel {
         points.clear();
         state = Left;
         fireTableDataChanged();
+        updateMaps();
     }
 
     public void setLeft( int idx, double x, double y ) {
