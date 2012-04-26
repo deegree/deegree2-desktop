@@ -207,7 +207,7 @@ public class ControlPointModel extends AbstractTableModel {
         }
         points.removeAll( list );
         fireTableDataChanged();
-        if ( points.getLast().x0 != null && points.getLast().x1 != null ) {
+        if ( !points.isEmpty() && points.getLast().x0 != null && points.getLast().x1 != null ) {
             newPoint();
         }
     }
