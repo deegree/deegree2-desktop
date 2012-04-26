@@ -173,10 +173,12 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         gb.gridheight = 1;
         gb.fill = NONE;
         add( buttons.loadTable = new JButton( get( "$DI10077" ) ), gb );
+        buttons.loadTable.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 3;
         add( buttons.saveTable = new JButton( get( "$DI10078" ) ), gb );
+        buttons.saveTable.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 0;
@@ -252,25 +254,73 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             startTransformation();
         }
         if ( e.getSource() == buttons.activate ) {
-            if ( buttons.activate.isSelected() ) {
-                leftModule.getMapTool().resetState();
-                rightModule.getMapTool().resetState();
-                // TODO some proper support from the maptool would be nice
-                Map<String, ButtonGroup> groups = leftModule.getApplicationContainer().getButtonGroups();
-                for ( ToolbarEntryType tp : leftModule.getToolBarEntries() ) {
-                    ButtonGroup bg = groups.get( tp.getAssignedGroup() );
-                    if ( bg != null ) {
-                        bg.clearSelection();
-                        bg.removeSelection();
-                    }
+            toggleControlPointMode();
+        }
+        if ( e.getSource() == buttons.loadTable ) {
+            loadCsv();
+        }
+        if ( e.getSource() == buttons.saveTable ) {
+            saveCsv();
+        }
+    }
+
+    private void toggleControlPointMode() {
+        if ( buttons.activate.isSelected() ) {
+            leftModule.getMapTool().resetState();
+            rightModule.getMapTool().resetState();
+            // TODO some proper support from the maptool would be nice
+            Map<String, ButtonGroup> groups = leftModule.getApplicationContainer().getButtonGroups();
+            for ( ToolbarEntryType tp : leftModule.getToolBarEntries() ) {
+                ButtonGroup bg = groups.get( tp.getAssignedGroup() );
+                if ( bg != null ) {
+                    bg.clearSelection();
+                    bg.removeSelection();
                 }
-                for ( ToolbarEntryType tp : rightModule.getToolBarEntries() ) {
-                    ButtonGroup bg = groups.get( tp.getAssignedGroup() );
-                    if ( bg != null ) {
-                        bg.clearSelection();
-                        bg.removeSelection();
-                    }
+            }
+            for ( ToolbarEntryType tp : rightModule.getToolBarEntries() ) {
+                ButtonGroup bg = groups.get( tp.getAssignedGroup() );
+                if ( bg != null ) {
+                    bg.clearSelection();
+                    bg.removeSelection();
                 }
+            }
+        }
+    }
+
+    private void loadCsv() {
+        ApplicationContainer<?> appContainer = rightModule.getApplicationContainer();
+        File file = null;
+        Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
+        List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+        file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.externalResource, appContainer,
+                                                  ( (IGeoDesktop) appContainer ).getMainWndow(), prefs, "georefCsv", ff );
+
+        if ( file != null ) {
+            try {
+                points.loadPointsFromFile( file );
+                AffineTransformation.approximate( points.getPoints() );
+                points.fireTableDataChanged();
+            } catch ( IOException e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveCsv() {
+        ApplicationContainer<?> appContainer = rightModule.getApplicationContainer();
+        File file = null;
+        Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
+        List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+        file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.geoDataFile, appContainer,
+                                                  ( (IGeoDesktop) appContainer ).getMainWndow(), prefs, "georefCsv", ff );
+
+        if ( file != null ) {
+            try {
+                points.savePointsToFile( file );
+            } catch ( IOException e ) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
@@ -285,7 +335,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             Process p = pb.start();
             in = p.getInputStream();
             String s = new String( IOUtils.toByteArray( in ) );
-            if ( p.waitFor() != 2 || !s.startsWith( "Usage:" ) ) {
+            if ( p.waitFor() != 1 || !s.startsWith( "Usage:" ) ) {
                 JFileChooser dlg = new JFileChooser( new File( prefix ) );
                 dlg.setDialogTitle( Messages.get( "$DI10092" ) );
                 dlg.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );

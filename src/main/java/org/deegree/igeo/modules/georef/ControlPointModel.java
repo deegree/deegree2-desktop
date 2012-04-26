@@ -38,6 +38,11 @@ package org.deegree.igeo.modules.georef;
 import static org.deegree.igeo.modules.georef.ControlPointModel.State.Left;
 import static org.deegree.igeo.modules.georef.ControlPointModel.State.Right;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -319,6 +324,51 @@ public class ControlPointModel extends AbstractTableModel {
 
     static class Point {
         Double x0, y0, x1, y1, resx, resy;
+    }
+
+    public void savePointsToFile( File saveFile )
+                            throws IOException {
+        PrintStream ps = null;
+        try {
+            ps = new PrintStream( saveFile );
+            for ( Point p : points ) {
+                if ( p.x0 != null && p.y0 != null && p.x1 != null && p.y1 != null ) {
+                    ps.println( "\"" + p.x0 + "\";\"" + p.y0 + "\";\"" + p.x1 + "\";\"" + p.y1 + "\"" );
+                } else if ( ( p.x0 != null && p.y0 != null ) && ( p.x1 == null && p.y1 == null ) ) {
+                    ps.println( "\"" + p.x0 + "\";\"" + p.y0 + "\";\"\";\"\"" );
+                } else {
+                    System.out.println( "ERROR" );
+                    // TODO: proper error handling
+                }
+            }
+        } finally {
+            if ( ps != null ) {
+                ps.close();
+            }
+        }
+    }
+
+    public void loadPointsFromFile( File openFile )
+                            throws IOException {
+        removeAll();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader( new FileReader( openFile ) );
+            while ( br.ready() != false ) {
+                String[] splittedCsvLine = br.readLine().split( ";" );
+                double x = Double.valueOf( splittedCsvLine[0].substring( 1, splittedCsvLine[0].length() - 1 ) );
+                double y = Double.valueOf( splittedCsvLine[1].substring( 1, splittedCsvLine[1].length() - 1 ) );
+                next( x, y );
+                x = Double.valueOf( splittedCsvLine[2].substring( 1, splittedCsvLine[2].length() - 1 ) );
+                y = Double.valueOf( splittedCsvLine[3].substring( 1, splittedCsvLine[3].length() - 1 ) );
+                next( x, y );
+            }
+            updateMaps();
+        } finally {
+            if ( br != null ) {
+                br.close();
+            }
+        }
     }
 
 }
