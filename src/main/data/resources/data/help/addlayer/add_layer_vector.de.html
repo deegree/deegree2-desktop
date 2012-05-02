@@ -11,25 +11,21 @@
             <img alt="" src="images/deegree_logo.jpg" border="0" height="71" width="300">
         </p>
         <table background="" border="0" cellpadding="4" cellspacing="4" width="100%">
-            <tbody align="left">
+            <tbody>
                 <tr>
                     <td>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <h2><font face="Arial">Eine neue Kartenebene auf Vektordatenbasis anlegen</font></h2>
+                    <td style="font-family:Arial,sans-serif; align:left">
+                        <h2>Eine neue Kartenebene auf Vektordatenbasis anlegen</h2>
                     </td>
                 </tr>
                 <tr>
-                   <td>
-                        <p>
-                            <font face="Arial">
+                   <td style="font-family:Arial,sans-serif; align:left"><p>
                                 Vektordaten k&ouml;nnen &uuml;ber den <strong>wfs</strong> (Web Feature Service) oder 
                                 als Datei importiert werden.<br><br>
-                                <strong>Vektordaten</strong> (*.gml und *.shp) k&ouml;nnen &uuml;ber die Men&uuml;leiste via 
-                            </font> 
-                            <font face="Courier New"><i>
+                                <strong>Vektordaten</strong> (*.gml und *.shp) k&ouml;nnen &uuml;ber die Men&uuml;leiste via <font face="Courier New"><i>
                                 Projekt &gt; <img src="images/s_openFile.png"> Ebene aus Datei hinzuf&uuml;gen
                             </i></font> 
                             <font face="Arial">
@@ -70,7 +66,7 @@
                                 <img src="images/next.png"> klicken.
                                 Im darauf folgenden Dialog k&ouml;nnen anschlie&szlig;end verschiedene attributive 
                                 oder/und r&auml;umliche Filter definiert werden, nach denen die zu importierende Ebene 
-                                durchsucht werden soll.</br></br>
+                                durchsucht werden soll.<br><br>
                                 <i>&bull; Attributive Filter</i><br>
                                 Diese Filterart durchsucht die Attribute eines Objektes nach zuvor vom Nutzer 
                                 definierten Kriterien. 
@@ -126,28 +122,22 @@
                                 Folgende Abfragen sind m&ouml;glich (<font color="blue">Objekt</font>, 
                             <font color="red">Vergleichsgeometrie</font>):</font><br><br>
                         </p> 
-                        <table>
-                            <tr align="left" valign="top">
-                                <td width="150px"><font face="Arial">BBox:</font></td>
-                                <td width="800px">
-                                    <font face="Arial">
-                                        Es werden alle Objekte ausgew&auml;hlt, welche vollst&auml;ndig oder teilweise 
+                        <table style="font-family:Arial,sans-serif; align:left; valign:top">
+                            <tr>
+                                <td width="150px">BBox:</td>
+                                <td width="800px">Es werden alle Objekte ausgew&auml;hlt, welche vollst&auml;ndig oder teilweise 
                                         innerhalb des aktuellen Kartenausschnittes liegen<br><br>
-                                    </font>
                                 </td>
                             </tr>
-                            <tr align="left" valign="top">
-                                <td><font face="Arial">enth&auml;lt (contains):</font></td>
+                            <tr >
+                                <td>enth&auml;lt (contains):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    Vollst&auml;ndig enthalten. Liefert Objekte, welche die 
+                                            <td width="700px">Vollst&auml;ndig enthalten. Liefert Objekte, welche die 
                                                     Vergleichs-Geometrie vollst&auml;ndig umgeben. 
                                                     Die Grenzen der jeweiligen Objekte d&uuml;rfen sich nicht 
                                                     &uuml;berlappen oder ber&uuml;hren.<br><br>
-                                                </font>
                                             </td>
                                             <td width="100px">
                                                 <img border="1" src="images/contains.png">
@@ -156,29 +146,23 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">&uuml;berschneidet (crosses):</font></td>
-                                <td>
-                                    <font face="Arial">
-                                        Sich &uuml;berschneiden mit. Liefert Objekte, welche sich mit der 
+                            <tr>
+                                <td>&uuml;berschneidet (crosses):</td>
+                                <td>Sich &uuml;berschneiden mit. Liefert Objekte, welche sich mit der 
                                         Vergleichs-Geometrie einige, aber nicht alle inneren Punkte teilen. 
                                         Die Dimensionalit&auml;t der Verschneidungsmenge ist kleiner als die von 
                                         wenigstens einer der beiden Vergleichsgeometrien.<br> 
                                         G&uuml;ltig f&uuml;r: Fl&auml;che/Linie, Linie/Linie<br><br>
-                                    </font>
-                                </td>
+                                    </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">ist verschieden (disjoint):</font></td>
+                            <tr>
+                                <td>ist verschieden (disjoint):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    Liefert Objekte, welche die Vergleichs-Geometrie weder 
+                                            <td width="700px">Liefert Objekte, welche die Vergleichs-Geometrie weder 
                                                     ber&uuml;hren, sich mit ihr &uuml;berlappen noch in dieser enthalten 
                                                     sind.<br><br>
-                                                </font>
                                             </td>
                                             <td width="100px">
                                                 <img border="1" src="images/disjoint.png">
@@ -187,18 +171,15 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">ist gleich (equals):</font></td>
+                            <tr>
+                                <td>ist gleich (equals):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    R&auml;umlich identisch. Liefert Objekte, welche den gleichen Raum 
+                                            <td width="700px">R&auml;umlich identisch. Liefert Objekte, welche den gleichen Raum 
                                                     wie die Vergleichs-Geometrie einnehmen.<br> G&uuml;ltig f&uuml;r: 
                                                     Fl&auml;che/Fl&auml;che, Linie/Linie, Punkt/Punkt.<br><br>
-                                                </font>
-                                            </td>
+                                           </td>
                                             <td width="100px">
                                                 <img border="1" src="images/equals.png">
                                             </td>
@@ -206,29 +187,23 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">schneidet (intersects):</font></td>
-                                <td>
-                                    <font face="Arial">
-                                        Liefert Objekte, welche einen oder mehrere Punkte gemeinsam haben.<br> 
+                            <tr>
+                                <td>schneidet (intersects):</td>
+                                <td>Liefert Objekte, welche einen oder mehrere Punkte gemeinsam haben.<br> 
                                         G&uuml;ltig f&uuml;r: Linie/Punkt, Linie/Linie, Fl&auml;che/Punkt, 
                                         Fl&auml;che/Linie<br><br>
-                                    </font>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">&uuml;berlagert (overlaps):</font></td>
+                            <tr>
+                                <td>&uuml;berlagert (overlaps):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    Liefert Objekte, welche sich mit der Vergleichs-Geometrie einige 
+                                            <td width="700px">Liefert Objekte, welche sich mit der Vergleichs-Geometrie einige 
                                                     aber nicht alle Punkte teilen. 
                                                     Die Dimensionalit&auml;t der Verschneidungsmenge ist gleich der, der 
                                                     beiden Vergleichsmengen.<br> G&uuml;ltig f&uuml;r: 
                                                     Fl&auml;che/Fl&auml;che, Linie/Linie<br><br>
-                                                </font>
                                             </td>
                                             <td width="100px">
                                                 <img border="1" src="images/overlaps.png">
@@ -237,16 +212,13 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">ber&uuml;hrt (touches):</font></td>
+                            <tr>
+                                <td>ber&uuml;hrt (touches):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    Liefert Objekte, welche die Grenzen der Vergleichs-Geometrie 
+                                            <td width="700px">Liefert Objekte, welche die Grenzen der Vergleichs-Geometrie 
                                                     ber&uuml;hren und/oder teilen.<br> Ausnahme: Punkt/Punkt.<br><br>
-                                                </font>
                                             </td>
                                             <td width="100px">
                                                 <img border="1" src="images/touches.png">
@@ -255,19 +227,16 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">ist enthalten (within):</font></td>
+                            <tr>
+                                <td>ist enthalten (within):</td>
                                 <td>
                                     <table>
                                         <tr>
-                                            <td width="700px">
-                                                <font face="Arial">
-                                                    Liefert Objekte, welche vollst&auml;ndig in der Vergleichs-Geometrie 
+                                            <td width="700px">Liefert Objekte, welche vollst&auml;ndig in der Vergleichs-Geometrie 
                                                     enthalten sind. Die Grenzen d&uuml;rfen sich ber&uuml;hren und 
                                                     &uuml;berlagern.<br> 
                                                     G&uuml;ltig f&uuml;r: Fl&auml;che/Fl&auml;che, Fl&auml;che/Linie, 
                                                     Fl&auml;che/Punkt, Linie/Linie<br><br>
-                                                </font>
                                             </td>
                                             <td width="100px">
                                                 <img border="1" src="images/within.png">
@@ -276,39 +245,28 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">au&szlig;erhalb (beyond):</font></td>
-                                <td>
-                                    <font face="Arial">
+                            <tr>
+                                <td>au&szlig;erhalb (beyond):</td>
+                                <td style="font-family:Arial,sans-serif; align:left"><p>
                                         Liefert Objekte welche sich au&szlig;erhalb eines bestimmten Radius zur 
-                                        Vergleichsgeometrie befinden.<br><br>
-                                    </font>
+                                        Vergleichsgeometrie befinden.</p><br><br>
                                 </td>
                             </tr>
-                            <tr align="left"   valign="top">
-                                <td><font face="Arial">innerhalb (Dwithin):</font></td>
+                            <tr >
+                                <td>innerhalb (Dwithin):</td>
                                 <td>
-                                    <font face="Arial">
-                                        Liefert Objekte welche sich innerhalb eines bestimmten Radius zur 
+                                    Liefert Objekte welche sich innerhalb eines bestimmten Radius zur 
                                         Vergleichsgeometrie befinden.<br><br>
-                                    </font>
                                 </td>
                             </tr>
                         </table>
-                        <p>
-                            <font face="Arial">
-                                Nachdem ein oder mehrere Filter definiert wurden, m&uuml;ssen sie im n&auml;chsten 
-                                Schritt erstellt werden. Dazu im Register 
-                            </font>
-                            <font face="Courier New"><i> Filter </i></font> 
-                            <font face="Arial"> 
+                        <p>Nachdem ein oder mehrere Filter definiert wurden, m&uuml;ssen sie im n&auml;chsten 
+                                Schritt erstellt werden. Dazu im Register <font face="Courier New"><i> Filter </i></font>
                                 auf <img src="images/generate_filter.png"> klicken: der zusammengestellte Filter wird 
                                 angezeigt und kann abschlie&szlig;end noch einmal &uuml;berpr&uuml;ft werden, auch jetzt 
                                 kann die Ebene bereits durch das Klicken auf <img border="1" src="images/finish.png"> in 
                                 das Projekt geladen werden. Es k&ouml;nnen in einem letzten Schritt zus&auml;tzlich noch 
-                                Ver&auml;nderungen hinsichtlich Titel, Name und Kurzbeschreibung vorgenommen werden. 
-                            </font>
-                        </p>
+                                Ver&auml;nderungen hinsichtlich Titel, Name und Kurzbeschreibung vorgenommen werden.</p>
                     </td>
                 </tr>
             </tbody>
