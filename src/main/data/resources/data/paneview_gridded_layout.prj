@@ -937,9 +937,9 @@
 			</ns4:WCSGridCoverageAdapter>
 		</ns4:DataAdapter>
 		<ns4:ProjectTemplates>
-			<ns4:Template desc="project with pane layout" file="src/main/data/resources/templates/default" name="pane layout"/>
-			<ns4:Template desc="project with innerframe layout" file="src/main/data/resources/templates/empty_innerframelayout" name="innerframe layout"/>
-			<ns4:Template desc="project with frame layout" file="src/main/data/resources/templates/frame_layout" name="frame layout"/>
+			<ns4:Template desc="project with pane layout" file="./src/main/data/resources/templates/default" name="pane layout"/>
+			<ns4:Template desc="project with innerframe layout" file="./src/main/data/resources/templates/empty_innerframelayout" name="innerframe layout"/>
+			<ns4:Template desc="project with frame layout" file="./src/main/data/resources/templates/frame_layout" name="frame layout"/>
 		</ns4:ProjectTemplates>
 		<ns4:FileFilter>
 			<ns4:Format desc="georeferenced jpeg image" extension="jpg" name="JPEG image"/>

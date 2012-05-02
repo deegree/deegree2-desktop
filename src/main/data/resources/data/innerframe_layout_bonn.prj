@@ -1253,8 +1253,8 @@
 			</ns5:WMSGridCoverageAdapter>
 		</ns5:DataAdapter>
 		<ns5:ProjectTemplates>
-			<ns5:Template desc="default project with pane layout" file="resources/templates/default" name="default"/>
-			<ns5:Template desc="project with inner frame layout" file="resources/templates/innerframe_layout" name="inner frame"/>
+			<ns5:Template desc="default project with pane layout" file="./src/main/data/resources/templates/default" name="default"/>
+			<ns5:Template desc="project with inner frame layout" file="./src/main/data/resources/templates/empty_innerframelayout" name="inner frame"/>
 		</ns5:ProjectTemplates>
 		<ns5:FileFilter>
 			<ns5:Format desc="georeferenced jpeg image" extension="jpg" name="JPEG image"/>
