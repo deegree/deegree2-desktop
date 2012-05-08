@@ -151,58 +151,80 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         add( buttons.transformList, gb );
 
         gb = (GridBagConstraints) gb.clone();
-        ++gb.gridy;
-        add( buttons.activate = new JToggleButton( get( "$DI10076" ) ), gb );
-        buttons.activate.addActionListener( this );
-
-        gb = (GridBagConstraints) gb.clone();
         gb.gridx = 2;
         gb.gridy = 0;
         gb.gridwidth = 4;
-        gb.gridheight = 3;
+        gb.gridheight = 2;
         gb.fill = BOTH;
         JPanel panel = new JPanel();
         panel.setBorder( createTitledBorder( get( "$DI10085" ) ) );
         panel.add( new JLabel( get( "$DI10086" ) ) );
         add( panel, gb );
 
+        panel = new JPanel();
+        panel.setLayout( new GridBagLayout() );
+
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 0;
-        gb.gridy = 3;
-        gb.gridwidth = 3;
+        gb.gridy = 0;
+        gb.gridwidth = 1;
         gb.gridheight = 1;
         gb.fill = NONE;
-        add( buttons.loadTable = new JButton( get( "$DI10077" ) ), gb );
+        panel.add( buttons.loadTable = new JButton( get( "$DI10077" ) ), gb );
         buttons.loadTable.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
-        gb.gridx = 3;
-        add( buttons.saveTable = new JButton( get( "$DI10078" ) ), gb );
+        ++gb.gridx;
+        panel.add( buttons.activate = new JToggleButton( get( "$DI10076" ) ), gb );
+        buttons.activate.addActionListener( this );
+
+        gb = (GridBagConstraints) gb.clone();
+        ++gb.gridx;
+        panel.add( buttons.saveTable = new JButton( get( "$DI10078" ) ), gb );
         buttons.saveTable.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
         gb.gridx = 0;
-        ++gb.gridy;
+        gb.gridwidth = 6;
+        gb.gridy = 2;
+        add( panel, gb );
+
+        gb = (GridBagConstraints) gb.clone();
+        gb.gridx = 0;
+        gb.gridy = 3;
         gb.gridwidth = 6;
         gb.fill = BOTH;
+        gb.weightx = 1;
+        gb.weighty = 1;
         buttons.table = new JTable( points = new ControlPointModel() );
         add( new JScrollPane( buttons.table ), gb );
 
+        panel = new JPanel();
+        panel.setLayout( new GridBagLayout() );
+
         gb = (GridBagConstraints) gb.clone();
         ++gb.gridy;
-        gb.gridwidth = 2;
+        gb.gridwidth = 6;
+        gb.weightx = 0;
+        gb.weighty = 0;
         gb.fill = NONE;
-        add( buttons.delete = new JButton( get( "$DI10081" ) ), gb );
+        add( panel, gb );
+
+        gb = (GridBagConstraints) gb.clone();
+        gb.gridx = 0;
+        gb.gridy = 0;
+        gb.gridwidth = 1;
+        panel.add( buttons.delete = new JButton( get( "$DI10081" ) ), gb );
         buttons.delete.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
-        gb.gridx += 2;
-        add( buttons.reset = new JButton( get( "$DI10082" ) ), gb );
+        ++gb.gridx;
+        panel.add( buttons.reset = new JButton( get( "$DI10082" ) ), gb );
         buttons.reset.addActionListener( this );
 
         gb = (GridBagConstraints) gb.clone();
-        gb.gridx += 2;
-        add( buttons.start = new JButton( get( "$DI10083" ) ), gb );
+        ++gb.gridx;
+        panel.add( buttons.start = new JButton( get( "$DI10083" ) ), gb );
         buttons.start.addActionListener( this );
 
         buttons.enable( false );

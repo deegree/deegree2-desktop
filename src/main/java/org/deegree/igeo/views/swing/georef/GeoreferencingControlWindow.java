@@ -69,6 +69,8 @@ public class GeoreferencingControlWindow extends DefaultFrame {
         panel = new GeoreferencingControlPanel();
         getContentPane().add( panel );
         pack();
+        setSize( 600, 600 );
+        update();
         addWindowListener( new WindowAdapter() {
             @Override
             public void windowClosed( WindowEvent evt ) {
