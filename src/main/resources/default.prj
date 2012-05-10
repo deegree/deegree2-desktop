@@ -160,13 +160,13 @@
 		<ns5:HelpPage changeable="true">
 			<ns5:HelpContext>
 				<ns5:page mainPage="true">
-					<OnlineResource ns2:href="./resources/data/help/projects/project_new.de.html"/>
+					<OnlineResource ns2:href="./src/main/data/resources/data/help/projects/project_new.de.html"/>
 					<ns5:keyword>Projekte neu anlegen</ns5:keyword>
 				</ns5:page>
 			</ns5:HelpContext>
 			<ns5:HelpContext>
 				<ns5:page mainPage="true">
-					<OnlineResource ns2:href="./resources/data/help/projects/project_open.de.html"/>
+					<OnlineResource ns2:href="./src/main/data/resources/data/help/projects/project_open.de.html"/>
 					<ns5:keyword>Projekte öffnen</ns5:keyword>
 				</ns5:page>
 			</ns5:HelpContext>
