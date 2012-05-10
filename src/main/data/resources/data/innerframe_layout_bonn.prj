@@ -18,7 +18,7 @@
 			</ns4:Layout>
 		</ns4:ViewForm>
 		<ns4:SupportedViewPlatform>Application</ns4:SupportedViewPlatform>
-		<ns4:Window width="1112" height="900" top="30" left="90"/>
+		<ns4:Window width="1112" height="900" top="71" left="113"/>
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="316" height="754" top="1" left="0"/>
@@ -32,7 +32,7 @@
 				<ns4:ViewForm>
 					<ns4:InnerFrameViewForm>
 						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.DefaultInnerFrame</ns4:containerClass>
-						<ns4:ComponentState modal="false" active="true">
+						<ns4:ComponentState modal="false" active="false">
 							<ns4:windowState>normal</ns4:windowState>
 						</ns4:ComponentState>
 						<ns4:frameTitle>Modul</ns4:frameTitle>
@@ -628,15 +628,6 @@
 						<ns4:icon ns2:href="../icons/s_printer.png"/>
 					</ns4:MenuItem>
 				</ns4:Menu>
-				<!--ToolBarEntry>
-					<ns2:identifier>
-						<ns2:value>TBprint</ns2:value>
-					</ns2:identifier>
-					<tooltip>$MD10348</tooltip>
-					<assignedAction>openVectorPrint</assignedAction>
-					<icon ns3:href="../icons/pdf.png"/>
-					<entryType>PushButton</entryType>
-				</ToolBarEntry-->
 				<ns4:ToolBarEntry>
 					<identifier>
 						<value>TBprint</value>
@@ -667,39 +658,43 @@
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-
-        <ns4:ModuleRegister>
-            <ns4:AbsolutePosition>
-                <ns4:Window width="400" height="300" top="252" left="535"/>
-            </ns4:AbsolutePosition>
-            <ns4:Module>
-                <ns4:name>Georeferencing</ns4:name>
-                <identifier>
-                    <value>GeoreferencingID</value>
-                </identifier>
-                <ns4:className>org.deegree.igeo.modules.georef.GeoreferencingModule</ns4:className>
-                <ns4:ViewForm>
-                    <ns4:FrameViewForm>
-                        <ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow
+		<ns4:ModuleRegister>
+			<ns4:AbsolutePosition>
+				<ns4:Window width="473" height="616" top="249" left="670"/>
+			</ns4:AbsolutePosition>
+			<ns4:Module>
+				<ns4:name>Georeferencing</ns4:name>
+				<identifier>
+					<value>GeoreferencingID</value>
+				</identifier>
+				<ns4:className>org.deegree.igeo.modules.georef.GeoreferencingModule</ns4:className>
+				<ns4:ViewForm>
+					<ns4:FrameViewForm>
+						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.georef.GeoreferencingControlWindow
                         </ns4:containerClass>
-                        <ns4:ComponentState modal="false" active="true">
-                            <ns4:windowState>closed</ns4:windowState>
-                        </ns4:ComponentState>
-                        <ns4:frameTitle>$DI10073</ns4:frameTitle>
-                    </ns4:FrameViewForm>
-                </ns4:ViewForm>
-                <ns4:ToolBarEntry>
-                    <identifier>
-                        <value>TBgeoref</value>
-                    </identifier>
-                    <ns4:tooltip>$georef</ns4:tooltip>
-                    <ns4:assignedAction>open</ns4:assignedAction>
-                    <ns4:icon ns2:href="../icons/slides.png"/>
-                    <ns4:entryType>PushButton</ns4:entryType>
-                </ns4:ToolBarEntry>
-            </ns4:Module>
-        </ns4:ModuleRegister>
-
+						<ns4:ComponentState modal="false" active="false">
+							<ns4:windowState>closed</ns4:windowState>
+						</ns4:ComponentState>
+						<ns4:frameTitle>$DI10073</ns4:frameTitle>
+					</ns4:FrameViewForm>
+				</ns4:ViewForm>
+				<ns4:ToolBarEntry>
+					<identifier>
+						<value>TBgeoref</value>
+					</identifier>
+					<ns4:tooltip>$georef</ns4:tooltip>
+					<ns4:assignedAction>open</ns4:assignedAction>
+					<ns4:icon ns2:href="../icons/slides.png"/>
+					<ns4:entryType>PushButton</ns4:entryType>
+				</ns4:ToolBarEntry>
+				<ns5:HelpContext>
+					<ns5:page mainPage="true">
+						<OnlineResource ns2:href="./help/georefmodule/georeferencing.de.html"/>
+						<ns5:keyword>Georeferenzierung</ns5:keyword>
+					</ns5:page>
+				</ns5:HelpContext>
+			</ns4:Module>
+		</ns4:ModuleRegister>
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="351" height="434" top="443" left="1121"/>
@@ -1356,39 +1351,29 @@
 					<value>Bonn</value>
 				</identifier>
 				<title>Bonn</title>
-				<!--layer editable="false" queryable="true" visible="true">
+				<layer editable="false" queryable="true" visible="true">
 					<identifier>
-						<value>cbe7c866-8324-409b-8fe6-953cc8723af7</value>
+						<value>georef</value>
 					</identifier>
-					<abstract>null</abstract>
-					<title>Stadtplan Beschriftung skaliert</title>
-					<maxScaleDenominator>6000.0</maxScaleDenominator>
+					<abstract/>
+					<title>georef</title>
+					<maxScaleDenominator>9.0E99</maxScaleDenominator>
 					<minScaleDenominator>0.0</minScaleDenominator>
-					<selectedFor>action</selectedFor>
 					<Datasource>
-						<WMSDatasource supportToolTips="false" editable="false" queryable="true" lazyLoading="true">
-							<name>WMS der Bundesstadt Bonn</name>
-							<extent crs="EPSG:31466" maxy="5624323.047268761" maxx="2574583.4765410293" miny="5624023.141961707" minx="2574265.2436874323"/>
-							<nativeCRS>EPSG:31466</nativeCRS>
+						<MemoryDatasource>
+							<extent crs="EPSG:31466" maxy="5624323.085015234" maxx="2574583.5165942307" miny="5624023.1042152345" minx="2574265.203634231"/>
 							<minScaleDenominator>0.0</minScaleDenominator>
-							<maxScaleDenominator>6000.0</maxScaleDenominator>
-							<capabilitiesURL>
-								<OnlineResource ns2:href="http://gdi.bonn.de/owsProxy/proxy?SERVICE=WMS&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1"/>
-							</capabilitiesURL>
-							<baseRequest>REQUEST=GetMap&amp;VERSION=1.1.1&amp;TRANSPARENT=TRUE&amp;LAYERS=deegree_stadtplan_skalierte_schrift&amp;FORMAT=image/png&amp;STYLES=</baseRequest>
-						</WMSDatasource>
+							<maxScaleDenominator>1.0E8</maxScaleDenominator>
+						</MemoryDatasource>
 					</Datasource>
 					<Style>
 						<NamedStyle current="true">
 							<name>default</name>
 							<title>default</title>
 							<abstract>default</abstract>
-							<legendURL>
-								<OnlineResource ns2:href="http://gdi.bonn.de/owsProxy/proxy??request=GetLegendGraphic&amp;version=1.1.1&amp;width=25&amp;height=25&amp;format=image/jpeg&amp;layer=deegree_stadtplan_skalierte_schrift&amp;style=default:deegree_stadtplan_skalierte_schrift"/>
-							</legendURL>
 						</NamedStyle>
 					</Style>
-				</layer-->
+				</layer>
 				<layer editable="true" queryable="true" visible="true">
 					<identifier>
 						<value>building_bonn</value>
@@ -1396,6 +1381,7 @@
 					<title>Bonn Gebäude</title>
 					<maxScaleDenominator>9.0E99</maxScaleDenominator>
 					<minScaleDenominator>0.0</minScaleDenominator>
+					<selectedFor>action</selectedFor>
 					<Datasource>
 						<FileDatasource supportToolTips="true" editable="true" queryable="true" lazyLoading="false">
 							<name>building_bonn.shp</name>
@@ -1412,42 +1398,10 @@
 							<title>Bonn Gebäude</title>
 							<abstract>default3</abstract>
 							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVR42mP8P3PmfwYqAcb0dEYmBiqDUQNHDRw1cNTAUQNpZCDVAQCN+QQmVUg6ZwAAAABJRU5ErkJggg==</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Bonn Gebäude&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Bonn Gebäude&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:building_bonn&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;9.0E99&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#ff9999&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#990000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Bonn Gebäude&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Bonn Gebäude&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:building_bonn&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;9.0E99&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#ff9999&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#990000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
-				<!--layer editable="false" queryable="true" visible="true">
-					<identifier>
-						<value>19453f35-f57b-47a4-909d-aa078cf16afe</value>
-					</identifier>
-					<abstract/>
-					<title>Luftbildkarte 2010</title>
-					<maxScaleDenominator>9.0E99</maxScaleDenominator>
-					<minScaleDenominator>0.0</minScaleDenominator>
-					<Datasource>
-						<WMSDatasource supportToolTips="false" editable="false" queryable="true" lazyLoading="true">
-							<name>WMS der Bundesstadt Bonn</name>
-							<extent crs="EPSG:31466" maxy="5624323.047268761" maxx="2574583.4765410293" miny="5624023.141961707" minx="2574265.2436874323"/>
-							<nativeCRS>EPSG:31466</nativeCRS>
-							<minScaleDenominator>0.0</minScaleDenominator>
-							<maxScaleDenominator>9.0E99</maxScaleDenominator>
-							<capabilitiesURL>
-								<OnlineResource ns2:href="http://gdi.bonn.de/owsProxy/proxy?SERVICE=WMS&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1"/>
-							</capabilitiesURL>
-							<baseRequest>REQUEST=GetMap&amp;&amp;FORMAT=image/png&amp;TRANSPARENT=TRUE&amp;LAYERS=luft2010&amp;STYLES=</baseRequest>
-						</WMSDatasource>
-					</Datasource>
-					<Style>
-						<NamedStyle current="true">
-							<name>default</name>
-							<title>default</title>
-							<abstract>default</abstract>
-							<legendURL>
-								<OnlineResource ns2:href="http://gdi.bonn.de/owsProxy/proxy??request=GetLegendGraphic&amp;version=1.1.1&amp;width=25&amp;height=25&amp;format=image/jpeg&amp;layer=luft2010&amp;style=default:luft2010"/>
-							</legendURL>
-						</NamedStyle>
-					</Style>
-				</layer-->
 			</layerGroup>
 			<description/>
 		</mapModel>
