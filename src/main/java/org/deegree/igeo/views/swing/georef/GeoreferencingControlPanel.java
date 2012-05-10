@@ -375,14 +375,27 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                 if ( res != JFileChooser.APPROVE_OPTION ) {
                     return null;
                 }
-                if ( !new File( dlg.getSelectedFile(), "gdalwarp" ).exists() ) {
+                if ( !new File( dlg.getSelectedFile(), "gdalwarp" ).exists()
+                     && !new File( dlg.getSelectedFile(), "gdalwarp.exe" ).exists() ) {
                     return null;
                 }
                 prefix = dlg.getSelectedFile().toString() + File.separator;
                 prefs.put( "gdal_location", prefix );
             }
         } catch ( Throwable e ) {
-            // ignore this error, message will be given later
+            JFileChooser dlg = new JFileChooser( new File( prefix ) );
+            dlg.setDialogTitle( Messages.get( "$DI10092" ) );
+            dlg.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+            int res = dlg.showDialog( this, Messages.get( "$DI10093" ) );
+            if ( res != JFileChooser.APPROVE_OPTION ) {
+                return null;
+            }
+            if ( !new File( dlg.getSelectedFile(), "gdalwarp" ).exists()
+                 && !new File( dlg.getSelectedFile(), "gdalwarp.exe" ).exists() ) {
+                return null;
+            }
+            prefix = dlg.getSelectedFile().toString() + File.separator;
+            prefs.put( "gdal_location", prefix );
         } finally {
             if ( in != null ) {
                 try {
