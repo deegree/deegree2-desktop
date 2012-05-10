@@ -141,8 +141,6 @@ public class AddDatabaseLayerDialog extends JDialog {
 
     private JPanel pnScale;
 
-    private JButton btExpert;
-
     private JComboBox cbNativeCRS;
 
     private JLabel lbCRS;
@@ -506,36 +504,6 @@ public class AddDatabaseLayerDialog extends JDialog {
                                                                             GridBagConstraints.CENTER,
                                                                             GridBagConstraints.HORIZONTAL,
                                                                             new Insets( 0, 0, 0, 9 ), 0, 0 ) );
-                    }
-                    {
-                        btExpert = new JButton( Messages.getMessage( getLocale(), "$MD11440" ) );
-                        pnContent.add( btExpert,
-                                       new GridBagConstraints( 2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
-                                                               GridBagConstraints.NONE, new Insets( 0, 0, 0, 9 ), 0, 0 ) );
-                        btExpert.addActionListener( new ActionListener() {
-
-                            public void actionPerformed( ActionEvent e ) {
-                                DatabaseExpertDialog ded = null;
-                                ded = new DatabaseExpertDialog( appCont, getDriver(), getConnectionString(),
-                                                                tfUser.getText(),
-                                                                new String( pwPassword.getPassword() ), sql );
-                                sql = ded.getSQL();
-                                geomField = ded.getGeometryColumn();
-                                pkColumn = ded.getPKColumn();
-                                if ( sql != null && geomField != null ) {
-                                    cbTable.setEnabled( false );
-                                    cbGeom.setEnabled( false );
-                                    cbAllowTransactions.setSelected( false );
-                                    cbAllowTransactions.setEnabled( false );
-                                    cbPKColumn.setEnabled( false );
-                                } else {
-                                    cbTable.setEnabled( true );
-                                    cbGeom.setEnabled( true );
-                                    cbAllowTransactions.setEnabled( true );
-                                    cbPKColumn.setEnabled( true );
-                                }
-                            }
-                        } );
                     }
                     {
                         pnScale = new JPanel();
