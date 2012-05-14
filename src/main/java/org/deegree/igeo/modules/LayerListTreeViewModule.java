@@ -45,6 +45,7 @@ import java.util.Locale;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.commands.UnselectFeaturesCommand;
 import org.deegree.igeo.commands.model.RemoveMapModelEntryCommand;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
@@ -130,6 +131,13 @@ public class LayerListTreeViewModule<T> extends DefaultModule<T> {
      */
     public void removeLayer() {
         MapModel mma = appContainer.getMapModel( null );
+        // TODO: Is this the correct way to avoid visible selected features from a removed layer?
+        try {
+            UnselectFeaturesCommand unselectFeaturesCmd = new UnselectFeaturesCommand( mma, false );
+            appContainer.getCommandProcessor().executeSychronously( unselectFeaturesCmd, true );
+        } catch ( Exception e ) {
+            LOG.logWarning( "Could not unselect features from MapModel " + mma.getName() + ": ", e );
+        }
         RemoveMapModelEntryCommand cmd = new RemoveMapModelEntryCommand( mma );
         try {
             appContainer.getCommandProcessor().executeSychronously( cmd, true );
