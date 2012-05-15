@@ -112,10 +112,10 @@ import org.deegree.igeo.modules.IModule;
 import org.deegree.igeo.modules.IModuleGroup;
 import org.deegree.igeo.modules.ModuleException;
 import org.deegree.igeo.views.ComponentPosition;
-import org.deegree.igeo.views.DialogFactory;
-import org.deegree.igeo.views.IFooterEntry;
 import org.deegree.igeo.views.ComponentPosition.BorderPosition;
 import org.deegree.igeo.views.ComponentPosition.SplitterPosition;
+import org.deegree.igeo.views.DialogFactory;
+import org.deegree.igeo.views.IFooterEntry;
 import org.deegree.igeo.views.swing.ButtonGroup;
 import org.deegree.igeo.views.swing.ControlElement;
 import org.deegree.igeo.views.swing.Footer;
@@ -220,7 +220,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
 
             this.frame.setResizable( ( (FrameViewFormType) vfc ).isResizeable() );
             String name = ( (FrameViewFormType) vfc ).getFrameTitle();
-            this.frame.setTitle( Messages.getMessage( Locale.getDefault(), name, this.proj.getName() ) );
+            this.frame.setTitle( getFrameTitle( name ) );
 
             if ( modules.size() > 0 && modules.get( 0 ).getViewForm() instanceof JInternalFrame ) {
                 // if at least one child module is an JInternalFrame the current content
@@ -276,6 +276,14 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
             }
             this.frame.repaint();
         }
+    }
+
+    private String getFrameTitle( String name ) {
+        String file = this.projectURL.toExternalForm();
+        int index = file.lastIndexOf( File.separator );
+        if ( index > 0 )
+            file = file.substring( index + 1, file.length() );
+        return getMessage( getDefault(), name, file );
     }
 
     @Override
