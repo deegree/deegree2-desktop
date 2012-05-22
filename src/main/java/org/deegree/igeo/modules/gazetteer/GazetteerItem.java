@@ -149,12 +149,11 @@ public class GazetteerItem implements Comparable<Object> {
         return displayName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
+    @Override
     public int compareTo( Object o ) {
+        if ( o instanceof GazetteerItem ) {
+            return geographicIdentifier.compareTo( ( (GazetteerItem) o ).geographicIdentifier );
+        }
         return geographicIdentifier.compareTo( o.toString() );
     }
 
