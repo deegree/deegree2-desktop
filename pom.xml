@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>deegree2-igeodesktop</artifactId>
   <name>deegree2-igeodesktop</name>
-  <version>${deegreedesktop.version}-pre1-SNAPSHOT</version>
+  <version>${deegreedesktop.version}-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <parent>
@@ -37,7 +37,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-    <deegreedesktop.version>0.4.3</deegreedesktop.version>
+    <deegreedesktop.version>0.4.4</deegreedesktop.version>
   </properties>
 
   <build>
