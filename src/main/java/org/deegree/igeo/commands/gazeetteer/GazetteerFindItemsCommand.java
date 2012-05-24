@@ -55,6 +55,7 @@ import org.deegree.model.filterencoding.PropertyName;
 import org.deegree.ogcbase.PropertyPath;
 import org.deegree.ogcbase.SortProperty;
 import org.deegree.ogcwebservices.wfs.capabilities.WFSCapabilities;
+import org.deegree.ogcwebservices.wfs.operation.AbstractWFSRequest;
 import org.deegree.ogcwebservices.wfs.operation.GetFeature;
 import org.deegree.ogcwebservices.wfs.operation.Query;
 import org.deegree.ogcwebservices.wfs.operation.GetFeature.RESULT_TYPE;
@@ -114,6 +115,7 @@ public class GazetteerFindItemsCommand extends AbstractGazetteerCommand {
      * 
      * @see org.deegree.kernel.Command#execute()
      */
+    @Override
     public void execute()
                             throws Exception {
         if ( !capabilitiesMap.containsKey( gazetteerAddress ) ) {
@@ -158,11 +160,11 @@ public class GazetteerFindItemsCommand extends AbstractGazetteerCommand {
 
         // create Query and GetFeature request
         Query query = Query.create( null, null, sp, null, null, new QualifiedName[] { featureType }, null, null,
-                                    filter, 500, 0, RESULT_TYPE.RESULTS );
+                                    filter, 5000, 0, RESULT_TYPE.RESULTS );
 
         GetFeature getFeature = GetFeature.create( capabilities.getVersion(), UUID.randomUUID().toString(),
-                                                   RESULT_TYPE.RESULTS, GetFeature.FORMAT_GML3, null, 500, 0, -1, -1,
-                                                   new Query[] { query } );
+                                                   RESULT_TYPE.RESULTS, AbstractWFSRequest.FORMAT_GML3, null, 5000, 0,
+                                                   -1, -1, new Query[] { query } );
 
         // perform GetFeature request and create resulting GazetteerItems list
         FeatureCollection fc = performGetFeature( capabilities, getFeature );
@@ -175,6 +177,7 @@ public class GazetteerFindItemsCommand extends AbstractGazetteerCommand {
      * 
      * @see org.deegree.kernel.Command#getName()
      */
+    @Override
     public QualifiedName getName() {
         return name;
     }
