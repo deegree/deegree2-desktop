@@ -293,6 +293,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             points.remove( buttons.table.getSelectedRows() );
             AffineTransformation.approximate( points.getPoints() );
             points.fireTableDataChanged();
+            points.updateMaps();
         }
     }
 
