@@ -43,8 +43,8 @@ import java.util.List;
 import org.deegree.model.feature.schema.PropertyType;
 
 /**
- * A <code>PropertyValue</code> gives a statistic view to a feature property. It does not contain
- * all values but each value one time and also its occurence.
+ * A <code>PropertyValue</code> gives a statistic view to a feature property. It does not contain all values but each
+ * value one time and also its occurence.
  * 
  * 
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
@@ -69,9 +69,9 @@ public class PropertyValue<T extends Comparable<T>> {
 
     /**
      * @param value
-     *            not the value directly will be added, but its occurence in the map will be updated
-     *            (if no entry for the value exist, it will be added with the inital occurence of 1,
-     *            otherwise the counter will be increased)
+     *            not the value directly will be added, but its occurence in the map will be updated (if no entry for
+     *            the value exist, it will be added with the inital occurence of 1, otherwise the counter will be
+     *            increased)
      */
     public void putInMap( T value ) {
         values.add( value );
@@ -93,6 +93,11 @@ public class PropertyValue<T extends Comparable<T>> {
      */
     public PropertyType getPropertyType() {
         return propertyType;
+    }
+
+    @Override
+    public String toString() {
+        return values.toString();
     }
 
 }

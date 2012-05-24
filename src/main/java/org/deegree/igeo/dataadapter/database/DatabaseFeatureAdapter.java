@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
@@ -62,6 +63,8 @@ import org.deegree.igeo.dataadapter.database.sqlserver.SqlServerDataWriter;
 import org.deegree.igeo.mapmodel.DatabaseDatasource;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.style.model.PropertyValue;
+import org.deegree.igeo.views.swing.style.StyleDialog.GEOMTYPE;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureCollection;
 import org.deegree.model.feature.FeatureFactory;
@@ -286,6 +289,12 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
             }
         }
         return FeatureFactory.createFeature( "ID1", ft, fp );
+    }
+
+    public void getDistinctPropertyValues( Map<QualifiedName, PropertyValue<?>> propertiesMap,
+                                           Map<QualifiedName, GEOMTYPE> geometryProperties, PropertyType[] propertyTypes ) {
+        AbstractDatabaseLoader loader = (AbstractDatabaseLoader) instantiateLoader();
+        loader.loadDistinctValues( propertiesMap, geometryProperties, propertyTypes );
     }
 
 }

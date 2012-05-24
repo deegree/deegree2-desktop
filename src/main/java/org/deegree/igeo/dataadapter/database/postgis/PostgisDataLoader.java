@@ -104,15 +104,22 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         super( datasource );
     }
 
+    @Override
     protected Object handleGeometryValue( Object value, CoordinateSystem crs )
                             throws GeometryException {
         value = PGgeometryAdapter.wrap( (PGgeometry) value, crs );
         return value;
     }
 
+    @Override
     protected PreparedStatement createPreparedStatement( DatabaseDatasource datasource, Envelope envelope,
                                                          Connection conn )
                             throws GeometryException, SQLException {
+        // special case if all features need to be requested, eg. for the classification
+        if ( envelope == null ) {
+            return conn.prepareStatement( datasource.getSqlTemplate() );
+        }
+
         PreparedStatement stmt;
         String envCRS = envelope.getCoordinateSystem().getLocalName();
         String nativeCRS = getSRSCode( datasource.getSRID() );
@@ -171,13 +178,12 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
      * @param srid
      * @return
      */
-    private String getSRSCode( String srid ) {
+    private static String getSRSCode( String srid ) {
         if ( srid.indexOf( ":" ) > -1 ) {
             String[] t = StringTools.toArray( srid, ":", false );
             return t[t.length - 1];
-        } else {
-            return srid;
         }
+        return srid;
     }
 
     @Override

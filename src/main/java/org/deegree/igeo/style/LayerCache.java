@@ -58,10 +58,13 @@ import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.dataadapter.FeatureAdapter;
 import org.deegree.igeo.dataadapter.GridCoverageAdapter;
+import org.deegree.igeo.dataadapter.database.DatabaseFeatureAdapter;
+import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.LayerChangedEvent;
 import org.deegree.igeo.mapmodel.LayerChangedEvent.LAYER_CHANGE_TYPE;
 import org.deegree.igeo.style.model.PropertyValue;
+import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.style.StyleDialog.GEOMTYPE;
 import org.deegree.model.Identifier;
 import org.deegree.model.feature.Feature;
@@ -243,8 +246,7 @@ public class LayerCache {
                 geometryProperties.put( qn, GEOMTYPE.UNKNOWN );
                 for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
                     if ( adapter instanceof FeatureAdapter ) {
-                        FeatureProperty[] fts = ( (FeatureAdapter) adapter ).getFeatureCollection().getFeature( 0 ).getProperties(
-                                                                                                                                   qn );
+                        FeatureProperty[] fts = ( (FeatureAdapter) adapter ).getFeatureCollection().getFeature( 0 ).getProperties( qn );
                         if ( fts != null && fts.length > 0 ) {
                             Object value = fts[0].getValue();
                             if ( value instanceof org.deegree.model.spatialschema.Point || value instanceof MultiPoint ) {
@@ -273,11 +275,27 @@ public class LayerCache {
         private void refreshPropertyValues() {
             properties.clear();
             for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
-                if ( adapter instanceof FeatureAdapter ) {
+
+                boolean loadFully = adapter instanceof DatabaseFeatureAdapter
+                                    && adapter.getDatasource().isLazyLoading();
+                if ( loadFully ) {
+                    loadFully = DialogFactory.openConfirmDialogYESNO( "application", null, Messages.get( "$DI10095" ),
+                                                                      Messages.get( "$DI10096" ) );
+                }
+
+                if ( loadFully ) {
+                    DatabaseFeatureAdapter fa = (DatabaseFeatureAdapter) adapter;
+                    FeatureType ft = ( (FeatureAdapter) adapter ).getSchema();
+                    featureTypes.put( ft.getName(), ft );
+                    PropertyType[] propertyTypes = ft.getProperties();
+                    fa.getDistinctPropertyValues( properties, geometryProperties, propertyTypes );
+                    isOther = true;
+                } else if ( adapter instanceof FeatureAdapter ) {
                     adapter.refresh();
                     FeatureType ft = ( (FeatureAdapter) adapter ).getSchema();
                     featureTypes.put( ft.getName(), ft );
                     PropertyType[] propertyTypes = ft.getProperties();
+
                     for ( PropertyType type : propertyTypes ) {
                         if ( type.getType() != Types.GEOMETRY ) {
                             FeatureCollection fc = ( (FeatureAdapter) adapter ).getFeatureCollection();
@@ -419,8 +437,7 @@ public class LayerCache {
             // if the datasource changes, the properties have to be refreshed!
             if ( ( event instanceof LayerChangedEvent )
                  && ( ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceAdded )
-                      || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceRemoved ) || ( (LayerChangedEvent) event ).getChangeType().equals(
-                                                                                                                                                                              LAYER_CHANGE_TYPE.datasourceChanged ) ) ) {
+                      || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceRemoved ) || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceChanged ) ) ) {
                 refreshPropertyValues();
             }
         }
