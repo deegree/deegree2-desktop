@@ -420,15 +420,11 @@
       <artifactId>deegree2-oracle</artifactId>
       <version>2.6-pre1-SNAPSHOT</version>
     </dependency>
+    <!-- the source for this specific 'release' can be found at https://github.com/hwbllmnn/GeoRegression/tags (it's the deegreedesktop1 tag) -->
     <dependency>
-      <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-      <artifactId>ejml</artifactId>
-      <version>0.18</version>
-    </dependency>
-    <dependency>
-      <groupId>georegression</groupId>
+      <groupId>org.georegression</groupId>
       <artifactId>georegression</artifactId>
-      <version>2012-04-12-SNAPSHOT</version>
+      <version>deegreedesktop1</version>
     </dependency>
   </dependencies>
 </project>
