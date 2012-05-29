@@ -126,7 +126,7 @@ public class AddFileSummary extends WizardDialog implements ActionListener {
     private static String[] crsList;
 
     static {
-        if ( crsList == null ) {            
+        if ( crsList == null ) {
             crsList = CRSUtils.getAvailableEPSGCodesAsArray();
         }
     }
@@ -363,7 +363,9 @@ public class AddFileSummary extends WizardDialog implements ActionListener {
         ++formGbc.gridy;
         formGbc.gridx = 0;
         formGbc.gridwidth = 1;
-        formPanel.add( this.cbLazyLoading, formGbc );
+        if ( !datasourceName.equals( AddLayerFrame.FILE_RASTER ) ) {
+            formPanel.add( this.cbLazyLoading, formGbc );
+        }
 
         addFieldPanel.add( formPanel, gbc );
 
@@ -407,11 +409,9 @@ public class AddFileSummary extends WizardDialog implements ActionListener {
                                                                            this.dsScaleDenomPanel.getMinScaleDenominator(),
                                                                            this.dsScaleDenomPanel.getMaxScaleDenominator(),
                                                                            this.cbLazyLoading.isSelected(), crs );
-                    final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor(
-                                                                                                appContainer.getViewPlatform(),
+                    final ProcessMonitor pm = ProcessMonitorFactory.createDialogProcessMonitor( appContainer.getViewPlatform(),
                                                                                                 Messages.get( "$MD11211" ),
-                                                                                                Messages.get(
-                                                                                                              "$MD11212",
+                                                                                                Messages.get( "$MD11212",
                                                                                                               file.getName() ),
                                                                                                 0, -1, command );
                     command.setProcessMonitor( pm );
