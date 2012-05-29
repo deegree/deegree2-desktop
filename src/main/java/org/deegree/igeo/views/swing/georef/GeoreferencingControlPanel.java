@@ -334,6 +334,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         File file = null;
         Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
         List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+        ff.add( new IGeoFileFilter( "csv", "pkt", "pas" ) );
         file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.externalResource, appContainer,
                                                   ( (IGeoDesktop) appContainer ).getMainWndow(), prefs, "georefCsv", ff );
 
@@ -354,6 +355,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         File file = null;
         Preferences prefs = Preferences.userNodeForPackage( GeoreferencingControlPanel.class );
         List<IGeoFileFilter> ff = new ArrayList<IGeoFileFilter>();
+        ff.add( new IGeoFileFilter( "csv", "pkt", "pas" ) );
         file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.geoDataFile, appContainer,
                                                   ( (IGeoDesktop) appContainer ).getMainWndow(), prefs, "georefCsv", ff );
 
