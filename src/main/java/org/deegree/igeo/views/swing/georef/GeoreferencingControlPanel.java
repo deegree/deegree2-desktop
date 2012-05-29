@@ -71,22 +71,31 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
+import javax.xml.bind.JAXBElement;
 
 import org.apache.poi.util.IOUtils;
+import org.deegree.graphics.sld.SLDFactory;
+import org.deegree.graphics.sld.StyledLayerDescriptor;
+import org.deegree.graphics.sld.UserStyle;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.GeoRefCommand;
 import org.deegree.igeo.commands.model.AddFileLayerCommand;
 import org.deegree.igeo.commands.model.ZoomCommand;
+import org.deegree.igeo.config.DirectStyleType;
 import org.deegree.igeo.config.EnvelopeType;
 import org.deegree.igeo.config.LayerType.MetadataURL;
 import org.deegree.igeo.config.MemoryDatasourceType;
+import org.deegree.igeo.config.ObjectFactory;
+import org.deegree.igeo.config.StyleType;
 import org.deegree.igeo.config.ToolbarEntryType;
 import org.deegree.igeo.desktop.IGeoDesktop;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Datasource;
+import org.deegree.igeo.mapmodel.DirectStyle;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.mapmodel.MemoryDatasource;
+import org.deegree.igeo.mapmodel.NamedStyle;
 import org.deegree.igeo.mapmodel.SystemLayer;
 import org.deegree.igeo.modules.DefaultMapModule;
 import org.deegree.igeo.modules.georef.AffineTransformation;
@@ -566,6 +575,52 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         newLayer.setEditable( false );
         newLayer.setVisibleInLayerTree( false );
         newLayer.setVisible( true );
+
+        List<StyleType> styleTypes = new ArrayList<StyleType>();
+        StyleType st = new StyleType();
+        DirectStyleType dst = new DirectStyleType();
+        String litSld = "<?xml version=\"1.0\"?>"
+                        + "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\">"
+                        + "  <NamedLayer>"
+                        + "    <Name>georef</Name>"
+                        + "    <UserStyle xmlns=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">"
+                        + "      <Name>default</Name>" + "      <Title>default</Title>"
+                        + "      <Abstract>default3</Abstract>" + "      <FeatureTypeStyle>"
+                        + "        <Title>Regel 1</Title>" + "        <Rule>" + "          <Name>default</Name>"
+                        + "          <Title>default</Title>" + "          <Abstract>default</Abstract>"
+                        + "          <MinScaleDenominator>0.0</MinScaleDenominator>"
+                        + "          <MaxScaleDenominator>1.0E9</MaxScaleDenominator>" + "          <PointSymbolizer>"
+                        + "            <Graphic>" + "              <Mark>"
+                        + "                <WellKnownName>x</WellKnownName>" + "                <Fill>"
+                        + "                  <CssParameter name=\"fill\">#808080</CssParameter>"
+                        + "                  <CssParameter name=\"fill-opacity\">1.0</CssParameter>"
+                        + "                </Fill>" + "                <Stroke>"
+                        + "                  <CssParameter name=\"stroke\">#000000</CssParameter>"
+                        + "                </Stroke>" + "              </Mark>"
+                        + "              <Opacity>1.0</Opacity>" + "              <Size>20.0</Size>"
+                        + "              <Rotation>0.0</Rotation>" + "            </Graphic>"
+                        + "          </PointSymbolizer>" + "        </Rule>" + "      </FeatureTypeStyle>"
+                        + "    </UserStyle>" + "  </NamedLayer>" + "</StyledLayerDescriptor>";
+
+        dst.setSld( litSld );
+        JAXBElement<DirectStyleType> dsjx = new ObjectFactory().createDirectStyle( dst );
+        st.setNamedStyle( dsjx );
+        dst.setCurrent( true );
+
+        styleTypes.add( st );
+
+        StyledLayerDescriptor sld = null;
+        try {
+            sld = SLDFactory.createSLD( litSld );
+            NamedStyle nStyle = new DirectStyle( dst, (UserStyle) sld.getNamedLayers()[0].getStyles()[0], newLayer );
+            nStyle.setCurrent( true );
+            ArrayList<NamedStyle> styles = new ArrayList<NamedStyle>();
+            styles.add( nStyle );
+            newLayer.setStyles( styles );
+        } catch ( Throwable e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         mm.insert( newLayer, mm.getLayerGroups().get( 0 ), null, true );
         return newLayer;
