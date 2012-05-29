@@ -98,6 +98,10 @@ public class ControlPointModel extends AbstractTableModel {
 
     private Layer leftLayer, rightLayer;
 
+    public ControlPointModel() {
+        newPoint();
+    }
+
     public void updateMaps( MapModel left, Layer leftLayer, MapModel right, Layer rightLayer ) {
         this.left = left;
         this.leftLayer = leftLayer;
@@ -171,15 +175,33 @@ public class ControlPointModel extends AbstractTableModel {
         switch ( columnIndex ) {
         case 0:
             p.x0 = val;
+            if ( p.y0 == null ) {
+                p.y0 = 0d;
+            }
             break;
         case 1:
             p.y0 = val;
+            if ( p.x0 == null ) {
+                p.x0 = 0d;
+            }
             break;
         case 2:
             p.x1 = val;
+            if ( p.y1 == null ) {
+                p.y1 = 0d;
+            }
+            if ( rowIndex == points.size() - 1 ) {
+                newPoint();
+            }
             break;
         case 3:
             p.y1 = val;
+            if ( p.x1 == null ) {
+                p.y1 = null;
+            }
+            if ( rowIndex == points.size() - 1 ) {
+                newPoint();
+            }
             break;
         }
         updateMaps();
