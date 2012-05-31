@@ -37,6 +37,8 @@
  ---------------------------------------------------------------------------*/
 package org.deegree.igeo.views.swing.map;
 
+import static java.awt.Color.WHITE;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -182,7 +184,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
     public void paint( Graphics g ) {
         // clear the background
         // seems to be crazy - but works...
-        ( (Graphics2D) g ).setBackground( getBackground() );
+        ( (Graphics2D) g ).setBackground( WHITE );
         g.clearRect( 0, 0, this.mapModel.getTargetDevice().getPixelWidth(),
                      this.mapModel.getTargetDevice().getPixelHeight() );
         super.paint( g );
@@ -324,8 +326,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                 privateFooter.addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(), mapCoordsLabel ) );
             } else if ( appContainer.getFooter() != null
                         && !appContainer.getFooter().hasEntry( getMmcFooterentryName() ) ) {
-                appContainer.getFooter().addEntry(
-                                                   new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
+                appContainer.getFooter().addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
                                                                                   mapCoordsLabel ) );
             }
         } else {
@@ -333,10 +334,9 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                 privateFooter.addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(), mapCoordsLabel ) );
             } else if ( appContainer.getFooter() != null
                         && !appContainer.getFooter().hasEntry( getMmcFooterentryName() ) ) {
-                appContainer.getFooter().addEntry(
-                                                   new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
+                appContainer.getFooter().addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
                                                                                   mapCoordsLabel ) );
-            }            
+            }
         }
         mapCoordsLabel.updateCRSList();
 
@@ -606,7 +606,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
 
         @Override
         public void keyPressed( KeyEvent e ) {
-            
+
             EnvelopeImpl tmp = (EnvelopeImpl) mapModel.getEnvelope();
             Envelope env = (Envelope) tmp.clone();
             Settings settings = appContainer.getSettings();
@@ -669,7 +669,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                     DialogFactory.openErrorDialog( appContainer.getViewPlatform(), DefaultMapComponent.this,
                                                    Messages.getMessage( getLocale(), "$MD11253" ),
                                                    Messages.getMessage( getLocale(), "$MD11252", env ), ex );
-            }
+                }
             }
 
         }
@@ -696,7 +696,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
         public void mouseExited( MouseEvent e ) {
             requestFocusInWindow( false );
         }
-        
+
     }
 
     /**
