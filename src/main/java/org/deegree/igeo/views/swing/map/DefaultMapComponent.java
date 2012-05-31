@@ -207,6 +207,12 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
         for ( int i = 0; i < comps.length; i++ ) {
             if ( comps[i] instanceof LayerComponent ) {
                 LayerPane lp = ( (LayerComponent) comps[i] ).getLayerPane();
+                if ( mapModel.getLayerByIdentifier( lp.getLayer().getIdentifier() ) == null ) {
+                    // this is necessary to ensure proper gc!
+                    lp.getLayer().destroy();
+                    mapModel.removeChangeListener( lp );
+                    continue;
+                }
                 panes.put( lp.getLayer().getIdentifier().getAsQualifiedString(), lp );
                 images.put( lp.getLayer().getIdentifier().getAsQualifiedString(),
                             ( (LayerComponent) comps[i] ).getImage() );

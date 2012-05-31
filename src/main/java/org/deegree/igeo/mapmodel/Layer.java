@@ -1052,9 +1052,18 @@ public class Layer implements MapModelEntry {
      * Can be used to convert a collection of layers to a collection of its titles.
      */
     public static final Mapper<String, Layer> ToTitles = new Mapper<String, Layer>() {
+        @Override
         public String apply( Layer u ) {
             return u.getTitle();
         }
     };
+
+    public void destroy() {
+        listeners = null;
+        for ( DataAccessAdapter da : this.dataAccess ) {
+            da.removeChangeListener( this );
+        }
+        dataAccess = null;
+    }
 
 }

@@ -259,13 +259,7 @@ public class LayerPane implements ChangeListener {
             }
 
         } else if ( event instanceof MapModelChangedEvent ) {
-            CHANGE_TYPE ct = ( (MapModelChangedEvent) event ).getChangeType();
-            switch ( ct ) {
-            case crsChanged:
-            case targetDeviceChanged: {
-                valid = false;
-            }
-            }
+            valid = false;
         }
 
     }
