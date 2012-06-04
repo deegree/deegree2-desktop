@@ -131,21 +131,21 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         if ( nativeCRS.equals( "-1" ) ) {
             query.append( " (" );
             query.append( datasource.getGeometryFieldName() );
-            query.append( " && SetSRID( ?, -1) " );
-            query.append( " AND intersects(" );
+            query.append( " && ST_SetSRID( ?, -1) " );
+            query.append( " AND ST_Intersects(" );
             query.append( datasource.getGeometryFieldName() );
-            query.append( ",SetSRID( ?,-1 ) ) ) " );
+            query.append( ",ST_SetSRID( ?,-1 ) ) ) " );
         } else {
             // use the bbox operator (&&) to filter using the spatial index
             query.append( " (" );
             query.append( datasource.getGeometryFieldName() );
-            query.append( " && transform(SetSRID( ?, " );
+            query.append( " && ST_Transform(ST_SetSRID( ?, " );
             query.append( envCRS );
             query.append( "), " );
             query.append( nativeCRS );
-            query.append( ")) AND intersects(" );
+            query.append( ")) AND ST_Intersects(" );
             query.append( datasource.getGeometryFieldName() );
-            query.append( ",transform(?, " );
+            query.append( ",ST_Transform(?, " );
             query.append( nativeCRS );
             query.append( "))" );
         }
