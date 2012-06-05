@@ -173,7 +173,7 @@ public class MeasurePanel extends JPanel {
 
         @Override
         public void mousePressed( MouseEvent e ) {
-            if ( drawingPane == null ) {
+            if ( drawingPane == null && mapTool.getState() instanceof MapState ) {
                 MapState ms = (MapState) mapTool.getState();
                 if ( ms instanceof MeasureDistanceState ) {
                     ( (MeasureDistanceState) ms ).setMeasureResultLabel( measureResultLabel );
