@@ -116,9 +116,16 @@ public class MeasureModule<T> extends DefaultModule<T> implements ChangeListener
         if ( e instanceof ActiveMapModelChanged ) {
             removeMeasurePanel();
             this.mapModule.getMapTool().resetState();
+            updateMapModuleAndChangeListener();
+        }
+    }
+
+    private void updateMapModuleAndChangeListener() {
+        DefaultMapModule<T> newMapModule = appContainer.getActiveMapModule();
+        if ( this.mapModule != newMapModule ) {
             this.mapModule.getMapTool().removeChangeListener( this );
-            this.mapModule = appContainer.getActiveMapModule();
-            this.mapModule.getMapTool().resetState();
+            this.mapModule = newMapModule;
+            // this.mapModule.getMapTool().resetState();
             this.mapModule.getMapTool().addChangeListener( this );
         }
     }
@@ -201,9 +208,7 @@ public class MeasureModule<T> extends DefaultModule<T> implements ChangeListener
     public void valueChanged( ValueChangedEvent event ) {
         removeMeasurePanel();
         if ( event instanceof MapStateChangedEvent ) {
-            this.mapModule.getMapTool().removeChangeListener( this );
-            this.mapModule = appContainer.getActiveMapModule();
-            this.mapModule.getMapTool().addChangeListener( this );
+            updateMapModuleAndChangeListener();
 
             MapModel mapModel = appContainer.getMapModel( null );
             MapStateChangedEvent mapStateEvent = (MapStateChangedEvent) event;
