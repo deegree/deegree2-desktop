@@ -139,8 +139,6 @@ public class Layer implements MapModelEntry {
 
     private LayerType layerType;
 
-    private int fHashCode;
-
     /**
      * 
      * @param owner
@@ -1060,10 +1058,12 @@ public class Layer implements MapModelEntry {
 
     public void destroy() {
         listeners = null;
-        for ( DataAccessAdapter da : this.dataAccess ) {
-            da.removeChangeListener( this );
+        if ( dataAccess != null ) {
+            for ( DataAccessAdapter da : this.dataAccess ) {
+                da.removeChangeListener( this );
+            }
+            dataAccess = null;
         }
-        dataAccess = null;
     }
 
 }
