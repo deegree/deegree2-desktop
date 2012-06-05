@@ -52,6 +52,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
@@ -86,6 +87,7 @@ import org.deegree.framework.xml.XMLFragment;
 import org.deegree.framework.xml.XMLTools;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.commands.VectorPrintCommand;
 import org.deegree.igeo.commands.VectorPrintCommand.PrintDescriptionBean;
 import org.deegree.igeo.commands.model.AddMemoryLayerCommand;
@@ -125,7 +127,7 @@ import com.lowagie.text.Rectangle;
  * 
  * @version $Revision$, $Date$
  */
-public class VectorPrintDialog extends javax.swing.JDialog {
+public class VectorPrintDialog extends javax.swing.JDialog implements org.deegree.igeo.ChangeListener {
 
     private static final long serialVersionUID = -3920635540202430586L;
 
@@ -239,6 +241,8 @@ public class VectorPrintDialog extends javax.swing.JDialog {
 
     private Point pressPoint;
 
+    private boolean isActive = false;
+
     /**
      * 
      * @param frame
@@ -247,7 +251,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         super( frame );
         this.appContainer = appContainer;
         this.mapModel = appContainer.getMapModel( null );
-        MapTool<Container> mt = getAssignedMapModule().getMapTool();
+        final MapTool<Container> mt = getAssignedMapModule().getMapTool();
         mt.resetState();
         addWindowListener( new WindowAdapter() {
 
@@ -258,6 +262,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                 Container jco = mapModule.getMapContainer();
                 jco.removeMouseListener( ml );
                 jco.removeMouseMotionListener( mml );
+                mt.removeChangeListener( VectorPrintDialog.this );
             }
 
             @Override
@@ -267,6 +272,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                 Container jco = mapModule.getMapContainer();
                 jco.removeMouseListener( ml );
                 jco.removeMouseMotionListener( mml );
+                mt.removeChangeListener( VectorPrintDialog.this );
             }
         } );
         initGUI();
@@ -419,7 +425,8 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                GridBagConstraints.CENTER,
                                                                                GridBagConstraints.BOTH,
                                                                                new Insets( 0, 0, 0, 0 ), 0, 0 ) );
-                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),"$MD11848" ) ) );
+                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                           "$MD11848" ) ) );
                         {
                             lb1 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
                             pnLayoutPosition.add( lb1, new GridBagConstraints( 2, 0, 1, 1, 0.0, 0.0,
@@ -675,7 +682,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
                                                                                GridBagConstraints.WEST,
                                                                                GridBagConstraints.HORIZONTAL,
                                                                                new Insets( 0, 9, 0, 15 ), 0, 0 ) );
-                            
+
                             // height
                             lbPageHeight = new JLabel( Messages.getMessage( getLocale(), "$MD11830" ) );
                             pnFormat.add( lbPageHeight, new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0,
@@ -833,9 +840,28 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         }
 
         DefaultMapModule<Container> mapModule = getAssignedMapModule();
-        Container jco = mapModule.getMapContainer();
+        final Container jco = mapModule.getMapContainer();
         jco.addMouseListener( ml );
         jco.addMouseMotionListener( mml );
+        isActive = true;
+        final MapTool<Container> mapTool = getAssignedMapModule().getMapTool();
+        mapTool.addChangeListener( this );
+
+        addWindowFocusListener( new WindowFocusListener() {
+
+            @Override
+            public void windowLostFocus( WindowEvent e ) {
+            }
+
+            @Override
+            public void windowGainedFocus( WindowEvent e ) {
+                mapTool.resetState();
+                // it is required to add the listeners again, cause it seems some other module removes all...
+                jco.addMouseListener( ml );
+                jco.addMouseMotionListener( mml );
+                isActive = true;
+            }
+        } );
     }
 
     private int inPt( int inMM ) {
@@ -1051,8 +1077,8 @@ public class VectorPrintDialog extends javax.swing.JDialog {
 
             spHeight.setValue( ah );
             spWidth.setValue( aw );
-            spLeft.setValue(  al  );
-            spTop.setValue( at  );
+            spLeft.setValue( al );
+            spTop.setValue( at );
             cbDPI.setSelectedItem( new Integer( dpi ) );
             spMapLeft.setValue( new Double( ml ) );
             spMapBottom.setValue( new Double( mb ) );
@@ -1155,7 +1181,7 @@ public class VectorPrintDialog extends javax.swing.JDialog {
             return (DefaultMapModule<Container>) list.get( 0 );
         } else {
             for ( Object iModule : list ) {
-                String t = ( (IModule) iModule ).getInitParameter( "assignedMapModel" );
+                String t = ( (IModule<?>) iModule ).getInitParameter( "assignedMapModel" );
                 if ( t != null && t.equals( appContainer.getMapModel( null ).getIdentifier().getValue() ) ) {
                     return (DefaultMapModule<Container>) iModule;
                 }
@@ -1180,6 +1206,11 @@ public class VectorPrintDialog extends javax.swing.JDialog {
         if ( mapModel.exists( previewLayer.getIdentifier() ) ) {
             mapModel.remove( previewLayer );
         }
+    }
+
+    @Override
+    public void valueChanged( ValueChangedEvent event ) {
+        isActive = false;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1251,38 +1282,45 @@ public class VectorPrintDialog extends javax.swing.JDialog {
 
         @Override
         public void mousePressed( MouseEvent e ) {
-            GeoTransform gt = mapModel.getToTargetDeviceTransformation();
-            double x = gt.getSourceX( e.getX() );
-            double y = gt.getSourceY( e.getY() );
-            pressPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+            if ( isActive ) {
+                GeoTransform gt = mapModel.getToTargetDeviceTransformation();
+                double x = gt.getSourceX( e.getX() );
+                double y = gt.getSourceY( e.getY() );
+                pressPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+            }
         }
 
         @Override
         public void mouseReleased( MouseEvent e ) {
-            GeoTransform gt = mapModel.getToTargetDeviceTransformation();
-            double x = gt.getSourceX( e.getX() );
-            double y = gt.getSourceY( e.getY() );
-            Point releasePoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
-            double dx = releasePoint.getX() - pressPoint.getX();
-            double dy = releasePoint.getY() - pressPoint.getY();
-            spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
-            spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
-            updatePreview();
+            if ( isActive ) {
+                GeoTransform gt = mapModel.getToTargetDeviceTransformation();
+                double x = gt.getSourceX( e.getX() );
+                double y = gt.getSourceY( e.getY() );
+                Point releasePoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+                double dx = releasePoint.getX() - pressPoint.getX();
+                double dy = releasePoint.getY() - pressPoint.getY();
+                spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
+                spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
+                updatePreview();
+            }
         }
     }
 
     private class PrintMouseMotionListener extends MouseMotionAdapter {
+
         @Override
         public void mouseDragged( MouseEvent e ) {
-            GeoTransform gt = mapModel.getToTargetDeviceTransformation();
-            double x = gt.getSourceX( e.getX() );
-            double y = gt.getSourceY( e.getY() );
-            Point dragPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
-            double dx = dragPoint.getX() - pressPoint.getX();
-            double dy = dragPoint.getY() - pressPoint.getY();
-            spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
-            spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
-            pressPoint = dragPoint;
+            if ( isActive ) {
+                GeoTransform gt = mapModel.getToTargetDeviceTransformation();
+                double x = gt.getSourceX( e.getX() );
+                double y = gt.getSourceY( e.getY() );
+                Point dragPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+                double dx = dragPoint.getX() - pressPoint.getX();
+                double dy = dragPoint.getY() - pressPoint.getY();
+                spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
+                spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
+                pressPoint = dragPoint;
+            }
         }
     }
 
