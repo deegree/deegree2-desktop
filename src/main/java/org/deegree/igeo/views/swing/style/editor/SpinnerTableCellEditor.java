@@ -42,10 +42,13 @@ import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.text.DefaultFormatter;
 
 import org.deegree.datatypes.QualifiedName;
 
@@ -65,13 +68,19 @@ public class SpinnerTableCellEditor extends AbstractCellEditor implements TableC
     private JSpinner spinner;
 
     public SpinnerTableCellEditor( int value, int min, int max, int step ) {
-        SpinnerNumberModel spinnerModel = new SpinnerNumberModel( value, min, max, step );
-        spinner = new JSpinner( spinnerModel );
+        this( new SpinnerNumberModel( value, min, max, step ) );
     }
 
     public SpinnerTableCellEditor( double value, double min, double max, double step ) {
-        SpinnerNumberModel spinnerModel = new SpinnerNumberModel( value, min, max, step );
+        this( new SpinnerNumberModel( value, min, max, step ) );
+    }
+
+    public SpinnerTableCellEditor( SpinnerNumberModel spinnerModel ) {
         spinner = new JSpinner( spinnerModel );
+        JComponent comp = spinner.getEditor();
+        JFormattedTextField field = (JFormattedTextField) comp.getComponent( 0 );
+        DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+        formatter.setCommitsOnValidEdit( true );
     }
 
     public Component getTableCellEditorComponent( JTable table, Object value, boolean isSelected, int row, int column ) {
