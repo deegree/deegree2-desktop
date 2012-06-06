@@ -237,7 +237,7 @@ public class PolygonVisualPropertyPerformer extends AbstractVisualPropertyPerfor
         Stroke stroke = new Stroke( strokeParams, null, null );
         stroke.setLineCap( this.lineCap );
         stroke.setLineJoin( this.lineJoin );
-        if ( dashArray != null ) {
+        if ( !SldValues.isContinous( dashArray ) ) {
             stroke.setDashArray( this.dashArray );
         }
         return stroke;

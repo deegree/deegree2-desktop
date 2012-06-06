@@ -106,7 +106,9 @@ public class SldFromClassification<U extends Comparable<U>> {
 
             stroke.setOpacity( v );
             stroke.setStroke( row.getLineColor() );
-            stroke.setDashArray( row.getLineStyle().getDashArray() );
+            if ( row.getLineStyle() != null && !SldValues.isContinous( row.getLineStyle().getDashArray() ) ) {
+                stroke.setDashArray( row.getLineStyle().getDashArray() );
+            }
 
             PolygonSymbolizer ps = StyleFactory.createPolygonSymbolizer( stroke, getFill( row ) );
 
@@ -129,7 +131,8 @@ public class SldFromClassification<U extends Comparable<U>> {
             Symbol s = row.getSymbol();
             if ( s instanceof GraphicSymbol ) {
                 eg = StyleFactory.createExternalGraphic( ( (GraphicSymbol) s ).getUrl(),
-                                                         ( (GraphicSymbol) s ).getFormat(), ( (GraphicSymbol) s ).getName() );
+                                                         ( (GraphicSymbol) s ).getFormat(),
+                                                         ( (GraphicSymbol) s ).getName() );
             } else if ( s instanceof WellKnownMark ) {
                 wkm = StyleFactory.createMark( ( (WellKnownMark) s ).getSldName() );
                 wkm.setFill( getFill( row ) );
@@ -180,7 +183,7 @@ public class SldFromClassification<U extends Comparable<U>> {
             if ( row.getLineCap() != null ) {
                 stroke.setLineCap( row.getLineCap().getTypeCode() );
             }
-            if ( row.getLineStyle() != null ) {
+            if ( row.getLineStyle() != null && !SldValues.isContinous( row.getLineStyle().getDashArray() ) ) {
                 stroke.setDashArray( row.getLineStyle().getDashArray() );
             }
             LineSymbolizer ls = StyleFactory.createLineSymbolizer( stroke );
@@ -220,12 +223,13 @@ public class SldFromClassification<U extends Comparable<U>> {
             // placement
             ParameterValueType[] pvtAnchorPoint = null;
             Object anchorPointValue = row.getValue( COLUMNTYPE.ANCHORPOINT );
-            if ( anchorPointValue instanceof Pair<?, ?> && ( (Pair) anchorPointValue ).first instanceof PropertyName
-                 && ( (Pair) anchorPointValue ).second instanceof PropertyName ) {
+            if ( anchorPointValue instanceof Pair<?, ?>
+                 && ( (Pair<?, ?>) anchorPointValue ).first instanceof PropertyName
+                 && ( (Pair<?, ?>) anchorPointValue ).second instanceof PropertyName ) {
 
                 pvtAnchorPoint = new ParameterValueType[] {
-                                                           StyleFactory.createParameterValueType( new Expression[] { (PropertyName) ( (Pair) anchorPointValue ).first } ),
-                                                           StyleFactory.createParameterValueType( new Expression[] { (PropertyName) ( (Pair) anchorPointValue ).second } ) };
+                                                           StyleFactory.createParameterValueType( new Expression[] { (PropertyName) ( (Pair<?, ?>) anchorPointValue ).first } ),
+                                                           StyleFactory.createParameterValueType( new Expression[] { (PropertyName) ( (Pair<?, ?>) anchorPointValue ).second } ) };
             } else if ( anchorPointValue instanceof Point2d ) {
                 ParameterValueType pvtAnchorX = new ParameterValueType(
                                                                         new Object[] { ( (Point2d) anchorPointValue ).x } );
@@ -237,8 +241,8 @@ public class SldFromClassification<U extends Comparable<U>> {
             ParameterValueType[] pvtDisplacementPoint = null;
             Object displacementPointValue = row.getValue( COLUMNTYPE.DISPLACEMENT );
             if ( displacementPointValue instanceof Pair<?, ?>
-                 && ( (Pair) displacementPointValue ).first instanceof PropertyName
-                 && ( (Pair) displacementPointValue ).second instanceof PropertyName ) {
+                 && ( (Pair<?, ?>) displacementPointValue ).first instanceof PropertyName
+                 && ( (Pair<?, ?>) displacementPointValue ).second instanceof PropertyName ) {
                 Pair<PropertyName, PropertyName> pair = (Pair<PropertyName, PropertyName>) displacementPointValue;
                 ParameterValueType pvtAnchorX;
                 ParameterValueType pvtAnchorY;
@@ -306,7 +310,7 @@ public class SldFromClassification<U extends Comparable<U>> {
      * @param value
      * @param isInPixel
      */
-    private void addParameter( Map<String, CssParameter> params, String name, Object value, boolean isInPixel) {
+    private void addParameter( Map<String, CssParameter> params, String name, Object value, boolean isInPixel ) {
         if ( value != null ) {
             if ( !isInPixel && ( value instanceof Integer || value instanceof Double || value instanceof PropertyName ) ) {
                 ParameterValueType pvt = null;

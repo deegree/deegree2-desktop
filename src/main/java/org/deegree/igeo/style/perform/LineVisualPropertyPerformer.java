@@ -37,6 +37,8 @@
 
 package org.deegree.igeo.style.perform;
 
+import static org.deegree.igeo.style.model.SldValues.isContinous;
+
 import java.awt.Color;
 import java.util.HashMap;
 
@@ -120,11 +122,12 @@ public class LineVisualPropertyPerformer extends AbstractVisualPropertyPerformer
         Stroke stroke = new Stroke( params, null, null );
         stroke.setLineCap( this.lineCap );
 
-        if ( dashArray != null ) {
-            stroke.setDashArray( this.dashArray );
+        if ( !isContinous( dashArray ) ) {
+            stroke.setDashArray( dashArray );
         }
         return StyleFactory.createLineSymbolizer( stroke );
     }
+
 
     public void update( StyleChangedEvent changeEvent ) {
         Object value = changeEvent.getValue();

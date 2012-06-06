@@ -495,4 +495,8 @@ public class SldValues {
         return ( 100d - opacityInPercent ) / 100d;
     }
 
+    public static boolean isContinous( float[] dashArray ) {
+        return dashArray == null || ( dashArray.length == 2 && dashArray[0] == 1 && dashArray[1] == 0 );
+    }
+
 }
