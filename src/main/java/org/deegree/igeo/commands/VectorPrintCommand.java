@@ -116,11 +116,6 @@ public class VectorPrintCommand extends AbstractCommand {
 
         java.awt.Rectangle rect = getCanvasSize();
         g.setClip( rect.x, rect.y, rect.width, rect.height );
-        if ( LOG.getLevel() == ILogger.LOG_DEBUG ) {
-            // show canvas as yellow rectangle
-            g.setColor( Color.yellow );
-            g.fillRect( rect.x, rect.y, rect.width, rect.height );
-        }
 
         MapModel mm = appContainer.getMapModel( null );
         Envelope originalExtent = mm.getEnvelope();
