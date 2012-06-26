@@ -221,10 +221,11 @@ public class EditSymbollibraryPanel extends JPanel implements ActionListener {
     }
 
     private void selectFile() {
+        Preferences preferences = Preferences.userNodeForPackage( EditSymbollibraryPanel.class );
         File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.image,
                                                        null,
                                                        this,
-                                                       Preferences.systemNodeForPackage( EditSymbollibraryPanel.class ),
+                                                       preferences,
                                                        "lastSelectSymbol", IGeoFileFilter.IMAGES );
         if ( file != null ) {
             try {

@@ -369,8 +369,9 @@ public class FillGraphicPanel extends JPanel implements ActionListener {
      */
     public void actionPerformed( ActionEvent event ) {
         if ( event.getSource() == selectGraphicBt ) {
+            Preferences preferences = Preferences.userNodeForPackage( FillGraphicPanel.class );
             File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.image, null, this,
-                                                           Preferences.systemNodeForPackage( FillGraphicPanel.class ),
+                                                           preferences,
                                                            "lastSelectGraphic", IGeoFileFilter.IMAGES );
             if ( file != null ) {
                 try {
