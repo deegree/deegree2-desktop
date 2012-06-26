@@ -182,6 +182,7 @@ public class SymbolPanel extends JPanel implements ActionListener {
     }
 
     private void updateSymbolMarkCB() {
+        Object selectedItem = markCB.getSelectedItem();
         markCB.removeAllItems();
         for ( WellKnownMark mark : SldValues.getWellKnownMarks() ) {
             markCB.addItem( mark );
@@ -194,6 +195,8 @@ public class SymbolPanel extends JPanel implements ActionListener {
             for ( GraphicSymbol gs : values ) {
                 markCB.addItem( gs );
             }
+            if ( selectedItem != null )
+                markCB.setSelectedItem( selectedItem );
         } catch ( MalformedURLException e ) {
             JOptionPane.showMessageDialog( this, get( "$MD10788" ), get( "$DI10017" ), JOptionPane.ERROR_MESSAGE );
         }
@@ -215,6 +218,7 @@ public class SymbolPanel extends JPanel implements ActionListener {
             PanelDialog dlg = new PanelDialog( new EditSymbollibraryPanel( graphicOptions ), false );
             dlg.setLocationRelativeTo( this );
             dlg.setVisible( true );
+            updateSymbolMarkCB();
         }
     }
 
