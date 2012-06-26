@@ -54,7 +54,8 @@ import org.deegree.model.spatialschema.JTSAdapter;
 import com.vividsolutions.jts.io.WKBWriter;
 
 /**
- * TODO add class documentation here
+ * This is sqlserver specific conversion handling. Please have a careful look at the fix methods and the docs before
+ * changing anything.
  * 
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  * @author last edited by: $Author: lyn $
