@@ -38,7 +38,6 @@ package org.deegree.igeo.commands;
 import static org.deegree.framework.util.MapUtils.DEFAULT_PIXEL_SIZE;
 import static org.deegree.graphics.MapFactory.createMapView;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -109,6 +108,7 @@ public class VectorPrintCommand extends AbstractCommand {
      * 
      * @see org.deegree.kernel.Command#execute()
      */
+    @Override
     public void execute()
                             throws Exception {
 
@@ -159,6 +159,7 @@ public class VectorPrintCommand extends AbstractCommand {
         final List<Theme> themes = new ArrayList<Theme>();
         final MapModel mm = appContainer.getMapModel( null );
         mm.walkLayerTree( new MapModelVisitor() {
+            @Override
             public void visit( Layer layer )
                                     throws Exception {
                 double mis = layer.getMinScaleDenominator();
@@ -171,6 +172,7 @@ public class VectorPrintCommand extends AbstractCommand {
                 }
             }
 
+            @Override
             public void visit( LayerGroup layerGroup )
                                     throws Exception {
                 // not using grouping nodes
@@ -210,7 +212,6 @@ public class VectorPrintCommand extends AbstractCommand {
         PdfWriter writer = PdfWriter.getInstance( document, new FileOutputStream( printDefinition.getTargetFile() ) );
         writer.setPdfVersion( printDefinition.getPdfVersion() );
         document.open();
-        addMetaData( document );
         PdfContentByte cb = writer.getDirectContent();
 
         // create canvas
@@ -227,21 +228,11 @@ public class VectorPrintCommand extends AbstractCommand {
         return g;
     }
 
-    private void addMetaData( Document document ) {
-        // TODO
-        // read metadata from configuration or input dialog
-        // document.addTitle( "My first PDF" );
-        // document.addSubject( "Using iText" );
-        // document.addKeywords( "Java, PDF, iText" );
-        // document.addAuthor( "Lars Vogel" );
-        // document.addCreator( "Lars Vogel" );
-    }
-
     private int convert( double millimeter ) {
         return (int) Math.round( millimeter * printDefinition.getDpi() / 25.4 );
     }
 
-    private int convert_( double millimeter ) {
+    private static int convert_( double millimeter ) {
         return (int) Math.round( millimeter * 72 / 25.4 );
     }
 
@@ -258,6 +249,7 @@ public class VectorPrintCommand extends AbstractCommand {
      * 
      * @see org.deegree.kernel.Command#getName()
      */
+    @Override
     public QualifiedName getName() {
         return commandName;
     }
@@ -267,6 +259,7 @@ public class VectorPrintCommand extends AbstractCommand {
      * 
      * @see org.deegree.kernel.Command#getResult()
      */
+    @Override
     public Object getResult() {
         // TODO Auto-generated method stub
         return null;
