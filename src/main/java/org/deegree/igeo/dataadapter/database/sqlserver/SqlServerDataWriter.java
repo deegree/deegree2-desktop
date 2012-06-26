@@ -69,7 +69,7 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
     // handle sqlserver specific conversions (it seems java.util.Date values are not allowed as values for TIMESTAMP
     // fields)
     // there are probably other cases/versions where other conversions are necessary, this is the place to fix them!
-    private static Object fixDateOrTimestampValue( Object value, int sqlType ) {
+    protected static Object fixDateOrTimestampValue( Object value, int sqlType ) {
         if ( value instanceof java.util.Date && sqlType == Types.TIMESTAMP ) {
             return new Timestamp( ( (java.util.Date) value ).getTime() );
         }
