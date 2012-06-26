@@ -39,6 +39,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
@@ -64,6 +65,16 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
 
     private static final ILogger LOG = LoggerFactory.getLogger( SqlServerDataWriter.class );
 
+    // handle sqlserver specific conversions (it seems java.util.Date values are not allowed as values for TIMESTAMP
+    // fields)
+    // there are probably other cases/versions where other conversions are necessary, this is the place to fix them!
+    private static Object fixDateOrTimestampValue( Object value, int sqlType ) {
+        if ( value instanceof java.util.Date && sqlType == Types.TIMESTAMP ) {
+            return new Timestamp( ( (java.util.Date) value ).getTime() );
+        }
+        return value;
+    }
+
     @Override
     protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
                                   PropertyType[] pt, String tableName, Connection connection )
@@ -82,6 +93,7 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
                     stmt.setObject( index++, write );
                 } else {
                     if ( !ignoreValue( pt[i].getName().getLocalName(), tableName, connection ) ) {
+                        value = fixDateOrTimestampValue( value, pt[i].getType() );
                         stmt.setObject( index++, value, pt[i].getType() );
                     }
                 }
@@ -127,7 +139,7 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
         return super.getSqlSnippet( columnName, tableName, connection, datasource );
     }
 
-    private boolean ignoreValue( String columnName, String tableName, Connection connection ) {
+    private static boolean ignoreValue( String columnName, String tableName, Connection connection ) {
         ResultSet columns;
         try {
             columns = connection.getMetaData().getColumns( null, null, tableName, columnName );
