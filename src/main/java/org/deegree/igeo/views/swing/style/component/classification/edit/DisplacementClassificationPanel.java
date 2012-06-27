@@ -56,7 +56,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 /**
- * TODO add class documentation here
+ * {@link JPanel} to define the displacement in a classification.
  * 
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
@@ -79,7 +79,6 @@ public class DisplacementClassificationPanel extends JPanel {
 
     private DisplacementEditor displacementEditor;
 
-    @SuppressWarnings("unchecked")
     public DisplacementClassificationPanel( Object displacement, String title, List<QualifiedName> properties ) {
         this.title = title;
 
@@ -105,8 +104,8 @@ public class DisplacementClassificationPanel extends JPanel {
         displacementEditor = new DisplacementEditor();
         if ( displacement instanceof Pair<?, ?> ) {
             property.setSelected( true );
-            propertyCBx.setSelectedItem( ( (Pair) displacement ).first );
-            propertyCBy.setSelectedItem( ( (Pair) displacement ).second );
+            propertyCBx.setSelectedItem( ( (Pair<?, ?>) displacement ).first );
+            propertyCBy.setSelectedItem( ( (Pair<?, ?>) displacement ).second );
         } else if ( displacement instanceof Point2d ) {
             fixed.setSelected( true );
             displacementEditor.setValue( ( (Point2d) displacement ).x, ( (Point2d) displacement ).y );
