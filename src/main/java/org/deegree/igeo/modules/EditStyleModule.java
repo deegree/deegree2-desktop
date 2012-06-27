@@ -63,8 +63,6 @@ import org.deegree.igeo.views.swing.style.RuleDialog;
  */
 public class EditStyleModule<T> extends DefaultModule<T> {
 
-    private boolean isAppContainerSet = false;
-
     private Layer currentLayer;
 
     static {
@@ -88,11 +86,8 @@ public class EditStyleModule<T> extends DefaultModule<T> {
             this.componentStateAdapter.setClosed( false );
             this.createIView();
             Object view = this.getViewForm();
-            if ( !isAppContainerSet ) {
-                if ( view instanceof RuleDialog ) {
-                    ( (RuleDialog) view ).setApplicationContainer( appContainer );
-                }
-                isAppContainerSet = true;
+            if ( view instanceof RuleDialog ) {
+                ( (RuleDialog) view ).setApplicationContainer( appContainer );
             }
             if ( view instanceof JFrame ) {
                 ( (JFrame) view ).setVisible( true );
@@ -121,7 +116,7 @@ public class EditStyleModule<T> extends DefaultModule<T> {
     @SuppressWarnings("unchecked")
     public void editFeatureStyle() {
         // TODO
-        if ( appContainer.getViewPlatform().equalsIgnoreCase( "application" )) {
+        if ( appContainer.getViewPlatform().equalsIgnoreCase( "application" ) ) {
             EditFeatureStyleDialog.create( (EditStyleModule<Container>) this ).resetToolbar();
         }
     }

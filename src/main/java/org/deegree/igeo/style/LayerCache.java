@@ -70,7 +70,9 @@ import org.deegree.model.feature.FeatureCollection;
 import org.deegree.model.feature.FeatureProperty;
 import org.deegree.model.feature.schema.FeatureType;
 import org.deegree.model.feature.schema.PropertyType;
+import org.deegree.model.filterencoding.FilterEvaluationException;
 import org.deegree.model.spatialschema.Curve;
+import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.MultiCurve;
 import org.deegree.model.spatialschema.MultiPoint;
 import org.deegree.model.spatialschema.MultiSurface;
@@ -140,6 +142,25 @@ public class LayerCache {
     }
 
     /**
+     * Loads all properties in the passed extent.
+     * 
+     * @param layerId
+     *            the identifier of the layer
+     * @param extent
+     *            the extent limiting the layers.
+     * @return the properties of the layer with the given id in the extent, or an empty list, if no layer with the
+     *         identifier exist
+     * @throws FilterEvaluationException
+     */
+    public Map<QualifiedName, PropertyValue<?>> getProperties( Identifier layerId, Envelope extent ) {
+        CachedLayer layer = getCachedLayer( layerId );
+        if ( layer != null ) {
+            return layer.getProperties( extent );
+        }
+        return new HashMap<QualifiedName, PropertyValue<?>>();
+    }
+
+    /**
      * Loads all properties.
      * 
      * @param layerId
@@ -184,6 +205,8 @@ public class LayerCache {
 
         private Map<QualifiedName, PropertyValue<?>> properties = new HashMap<QualifiedName, PropertyValue<?>>();
 
+        private Map<Envelope, Map<QualifiedName, PropertyValue<?>>> extentToProperties = new HashMap<Envelope, Map<QualifiedName, PropertyValue<?>>>();
+
         private boolean refreshAllPropertiesRequested = true;
 
         private Map<QualifiedName, PropertyValue<?>> propertiesFullExtent = new HashMap<QualifiedName, PropertyValue<?>>();
@@ -208,6 +231,16 @@ public class LayerCache {
             if ( refreshRequested )
                 load();
             return properties;
+        }
+
+        /**
+         * @return the properties
+         */
+        public Map<QualifiedName, PropertyValue<?>> getProperties( Envelope extent ) {
+            if ( !extentToProperties.containsKey( extent ) ) {
+                load( extent );
+            }
+            return extentToProperties.get( extent );
         }
 
         /**
@@ -290,7 +323,7 @@ public class LayerCache {
                 geometryProperties.put( qn, GEOMTYPE.UNKNOWN );
                 for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
                     if ( adapter instanceof FeatureAdapter ) {
-                        FeatureProperty[] fts = ( (FeatureAdapter) adapter ).getFeatureCollection().getFeature( 0 ).getProperties( qn );
+                        FeatureProperty[] fts = getFeatureCollection( adapter, null ).getFeature( 0 ).getProperties( qn );
                         if ( fts != null && fts.length > 0 ) {
                             Object value = fts[0].getValue();
                             if ( value instanceof org.deegree.model.spatialschema.Point || value instanceof MultiPoint ) {
@@ -339,14 +372,18 @@ public class LayerCache {
             return adapter instanceof DatabaseFeatureAdapter && adapter.getDatasource().isLazyLoading();
         }
 
+        private void load() {
+            load( null );
+        }
+
         /**
          * Reads all properties available for the selected layer. If a property is not from type 'geometry', the
          * features of the property will read and all values stored (not the doubles!).
          * 
          * @param extent
          */
-        private void load() {
-            properties.clear();
+        private void load( Envelope extent ) {
+            resetProperties( extent );
             for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
 
                 if ( adapter instanceof FeatureAdapter ) {
@@ -357,7 +394,7 @@ public class LayerCache {
 
                     for ( PropertyType type : propertyTypes ) {
                         if ( type.getType() != Types.GEOMETRY ) {
-                            FeatureCollection fc = ( (FeatureAdapter) adapter ).getFeatureCollection();
+                            FeatureCollection fc = getFeatureCollection( adapter, extent );
                             int pt = type.getType();
 
                             switch ( pt ) {
@@ -381,7 +418,7 @@ public class LayerCache {
                                     }
                                     pv1.putInMap( stringValue );
                                 }
-                                properties.put( type.getName(), pv1 );
+                                insertInMap( type, pv1, extent );
                                 break;
                             case Types.BIGINT:
                                 PropertyValue<BigInteger> pv5 = new PropertyValue<BigInteger>( type );
@@ -399,7 +436,7 @@ public class LayerCache {
                                     }
                                     pv5.putInMap( intValue );
                                 }
-                                properties.put( type.getName(), pv5 );
+                                insertInMap( type, pv5, extent );
                                 break;
 
                             case Types.INTEGER:
@@ -419,7 +456,7 @@ public class LayerCache {
                                     }
                                     pv2.putInMap( intValue );
                                 }
-                                properties.put( type.getName(), pv2 );
+                                insertInMap( type, pv2, extent );
                                 break;
                             case Types.DOUBLE:
                             case Types.FLOAT:
@@ -448,7 +485,7 @@ public class LayerCache {
                                     }
                                     pv3.putInMap( doubleValue );
                                 }
-                                properties.put( type.getName(), pv3 );
+                                insertInMap( type, pv3, extent );
                                 break;
                             case Types.DATE:
                                 PropertyValue<Date> pv4 = new PropertyValue<Date>( type );
@@ -473,7 +510,7 @@ public class LayerCache {
                                     }
                                     pv4.putInMap( dateValue );
                                 }
-                                properties.put( type.getName(), pv4 );
+                                insertInMap( type, pv4, extent );
                                 break;
                             }
                         } else {
@@ -485,7 +522,42 @@ public class LayerCache {
                     isRaster = true;
                 }
             }
-            refreshRequested = false;
+            if ( extent == null ) {
+                refreshRequested = false;
+            }
+        }
+
+        private void insertInMap( PropertyType type, PropertyValue<?> pv, Envelope extent ) {
+            if ( extent != null ) {
+                extentToProperties.get( extent ).put( type.getName(), pv );
+            } else {
+                properties.put( type.getName(), pv );
+            }
+        }
+
+        private void resetProperties( Envelope extent ) {
+            if ( extent != null ) {
+                if ( extentToProperties.containsKey( extent ) ) {
+                    extentToProperties.get( extent ).clear();
+                } else {
+                    extentToProperties.put( extent, new HashMap<QualifiedName, PropertyValue<?>>() );
+                }
+            } else {
+                properties.clear();
+            }
+        }
+
+        private FeatureCollection getFeatureCollection( DataAccessAdapter adapter, Envelope extent ) {
+            if ( extent != null ) {
+                try {
+                    return ( (FeatureAdapter) adapter ).getFeatureCollection( extent );
+                } catch ( FilterEvaluationException e ) {
+                    LOG.logWarning( "Could not get limited FeatureCollection to extent " + extent + ": "
+                                    + e.getMessage() );
+                    return ( (FeatureAdapter) adapter ).getFeatureCollection();
+                }
+            }
+            return ( (FeatureAdapter) adapter ).getFeatureCollection();
         }
 
         @Override
@@ -496,6 +568,7 @@ public class LayerCache {
                       || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceRemoved ) || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceChanged ) ) ) {
                 refreshRequested = true;
                 refreshAllPropertiesRequested = true;
+                extentToProperties.clear();
             }
         }
     }

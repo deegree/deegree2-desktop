@@ -376,6 +376,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         StyleDialog styleDialog = assignedVisualPropPanel.getOwner();
         if ( fullDatabase.isSelected() ) {
             return styleDialog.getAllPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+        } else if ( extentDatabase.isSelected() ) {
+            return styleDialog.getExtentPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
         }
         return styleDialog.getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
     }

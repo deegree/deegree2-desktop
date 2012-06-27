@@ -78,6 +78,7 @@ import org.deegree.igeo.views.swing.util.IconRegistry;
 import org.deegree.model.Identifier;
 import org.deegree.model.feature.schema.FeatureType;
 import org.deegree.model.filterencoding.FilterEvaluationException;
+import org.deegree.model.spatialschema.Envelope;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -380,13 +381,25 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
     }
 
     /**
-     * 
      * @param name
      *            the qualified name of the property value
      * @return the property value with the given name
      */
     public PropertyValue<?> getPropertyValue( QualifiedName name ) {
         return getProperties().get( name );
+    }
+
+    /**
+     * @param selectedItem
+     * @return the property value with the given name in the current map extent
+     */
+    public PropertyValue<?> getExtentPropertyValue( QualifiedName name ) {
+        System.out.println("pppppp");
+        System.out.println(appContainer);
+        System.out.println(appContainer.getMapModel( null ));
+        System.out.println(appContainer.getMapModel( null ).getEnvelope());
+        Envelope extent = appContainer.getMapModel( null ).getEnvelope();
+        return LayerCache.getInstance().getProperties( layerId, extent ).get( name );
     }
 
     /**
