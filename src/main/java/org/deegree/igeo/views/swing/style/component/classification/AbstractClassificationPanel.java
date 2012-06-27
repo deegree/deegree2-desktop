@@ -60,6 +60,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -67,6 +68,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -89,6 +91,7 @@ import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.graphics.sld.Rule;
+import org.deegree.igeo.style.LayerCache.CachedLayer;
 import org.deegree.igeo.style.classification.ClassificationFromSld;
 import org.deegree.igeo.style.model.DashArray;
 import org.deegree.igeo.style.model.GraphicSymbol;
@@ -118,6 +121,7 @@ import org.deegree.igeo.style.model.classification.ValueRange;
 import org.deegree.igeo.views.swing.addlayer.QualifiedNameRenderer;
 import org.deegree.igeo.views.swing.style.SingleItem;
 import org.deegree.igeo.views.swing.style.SingleItemDisableComboBox;
+import org.deegree.igeo.views.swing.style.StyleDialog;
 import org.deegree.igeo.views.swing.style.StyleDialogUtils;
 import org.deegree.igeo.views.swing.style.VisualPropertyPanel;
 import org.deegree.igeo.views.swing.style.component.font.FontHelper;
@@ -207,6 +211,10 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
 
     private Histogram histogram;
 
+    private JRadioButton fullDatabase;
+
+    private JRadioButton extentDatabase;
+
     /**
      * 
      * @param assignedVisualPropPanel
@@ -268,7 +276,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         case Types.DOUBLE:
         case Types.FLOAT:
             setPropertyCB( propertyName );
-            PropertyValue<?> pvDouble = assignedVisualPropPanel.getOwner().getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+            PropertyValue<?> pvDouble = getPropertyValue();
             List<Intervallable<Double>> doubleData = getDoubleData( pvDouble );
             ThematicGroupingInformation<Double> tgiDouble = ClassificationFromSld.createDoubleClassification( rules,
                                                                                                               doubleData,
@@ -293,7 +301,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             break;
         case Types.DATE:
             setPropertyCB( propertyName );
-            PropertyValue<?> pvDate = assignedVisualPropPanel.getOwner().getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+            PropertyValue<?> pvDate = getPropertyValue();
             List<Intervallable<Date>> dateData = getDateData( pvDate );
             ThematicGroupingInformation<Date> tgiDate = ClassificationFromSld.createDateClassification( rules,
                                                                                                         dateData,
@@ -318,7 +326,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             break;
         case Types.VARCHAR:
             setPropertyCB( propertyName );
-            PropertyValue<?> pvString = assignedVisualPropPanel.getOwner().getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+            PropertyValue<?> pvString = getPropertyValue();
             List<Intervallable<String>> stringData = getStringData( pvString );
             ThematicGroupingInformation<String> tgiString = ClassificationFromSld.createStringClassification( rules,
                                                                                                               stringData,
@@ -362,6 +370,14 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         }
 
         status.setSelected( true );
+    }
+
+    private PropertyValue<?> getPropertyValue() {
+        StyleDialog styleDialog = assignedVisualPropPanel.getOwner();
+        if ( fullDatabase.isSelected() ) {
+            return styleDialog.getAllPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+        }
+        return styleDialog.getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
     }
 
     private <V extends Comparable<V>> ThematicGrouping<V> getGrouping( ThematicGroupingInformation<V> thematicGrouping ) {
@@ -479,6 +495,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             };
         } );
 
+        initDatabaseButtonGroup();
+
         classificationTypeCB.setSelectedItem( uniqueValue );
         isManual.setVisible( false );
 
@@ -554,7 +572,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         classesTable.setPreferredScrollableViewportSize( new Dimension( 150, 190 ) );
 
         // layout
-        FormLayout fl = new FormLayout( "10dlu, left:default:grow(0.1), default:grow(0.5), $rgap, default",
+        FormLayout fl = new FormLayout(
+                                        "10dlu, left:min:grow(0.2), min:grow(0.3), $rgap, min:grow(0.3), $rgap, min:grow(0.2)",
                                         "bottom:15dlu, $cpheight, $cpheight, $cpheight, default:grow(1.0), $cpheight" );
         DefaultFormBuilder builder = new DefaultFormBuilder( fl );
 
@@ -568,16 +587,45 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         builder.add( classificationTypeCB, cc.xy( 3, 2 ) );
         builder.add( isManual, cc.xy( 5, 2 ) );
         builder.addLabel( get( "$MD10722" ), cc.xy( 2, 3 ) );
-        builder.add( propertyCB, cc.xy( 3, 3 ) );
-        builder.add( openHistogramBt, cc.xy( 5, 3 ) );
+        builder.add( propertyCB, cc.xywh( 3, 3, 3, 1 ) );
+        builder.add( openHistogramBt, cc.xy( 5, 4 ) );
         builder.addLabel( get( "$MD10723" ), cc.xy( 2, 4 ) );
-        builder.add( numberOfClassesSpinner, cc.xyw( 3, 4, 3 ) );
-        builder.add( scrollPane, cc.xyw( 1, 5, 5 ) );
+        builder.add( numberOfClassesSpinner, cc.xy( 3, 4 ) );
+
+        builder.add( getDatabasePanel(), cc.xywh( 7, 2, 1, 3 ) );
+        builder.add( scrollPane, cc.xyw( 1, 5, 7 ) );
         builder.add( buildTableChangerButtonBar(), cc.xyw( 1, 6, 5, CellConstraints.CENTER, CellConstraints.BOTTOM ) );
 
         add( builder.getPanel(), BorderLayout.CENTER );
-
         isInitialising = false;
+    }
+
+    private void initDatabaseButtonGroup() {
+        fullDatabase = new JRadioButton( get( "$MD11867" ) );
+        fullDatabase.addActionListener( this );
+        extentDatabase = new JRadioButton( get( "$MD11868" ) );
+        extentDatabase.addActionListener( this );
+        ButtonGroup bgDatabase = new ButtonGroup();
+        bgDatabase.add( fullDatabase );
+        bgDatabase.add( extentDatabase );
+        extentDatabase.setSelected( true );
+    }
+
+    private JPanel getDatabasePanel() {
+        FormLayout fl = new FormLayout( "10dlu, left:default", "default, default, default" );
+        DefaultFormBuilder builder = new DefaultFormBuilder( fl );
+        CellConstraints cc = new CellConstraints();
+        builder.addLabel( get( "$MD11866" ), cc.xyw( 1, 1, 2 ) );
+        builder.add( extentDatabase, cc.xy( 2, 2 ) );
+        builder.add( fullDatabase, cc.xy( 2, 3 ) );
+        JPanel panel = builder.getPanel();
+        CachedLayer cachedLayer = assignedVisualPropPanel.getOwner().getCachedLayer();
+        if ( cachedLayer.isFullLoadingSupported() ) {
+            panel.setVisible( true );
+        } else {
+            panel.setVisible( false );
+        }
+        return panel;
     }
 
     private void setPropertyCB( PropertyName propertyName )
@@ -656,7 +704,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
 
     private void updateTable() {
         if ( this.propertyCB.getSelectedItem() != null ) {
-            PropertyValue<?> pv = assignedVisualPropPanel.getOwner().getPropertyValue( (QualifiedName) this.propertyCB.getSelectedItem() );
+            PropertyValue<?> pv = getPropertyValue();
 
             switch ( pv.getDatatyp() ) {
             case Types.INTEGER:
@@ -744,8 +792,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
         }
 
     }
-    
-    private GROUPINGTYPE getGroupingType(){
+
+    private GROUPINGTYPE getGroupingType() {
         if ( classificationTypeCB.getSelectedItem() == equalInterval ) {
             return EQUAL;
         } else if ( classificationTypeCB.getSelectedItem() == quantile ) {
@@ -881,19 +929,20 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed( ActionEvent e ) {
-        if ( e.getSource() == classificationTypeCB ) {
+        Object src = e.getSource();
+        if ( src == classificationTypeCB ) {
             if ( isManual.isVisible() ) {
                 removeManuellClassificationItem();
             }
             unknownClassification.setEnabled( false );
             updateAfterClassificationChanged();
             setClassificationActive();
-        } else if ( e.getSource() == propertyCB ) {
+        } else if ( src == propertyCB ) {
             if ( this.propertyCB.getSelectedItem() != null && !isUpdating ) {
                 updateTable();
             }
             setClassificationActive();
-        } else if ( e.getSource() == addRowBt ) {
+        } else if ( src == addRowBt ) {
             int row = classesTable.getSelectedRow();
             if ( row < 0 ) {
                 row = model.getRowCount();
@@ -901,7 +950,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             model.addRowBefore( row );
             numberOfClassesSpinner.setValue( classesTable.getRowCount() );
             setClassificationActive();
-        } else if ( e.getSource() == removeRowBt ) {
+        } else if ( src == removeRowBt ) {
             // stop cell editing before removing selected rows
             int editingRow = classesTable.getEditingRow();
             int editingColumn = classesTable.getEditingColumn();
@@ -912,8 +961,10 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
             model.removeRows( classesTable.getSelectedRows() );
             numberOfClassesSpinner.setValue( classesTable.getRowCount() );
             setClassificationActive();
-        } else if ( e.getSource() == openHistogramBt ) {
+        } else if ( src == openHistogramBt ) {
             openHistogram();
+        } else if ( src == fullDatabase || src == extentDatabase ) {
+            updateTable();
         }
     }
 

@@ -299,7 +299,7 @@ public class RuleDefinitionPanel extends JPanel {
      *            the layer
      */
     private void setLayer() {
-        CachedLayer wl = LayerCache.getInstance().getCachedLayer( layerId );
+        CachedLayer wl = getLayer();
         if ( wl != null ) {
             scalePanel.setScaleDenominator( wl.getMinScaleDenominator(), wl.getMaxScaleDenominator() );
             for ( QualifiedName ft : wl.getFeatureTypes() ) {
@@ -321,6 +321,10 @@ public class RuleDefinitionPanel extends JPanel {
             rbLines.setEnabled( false );
             rbPolygons.setEnabled( false );
         }
+    }
+
+    private CachedLayer getLayer() {
+        return LayerCache.getInstance().getCachedLayer( layerId );
     }
 
     private void initComponents() {
@@ -407,7 +411,7 @@ public class RuleDefinitionPanel extends JPanel {
                 rules = featureTypeStyle.getRules();
             }
             long startTime = System.currentTimeMillis();
-            GEOMTYPE geomtype = LayerCache.getInstance().getCachedLayer( layerId ).getGeometryType( (QualifiedName) geomPropertyCBox.getSelectedItem() );
+            GEOMTYPE geomtype = getLayer().getGeometryType( (QualifiedName) geomPropertyCBox.getSelectedItem() );
             styleDialog = new StyleDialog( this, layerId, appContainer );
             ruleDialog.informUomChangeListener();
             styleDialog.initValues( rules, getSelectedFeatureType(), geomtype );
@@ -426,7 +430,7 @@ public class RuleDefinitionPanel extends JPanel {
 
     private FeatureType getSelectedFeatureType() {
         if ( featureTypeCBox.getSelectedItem() != null ) {
-            CachedLayer wl = LayerCache.getInstance().getCachedLayer( layerId );
+            CachedLayer wl = getLayer();
             if ( wl != null ) {
                 return wl.getFeatureType( (QualifiedName) featureTypeCBox.getSelectedItem() );
             }

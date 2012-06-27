@@ -59,12 +59,10 @@ import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.dataadapter.FeatureAdapter;
 import org.deegree.igeo.dataadapter.GridCoverageAdapter;
 import org.deegree.igeo.dataadapter.database.DatabaseFeatureAdapter;
-import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.LayerChangedEvent;
 import org.deegree.igeo.mapmodel.LayerChangedEvent.LAYER_CHANGE_TYPE;
 import org.deegree.igeo.style.model.PropertyValue;
-import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.style.StyleDialog.GEOMTYPE;
 import org.deegree.model.Identifier;
 import org.deegree.model.feature.Feature;
@@ -125,14 +123,33 @@ public class LayerCache {
     }
 
     /**
+     * Returns all properties loaded until now.
+     * 
      * @param layerId
      *            the identifier of the layer
-     * @return the properties of the layer with the given id, or an empty list, if no layer with the identifier exist
+     * @return the properties of the layer with the given id loaded until now, or an empty list, if no layer with the
+     *         identifier exist
+     * @throws
      */
     public Map<QualifiedName, PropertyValue<?>> getProperties( Identifier layerId ) {
         CachedLayer layer = getCachedLayer( layerId );
         if ( layer != null ) {
-            return layer.properties;
+            return layer.getProperties();
+        }
+        return new HashMap<QualifiedName, PropertyValue<?>>();
+    }
+
+    /**
+     * Loads all properties.
+     * 
+     * @param layerId
+     *            the identifier of the layer
+     * @return all properties of the layer with the given id, or an empty list, if no layer with the identifier exist
+     */
+    public Map<QualifiedName, PropertyValue<?>> getAllProperties( Identifier layerId ) {
+        CachedLayer layer = getCachedLayer( layerId );
+        if ( layer != null ) {
+            return layer.getAllProperties();
         }
         return new HashMap<QualifiedName, PropertyValue<?>>();
     }
@@ -163,7 +180,13 @@ public class LayerCache {
 
         private Layer layer;
 
+        private boolean refreshRequested = true;
+
         private Map<QualifiedName, PropertyValue<?>> properties = new HashMap<QualifiedName, PropertyValue<?>>();
+
+        private boolean refreshAllPropertiesRequested = true;
+
+        private Map<QualifiedName, PropertyValue<?>> propertiesFullExtent = new HashMap<QualifiedName, PropertyValue<?>>();
 
         private boolean isRaster = false;
 
@@ -176,20 +199,33 @@ public class LayerCache {
         public CachedLayer( Layer layer ) {
             this.layer = layer;
             layer.addChangeListener( this );
-            refreshPropertyValues();
         }
 
         /**
          * @return the properties
          */
         public Map<QualifiedName, PropertyValue<?>> getProperties() {
+            if ( refreshRequested )
+                load();
             return properties;
+        }
+
+        /**
+         * @return the properties
+         */
+        public Map<QualifiedName, PropertyValue<?>> getAllProperties() {
+            if ( refreshAllPropertiesRequested ) {
+                loadFullExtent();
+            }
+            return propertiesFullExtent;
         }
 
         /**
          * @return the isRaster
          */
         public boolean isRaster() {
+            if ( refreshRequested )
+                load();
             return isRaster;
         }
 
@@ -197,6 +233,8 @@ public class LayerCache {
          * @return the isOther
          */
         public boolean isOther() {
+            if ( refreshRequested )
+                load();
             return isOther;
         }
 
@@ -204,6 +242,8 @@ public class LayerCache {
          * @return the featureTypes
          */
         public Set<QualifiedName> getFeatureTypes() {
+            if ( refreshRequested )
+                load();
             return featureTypes.keySet();
         }
 
@@ -211,6 +251,8 @@ public class LayerCache {
          * @return the featureTypes
          */
         public FeatureType getFeatureType( QualifiedName qn ) {
+            if ( refreshRequested )
+                load();
             return featureTypes.get( qn );
         }
 
@@ -218,6 +260,8 @@ public class LayerCache {
          * @return the geometryProperties
          */
         public Map<QualifiedName, GEOMTYPE> getGeometryProperties() {
+            if ( refreshRequested )
+                load();
             return geometryProperties;
         }
 
@@ -266,31 +310,46 @@ public class LayerCache {
             return geometryProperties.get( qn );
         }
 
-        /**
-         * Reads all properties available for the selected layer. If a property is not from type 'geometry', the
-         * features of the property will read and all values stored (not the doubles!).
-         * 
-         * These properties are required to
-         */
-        private void refreshPropertyValues() {
-            properties.clear();
+        private void loadFullExtent() {
             for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
-
-                boolean loadFully = adapter instanceof DatabaseFeatureAdapter
-                                    && adapter.getDatasource().isLazyLoading();
-                if ( loadFully ) {
-                    loadFully = DialogFactory.openConfirmDialogYESNO( "application", null, Messages.get( "$DI10095" ),
-                                                                      Messages.get( "$DI10096" ) );
-                }
-
+                boolean loadFully = isFullLoadingSupported( adapter );
                 if ( loadFully ) {
                     DatabaseFeatureAdapter fa = (DatabaseFeatureAdapter) adapter;
                     FeatureType ft = ( (FeatureAdapter) adapter ).getSchema();
                     featureTypes.put( ft.getName(), ft );
                     PropertyType[] propertyTypes = ft.getProperties();
-                    fa.getDistinctPropertyValues( properties, geometryProperties, propertyTypes );
+                    fa.getDistinctPropertyValues( propertiesFullExtent, geometryProperties, propertyTypes );
                     isOther = true;
-                } else if ( adapter instanceof FeatureAdapter ) {
+                } else {
+                    propertiesFullExtent.putAll( properties );
+                }
+            }
+            refreshAllPropertiesRequested = false;
+        }
+
+        public boolean isFullLoadingSupported() {
+            for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
+                if ( isFullLoadingSupported( adapter ) )
+                    return true;
+            }
+            return false;
+        }
+
+        private boolean isFullLoadingSupported( DataAccessAdapter adapter ) {
+            return adapter instanceof DatabaseFeatureAdapter && adapter.getDatasource().isLazyLoading();
+        }
+
+        /**
+         * Reads all properties available for the selected layer. If a property is not from type 'geometry', the
+         * features of the property will read and all values stored (not the doubles!).
+         * 
+         * @param extent
+         */
+        private void load() {
+            properties.clear();
+            for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
+
+                if ( adapter instanceof FeatureAdapter ) {
                     adapter.refresh();
                     FeatureType ft = ( (FeatureAdapter) adapter ).getSchema();
                     featureTypes.put( ft.getName(), ft );
@@ -426,19 +485,17 @@ public class LayerCache {
                     isRaster = true;
                 }
             }
+            refreshRequested = false;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.deegree.igeo.ChangeListener#valueChanged(org.deegree.igeo.ValueChangedEvent)
-         */
+        @Override
         public void valueChanged( ValueChangedEvent event ) {
             // if the datasource changes, the properties have to be refreshed!
             if ( ( event instanceof LayerChangedEvent )
                  && ( ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceAdded )
                       || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceRemoved ) || ( (LayerChangedEvent) event ).getChangeType().equals( LAYER_CHANGE_TYPE.datasourceChanged ) ) ) {
-                refreshPropertyValues();
+                refreshRequested = true;
+                refreshAllPropertiesRequested = true;
             }
         }
     }

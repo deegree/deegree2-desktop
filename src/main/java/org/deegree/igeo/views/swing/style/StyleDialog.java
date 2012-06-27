@@ -382,11 +382,28 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
     /**
      * 
      * @param name
-     *            the qualified name of the property vale
+     *            the qualified name of the property value
      * @return the property value with the given name
      */
     public PropertyValue<?> getPropertyValue( QualifiedName name ) {
         return getProperties().get( name );
+    }
+
+    /**
+     * @param name
+     *            the qualified name of the property value
+     * @return the property value with the given name
+     */
+    public PropertyValue<?> getAllPropertyValue( QualifiedName name ) {
+        return LayerCache.getInstance().getAllProperties( layerId ).get( name );
+    }
+
+    private Map<QualifiedName, PropertyValue<?>> getProperties() {
+        return LayerCache.getInstance().getProperties( layerId );
+    }
+
+    public CachedLayer getCachedLayer() {
+        return LayerCache.getInstance().getCachedLayer( layerId );
     }
 
     /**
@@ -429,10 +446,6 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
         this.rule.getRuleName();
         setTitle( get( "$MD10586", ruleName ) );
         repaint();
-    }
-
-    private Map<QualifiedName, PropertyValue<?>> getProperties() {
-        return LayerCache.getInstance().getProperties( layerId );
     }
 
     // ////////////////////////////////////////////////////////////////////////////////////
