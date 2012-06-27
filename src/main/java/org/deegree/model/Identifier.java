@@ -110,9 +110,6 @@ public class Identifier implements Serializable {
             return false;
         }
         Identifier id = (Identifier) other;
-        if ( id == null ) {
-            return false;
-        }
         if ( this.namespace != null && id.getNamespace() != null ) {
             if ( this.namespace.equals( id.getNamespace() ) && ( this.value.equals( id.getValue() ) ) ) {
                 return true;

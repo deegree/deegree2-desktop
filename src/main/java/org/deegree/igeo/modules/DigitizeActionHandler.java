@@ -195,10 +195,9 @@ public class DigitizeActionHandler {
      * 
      * @returns the CreateFeatureState object
      */
-    @SuppressWarnings("unchecked")
     private void setDeleteFeatureState() {
         DefaultMapModule<?> mapModule = owner.getAssignedMapModule();
-        MapTool mapTool = mapModule.getMapTool();
+        MapTool<?> mapTool = mapModule.getMapTool();
         mapTool.setEditState();
         EditState editState = (EditState) mapTool.getState();
         editState.setDeleteFeatureState();

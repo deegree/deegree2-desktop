@@ -264,6 +264,7 @@ public abstract class AbstractDatabaseLoader implements DatabaseDataLoader {
         return fc;
     }
 
+    @SuppressWarnings("unchecked")
     private static void updateDistinctMapsFromFeature( Map<QualifiedName, PropertyValue<?>> properties,
                                                        PropertyType[] propertyTypes, Feature element ) {
 

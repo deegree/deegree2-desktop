@@ -68,10 +68,10 @@ import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
 import org.deegree.igeo.state.StateException;
 import org.deegree.igeo.state.mapstate.EditState;
+import org.deegree.igeo.state.mapstate.EditState.DrawPolygonHoleState;
 import org.deegree.igeo.state.mapstate.MapTool;
 import org.deegree.igeo.state.mapstate.SelectState;
 import org.deegree.igeo.state.mapstate.ToolState;
-import org.deegree.igeo.state.mapstate.EditState.DrawPolygonHoleState;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.DigitizerFunctionSelect;
 import org.deegree.igeo.views.swing.CursorRegistry;
@@ -516,7 +516,7 @@ public class DigitizerModule<T> extends DefaultModule<T> {
             setUpdateAlphaNumericPropertiesState();
 
             ToolState ts = mapModule.getMapTool().getState();
-           
+
             // Because it is possible to update a lot of features simultaneously the command
             // will be performed asynchronously
             EditState es = (EditState) ts;
@@ -525,8 +525,7 @@ public class DigitizerModule<T> extends DefaultModule<T> {
                 appContainer.getCommandProcessor().executeSychronously( command, true );
             } catch ( Exception e ) {
                 LOG.logError( e.getMessage(), e );
-                DialogFactory.openWarningDialog(
-                                                 appContainer.getViewPlatform(),
+                DialogFactory.openWarningDialog( appContainer.getViewPlatform(),
                                                  null,
                                                  Messages.getMessage( Locale.getDefault(), "$MD10289", e.getMessage() ),
                                                  Messages.getMessage( Locale.getDefault(), "$MD10290" ) );
@@ -556,10 +555,6 @@ public class DigitizerModule<T> extends DefaultModule<T> {
         this.onActionFinished = onActionFinished;
     }
 
-    /**
-     * 
-     * 
-     */
     private void openFeaturePropertiesPanel( FeatureCollection featureCollection ) {
 
         if ( eff == null ) {
@@ -635,7 +630,7 @@ public class DigitizerModule<T> extends DefaultModule<T> {
             if ( dfs != null ) {
                 dfs.registerDigitizerModule( this );
             }
-        } 
+        }
         removeDigitizerPanel();
         addDigitizerPanel();
         System.gc();
@@ -735,7 +730,7 @@ public class DigitizerModule<T> extends DefaultModule<T> {
      */
     @SuppressWarnings("unchecked")
     private MapTool<T> getEditFeatureState() {
-        MapTool mapTool = mapModule.getMapTool();
+        MapTool<T> mapTool = (MapTool<T>) mapModule.getMapTool();
         mapTool.setEditState();
         return mapTool;
     }
@@ -745,9 +740,8 @@ public class DigitizerModule<T> extends DefaultModule<T> {
      * 
      * @returns the CreateFeatureState object
      */
-    @SuppressWarnings("unchecked")
     protected SelectState getSelectState() {
-        MapTool mapTool = mapModule.getMapTool();
+        MapTool<?> mapTool = mapModule.getMapTool();
         mapTool.setSelectState();
         return (SelectState) mapTool.getState();
     }

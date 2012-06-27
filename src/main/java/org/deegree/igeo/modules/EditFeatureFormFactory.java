@@ -104,24 +104,16 @@ public class EditFeatureFormFactory {
         // following code should be default if no specific class is defined
         ApplicationContainer<?> appCont = mapModule.getApplicationContainer();
         if ( "application".equalsIgnoreCase( viewPlatform ) ) {
-            if ( mapModule != null ) {
-                Object viewForm = mapModule.getViewForm();
-                if ( viewForm instanceof JInternalFrame ) {
-                    EditFeatureIFrame fr = new EditFeatureIFrame( mapModule.getApplicationContainer(), layer,
-                                                                  featureCollection );
-                    Container cont = (Container) mapModule.getGUIContainer();
-                    cont.add( fr );
-                    fr.toFront();
-                    return fr;
-                } else {
-                    return new EditFeatureFrame( (ApplicationContainer<Container>) appCont, layer, featureCollection );
-                }
-            } else {
-                return new EditFeatureFrame( (ApplicationContainer<Container>) appCont, layer, featureCollection );
+            Object viewForm = mapModule.getViewForm();
+            if ( viewForm instanceof JInternalFrame ) {
+                EditFeatureIFrame fr = new EditFeatureIFrame( mapModule.getApplicationContainer(), layer,
+                                                              featureCollection );
+                Container cont = (Container) mapModule.getGUIContainer();
+                cont.add( fr );
+                fr.toFront();
+                return fr;
             }
-        } else {
-            return new EditFeatureFrame( (ApplicationContainer<Container>) appCont, layer, featureCollection );
         }
-
+        return new EditFeatureFrame( (ApplicationContainer<Container>) appCont, layer, featureCollection );
     }
 }

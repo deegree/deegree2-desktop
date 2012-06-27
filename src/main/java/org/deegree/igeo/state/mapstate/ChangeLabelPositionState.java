@@ -141,7 +141,7 @@ public class ChangeLabelPositionState extends MapState {
     public ChangeLabelPositionState( ApplicationContainer<?> appContainer, HashMap<String, Object> parameter,
                                      String invokingAction ) {
         super( appContainer, parameter, invokingAction );
-        List list = appContainer.getModules();
+        List<?> list = appContainer.getModules();
         for ( Object iModule : list ) {
             if ( iModule instanceof EditStyleModule ) {
                 editStyleModule = (EditStyleModule<Container>) iModule;

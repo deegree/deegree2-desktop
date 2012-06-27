@@ -101,11 +101,10 @@ public class SelectFeatureHandler implements RequestHandler {
         }
 
         Layer layer = mv.getResult();
-        layer.setVisible( true );
-
         if ( layer == null ) {
             throw new ModuleException( Messages.get( "$DG10093", tmp ) );
         }
+        layer.setVisible( true );
 
         // first select features in layer
         List<Identifier> ids = new ArrayList<Identifier>();

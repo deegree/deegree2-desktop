@@ -112,12 +112,7 @@ public class PathManipulator {
                 delimiter = temp;
             }
         }
-
-        if ( delimiter == null ) {
-            return null;
-        }
         return delimiter;
-
     }
 
     /**

@@ -128,7 +128,6 @@ public class EditState extends ToolState {
      * 
      * @param appContainer
      */
-    @SuppressWarnings("unchecked")
     public EditState( ApplicationContainer<?> appContainer ) {
         super( appContainer );
         mapModel = appContainer.getMapModel( null );

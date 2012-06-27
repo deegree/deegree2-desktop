@@ -163,7 +163,6 @@ public class SearchPanel extends javax.swing.JPanel {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void search() {
         String s = tfSeach.getText();
         if ( s.length() < 3 ) {
@@ -189,7 +188,7 @@ public class SearchPanel extends javax.swing.JPanel {
             getParent().setCursor( CursorRegistry.DEFAULT_CURSOR );
         }
 
-        List items = (List) cmd.getResult();
+        List<?> items = (List<?>) cmd.getResult();
         Object[] gi = items.toArray();
         Arrays.sort( gi );        
         DefaultComboBoxModel model = new DefaultComboBoxModel( );

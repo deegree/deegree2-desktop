@@ -330,6 +330,7 @@ public abstract class ApplicationContainer<T> {
                 Unmarshaller u2 = jc2.createUnmarshaller();
                 LOG.logDebug( "loading: ", mLoc );
                 try {
+                    @SuppressWarnings("unchecked")
                     ModuleType mt = ( (JAXBElement<? extends ModuleType>) u2.unmarshal( mLoc ) ).getValue();
                     processMonitor.updateStatus( "loading module: " + mt.getName() );
                     module = moduleCreator.createModule( mt, componentPosition, null, processMonitor );

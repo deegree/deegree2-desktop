@@ -104,7 +104,6 @@ public class SelectPanel extends javax.swing.JPanel {
         }
     }
 
-    @SuppressWarnings("unchecked")
     void load() {
         GazetteerFindItemsCommand cmd = new GazetteerFindItemsCommand( appCont, gazetteerAddr, node.getFeatureType(),
                                                                        node.getProperties(), "*", false, true, false );
@@ -115,15 +114,15 @@ public class SelectPanel extends javax.swing.JPanel {
             appCont.getCommandProcessor().executeSychronously( cmd, false );
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), getParent(), Messages.getMessage( getLocale(),
-                                                                                                        "$MD11314" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(), getParent(),
+                                           Messages.getMessage( getLocale(), "$MD11314" ),
                                            Messages.getMessage( getLocale(), "$MD11315", node.getName() ), e );
             return;
         } finally {
             ( (IGeoDesktop) appCont ).getMainWndow().setCursor( CursorRegistry.DEFAULT_CURSOR );
         }
 
-        List items = (List) cmd.getResult();
+        List<?> items = (List<?>) cmd.getResult();
         Object[] gi = items.toArray();
         Arrays.sort( gi );
         DefaultComboBoxModel model = new DefaultComboBoxModel();
@@ -140,7 +139,6 @@ public class SelectPanel extends javax.swing.JPanel {
      * 
      * @param gazetteerItem
      */
-    @SuppressWarnings("unchecked")
     void load( GazetteerItem gazetteerItem ) {
         String search = gazetteerItem.getGeographicIdentifier();
 
@@ -152,15 +150,16 @@ public class SelectPanel extends javax.swing.JPanel {
             appCont.getCommandProcessor().executeSychronously( cmd, false );
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
-            DialogFactory.openErrorDialog( appCont.getViewPlatform(), getParent(), Messages.getMessage( getLocale(),
-                                                                                                        "$MD11307" ),
+            DialogFactory.openErrorDialog( appCont.getViewPlatform(),
+                                           getParent(),
+                                           Messages.getMessage( getLocale(), "$MD11307" ),
                                            Messages.getMessage( getLocale(), "$MD11308",
                                                                 gazetteerItem.getGeographicIdentifier() ), e );
             return;
         } finally {
             ( (IGeoDesktop) appCont ).getMainWndow().setCursor( CursorRegistry.DEFAULT_CURSOR );
         }
-        List items = (List) cmd.getResult();
+        List<?> items = (List<?>) cmd.getResult();
         Object[] gi = items.toArray();
         Arrays.sort( gi );
         DefaultComboBoxModel model = new DefaultComboBoxModel();

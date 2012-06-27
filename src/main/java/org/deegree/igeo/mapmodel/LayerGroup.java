@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.deegree.framework.utils.HashCodeUtil;
 import org.deegree.igeo.ChangeListener;
 import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.config.IdentifierType;
@@ -74,8 +73,6 @@ public class LayerGroup implements MapModelEntry {
     private LayerGroup parent;
 
     private MapModel owner;
-    
-    private int fHashCode;
 
     /**
      * 
@@ -465,7 +462,7 @@ public class LayerGroup implements MapModelEntry {
         }
         return getIdentifier().equals( ( (LayerGroup) other ).getIdentifier() );
     }
-    
+
     @Override
     public int hashCode() {
         return getIdentifier().hashCode();

@@ -38,7 +38,6 @@
 package org.deegree.igeo.mapmodel;
 
 import java.io.PrintStream;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +48,6 @@ import org.deegree.crs.configuration.CRSProvider;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.MapUtils;
-import org.deegree.framework.utils.HashCodeUtil;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.graphics.transformation.WorldToScreenTransform;
 import org.deegree.igeo.ApplicationContainer;
@@ -100,8 +98,6 @@ public class MapModel implements ChangeListener {
     private List<LayerGroup> layerGroups;
 
     private ApplicationContainer<?> appContainer;
-
-    private int fHashCode;
 
     /**
      * @param appContainer
