@@ -151,15 +151,14 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         }
 
         String sql = datasource.getSqlTemplate();
-        System.out.println( sql );
         if ( sql.trim().toUpperCase().endsWith( " WHERE" ) ) {
-            LOG.logDebug( "performed SQL: ", sql + query );
+            LOG.logDebug( "created SQL: ", sql + query );
             stmt = conn.prepareStatement( sql + query );
         } else if ( sql.trim().toUpperCase().indexOf( " WHERE " ) < 0 ) {
-            LOG.logDebug( "performed SQL: ", sql + " WHERE " + query );
+            LOG.logDebug( "created SQL: ", sql + " WHERE " + query );
             stmt = conn.prepareStatement( sql + " WHERE " + query );
         } else {
-            LOG.logDebug( "performed SQL: ", sql + " AND " + query );
+            LOG.logDebug( "created SQL: ", sql + " AND " + query );
             stmt = conn.prepareStatement( sql + " AND " + query );
         }
 
@@ -170,7 +169,7 @@ public class PostgisDataLoader extends AbstractDatabaseLoader {
         stmt.setMaxRows( maxFeatures );
         // seems that not every postgres version supports this
         // stmt.setQueryTimeout( timeout );
-        System.out.println( stmt );
+        LOG.logDebug( "created statement" + stmt );
         return stmt;
     }
 

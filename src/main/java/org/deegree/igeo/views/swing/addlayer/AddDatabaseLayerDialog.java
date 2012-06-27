@@ -970,7 +970,6 @@ public class AddDatabaseLayerDialog extends JDialog {
                       + "   JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace"
                       + "   JOIN pg_type ON pg_attribute.atttypid = pg_type.oid"
                       + "  WHERE pg_attribute.attstattarget <> 0 and pg_type.typname ='geometry' order by 1,2";
-                System.out.println( "..." + sql );
                 rs = stmt.executeQuery( sql );
                 while ( rs.next() ) {
                     String table = rs.getString( 1 );

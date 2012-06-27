@@ -394,10 +394,6 @@ public class StyleDialog extends JFrame implements ActionListener, WindowListene
      * @return the property value with the given name in the current map extent
      */
     public PropertyValue<?> getExtentPropertyValue( QualifiedName name ) {
-        System.out.println("pppppp");
-        System.out.println(appContainer);
-        System.out.println(appContainer.getMapModel( null ));
-        System.out.println(appContainer.getMapModel( null ).getEnvelope());
         Envelope extent = appContainer.getMapModel( null ).getEnvelope();
         return LayerCache.getInstance().getProperties( layerId, extent ).get( name );
     }
