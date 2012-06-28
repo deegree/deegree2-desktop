@@ -251,34 +251,35 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         super( frame );
         this.appContainer = appContainer;
         this.mapModel = appContainer.getMapModel( null );
-        final MapTool<Container> mt = getAssignedMapModule().getMapTool();
+        MapTool<Container> mt = getAssignedMapModule().getMapTool();
         mt.resetState();
         addWindowListener( new WindowAdapter() {
+            @Override
+            public void windowClosing( WindowEvent e ) {
+                disposeListenerAndLayer();
+            }
 
             @Override
             public void windowClosed( WindowEvent e ) {
-                removePreviewLayer();
-                DefaultMapModule<Container> mapModule = getAssignedMapModule();
-                Container jco = mapModule.getMapContainer();
-                jco.removeMouseListener( ml );
-                jco.removeMouseMotionListener( mml );
-                mt.removeChangeListener( VectorPrintDialog.this );
+                disposeListenerAndLayer();
             }
 
-            @Override
-            public void windowClosing( WindowEvent e ) {
-                removePreviewLayer();
-                DefaultMapModule<Container> mapModule = getAssignedMapModule();
-                Container jco = mapModule.getMapContainer();
-                jco.removeMouseListener( ml );
-                jco.removeMouseMotionListener( mml );
-                mt.removeChangeListener( VectorPrintDialog.this );
-            }
         } );
+
         initGUI();
         addPreviewLayer();
         toFront();
         setAlwaysOnTop( true );
+    }
+
+    private void disposeListenerAndLayer() {
+        MapTool<Container> mt = getAssignedMapModule().getMapTool();
+        removePreviewLayer();
+        DefaultMapModule<Container> mapModule = getAssignedMapModule();
+        Container jco = mapModule.getMapContainer();
+        jco.removeMouseListener( ml );
+        jco.removeMouseMotionListener( mml );
+        mt.removeChangeListener( VectorPrintDialog.this );
     }
 
     private void initGUI() {
@@ -1107,34 +1108,36 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
     }
 
     private void updatePreview() {
-        removePreviewLayer();
-        addPreviewLayer();
+        if ( isVisible() ) {
+            removePreviewLayer();
+            addPreviewLayer();
 
-        Rectangle r;
-        int pw;
-        int ph;
-        ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
-        if ( le.value != null ) {
-            tfPageWidth.setEnabled( false );
-            tfPageHeight.setEnabled( false );
-            r = PageSize.getRectangle( (String) le.value );
-            pw = (int) Math.round( r.getWidth() / 72 * 25.4 );
-            ph = (int) Math.round( r.getHeight() / 72 * 25.4 );
-        } else {
-            tfPageWidth.setEnabled( true );
-            tfPageHeight.setEnabled( true );
-            pw = ( (Number) tfPageWidth.getValue() ).intValue();
-            ph = ( (Number) tfPageHeight.getValue() ).intValue();
-            r = new Rectangle( inPt( pw ), inPt( ph ) );
+            Rectangle r;
+            int pw;
+            int ph;
+            ListEntry le = (ListEntry) cbPageFormat.getSelectedItem();
+            if ( le.value != null ) {
+                tfPageWidth.setEnabled( false );
+                tfPageHeight.setEnabled( false );
+                r = PageSize.getRectangle( (String) le.value );
+                pw = (int) Math.round( r.getWidth() / 72 * 25.4 );
+                ph = (int) Math.round( r.getHeight() / 72 * 25.4 );
+            } else {
+                tfPageWidth.setEnabled( true );
+                tfPageHeight.setEnabled( true );
+                pw = ( (Number) tfPageWidth.getValue() ).intValue();
+                ph = ( (Number) tfPageHeight.getValue() ).intValue();
+                r = new Rectangle( inPt( pw ), inPt( ph ) );
+            }
+
+            lbPageSize.setText( Messages.getMessage( getLocale(), "$MD11816", pw, ph ) );
+            pnPreview.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
+            pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
+            pnPreview.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
+            pnPreview.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
+            pnPreview.setPageSize( r );
+            pnPreview.repaint();
         }
-
-        lbPageSize.setText( Messages.getMessage( getLocale(), "$MD11816", pw, ph ) );
-        pnPreview.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
-        pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
-        pnPreview.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
-        pnPreview.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
-        pnPreview.setPageSize( r );
-        pnPreview.repaint();
     }
 
     private void addPreviewLayer() {
@@ -1203,8 +1206,9 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
     }
 
     private void removePreviewLayer() {
-        if ( mapModel.exists( previewLayer.getIdentifier() ) ) {
+        if ( previewLayer != null && mapModel.exists( previewLayer.getIdentifier() ) ) {
             mapModel.remove( previewLayer );
+            previewLayer = null;
         }
     }
 
