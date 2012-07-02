@@ -136,27 +136,24 @@ public class SymbolPanel extends JPanel implements ActionListener {
      * 
      * @param onlineResource
      *            the url of the external graphic
+     * @param title
+     *            the title of the symbol, may be <code>null</code>, than the onlineresource is the title
      */
-    public void setValue( URL onlineResource ) {
-        boolean isInList = false;
-        for ( int i = 0; i < markCB.getItemCount(); i++ ) {
-            Object item = markCB.getItemAt( i );
-            if ( item instanceof GraphicSymbol
-                 && ( (GraphicSymbol) item ).getUrl().toExternalForm().equals( onlineResource.toExternalForm() ) ) {
-                markCB.setSelectedIndex( i );
-                isInList = true;
-                break;
+    public void setValue( URL onlineResource, String title ) {
+        if ( title == null )
+            title = onlineResource.getFile();
+        try {
+            GraphicSymbol graphicSymbol = graphicOptions.getSymbolDefinition( title, onlineResource );
+            if ( graphicSymbol == null ) {
+                graphicOptions.addSymbolDefinition( title, onlineResource.toExternalForm() );
+                graphicSymbol = graphicOptions.getSymboldefinition( title );
             }
+            updateSymbolMarkCB();
+            markCB.setSelectedItem( graphicSymbol );
+        } catch ( MalformedURLException e ) {
+            JOptionPane.showMessageDialog( this, get( "$MD10789" ), get( "$DI10017" ), JOptionPane.ERROR_MESSAGE );
         }
-        if ( !isInList ) {
-            try {
-                graphicOptions.addSymbolDefinition( onlineResource.getFile(), onlineResource.toExternalForm() );
-                updateSymbolMarkCB();
-                markCB.setSelectedItem( graphicOptions.getSymbolDefinitions().get( onlineResource.getFile() ) );
-            } catch ( MalformedURLException e ) {
-                JOptionPane.showMessageDialog( this, get( "$MD10789" ), get( "$DI10017" ), JOptionPane.ERROR_MESSAGE );
-            }
-        }
+
     }
 
     private void init() {

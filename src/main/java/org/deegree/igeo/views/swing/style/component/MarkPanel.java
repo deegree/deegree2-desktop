@@ -98,9 +98,11 @@ public class MarkPanel extends AbstractFixedPropertyDependentPanel {
      * 
      * @param onlineResource
      *            the url of the external graphic
+     * @param title
+     *            the title of the symbol, may be <code>null</code>, than the onlineresource is the title
      */
-    public void setValue( URL onlineResource ) {
-        symbolPanel.setValue( onlineResource );
+    public void setValue( URL onlineResource, String title ) {
+        symbolPanel.setValue( onlineResource, title );
         value = symbolPanel.getValue();
         fixed.setSelected( true );
     }

@@ -184,7 +184,7 @@ public class SymbolVisualPropertyPanel extends AbstractVisualPropertyPanel {
                     }
                 } else if ( marksAndExtGrapics[0] instanceof ExternalGraphic ) {
                     ExternalGraphic eg = (ExternalGraphic) marksAndExtGrapics[0];
-                    markPanel.setValue( eg.getOnlineResource() );
+                    markPanel.setValue( eg.getOnlineResource(), eg.getTitle() );
                 }
 
                 ParameterValueType rotationPVT = g.getRotation();

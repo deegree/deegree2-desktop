@@ -80,6 +80,7 @@ import org.deegree.graphics.sld.Rule;
 import org.deegree.graphics.sld.Stroke;
 import org.deegree.graphics.sld.Symbolizer;
 import org.deegree.graphics.sld.TextSymbolizer;
+import org.deegree.igeo.settings.GraphicOptions;
 import org.deegree.igeo.settings.Settings;
 import org.deegree.igeo.style.model.DashArray;
 import org.deegree.igeo.style.model.FillPattern;
@@ -649,7 +650,8 @@ public class ClassificationFromSld {
                     }
                 } else if ( marksAndExtGrapics[0] instanceof ExternalGraphic ) {
                     ExternalGraphic eg = (ExternalGraphic) marksAndExtGrapics[0];
-                    GraphicSymbol gs = null;
+                    GraphicSymbol gs = getGraphicSymbol( settings.getGraphicOptions(), eg );
+                    
                     try {
                         GraphicSymbol gsWithSameName = null;
                         GraphicSymbol gsWithSameUrl = null;
@@ -839,6 +841,23 @@ public class ClassificationFromSld {
 
         }
 
+    }
+
+    private static GraphicSymbol getGraphicSymbol( GraphicOptions graphicOptions, ExternalGraphic eg ) {
+        String name = eg.getTitle();
+        if ( name == null )
+            name = eg.getOnlineResource().getFile();
+        try {
+            GraphicSymbol symbol = graphicOptions.getSymbolDefinition( name, eg.getOnlineResource() );
+            if ( symbol != null ) {
+                return symbol;
+            }
+            graphicOptions.addSymbolDefinition( name, eg.getOnlineResource().toExternalForm() );
+            return graphicOptions.getSymboldefinition( name );
+        } catch ( MalformedURLException e ) {
+            LOG.logInfo( "Could not add symbol to settings: " + e.getMessage() );
+            return new GraphicSymbol( name, eg.getOnlineResource() );
+        }
     }
 
     private static Object getStrokeWidth( Stroke stroke ) {

@@ -59,11 +59,11 @@ import org.deegree.graphics.sld.Symbolizer;
 import org.deegree.igeo.config.ColorListType;
 import org.deegree.igeo.config.ColorSchemesType;
 import org.deegree.igeo.config.DashArrayDefinitionsType;
+import org.deegree.igeo.config.DashArrayDefinitionsType.DashArray;
 import org.deegree.igeo.config.GraphicDefinitionsType;
+import org.deegree.igeo.config.GraphicDefinitionsType.Graphic;
 import org.deegree.igeo.config.GraphicsType;
 import org.deegree.igeo.config.PresetType;
-import org.deegree.igeo.config.DashArrayDefinitionsType.DashArray;
-import org.deegree.igeo.config.GraphicDefinitionsType.Graphic;
 import org.deegree.igeo.style.model.GraphicSymbol;
 import org.deegree.igeo.style.model.Preset;
 import org.xml.sax.SAXException;
@@ -131,8 +131,8 @@ public class GraphicOptions extends ElementSettings {
             for ( DashArray dashArray : das ) {
                 float[] array = StringTools.toArrayFloat( dashArray.getArray(), ", " );
                 org.deegree.igeo.style.model.DashArray da = new org.deegree.igeo.style.model.DashArray(
-                                                                                                                                dashArray.getName(),
-                                                                                                                                array );
+                                                                                                        dashArray.getName(),
+                                                                                                        array );
                 dashArrays.put( dashArray.getName(), da );
             }
         }
@@ -199,12 +199,64 @@ public class GraphicOptions extends ElementSettings {
         }
 
     }
-    
-    
-    public GraphicSymbol getSymboldefinition(String name) throws MalformedURLException{
+
+    public GraphicSymbol getSymboldefinition( String name )
+                            throws MalformedURLException {
         List<Graphic> graphics = graphicsType.getSymbolDefinitions().getGraphic();
         createSymbolDefinitionsMap( graphics );
         return symbolDefinitions.get( name );
+    }
+
+    /**
+     * Returns the symbol with the
+     * 
+     * <pre>
+     * 1. same name and url.
+     * 2. same url and different name.
+     * 3. same name and different url.
+     * </pre>
+     * 
+     * or <code>null</code> if no symbol with the same name/url coudl be found.
+     * 
+     * @param name
+     *            the name of the symbol
+     * @param url
+     *            the url of the symbol
+     * @return the symbol with the same name and/or url, <code>null</code> if no symbol with the same name/url coudl be
+     *         found
+     * @throws MalformedURLException
+     */
+    public GraphicSymbol getSymbolDefinition( String name, URL url )
+                            throws MalformedURLException {
+        List<Graphic> graphics = graphicsType.getSymbolDefinitions().getGraphic();
+        createSymbolDefinitionsMap( graphics );
+
+        GraphicSymbol symbolWithSameName = null;
+        if ( symbolDefinitions.containsKey( name ) ) {
+            symbolWithSameName = symbolDefinitions.get( name );
+            if ( haveSameNameAndUrl( url, symbolWithSameName ) ) {
+                return symbolWithSameName;
+            }
+        }
+
+        GraphicSymbol symbolWithSameUrl = getSymbolWithSameUrl( url );
+        if ( symbolWithSameUrl != null ) {
+            return symbolWithSameUrl;
+        }
+
+        return symbolWithSameName;
+    }
+
+    private boolean haveSameNameAndUrl( URL url, GraphicSymbol graphicSymbol ) {
+        return graphicSymbol.getUrl().equals( url );
+    }
+
+    private GraphicSymbol getSymbolWithSameUrl( URL url ) {
+        for ( GraphicSymbol symbol : symbolDefinitions.values() ) {
+            if ( haveSameNameAndUrl( url, symbol ) )
+                return symbol;
+        }
+        return null;
     }
 
     /**
@@ -342,7 +394,7 @@ public class GraphicOptions extends ElementSettings {
         createSymbolizerMap( graphicsType.getSymbolizerPreset() );
         return symbolizerPresets;
     }
-    
+
     /**
      * 
      * @param name
@@ -412,8 +464,8 @@ public class GraphicOptions extends ElementSettings {
             ColorSchemesType clst = new ColorSchemesType();
             clst.setColorlist( cl );
             clst.setName( name );
-            schemes.add( clst );            
-            colorSchemes.put( name, entries );    
+            schemes.add( clst );
+            colorSchemes.put( name, entries );
         }
     }
 
