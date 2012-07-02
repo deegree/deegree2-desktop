@@ -108,17 +108,19 @@ public class LayerPane implements ChangeListener {
      * @param g
      */
     public void paint( Graphics g ) {
-        if ( g != null && layer.isVisible() ) {
-            mapView.setBoundingBox( this.mapModel.getEnvelope() );
-            try {
-                if ( !valid ) {
-                    createMapView();
+        synchronized ( mapModel ) {
+            if ( g != null && layer.isVisible() ) {
+                mapView.setBoundingBox( this.mapModel.getEnvelope() );
+                try {
+                    if ( !valid ) {
+                        createMapView();
+                    }
+                    mapView.paint( g );
+                } catch ( Throwable e ) {
+                    DialogFactory.openErrorDialog( "application", (Component) parentModule.getViewForm(),
+                                                   e.getMessage(), "rendering error", e );
+                    LOG.logError( e.getMessage(), e );
                 }
-                mapView.paint( g );
-            } catch ( Throwable e ) {
-                DialogFactory.openErrorDialog( "application", (Component) parentModule.getViewForm(), e.getMessage(),
-                                               "rendering error", e );
-                LOG.logError( e.getMessage(), e );
             }
         }
     }
@@ -141,6 +143,10 @@ public class LayerPane implements ChangeListener {
         }
 
         List<Theme> themes = new ArrayList<Theme>();
+
+        if ( dataAccessAdapter == null ) {
+            return themes;
+        }
 
         for ( DataAccessAdapter dataAccess : dataAccessAdapter ) {
             Layer deegreeLayer = null;
@@ -166,18 +172,20 @@ public class LayerPane implements ChangeListener {
 
     private void createMapView()
                             throws ViewException {
-        try {
-            Envelope extent = this.mapModel.getEnvelope();
-            List<Theme> layerThemes = createThemes( this.layer.getCurrentStyle(), this.layer.getDataAccess(),
-                                                    extent.getCoordinateSystem() );
-            mapView = MapFactory.createMapView( this.layer.getTitle(), extent, extent.getCoordinateSystem(),
-                                                layerThemes.toArray( new Theme[layerThemes.size()] ),
-                                                MapUtils.DEFAULT_PIXEL_SIZE );
-        } catch ( Exception e ) {
-            LOG.logError( e.getMessage(), e );
-            throw new ViewException( e.getMessage(), e );
+        synchronized ( mapModel ) {
+            try {
+                Envelope extent = this.mapModel.getEnvelope();
+                List<Theme> layerThemes = createThemes( this.layer.getCurrentStyle(), this.layer.getDataAccess(),
+                                                        extent.getCoordinateSystem() );
+                mapView = MapFactory.createMapView( this.layer.getTitle(), extent, extent.getCoordinateSystem(),
+                                                    layerThemes.toArray( new Theme[layerThemes.size()] ),
+                                                    MapUtils.DEFAULT_PIXEL_SIZE );
+            } catch ( Exception e ) {
+                LOG.logError( e.getMessage(), e );
+                throw new ViewException( e.getMessage(), e );
+            }
+            valid = true;
         }
-        valid = true;
     }
 
     /**

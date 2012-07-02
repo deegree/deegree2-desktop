@@ -78,6 +78,8 @@ public class LayerComponent extends JComponent implements ChangeListener {
     // indicates if the map model has been changed in a way that requires a complete repainting
     private boolean forceRepaint = false;
 
+    public static boolean vectorPrintDialogPreviewHack = false;
+
     /**
      * 
      * @param layerPane
@@ -99,6 +101,11 @@ public class LayerComponent extends JComponent implements ChangeListener {
      */
     @Override
     protected void paintComponent( Graphics g ) {
+
+        if ( !layerPane.getLayer().getTitle().startsWith( "deegree:Print" ) && vectorPrintDialogPreviewHack ) {
+            g.drawImage( layerImage, 0, 0, LayerComponent.this );
+            return;
+        }
 
         if ( layerPane.isVisible() ) {
             super.paintComponent( g );
@@ -138,7 +145,6 @@ public class LayerComponent extends JComponent implements ChangeListener {
                 }
             }
         }
-
     }
 
     /**
@@ -205,6 +211,13 @@ public class LayerComponent extends JComponent implements ChangeListener {
         }
     }
 
+    /**
+     * This needs to be called to ensure proper GC!
+     */
+    public void destroy() {
+        this.layerPane.getLayer().removeChangeListener( this );
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////
     // Inner classes
     // /////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +260,7 @@ public class LayerComponent extends JComponent implements ChangeListener {
             layerGraphics.dispose();
 
             repaint();
+
             return null;
         }
 

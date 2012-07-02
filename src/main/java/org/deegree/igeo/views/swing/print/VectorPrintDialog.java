@@ -91,6 +91,7 @@ import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.commands.VectorPrintCommand;
 import org.deegree.igeo.commands.VectorPrintCommand.PrintDescriptionBean;
 import org.deegree.igeo.commands.model.AddMemoryLayerCommand;
+import org.deegree.igeo.dataadapter.MemoryFeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.io.FileSystemAccess;
 import org.deegree.igeo.io.FileSystemAccessFactory;
@@ -103,10 +104,14 @@ import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.HelpManager;
 import org.deegree.igeo.views.swing.ButtonGroup;
 import org.deegree.igeo.views.swing.HelpFrame;
+import org.deegree.igeo.views.swing.map.LayerComponent;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.IconRegistry;
+import org.deegree.model.feature.Feature;
+import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.FeatureProperty;
 import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.Geometry;
 import org.deegree.model.spatialschema.GeometryFactory;
@@ -1109,8 +1114,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
 
     private void updatePreview() {
         if ( isVisible() ) {
-            removePreviewLayer();
-            addPreviewLayer();
+            movePreviewRectangle();
 
             Rectangle r;
             int pw;
@@ -1140,6 +1144,36 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         }
     }
 
+    private void movePreviewRectangle() {
+        java.awt.Rectangle rect = getCanvasSize();
+        Envelope extent = mapModel.getEnvelope();
+        extent = MapUtils.ensureAspectRatio( extent, (Integer) spWidth.getValue(), (Integer) spHeight.getValue() );
+        if ( rbConst.isSelected() ) {
+            // use scale selected by used
+            double currentScale = MapUtils.calcScale( rect.width, rect.height, extent, extent.getCoordinateSystem(),
+                                                      0.0254 / (Integer) cbDPI.getSelectedItem() );
+            extent = MapUtils.scaleEnvelope( extent, currentScale,
+                                             (Integer) ( (ListEntry) cbScale.getSelectedItem() ).value );
+        }
+        // move rectangle to defined lower left coordinates
+        double dx = ( (Number) spMapLeft.getValue() ).doubleValue() - extent.getMin().getX();
+        double dy = ( (Number) spMapBottom.getValue() ).doubleValue() - extent.getMin().getY();
+        extent.translate( dx, dy );
+
+        try {
+            Geometry geom = GeometryFactory.createSurface( extent, mapModel.getCoordinateSystem() );
+            MemoryFeatureAdapter adapter = (MemoryFeatureAdapter) previewLayer.getDataAccess().get( 0 );
+            FeatureCollection fc = adapter.getFeatureCollection();
+            Feature f = fc.getFeature( 0 );
+            FeatureProperty prop = f.getProperties()[1];
+            prop.setValue( geom );
+            adapter.updateFeature( f );
+            adapter.commitChanges();
+        } catch ( Exception e ) {
+            LOG.logError( e );
+        }
+    }
+
     private void addPreviewLayer() {
         java.awt.Rectangle rect = getCanvasSize();
         Envelope extent = mapModel.getEnvelope();
@@ -1164,7 +1198,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
             cmd.setApplicationContainer( appContainer );
             cmd.setTitle( "deegree:PrintBorder" );
             cmd.setGeometries( list );
-            appContainer.getCommandProcessor().executeSychronously( cmd, true );
+            cmd.execute();
             previewLayer = (Layer) cmd.getResult();
         } catch ( Exception e ) {
             LOG.logError( e );
@@ -1208,6 +1242,9 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
     private void removePreviewLayer() {
         if ( previewLayer != null && mapModel.exists( previewLayer.getIdentifier() ) ) {
             mapModel.remove( previewLayer );
+        }
+        if ( previewLayer != null ) {
+            previewLayer.destroy();
             previewLayer = null;
         }
     }
@@ -1286,27 +1323,24 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
 
         @Override
         public void mousePressed( MouseEvent e ) {
-            if ( isActive ) {
-                GeoTransform gt = mapModel.getToTargetDeviceTransformation();
-                double x = gt.getSourceX( e.getX() );
-                double y = gt.getSourceY( e.getY() );
-                pressPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
-            }
+            GeoTransform gt = mapModel.getToTargetDeviceTransformation();
+            double x = gt.getSourceX( e.getX() );
+            double y = gt.getSourceY( e.getY() );
+            pressPoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+            LayerComponent.vectorPrintDialogPreviewHack = true;
         }
 
         @Override
         public void mouseReleased( MouseEvent e ) {
-            if ( isActive ) {
-                GeoTransform gt = mapModel.getToTargetDeviceTransformation();
-                double x = gt.getSourceX( e.getX() );
-                double y = gt.getSourceY( e.getY() );
-                Point releasePoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
-                double dx = releasePoint.getX() - pressPoint.getX();
-                double dy = releasePoint.getY() - pressPoint.getY();
-                spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
-                spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
-                updatePreview();
-            }
+            GeoTransform gt = mapModel.getToTargetDeviceTransformation();
+            double x = gt.getSourceX( e.getX() );
+            double y = gt.getSourceY( e.getY() );
+            Point releasePoint = GeometryFactory.createPoint( x, y, mapModel.getCoordinateSystem() );
+            double dx = releasePoint.getX() - pressPoint.getX();
+            double dy = releasePoint.getY() - pressPoint.getY();
+            spMapLeft.setValue( ( (Number) spMapLeft.getValue() ).doubleValue() + dx );
+            spMapBottom.setValue( ( (Number) spMapBottom.getValue() ).doubleValue() + dy );
+            LayerComponent.vectorPrintDialogPreviewHack = false;
         }
     }
 

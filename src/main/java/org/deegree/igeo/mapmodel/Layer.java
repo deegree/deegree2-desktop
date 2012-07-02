@@ -980,7 +980,9 @@ public class Layer implements MapModelEntry {
      * @param listener
      */
     public void removeChangeListener( ChangeListener listener ) {
-        this.listeners.remove( listener );
+        if ( this.listeners != null ) {
+            this.listeners.remove( listener );
+        }
     }
 
     /*
