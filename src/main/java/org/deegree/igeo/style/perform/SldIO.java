@@ -43,8 +43,9 @@ import java.awt.Component;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.prefs.Preferences;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -93,7 +94,7 @@ public class SldIO {
             }
             BufferedWriter writer = null;
             try {
-                writer = new BufferedWriter( new FileWriter( file ) );
+                writer = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" ) );
                 // try to pretty print
                 try {
                     DocumentBuilder builder = XMLTools.getDocumentBuilder();
