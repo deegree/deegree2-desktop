@@ -113,7 +113,7 @@ public class SizePanel extends AbstractFixedPropertyDependentPanel implements or
             }
         }, this.assignedVisualPropPanel.getOwner().isDefaultUnitPixel() );
 
-        SpinnerModel model = new SpinnerNumberModel( 6.0, 1.0, Integer.MAX_VALUE, 1.0 );
+        SpinnerModel model = new SpinnerNumberModel( 6.0, 0.00001, Integer.MAX_VALUE, 1.0 );
         fixedSizeSpinner = new JSpinner( model );
         fixedSizeSpinner.setMaximumSize( new Dimension( StyleDialogUtils.PREF_COMPONENT_WIDTH,
                                                         StyleDialogUtils.PREF_ONELINE_COMPONENT_HEIGHT ) );

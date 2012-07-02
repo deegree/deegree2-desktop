@@ -1,7 +1,7 @@
-//$HeadURL$
+//$HeadURL: svn+ssh://lbuesching@svn.wald.intevation.de/deegree/base/trunk/resources/eclipse/files_template.xml $
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2010 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -35,14 +35,10 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.views.swing.style.renderer;
 
-import java.awt.Component;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.border.Border;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.vecmath.Point2d;
 
 import org.deegree.framework.util.Pair;
@@ -50,55 +46,46 @@ import org.deegree.igeo.style.model.SldProperty;
 import org.deegree.model.filterencoding.PropertyName;
 
 /**
- * TODO add class documentation here
+ * {@link DefaultTableCellRenderer} considering the locale for decimal formatting
  * 
- * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
- * @author last edited by: $Author$
+ * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
+ * @author last edited by: $Author: lyn $
  * 
- * @version $Revision$, $Date$
+ * @version $Revision: $, $Date: $
  */
-public class ClassificationTCRenderer extends JLabel implements TableCellRenderer {
+public class LocaleTableCellRenderer extends DefaultTableCellRenderer {
 
-    private static final long serialVersionUID = 6266497302756084890L;
+    private static final long serialVersionUID = -1858131643489367595L;
 
-    private Border unselectedBorder = null;
+    private final DecimalFormat df;
 
-    private Border selectedBorder = null;
+    public LocaleTableCellRenderer() {
+        NumberFormat nf = NumberFormat.getNumberInstance( getLocale() );
+        df = (DecimalFormat) nf;
+        df.applyPattern( "0.0" );
+    }
 
-    private static final DecimalFormat df = new DecimalFormat( "0.0" );
-
-    @SuppressWarnings("unchecked")
-    public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                                    int row, int column ) {
-        if ( isSelected ) {
-            if ( selectedBorder == null ) {
-                selectedBorder = BorderFactory.createMatteBorder( 2, 5, 2, 5, table.getSelectionBackground() );
-            }
-            setBorder( selectedBorder );
-        } else {
-            if ( unselectedBorder == null ) {
-                unselectedBorder = BorderFactory.createMatteBorder( 2, 5, 2, 5, table.getBackground() );
-            }
-            setBorder( unselectedBorder );
-        }
+    @Override
+    protected void setValue( Object value ) {
         if ( value instanceof PropertyName ) {
             PropertyName pn = (PropertyName) value;
             String s = pn.toString();
             if ( s.contains( ":" ) ) {
                 s = s.substring( s.indexOf( ':' ) + 1 );
             }
-            setText( s );
+            value = s;
         } else if ( value instanceof Integer ) {
-            setText( "" + (Integer) value );
+            value = "" + (Integer) value;
         } else if ( value instanceof Double ) {
-            setText( "" + (Double) value );
+            value = df.format( (Double) value );
         } else if ( value instanceof SldProperty ) {
             SldProperty sldProperty = (SldProperty) value;
-            setText( sldProperty.getName() );
+            value = sldProperty.getName();
         } else if ( value instanceof String ) {
-            setText( (String) value );
+            value = (String) value;
         } else if ( value instanceof Pair<?, ?> && ( (Pair<?, ?>) value ).first instanceof PropertyName
                     && ( (Pair<?, ?>) value ).second instanceof PropertyName ) {
+            @SuppressWarnings("unchecked")
             Pair<PropertyName, PropertyName> p = (Pair<PropertyName, PropertyName>) value;
             String x = p.first.toString();
             if ( x.contains( ":" ) ) {
@@ -108,13 +95,12 @@ public class ClassificationTCRenderer extends JLabel implements TableCellRendere
             if ( y.contains( ":" ) ) {
                 y = y.substring( y.indexOf( ':' ) + 1 );
             }
-            setText( x + " " + y );
+            value = x + " " + y;
         } else if ( value instanceof Point2d ) {
             Point2d point2d = (Point2d) value;
-            setText( df.format( point2d.x ) + " " + df.format( point2d.y ) );
-        } else {
-            setText( value.toString() );
+            value = df.format( point2d.x ) + " " + df.format( point2d.y );
         }
-        return this;
+        super.setValue( value );
     }
+
 }

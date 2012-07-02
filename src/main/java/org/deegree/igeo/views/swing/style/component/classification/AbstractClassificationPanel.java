@@ -130,10 +130,10 @@ import org.deegree.igeo.views.swing.style.editor.ColorTableCellEditor;
 import org.deegree.igeo.views.swing.style.editor.FillTableCellEditor;
 import org.deegree.igeo.views.swing.style.editor.PointCellEditor;
 import org.deegree.igeo.views.swing.style.editor.SpinnerTableCellEditor;
-import org.deegree.igeo.views.swing.style.renderer.ClassificationTCRenderer;
 import org.deegree.igeo.views.swing.style.renderer.ClassificationValuesRenderer;
 import org.deegree.igeo.views.swing.style.renderer.ColorTableCellRenderer;
 import org.deegree.igeo.views.swing.style.renderer.DashArrayRenderer;
+import org.deegree.igeo.views.swing.style.renderer.LocaleTableCellRenderer;
 import org.deegree.igeo.views.swing.style.renderer.SldPropertyCellRenderer;
 import org.deegree.igeo.views.swing.style.renderer.SldPropertyRenderer;
 import org.deegree.igeo.views.swing.style.renderer.SymbolRenderer;
@@ -1003,18 +1003,8 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 return new SymbolTableCellRenderer();
             case LINECAP:
                 return new SldPropertyCellRenderer();
-            case FONTFAMILY:
-            case FONTWEIGHT:
-            case FONTSTYLE:
-            case FONTSIZE:
-            case ROTATION:
-            case HALORADIUS:
-            case FONTTRANSPARENCY:
-            case ANCHORPOINT:
-            case DISPLACEMENT:
-                return new ClassificationTCRenderer();
             default:
-                return super.getCellRenderer( row, column );
+                return new LocaleTableCellRenderer();
             }
         }
 
@@ -1056,7 +1046,7 @@ public abstract class AbstractClassificationPanel extends JPanel implements Acti
                 editor = new DefaultCellEditor( lineStyleCB );
                 break;
             case SIZE:
-                editor = new SpinnerTableCellEditor( SldValues.getDefaultSize(), 1.0, Integer.MAX_VALUE, 1.0 );
+                editor = new SpinnerTableCellEditor( SldValues.getDefaultSize(), 0.00001, Integer.MAX_VALUE, 1.0 );
                 break;
             case SYMBOL:
                 JComboBox symbolCB = new JComboBox();
