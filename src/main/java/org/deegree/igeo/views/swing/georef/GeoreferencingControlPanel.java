@@ -597,7 +597,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                         + "                  <CssParameter name=\"fill\">#808080</CssParameter>"
                         + "                  <CssParameter name=\"fill-opacity\">1.0</CssParameter>"
                         + "                </Fill>" + "                <Stroke>"
-                        + "                  <CssParameter name=\"stroke\">#000000</CssParameter>"
+                        + "                  <CssParameter name=\"stroke\">#8f242a</CssParameter>"
                         + "                </Stroke>" + "              </Mark>"
                         + "              <Opacity>1.0</Opacity>" + "              <Size>20.0</Size>"
                         + "              <Rotation>0.0</Rotation>" + "            </Graphic>"
