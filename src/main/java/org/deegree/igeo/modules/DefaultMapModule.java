@@ -465,12 +465,8 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
 
     public void repaint() {
         if ( getViewForm() instanceof Container ) {
-            String mmId = getInitParameter( "assignedMapModel" );
-            MapModel mapModel = appContainer.getMapModel( new Identifier( mmId ) );
-            MapModel temp = appContainer.getMapModel( null );
-            // this check must be done to ensure that just the selected layer of current model will be exported
-            // because this method is registered as action method to all map models
-            if ( mapModel == temp ) {
+            MapModel mapModel = getMapModuleIfPassive();
+            if ( mapModel != null ) {
                 RepaintCommand repaintCommand = new RepaintCommand( mapModel );
                 try {
                     appContainer.getCommandProcessor().executeSychronously( repaintCommand, true );
@@ -479,6 +475,17 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
                 }
             }
         }
+    }
+
+    private MapModel getMapModuleIfPassive() {
+        String mmId = getInitParameter( "assignedMapModel" );
+        MapModel mapModel = appContainer.getMapModel( new Identifier( mmId ) );
+        MapModel temp = appContainer.getMapModel( null );
+        // ensure that just the current model will be returned only if it is not the active one
+        if ( mapModel != temp ) {
+            return mapModel;
+        }
+        return null;
     }
 
     /**
