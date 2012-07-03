@@ -61,7 +61,7 @@ import org.deegree.model.feature.schema.PropertyType;
 public class LinkedTableAdapter extends FeatureAdapter {
 
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedTableAdapter.class );
-    
+
     private boolean isLazyLoading = false;
 
     private FeatureAdapter featureAdapter;
@@ -87,8 +87,8 @@ public class LinkedTableAdapter extends FeatureAdapter {
     @Override
     public FeatureCollection getFeatureCollection() {
         if ( fc == null && !isLazyLoading ) {
-            try {                
-                fc = createFeatureCollection( );
+            try {
+                fc = createFeatureCollection();
             } catch ( IOException e ) {
                 LOG.logError( e );
             }
@@ -115,23 +115,28 @@ public class LinkedTableAdapter extends FeatureAdapter {
                             throws IOException {
         // TODO
         // not supported
-        
+
         // because 'featureAdapter' may also be an instance of LinkedTableAdapter further invocations
         // of commitChanges() possibly will occur until the instance on which the method is invoked is
-        // not an instance of LinkedTableAdapter 
-//        featureAdapter.commitChanges();
-        
-//        List<FeatureAdapter.Changes> changeList = changes.get( datasource.getName() );        
-//        linkedTable.commitChanges( changeList );
+        // not an instance of LinkedTableAdapter
+        // featureAdapter.commitChanges();
+
+        // List<FeatureAdapter.Changes> changeList = changes.get( datasource.getName() );
+        // linkedTable.commitChanges( changeList );
     }
 
     @Override
     public void refresh() {
-        try {            
+        try {
             fc = createFeatureCollection();
         } catch ( IOException e ) {
             LOG.logError( e );
         }
+    }
+
+    @Override
+    public void refresh( boolean forceReload ) {
+        refresh();
     }
 
     @Override

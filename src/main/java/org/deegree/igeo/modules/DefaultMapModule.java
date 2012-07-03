@@ -86,14 +86,15 @@ import org.deegree.datatypes.QualifiedName;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.util.CollectionUtils;
-import org.deegree.framework.util.ImageUtils;
 import org.deegree.framework.util.CollectionUtils.Mapper;
+import org.deegree.framework.util.ImageUtils;
 import org.deegree.framework.utils.MapTools;
 import org.deegree.graphics.transformation.GeoTransform;
 import org.deegree.igeo.ApplicationContainer;
 import org.deegree.igeo.commands.CommitDataChangesCommand;
 import org.deegree.igeo.commands.ExportLayerCommand;
 import org.deegree.igeo.commands.UnselectFeaturesCommand;
+import org.deegree.igeo.commands.model.RepaintCommand;
 import org.deegree.igeo.commands.model.ZoomCommand;
 import org.deegree.igeo.config.ModuleType;
 import org.deegree.igeo.config.QualifiedNameType;
@@ -117,8 +118,8 @@ import org.deegree.igeo.views.swing.map.SelectByAttributeDialog;
 import org.deegree.igeo.views.swing.map.SelectPanel;
 import org.deegree.igeo.views.swing.map.ZoomPanel;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
-import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.kernel.Command;
 import org.deegree.kernel.CommandProcessedEvent;
 import org.deegree.kernel.CommandProcessedListener;
@@ -295,11 +296,11 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
             LOG.logError( e.getMessage(), e );
         }
 
-        if( jco != null ){
+        if ( jco != null ) {
             Component[] comps = jco.getComponents();
-    
+
             for ( int i = 0; i < comps.length; i++ ) {
-    
+
                 MouseListener[] ml = comps[i].getMouseListeners();
                 for ( MouseListener mouseListener : ml ) {
                     if ( !( mouseListener instanceof DefaultMapComponent.DMCMouseListener ) ) {
@@ -314,7 +315,7 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
                         comps[i].removeMouseMotionListener( mouseMotionListener );
                     }
                 }
-    
+
                 if ( comps[i] instanceof JPanel ) {
                     jco.remove( comps[i] );
                 }
@@ -458,6 +459,24 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
                               mapModel.getTargetDevice().getPixelHeight() );
                 oi.setBackground( new Color( 255, 255, 255, 0 ) );
                 oi.setVisible( true );
+            }
+        }
+    }
+
+    public void repaint() {
+        if ( getViewForm() instanceof Container ) {
+            String mmId = getInitParameter( "assignedMapModel" );
+            MapModel mapModel = appContainer.getMapModel( new Identifier( mmId ) );
+            MapModel temp = appContainer.getMapModel( null );
+            // this check must be done to ensure that just the selected layer of current model will be exported
+            // because this method is registered as action method to all map models
+            if ( mapModel == temp ) {
+                RepaintCommand repaintCommand = new RepaintCommand( mapModel );
+                try {
+                    appContainer.getCommandProcessor().executeSychronously( repaintCommand, true );
+                } catch ( Exception e ) {
+                    LOG.logWarning( "Repaint failed: " + e.getMessage() );
+                }
             }
         }
     }
@@ -838,8 +857,7 @@ public class DefaultMapModule<T> extends DefaultModule<T> implements CommandProc
                 if ( adapter instanceof FeatureAdapter ) {
                     FeatureAdapter fa = (FeatureAdapter) adapter;
 
-                    List<QualifiedName> refProps = CollectionUtils.map(
-                                                                        fa.getDatasource().getDatasourceType().getReferenceProperty(),
+                    List<QualifiedName> refProps = CollectionUtils.map( fa.getDatasource().getDatasourceType().getReferenceProperty(),
                                                                         toqualifiedname );
 
                     try {

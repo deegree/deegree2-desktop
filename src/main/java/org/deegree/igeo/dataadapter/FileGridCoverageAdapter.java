@@ -39,7 +39,6 @@
 package org.deegree.igeo.dataadapter;
 
 import java.awt.image.BufferedImage;
-
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.IOException;
@@ -381,8 +380,21 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
     @Override
     public void refresh() {
         if ( !this.isLazyLoading ) {
-            loadFullRaster();
-            layer.setDataRefreshed( this );
+            refreshRaster();
+        }
+    }
+
+    private void refreshRaster() {
+        loadFullRaster();
+        layer.setDataRefreshed( this );
+    }
+
+    @Override
+    public void refresh( boolean forceReload ) {
+        if ( forceReload ) {
+            refreshRaster();
+        } else {
+            refresh();
         }
     }
 

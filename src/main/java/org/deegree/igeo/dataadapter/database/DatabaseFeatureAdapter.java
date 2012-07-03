@@ -215,6 +215,15 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
 
     }
 
+    @Override
+    public void refresh( boolean forceReload ) {
+        if ( forceReload ) {
+            loadData( mapModel.getEnvelope() );
+        } else {
+            refresh();
+        }
+    }
+
     private void loadData( Envelope envelope ) {
         try {
             DatabaseDataLoader loader = instantiateLoader();

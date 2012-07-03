@@ -53,7 +53,7 @@ public class MapModelChangedEvent extends ValueChangedEvent {
     public enum CHANGE_TYPE {
         layerOrderChanged, layerRemoved, layerInserted, extentChanged, targetDeviceChanged, 
         crsChanged, crsAdded, crsSet, crsRemoved, layerGroupRemoved, layerGroupInserted,
-        layerStateChanged
+        layerStateChanged, repaintForced
     };
 
     private CHANGE_TYPE changeType;

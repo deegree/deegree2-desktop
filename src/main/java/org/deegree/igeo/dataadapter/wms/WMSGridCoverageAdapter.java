@@ -179,7 +179,7 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
      * 
      * @param baseURL
      */
-    private void useBaseURL( URL baseURL ) {       
+    private void useBaseURL( URL baseURL ) {
         try {
             URL url = OWSURLUtils.normalizeOWSURL( baseURL );
             getMapHttpGetURL = url;
@@ -189,7 +189,7 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
             LOG.logError( e );
         }
     }
-   
+
     /**
      * reads destination URLs for GetFeature, DescribeFeatureType and Transaction requests from WFS capabilities
      * document
@@ -329,7 +329,7 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
                                                               appCont.getUser(), appCont.getPassword(),
                                                               appCont.getCertificate( getMapUrl ) );
             LOG.logDebug( "base WMS URL ", getMapUrl );
-            LOG.logDebug( "WMS GetMap parameter ", param );     
+            LOG.logDebug( "WMS GetMap parameter ", param );
             is = HttpUtils.performHttpGet( getMapUrl, param, timeout, appCont.getUser(), appCont.getPassword(), null ).getResponseBodyAsStream();
         } catch ( Exception e ) {
             if ( getMapHttpGetURL == null ) {
@@ -455,14 +455,14 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.client.presenter.connector.IMapModelAdapter#refresh()
-     */
+    @Override
     public void refresh() {
         // TODO Auto-generated method stub
+    }
 
+    @Override
+    public void refresh( boolean forceReload ) {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -470,7 +470,6 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
                             throws IOException {
         // A WMSGridCoverageAdpter can not deal changes and so can/need not to commit changes to its
         // backend/WMS
-
     }
 
 }

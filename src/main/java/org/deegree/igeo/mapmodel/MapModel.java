@@ -59,6 +59,7 @@ import org.deegree.igeo.config.ExternalResourceType;
 import org.deegree.igeo.config.MapModelType;
 import org.deegree.igeo.config.TargetDeviceType;
 import org.deegree.igeo.config.Util;
+import org.deegree.igeo.dataadapter.DataAccessAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.MapModelChangedEvent.CHANGE_TYPE;
 import org.deegree.igeo.modules.ModuleCreator;
@@ -242,6 +243,27 @@ public class MapModel implements ChangeListener {
             mmType.setExtent( value );
             fireMapModelChangedEvent( CHANGE_TYPE.extentChanged, envelope );
         }
+    }
+
+    public void repaint()
+                            throws Exception {
+        walkLayerTree( new MapModelVisitor() {
+
+            @Override
+            public void visit( Layer layer )
+                                    throws Exception {
+                for ( DataAccessAdapter daa : layer.getDataAccess() ) {
+                    daa.refresh( true );
+                }
+            }
+
+            @Override
+            public void visit( LayerGroup layerGroup )
+                                    throws Exception {
+
+            }
+        } );
+        fireMapModelChangedEvent( CHANGE_TYPE.repaintForced, null );
     }
 
     /**

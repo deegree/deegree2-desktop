@@ -102,6 +102,12 @@ public class MemoryFeatureAdapter extends FeatureAdapter {
         // TODO Auto-generated method stub
 
     }
+    
+    @Override
+    public void refresh( boolean forceReload ) {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Override
     public void commitChanges()

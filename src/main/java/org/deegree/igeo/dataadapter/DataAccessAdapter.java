@@ -44,7 +44,7 @@ import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
 
 /**
- * abstract data access adapter offering some methods that are common to most concrete data adapters 
+ * abstract data access adapter offering some methods that are common to most concrete data adapters
  * 
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
@@ -75,7 +75,7 @@ public abstract class DataAccessAdapter extends Adapter {
         this.layer = layer;
         this.mapModel = mapModel;
     }
-   
+
     /**
      * 
      * @return layer a a {@link DataAccessAdapter} belongs too
@@ -92,7 +92,7 @@ public abstract class DataAccessAdapter extends Adapter {
     public Datasource getDatasource() {
         return datasource;
     }
-    
+
     /**
      * notifies all registered listeners that a feature has been deleted
      * 
@@ -108,18 +108,18 @@ public abstract class DataAccessAdapter extends Adapter {
      * notifies all registered listeners that a feature has been deleted
      * 
      */
-    protected void fireLoadingFinishedEvent () {
+    protected void fireLoadingFinishedEvent() {
         AdapterEvent event = new AdapterEvent( layer, ADAPTER_EVENT_TYPE.finishedLoading );
         for ( int i = 0; i < this.listeners.size(); i++ ) {
             this.listeners.get( i ).valueChanged( event );
         }
     }
-    
+
     /**
      * notifies all registered listeners that a feature has been deleted
      * 
      */
-    protected void fireLoadingExceptionEvent () {
+    protected void fireLoadingExceptionEvent() {
         AdapterEvent event = new AdapterEvent( layer, ADAPTER_EVENT_TYPE.exceptionLoading );
         for ( int i = 0; i < this.listeners.size(); i++ ) {
             this.listeners.get( i ).valueChanged( event );
@@ -127,21 +127,27 @@ public abstract class DataAccessAdapter extends Adapter {
     }
 
     /**
-     * refreshes the interal state of a DataAccessAdapter
+     * refreshes the interal state of a DataAccessAdapter. Same as {@link #refresh(boolean)} with paramter true
      * 
      */
     public abstract void refresh();
 
     /**
-     * sets the state of a DateaccessAdapter to be invalid. Implementations are responsible for
-     * handle an invalid state.
+     * refreshes the interal state of a DataAccessAdapter
+     * 
+     * @param forceReload
+     *            if true the reload of the data is forced, if false {@link #refresh()} is called
+     */
+    public abstract void refresh( boolean forceReload );
+
+    /**
+     * sets the state of a DateaccessAdapter to be invalid. Implementations are responsible for handle an invalid state.
      * 
      */
     public abstract void invalidate();
 
     /**
-     * commit changes that has been performed on data provided by a {@link DataAccessAdapter} to the
-     * adapted back end
+     * commit changes that has been performed on data provided by a {@link DataAccessAdapter} to the adapted back end
      * 
      * @throws IOException
      */

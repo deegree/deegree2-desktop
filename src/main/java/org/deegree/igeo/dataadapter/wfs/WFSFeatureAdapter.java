@@ -383,18 +383,7 @@ public class WFSFeatureAdapter extends FeatureAdapter {
                 if ( mapModel.getScaleDenominator() >= min && mapModel.getScaleDenominator() < max ) {
                     Envelope currentEnv = mapModel.getEnvelope();
                     if ( lastEnv == null || ( !currentEnv.equals( lastEnv ) && !lastEnv.contains( currentEnv ) ) ) {
-                        // if lazy loading is set data must be loaded with current state of map model
-                        try {
-                            loadData();
-                        } catch ( Exception e ) {
-                            if ( getFeatureURL == null ) {
-                                // read target URLs (and WFS version) from WFS capabilities
-                                readURLs( baseURL );
-                                loadData();
-                            } else {
-                                throw new DataAccessException( e );
-                            }
-                        }
+                        refreshData();
                         lastEnv = mapModel.getEnvelope();
                         // perform all inserts, updates, deletes that has been performed on this
                         // data source adapter on the feature collection read from the adapted data source
@@ -415,19 +404,32 @@ public class WFSFeatureAdapter extends FeatureAdapter {
         if ( featureCollections.get( datasource.getName() ) == null & !this.isLazyLoading ) {
             // if feature collection has already been loaded for a not lazy loading data source
             // it don't have to loaded again.
-            try {
-                loadData();
-            } catch ( Exception e ) {
-                if ( getFeatureURL == null ) {
-                    // read target URLs (and WFS version) from WFS capabilities
-                    readURLs( baseURL );
-                    loadData();
-                } else {
-                    throw new DataAccessException( e );
-                }
-            }
+            refreshData();
         }
         loadSchema();
+    }
+
+    private void refreshData() {
+        try {
+            loadData();
+        } catch ( Exception e ) {
+            if ( getFeatureURL == null ) {
+                // read target URLs (and WFS version) from WFS capabilities
+                readURLs( baseURL );
+                loadData();
+            } else {
+                throw new DataAccessException( e );
+            }
+        }
+    }
+
+    @Override
+    public void refresh( boolean forceReload ) {
+        if ( forceReload ) {
+            refreshData();
+        } else {
+            refresh();
+        }
     }
 
     @Override
