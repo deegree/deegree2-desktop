@@ -114,12 +114,14 @@ public class PanState extends MapState {
         java.awt.Point p = MapTools.adjustPointToPanelSize( event.getPoint(), c.getWidth(), c.getHeight() );
         drawingPane.draw( p.x, p.y );
         DefaultMapModule<?> owner = appContainer.getActiveMapModule();
-        owner.update();
-        // force repainting of the container, otherwise the
-        // zoom rectangle is never visible, when view form is a frame
-        if ( owner.getViewForm() instanceof JFrame ) {
-            Container con = c.getParent();
-            con.repaint();
+        if ( owner != null ) {
+            owner.update();
+            // force repainting of the container, otherwise the
+            // zoom rectangle is never visible, when view form is a frame
+            if ( owner.getViewForm() instanceof JFrame ) {
+                Container con = c.getParent();
+                con.repaint();
+            }
         }
     }
 

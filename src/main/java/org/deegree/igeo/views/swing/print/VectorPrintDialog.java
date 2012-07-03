@@ -278,9 +278,9 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
     }
 
     private void disposeListenerAndLayer() {
-        MapTool<Container> mt = getAssignedMapModule().getMapTool();
-        removePreviewLayer();
         DefaultMapModule<Container> mapModule = getAssignedMapModule();
+        MapTool<Container> mt = mapModule.getMapTool();
+        removePreviewLayer();
         Container jco = mapModule.getMapContainer();
         jco.removeMouseListener( ml );
         jco.removeMouseMotionListener( mml );
@@ -850,7 +850,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         jco.addMouseListener( ml );
         jco.addMouseMotionListener( mml );
         isActive = true;
-        final MapTool<Container> mapTool = getAssignedMapModule().getMapTool();
+        final MapTool<Container> mapTool = mapModule.getMapTool();
         mapTool.addChangeListener( this );
 
         addWindowFocusListener( new WindowFocusListener() {
@@ -1206,25 +1206,28 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
     }
 
     /**
-     * Fetches and returns the assigned map module
+     * Fetches and returns the active map module
      * 
-     * @return the assigned map module
+     * @return the active map module
      */
     @SuppressWarnings("unchecked")
     DefaultMapModule<Container> getAssignedMapModule() {
 
-        List<?> list = this.appContainer.findModuleByName( "MapModule" );
-        if ( list.size() == 0 ) {
-            return (DefaultMapModule<Container>) list.get( 0 );
-        } else {
-            for ( Object iModule : list ) {
-                String t = ( (IModule<?>) iModule ).getInitParameter( "assignedMapModel" );
-                if ( t != null && t.equals( appContainer.getMapModel( null ).getIdentifier().getValue() ) ) {
-                    return (DefaultMapModule<Container>) iModule;
+        List<?> modules = appContainer.getModules();
+        MapModel mapModel = appContainer.getMapModel( null );
+        DefaultMapModule<Container> mapModule = null;
+        for ( Object module : modules ) {
+            if ( module instanceof DefaultMapModule<?> ) {
+                String t = ( (IModule<?>) module ).getInitParameter( "assignedMapModel" );
+                if ( t != null && mapModel != null && t.equals( mapModel.getIdentifier().getValue() ) ) {
+                    return (DefaultMapModule<Container>) module;
+                } else {
+                    if ( mapModule == null )
+                        mapModule = (DefaultMapModule<Container>) module;
                 }
             }
-            return (DefaultMapModule<Container>) list.get( 0 );
         }
+        return mapModule;
     }
 
     private int convert( double millimeter ) {

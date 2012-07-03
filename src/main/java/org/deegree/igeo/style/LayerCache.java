@@ -323,7 +323,9 @@ public class LayerCache {
                 geometryProperties.put( qn, GEOMTYPE.UNKNOWN );
                 for ( DataAccessAdapter adapter : layer.getDataAccess() ) {
                     if ( adapter instanceof FeatureAdapter ) {
-                        FeatureProperty[] fts = getFeatureCollection( adapter, null ).getFeature( 0 ).getProperties( qn );
+                        Iterator<Feature> features = getFeatureCollection( adapter, null ).iterator();
+                        if(features.hasNext()){
+                        FeatureProperty[] fts = features.next().getProperties( qn );
                         if ( fts != null && fts.length > 0 ) {
                             Object value = fts[0].getValue();
                             if ( value instanceof org.deegree.model.spatialschema.Point || value instanceof MultiPoint ) {
@@ -336,6 +338,7 @@ public class LayerCache {
                                 geometryProperties.remove( qn );
                                 geometryProperties.put( qn, GEOMTYPE.POLYGON );
                             }
+                        }
                         }
                     }
                 }
