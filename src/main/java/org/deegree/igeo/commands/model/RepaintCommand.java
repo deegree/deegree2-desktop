@@ -67,6 +67,7 @@ public class RepaintCommand extends AbstractCommand{
     public void execute()
                             throws Exception {
         mapModel.repaint();
+        fireCommandProcessedEvent();
     }
 
     @Override

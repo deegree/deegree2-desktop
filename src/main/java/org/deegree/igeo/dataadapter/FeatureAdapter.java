@@ -151,16 +151,35 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
     }
 
     /**
-     * transforms a feature collection into map model CRS if required
+     * transforms a feature collection into map model crs if native crs and map model crs are not the same
      * 
      * @param featureCollection
-     * @return feature collection in map model CRS
+     *            the {@link FeatureCollection} instance to transform
+     * @return feature collection in map model crs
      */
-    protected FeatureCollection transform( FeatureCollection featureCollection ) {
-
+    protected FeatureCollection transformToMapModelCrs( FeatureCollection featureCollection ) {
         CoordinateSystem crs = mapModel.getCoordinateSystem();
-        if ( !datasource.getNativeCoordinateSystem().equals( crs ) ) {
-            GeoTransformer gt = new GeoTransformer( crs );
+        CoordinateSystem nativeCoordinateSystem = datasource.getNativeCoordinateSystem();
+        return transform( featureCollection, crs, nativeCoordinateSystem );
+    }
+
+    /**
+     * transforms a feature collection into native crs if native crs and map model crs are not the same
+     * 
+     * @param featureCollection
+     *            the {@link FeatureCollection} instance to transform
+     * @return the feature collection in the natice crs of the datasource
+     */
+    protected FeatureCollection transformToDatasourceCrs( FeatureCollection featureCollection ) {
+        CoordinateSystem crs = mapModel.getCoordinateSystem();
+        CoordinateSystem nativeCoordinateSystem = datasource.getNativeCoordinateSystem();
+        return transform( featureCollection, nativeCoordinateSystem, crs );
+    }
+
+    protected FeatureCollection transform( FeatureCollection featureCollection, CoordinateSystem targetCrs,
+                                           CoordinateSystem expectedCrs ) {
+        if ( !expectedCrs.equals( targetCrs ) ) {
+            GeoTransformer gt = new GeoTransformer( targetCrs );
             try {
                 featureCollection = gt.transform( featureCollection );
             } catch ( CRSTransformationException e ) {

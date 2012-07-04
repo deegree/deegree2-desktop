@@ -228,7 +228,7 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
         try {
             DatabaseDataLoader loader = instantiateLoader();
             FeatureCollection fc = loader.load( envelope );
-            fc = transform( fc );
+            fc = transformToMapModelCrs( fc );
             featureCollections.put( datasource.getName(), fc );
             datasource.setExtent( mapModel.getEnvelope() );
         } catch ( Exception e ) {

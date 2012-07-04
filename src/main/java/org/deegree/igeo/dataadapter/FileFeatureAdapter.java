@@ -41,6 +41,7 @@ package org.deegree.igeo.dataadapter;
 import static org.deegree.crs.coordinatesystems.GeographicCRS.WGS84;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +62,7 @@ import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.io.dbaseapi.DBaseException;
 import org.deegree.io.gpx.GPXReader;
 import org.deegree.io.shpapi.ShapeFile;
 import org.deegree.io.shpapi.shape_new.ShapeFileWriter;
@@ -68,6 +70,7 @@ import org.deegree.model.crs.CRSFactory;
 import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.FeatureException;
 import org.deegree.model.feature.FeatureFactory;
 import org.deegree.model.feature.FeatureProperty;
 import org.deegree.model.feature.GMLFeatureAdapter;
@@ -79,6 +82,7 @@ import org.deegree.model.spatialschema.GeometryException;
 import org.deegree.model.spatialschema.GeometryImpl;
 import org.deegree.model.spatialschema.MultiSurface;
 import org.deegree.model.spatialschema.Surface;
+import org.xml.sax.SAXException;
 
 /**
  * concrete implementation of {@link FeatureAdapter} for reading vector data from files.
@@ -218,7 +222,7 @@ public class FileFeatureAdapter extends FeatureAdapter {
 
         FeatureCollection featureCollection = GPXReader.read( is );
         featureCollection.setEnvelopesUpdated();
-        featureCollection = transform( featureCollection );
+        featureCollection = transformToMapModelCrs( featureCollection );
         try {
             if ( featureCollection.size() > 0 ) {
                 datasource.setExtent( featureCollection.getBoundedBy() );
@@ -258,7 +262,7 @@ public class FileFeatureAdapter extends FeatureAdapter {
             throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10071",
                                                                 file.getAbsolutePath(), e.getMessage() ) );
         }
-        featureCollection = transform( featureCollection );
+        featureCollection = transformToMapModelCrs( featureCollection );
         featureCollections.put( datasource.getName(), featureCollection );
     }
 
@@ -342,7 +346,7 @@ public class FileFeatureAdapter extends FeatureAdapter {
         }
 
         sf.close();
-        featureCollection = transform( featureCollection );
+        featureCollection = transformToMapModelCrs( featureCollection );
         featureCollections.put( datasource.getName(), featureCollection );
         fireLoadingFinishedEvent();
     }
@@ -418,17 +422,9 @@ public class FileFeatureAdapter extends FeatureAdapter {
                 file.delete();
                 String outName = getAbsoluteFilePath( file ).getAbsolutePath();
                 if ( outName.toLowerCase().endsWith( ".gml" ) || outName.toLowerCase().endsWith( ".xml" ) ) {
-                    FileOutputStream fos = new FileOutputStream( new File( outName ) );
-                    GMLFeatureAdapter ada = new GMLFeatureAdapter();
-                    GMLFeatureCollectionDocument doc = ada.export( fc );
-                    doc.write( fos );
-                    fos.close();
+                    writeAsGml( fc, outName );
                 } else {
-                    outName = outName.substring( 0, outName.lastIndexOf( '.' ) );
-                    org.deegree.io.shpapi.shape_new.ShapeFile sf = new org.deegree.io.shpapi.shape_new.ShapeFile( fc,
-                                                                                                                  outName );
-                    ShapeFileWriter writer = new ShapeFileWriter( sf );
-                    writer.write();
+                    writeAsShape( fc, outName );
                 }
             } catch ( Exception e ) {
                 LOG.logError( "commiting data to datasource: " + datasource.getName()
@@ -437,6 +433,37 @@ public class FileFeatureAdapter extends FeatureAdapter {
             }
 
         }
+    }
+
+    private void writeAsShape( FeatureCollection featureCollection, String outName )
+                            throws DBaseException, GeometryException, IOException {
+        featureCollection = cloneFeatureCollection( featureCollection );
+        featureCollection = transformToDatasourceCrs( featureCollection );
+
+        outName = outName.substring( 0, outName.lastIndexOf( '.' ) );
+        org.deegree.io.shpapi.shape_new.ShapeFile sf = new org.deegree.io.shpapi.shape_new.ShapeFile(
+                                                                                                      featureCollection,
+                                                                                                      outName );
+        ShapeFileWriter writer = new ShapeFileWriter( sf );
+        writer.write();
+    }
+
+    private FeatureCollection cloneFeatureCollection( FeatureCollection featureCollection ) {
+        try {
+            featureCollection = (FeatureCollection) featureCollection.cloneDeep();
+        } catch ( Exception e ) {
+            LOG.logInfo( "Could not clone feature collection to store." );
+        }
+        return featureCollection;
+    }
+
+    private void writeAsGml( FeatureCollection fc, String outName )
+                            throws FileNotFoundException, IOException, FeatureException, SAXException {
+        FileOutputStream fos = new FileOutputStream( new File( outName ) );
+        GMLFeatureAdapter ada = new GMLFeatureAdapter();
+        GMLFeatureCollectionDocument doc = ada.export( fc );
+        doc.write( fos );
+        fos.close();
     }
 
 }

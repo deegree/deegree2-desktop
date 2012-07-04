@@ -293,7 +293,7 @@ public class WFSFeatureAdapter extends FeatureAdapter {
         for ( Query query : queries ) {
             // load data from WFS
             FeatureCollection fc = loader.readFeatureCollection( getFeatureURL, geomProperty, currentEnv, query, layer );
-            fc = transform( fc );
+            fc = transformToMapModelCrs( fc );
             try {
                 if ( env == null ) {
                     env = fc.getBoundedBy();
