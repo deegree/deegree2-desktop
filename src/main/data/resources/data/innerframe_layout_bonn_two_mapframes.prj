@@ -1055,7 +1055,6 @@
         <OnlineResource ns2:href="./exif_module.mdx" />
       </ns4:ModuleReference>
     </ns4:ModuleRegister>
-    <!-- 
     <ns4:ModuleRegister>
       <ns4:FooterPosition>
         <ns4:footerPosition>1</ns4:footerPosition>
@@ -1101,7 +1100,6 @@
         </ns4:Menu>
       </ns4:Module>
     </ns4:ModuleRegister>
-      -->
     <ns4:ModuleRegister>
       <ns4:AbsolutePosition>
         <ns4:Window width="600" height="500" top="50" left="650" />

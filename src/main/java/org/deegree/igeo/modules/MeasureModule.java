@@ -101,13 +101,26 @@ public class MeasureModule<T> extends DefaultModule<T> implements ChangeListener
                       IModule<T> parent, Map<String, String> initParams ) {
         super.init( moduleType, componentPosition, appCont, parent, initParams );
 
-        this.mapModule = appContainer.getActiveMapModule();
-        if ( this.mapModule == null ) {
+        mapModule = getMapModule();
+        if ( mapModule == null ) {
             LOG.logError( "no map module found " );
             return;
         }
 
-        this.mapModule.getMapTool().addChangeListener( this );
+        mapModule.getMapTool().addChangeListener( this );
+    }
+
+    private DefaultMapModule<?> getMapModule() {
+        DefaultMapModule<T> activeMapModule = appContainer.getActiveMapModule();
+        if ( activeMapModule != null ) {
+            return activeMapModule;
+        }
+        for ( Object module : appContainer.getModules() ) {
+            if ( module instanceof DefaultMapModule<?> ) {
+                return (DefaultMapModule<?>) module;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -121,7 +134,7 @@ public class MeasureModule<T> extends DefaultModule<T> implements ChangeListener
     }
 
     private void updateMapModuleAndChangeListener() {
-        DefaultMapModule<T> newMapModule = appContainer.getActiveMapModule();
+        DefaultMapModule<?> newMapModule = getMapModule();
         if ( this.mapModule != newMapModule ) {
             this.mapModule.getMapTool().removeChangeListener( this );
             this.mapModule = newMapModule;
