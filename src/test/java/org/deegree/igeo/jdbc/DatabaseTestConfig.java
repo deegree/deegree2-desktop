@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.deegree.igeo.config.JDBCConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,8 +40,15 @@ public class DatabaseTestConfig {
     }
 
     @Bean
-    public DataSource sqlserver2008() {
+    public DataSource sqlserver2008DataSource() {
         return null;
+    }
+
+    @Bean
+    public JDBCConnection sqlserver2008() {
+        return new JDBCConnection( "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+                                   "jdbc:sqlserver://sqlserver2008:1433;databaseName=deegreedesktop-it;",
+                                   "deegreedesktop", "deegreedesktop", false );
     }
 
 }
