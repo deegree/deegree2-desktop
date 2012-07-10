@@ -35,6 +35,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.modules.gazetteer;
 
+import org.deegree.framework.util.StringPair;
 import org.deegree.model.spatialschema.Geometry;
 import org.deegree.model.spatialschema.Point;
 
@@ -64,6 +65,10 @@ public class GazetteerItem implements Comparable<Object> {
 
     private Geometry highlightGeometry;
 
+    private Integer identPart1;
+
+    private String identPart2;
+
     /**
      * 
      * @param gmlID
@@ -86,6 +91,32 @@ public class GazetteerItem implements Comparable<Object> {
         this.position = position;
         this.displayName = displayName;
         this.highlightGeometry = highlightGeometry;
+        StringPair p = splitGeographicIdentifier( geographicIdentifier );
+        try {
+            this.identPart1 = Integer.parseInt( p.first );
+            this.identPart2 = p.second;
+        } catch ( Throwable e ) {
+            identPart1 = null;
+            identPart2 = null;
+        }
+    }
+
+    /**
+     * Splits a string: numberstring -> number, string
+     * 
+     * @param geographicIdentifier
+     * @return a pair of string, with empty strings where applicable (never null)
+     */
+    public static StringPair splitGeographicIdentifier( String geographicIdentifier ) {
+        geographicIdentifier = geographicIdentifier.trim();
+        StringBuilder sb = new StringBuilder();
+        for ( int i = 0; i < geographicIdentifier.length(); ++i ) {
+            if ( !Character.isDigit( geographicIdentifier.charAt( i ) ) ) {
+                return new StringPair( sb.toString().trim(), geographicIdentifier.substring( i ).trim() );
+            }
+            sb.append( geographicIdentifier.charAt( i ) );
+        }
+        return new StringPair( sb.toString().trim(), "" );
     }
 
     /**
@@ -152,7 +183,14 @@ public class GazetteerItem implements Comparable<Object> {
     @Override
     public int compareTo( Object o ) {
         if ( o instanceof GazetteerItem ) {
-            return geographicIdentifier.compareTo( ( (GazetteerItem) o ).geographicIdentifier );
+            GazetteerItem oth = (GazetteerItem) o;
+            if ( identPart1 == null || identPart2 == null ) {
+                return geographicIdentifier.compareTo( oth.geographicIdentifier );
+            }
+            if ( identPart1.equals( oth.identPart1 ) ) {
+                return identPart2.compareTo( oth.identPart2 );
+            }
+            return identPart1.compareTo( oth.identPart1 );
         }
         return geographicIdentifier.compareTo( o.toString() );
     }
