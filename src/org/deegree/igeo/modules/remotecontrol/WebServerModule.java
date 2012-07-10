@@ -116,14 +116,14 @@ public class WebServerModule<T> extends DefaultModule<T> {
         }
         for ( String paramName : params.keySet() ) {
             if ( paramName.contains( "." ) ) {
-                String functionName = paramName.split( "." )[0];
-                String functionParam = paramName.split( "." )[1];
+                String functionName = paramName.split( "[.]" )[0];
+                String functionParam = paramName.split( "[.]" )[1];
                 Map<String, String> paramMap = handlerParameters.get( functionName );
                 if ( paramMap == null ) {
                     paramMap = new HashMap<String, String>();
                     handlerParameters.put( functionName, paramMap );
                 }
-                paramMap.put( functionParam, params.get( paramName ) );
+                paramMap.put( functionParam.toUpperCase(), params.get( paramName ) );
             }
         }
         if ( "true".equalsIgnoreCase( params.get( "autostart" ) ) ) {

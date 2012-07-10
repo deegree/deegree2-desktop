@@ -59,6 +59,9 @@ public class GazetteerItemTest extends TestCase {
         p = GazetteerItem.splitGeographicIdentifier( "10" );
         assertEquals( "Unexpected digit part", "10", p.first );
         assertEquals( "Unexpected string part", "", p.second );
+        p = GazetteerItem.splitGeographicIdentifier( "10 " );
+        assertEquals( "Unexpected digit part", "10", p.first );
+        assertEquals( "Unexpected string part", "", p.second );
         p = GazetteerItem.splitGeographicIdentifier( "1a" );
         assertEquals( "Unexpected digit part", "1", p.first );
         assertEquals( "Unexpected string part", "a", p.second );
@@ -68,18 +71,21 @@ public class GazetteerItemTest extends TestCase {
         p = GazetteerItem.splitGeographicIdentifier( " 10 a " );
         assertEquals( "Unexpected digit part", "10", p.first );
         assertEquals( "Unexpected string part", "a", p.second );
+        p = GazetteerItem.splitGeographicIdentifier( " 10a " );
+        assertEquals( "Unexpected digit part", "10", p.first );
+        assertEquals( "Unexpected string part", "a", p.second );
     }
 
     @Test
     public void testSortItems() {
         GazetteerItem[] items = new GazetteerItem[6];
         // 1, 1a, 2, 3, ..., 9, 10
-        items[0] = new GazetteerItem( null, "10", null, null, null, null, null, null );
-        items[1] = new GazetteerItem( null, "3", null, null, null, null, null, null );
-        items[2] = new GazetteerItem( null, "2", null, null, null, null, null, null );
-        items[3] = new GazetteerItem( null, "1a", null, null, null, null, null, null );
-        items[4] = new GazetteerItem( null, "9", null, null, null, null, null, null );
-        items[5] = new GazetteerItem( null, "1", null, null, null, null, null, null );
+        items[0] = new GazetteerItem( null, "10", null, null, null, null, "10", null );
+        items[1] = new GazetteerItem( null, "3", null, null, null, null, "3", null );
+        items[2] = new GazetteerItem( null, "2", null, null, null, null, "2", null );
+        items[3] = new GazetteerItem( null, "1a", null, null, null, null, "1a", null );
+        items[4] = new GazetteerItem( null, "9", null, null, null, null, "9", null );
+        items[5] = new GazetteerItem( null, "1", null, null, null, null, "1", null );
         Arrays.sort( items );
         assertEquals( "Unexpected sort order", "1", items[0].getGeographicIdentifier() );
         assertEquals( "Unexpected sort order", "1a", items[1].getGeographicIdentifier() );
