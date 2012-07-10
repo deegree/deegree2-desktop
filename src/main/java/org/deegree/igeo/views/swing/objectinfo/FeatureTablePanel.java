@@ -38,7 +38,6 @@
 package org.deegree.igeo.views.swing.objectinfo;
 
 import static java.awt.Cursor.DEFAULT_CURSOR;
-
 import static java.awt.Cursor.HAND_CURSOR;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import static javax.swing.JOptionPane.showInputDialog;
@@ -93,7 +92,6 @@ import org.deegree.igeo.dataadapter.FeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
-import org.deegree.igeo.mapmodel.WMSDatasource;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.FeatureTable;
 import org.deegree.igeo.views.HelpManager;
@@ -445,28 +443,18 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
         this.featureCollection = featureCollection;
         this.layer = layer;
         viewsTabbedPane.setName( layer.getTitle() );
-        if ( layer.getDatasources().get( 0 ) instanceof WMSDatasource ) {
-            WMSFeatureTableModel wftm = new WMSFeatureTableModel( featureCollection );
-            this.tabFeat.setModel( wftm );
-        } else {
-            FeatureTableModel ftm = new FeatureTableModel( featureCollection, owner.getApplicationContainer().getSettings().getDictionaries() );
-            this.tabFeat.setModel( ftm );
-        }
+
+        FeatureTableModel ftm = new FeatureTableModel( featureCollection,
+                                                       owner.getApplicationContainer().getSettings().getDictionaries() );
+        this.tabFeat.setModel( ftm );
 
         markSelectedFeatures( layer, featureCollection );
 
         this.tabFeat.invalidate();
 
-        if ( layer.getDatasources().get( 0 ) instanceof WMSDatasource ) {
-            for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
-                TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
-                column.setPreferredWidth( 220 );
-            }
-        } else {
-            for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
-                TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
-                column.setPreferredWidth( 120 );
-            }
+        for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
+            TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
+            column.setPreferredWidth( 120 );
         }
 
         SortButtonRenderer renderer = new SortButtonRenderer();
@@ -699,7 +687,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
                 } else {
                     isAscent = false;
                 }
-                
+
                 ( (FeatureTableModel) table.getModel() ).sortByColumn( sortCol, isAscent );
                 FeatureTablePanel.this.invalidate();
                 FeatureTablePanel.this.getParent().repaint();
