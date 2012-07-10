@@ -76,7 +76,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -95,7 +94,6 @@ import org.deegree.igeo.dataadapter.FeatureAdapter;
 import org.deegree.igeo.i18n.Messages;
 import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.MapModel;
-import org.deegree.igeo.mapmodel.WMSDatasource;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.FeatureTable;
 import org.deegree.igeo.views.HelpManager;
@@ -150,11 +148,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
 
     private JScrollPane scGML;
 
-    private JTree treeView;
-
     private JButton btZoomto;
-
-    private JPanel pnTree;
 
     private JPanel pnGML;
 
@@ -443,28 +437,17 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
         this.featureCollection = featureCollection;
         this.layer = layer;
         viewsTabbedPane.setName( layer.getTitle() );
-        if ( layer.getDatasources().get( 0 ) instanceof WMSDatasource ) {
-            WMSFeatureTableModel wftm = new WMSFeatureTableModel( featureCollection );
-            this.tabFeat.setModel( wftm );
-        } else {
-            FeatureTableModel ftm = new FeatureTableModel( featureCollection );
-            this.tabFeat.setModel( ftm );
-        }
+
+        FeatureTableModel ftm = new FeatureTableModel( featureCollection );
+        this.tabFeat.setModel( ftm );
 
         markSelectedFeatures( layer, featureCollection );
 
         this.tabFeat.invalidate();
 
-        if ( layer.getDatasources().get( 0 ) instanceof WMSDatasource ) {
-            for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
-                TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
-                column.setPreferredWidth( 220 );
-            }
-        } else {
-            for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
-                TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
-                column.setPreferredWidth( 120 );
-            }
+        for ( int i = 0; i < this.tabFeat.getColumnCount(); i++ ) {
+            TableColumn column = this.tabFeat.getColumnModel().getColumn( i );
+            column.setPreferredWidth( 120 );
         }
 
         this.invalidate();
