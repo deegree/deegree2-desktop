@@ -91,7 +91,7 @@ public class GazetteerItem implements Comparable<Object> {
         this.position = position;
         this.displayName = displayName;
         this.highlightGeometry = highlightGeometry;
-        StringPair p = splitGeographicIdentifier( geographicIdentifier );
+        StringPair p = splitGeographicIdentifier( displayName );
         try {
             this.identPart1 = Integer.parseInt( p.first );
             this.identPart2 = p.second;
@@ -185,14 +185,14 @@ public class GazetteerItem implements Comparable<Object> {
         if ( o instanceof GazetteerItem ) {
             GazetteerItem oth = (GazetteerItem) o;
             if ( identPart1 == null || identPart2 == null ) {
-                return geographicIdentifier.compareTo( oth.geographicIdentifier );
+                return displayName.compareTo( oth.displayName );
             }
             if ( identPart1.equals( oth.identPart1 ) ) {
                 return identPart2.compareTo( oth.identPart2 );
             }
             return identPart1.compareTo( oth.identPart1 );
         }
-        return geographicIdentifier.compareTo( o.toString() );
+        return displayName.compareTo( o.toString() );
     }
 
 }

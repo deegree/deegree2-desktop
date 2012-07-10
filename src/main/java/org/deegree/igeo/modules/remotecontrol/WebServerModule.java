@@ -74,13 +74,15 @@ import org.deegree.igeo.views.DialogFactory;
  */
 public class WebServerModule<T> extends DefaultModule<T> {
 
-    private static final ILogger LOG = LoggerFactory.getLogger( WebServerModule.class );
+    static final ILogger LOG = LoggerFactory.getLogger( WebServerModule.class );
 
-    private boolean run = false;
+    boolean run = false;
 
-    private int port;
+    int port;
 
-    private Map<String, Class<RequestHandler>> handler = new HashMap<String, Class<RequestHandler>>();
+    Map<String, Class<RequestHandler>> handler = new HashMap<String, Class<RequestHandler>>();
+
+    Map<String, Map<String, String>> handlerParameters = new HashMap<String, Map<String, String>>();
 
     static {
         ActionDescription ad1 = new ActionDescription( "start", "starts internal server to enable remote control",
@@ -91,7 +93,6 @@ public class WebServerModule<T> extends DefaultModule<T> {
         moduleCapabilities = new ModuleCapabilities( ad1, ad2 );
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void init( ModuleType moduleType, _ComponentPositionType componentPosition, ApplicationContainer<T> appCont,
                       IModule<T> parent, Map<String, String> initParams ) {
@@ -104,7 +105,7 @@ public class WebServerModule<T> extends DefaultModule<T> {
         port = Integer.parseInt( tmp );
         Map<String, String> params = getInitParameters();
         for ( String function : params.keySet() ) {
-            if ( !function.equals( "port" ) && !function.equals( "autostart" ) ) {
+            if ( !function.equals( "port" ) && !function.equals( "autostart" ) && !function.contains( "." ) ) {
                 try {
                     handler.put( function, (Class<RequestHandler>) Class.forName( params.get( function ) ) );
                 } catch ( ClassNotFoundException e ) {
@@ -113,10 +114,22 @@ public class WebServerModule<T> extends DefaultModule<T> {
                 }
             }
         }
+        for ( String paramName : params.keySet() ) {
+            if ( paramName.contains( "." ) ) {
+                String functionName = paramName.split( "[.]" )[0];
+                String functionParam = paramName.split( "[.]" )[1];
+                Map<String, String> paramMap = handlerParameters.get( functionName );
+                if ( paramMap == null ) {
+                    paramMap = new HashMap<String, String>();
+                    handlerParameters.put( functionName, paramMap );
+                }
+                paramMap.put( functionParam.toUpperCase(), params.get( paramName ) );
+            }
+        }
         if ( "true".equalsIgnoreCase( params.get( "autostart" ) ) ) {
             try {
                 start();
-            } catch ( IOException e ) {
+            } catch ( Throwable e ) {
                 LOG.logError( e.getMessage(), e );
                 throw new ModuleException( e.getMessage() );
             }
@@ -133,11 +146,8 @@ public class WebServerModule<T> extends DefaultModule<T> {
 
     /**
      * starts the server
-     * 
-     * @throws IOException
      */
-    public void start()
-                            throws IOException {
+    public void start() {
 
         run = true;
 
@@ -226,6 +236,7 @@ public class WebServerModule<T> extends DefaultModule<T> {
                     } else if ( handler.containsKey( request.get( "ACTION" ) ) ) {
                         Class<RequestHandler> clzz = handler.get( request.get( "ACTION" ) );
                         RequestHandler obj = clzz.newInstance();
+                        obj.init( handlerParameters.get( request.get( "ACTION" ) ) );
                         final String contentString = obj.perform( request, appContainer );
 
                         final String httpHeader = buildHeader( contentString.length(), "200 OK" );

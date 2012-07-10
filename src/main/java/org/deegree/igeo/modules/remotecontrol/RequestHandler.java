@@ -54,14 +54,23 @@ import org.deegree.igeo.modules.ModuleException;
  * 
  */
 public interface RequestHandler {
-    
+
+    /**
+     * This method is called before any action is performed.
+     * 
+     * @param parameters
+     *            may be null, if no parameters were configured. The keys will be uppercased.
+     */
+    void init( Map<String, String> parameters );
+
     /**
      * 
      * @param paramater
      * @param appContainer
      * @return result of performing an action; must be not <code>null</code>
-     * @throws ModuleException 
+     * @throws ModuleException
      */
-    String perform(Map<String, String> paramater, ApplicationContainer<?> appContainer) throws ModuleException; 
+    String perform( Map<String, String> paramater, ApplicationContainer<?> appContainer )
+                            throws ModuleException;
 
 }

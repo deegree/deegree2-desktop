@@ -196,4 +196,9 @@ public class SelectFeatureHandler implements RequestHandler {
         }
 
     }
+
+    @Override
+    public void init( Map<String, String> parameters ) {
+        // does not use parameters
+    }
 }
