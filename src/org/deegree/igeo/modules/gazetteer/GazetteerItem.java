@@ -155,6 +155,9 @@ public class GazetteerItem implements Comparable<Object> {
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo( Object o ) {
+        if ( o instanceof GazetteerItem ) {
+            return geographicIdentifier.compareTo( ( (GazetteerItem) o ).geographicIdentifier );
+        }
         return geographicIdentifier.compareTo( o.toString() );
     }
 

@@ -412,9 +412,6 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
             ApplicationContainer<?> appCont = mapModel.getApplicationContainer();
             String getFiUrl = getFeatureInfoURL.toURI().toASCIIString();
 
-            getFiUrl = HttpUtils.addAuthenticationForKVP( getFiUrl, appCont.getUser(), appCont.getPassword(),
-                                                          appCont.getCertificate( getFiUrl ) );
-
             StringBuilder sb = new StringBuilder( 1000 );
 
             int cnt = appCont.getSettings().getWMSGridCoveragesAdapter().getFeatureCount();
@@ -431,6 +428,11 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
                 }
             }
 
+            sb = new StringBuilder( HttpUtils.addAuthenticationForKVP( sb.toString(), appCont.getUser(),
+                                                                       appCont.getPassword(),
+                                                                       appCont.getCertificate( getFiUrl ) ) );
+
+            LOG.logDebug( "Base URL: ", getFiUrl );
             LOG.logDebug( "GetFeatureInfo request: ", sb.toString() );
             InputStream is = HttpUtils.performHttpGet( getFiUrl, sb.toString(), timeout, appCont.getUser(),
                                                        appCont.getPassword(), null ).getResponseBodyAsStream();

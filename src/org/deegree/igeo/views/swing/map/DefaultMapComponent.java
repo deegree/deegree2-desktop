@@ -37,6 +37,7 @@
  ---------------------------------------------------------------------------*/
 package org.deegree.igeo.views.swing.map;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -182,7 +183,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
     public void paint( Graphics g ) {
         // clear the background
         // seems to be crazy - but works...
-        ( (Graphics2D) g ).setBackground( getBackground() );
+        ( (Graphics2D) g ).setBackground( Color.WHITE );
         g.clearRect( 0, 0, this.mapModel.getTargetDevice().getPixelWidth(),
                      this.mapModel.getTargetDevice().getPixelHeight() );
         super.paint( g );

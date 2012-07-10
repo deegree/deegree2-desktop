@@ -40,20 +40,16 @@ package org.deegree.igeo.dataadapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.sanselan.util.IOUtils;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.framework.util.FileUtils;
 import org.deegree.framework.util.GeometryUtils;
 import org.deegree.framework.util.HttpUtils;
 import org.deegree.framework.xml.XMLFragment;
@@ -81,8 +77,8 @@ import org.deegree.model.spatialschema.MultiSurface;
 import org.deegree.model.spatialschema.Surface;
 import org.deegree.ogcwebservices.wfs.XMLFactory;
 import org.deegree.ogcwebservices.wfs.operation.GetFeature;
-import org.deegree.ogcwebservices.wfs.operation.Query;
 import org.deegree.ogcwebservices.wfs.operation.GetFeature.RESULT_TYPE;
+import org.deegree.ogcwebservices.wfs.operation.Query;
 
 /**
  * 
@@ -189,28 +185,17 @@ public class WFS110DataLoader implements WFSDataLoader {
             throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10021" ) );
         }
 
-        Reader reader = null;
         InputStream is = null;
         try {
             HttpMethod m = HttpUtils.performHttpPost( wfs.toURI().toASCIIString(), xml, timeout, appCont.getUser(),
                                                       appCont.getPassword(), null );
-            String cs = ( (PostMethod) m ).getResponseCharSet();
-            if ( cs != null && cs.length() > 0 ) {
-                reader = new InputStreamReader( m.getResponseBodyAsStream(), cs );
-            } else {
                 is = m.getResponseBodyAsStream();
-            }
             if ( LOG.getLevel() == ILogger.LOG_DEBUG ) {
-                if ( reader != null ) {
-                    String s = FileUtils.readTextFile( reader ).toString();
+                byte[] bs = IOUtils.getInputStreamBytes( is );
+                String s = new String( bs, "UTF-8" );
                     LOG.logDebug( "GetFeature Response", s );
-                    reader = new StringReader( s );
-                } else {
-                    String s = FileUtils.readTextFile( is ).toString();
-                    LOG.logDebug( "GetFeature Response", s );
-                    is = new ByteArrayInputStream( s.getBytes() );
+                is = new ByteArrayInputStream( s.getBytes( "UTF-8" ) );
                 }
-            }
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );
             throw new DataAccessException(
@@ -219,11 +204,7 @@ public class WFS110DataLoader implements WFSDataLoader {
         GMLFeatureCollectionDocument gml = new GMLFeatureCollectionDocument();
         FeatureCollection fc = null;
         try {
-            if ( reader != null ) {
-                gml.load( reader, wfs.toExternalForm() );
-            } else {
                 gml.load( is, wfs.toExternalForm() );
-            }
             fc = gml.parse();
         } catch ( Exception e ) {
             LOG.logError( e.getMessage(), e );

@@ -156,21 +156,18 @@ public class GazetteerFindItemsCommand extends AbstractGazetteerCommand {
 
         // create Query and GetFeature request
         Query query = Query.create( null, null, sp, null, null, new QualifiedName[] { featureType }, null, null,
-                                    filter, 500, 0, RESULT_TYPE.RESULTS );
+                                    filter, 5000, 0, RESULT_TYPE.RESULTS );
         
         GetFeature getFeature = GetFeature.create( capabilities.getVersion(), UUID.randomUUID().toString(),
-                                                   RESULT_TYPE.RESULTS, GetFeature.FORMAT_GML3, null, 500, 0, -1, -1,
+                                                   RESULT_TYPE.RESULTS, GetFeature.FORMAT_GML3, null, 5000, 0, -1, -1,
                                                    new Query[] { query } );
         
-
         // perform GetFeature request and create resulting GazetteerItems list
         FeatureCollection fc = performGetFeature( capabilities, getFeature );
         createItemsList( fc );
 
     }
     
-    
-
     /*
      * (non-Javadoc)
      * 
