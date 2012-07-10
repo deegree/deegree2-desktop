@@ -1,0 +1,939 @@
+package org.deegree.igeo.views.swing.print;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.prefs.Preferences;
+
+import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.xml.transform.OutputKeys;
+
+import org.deegree.datatypes.QualifiedName;
+import org.deegree.framework.log.ILogger;
+import org.deegree.framework.log.LoggerFactory;
+import org.deegree.framework.util.MapUtils;
+import org.deegree.framework.util.StringTools;
+import org.deegree.framework.xml.NamespaceContext;
+import org.deegree.framework.xml.XMLFragment;
+import org.deegree.framework.xml.XMLTools;
+import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.commands.VectorPrintCommand;
+import org.deegree.igeo.commands.VectorPrintCommand.PrintDescriptionBean;
+import org.deegree.igeo.commands.model.AddMemoryLayerCommand;
+import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.io.FileSystemAccess;
+import org.deegree.igeo.io.FileSystemAccessFactory;
+import org.deegree.igeo.mapmodel.Layer;
+import org.deegree.igeo.mapmodel.MapModel;
+import org.deegree.igeo.views.DialogFactory;
+import org.deegree.igeo.views.swing.ButtonGroup;
+import org.deegree.igeo.views.swing.util.GenericFileChooser;
+import org.deegree.igeo.views.swing.util.IGeoFileFilter;
+import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
+import org.deegree.model.spatialschema.Envelope;
+import org.deegree.model.spatialschema.Geometry;
+import org.deegree.model.spatialschema.GeometryFactory;
+import org.deegree.ogcbase.CommonNamespaces;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+
+/**
+ * 
+ * TODO add class documentation here
+ * 
+ * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
+ * @author last edited by: $Author: admin $
+ * 
+ * @version $Revision: $, $Date: $
+ */
+public class VectorPrintDialog extends javax.swing.JDialog {
+
+    private static final long serialVersionUID = -3920635540202430586L;
+
+    private static final ILogger LOG = LoggerFactory.getLogger( VectorPrintDialog.class );
+
+    private JButton btPrint;
+
+    private JTextField tfOutputFile;
+
+    private JButton btOutputFile;
+
+    private JPanel pnOutput;
+
+    private JComboBox cbDPI;
+
+    private JPanel pnDPI;
+
+    private JComboBox cbScale;
+
+    private JRadioButton rbVariable;
+
+    private JRadioButton rbConst;
+
+    private JLabel lbPageSize;
+
+    private JComboBox cbPageFormat;
+
+    private JPanel pnFormat;
+
+    private JSpinner spMapBottom;
+
+    private JSpinner spMapLeft;
+
+    private JLabel lbMapBottom;
+
+    private JLabel lbMapLeft;
+
+    private JLabel lbHeight;
+
+    private JLabel lbWidth;
+
+    private JLabel lbTop;
+
+    private JLabel lbLeft;
+
+    private JSpinner spHeight;
+
+    private JSpinner spWidth;
+
+    private JSpinner spTop;
+
+    private JSpinner spLeft;
+
+    private JLabel lb4;
+
+    private JLabel lb3;
+
+    private JLabel lb2;
+
+    private JLabel lb1;
+
+    private JPanel pnScale;
+
+    private JPanel pnMapCoord;
+
+    private JPanel pnLayoutPosition;
+
+    private JButton btSave;
+
+    private JButton btLoad;
+
+    private JPanel pnFile;
+
+    private PreviewPanel pnPreview;
+
+    private JPanel pnPrint;
+
+    private JButton btHelp;
+
+    private JPanel pnHelp;
+
+    private JButton btCancel;
+
+    private JPanel pnButtons;
+
+    private ButtonGroup bg = new ButtonGroup();
+
+    private ApplicationContainer<?> appContainer;
+
+    private MapModel mapModel;
+
+    private Layer previewLayer;
+
+    private PrintSizeListener printSizeListener = new PrintSizeListener();
+
+    /**
+     * 
+     * @param frame
+     */
+    public VectorPrintDialog( JFrame frame, ApplicationContainer<?> appContainer ) {
+        super( frame );
+        this.appContainer = appContainer;
+        this.mapModel = appContainer.getMapModel( null );
+        addWindowListener( new WindowAdapter() {
+
+            @Override
+            public void windowClosed( WindowEvent e ) {
+                removePreviewLayer();
+            }
+
+            @Override
+            public void windowClosing( WindowEvent e ) {
+                removePreviewLayer();
+            }
+        } );
+        initGUI();
+        addPreviewLayer();
+        toFront();
+        setAlwaysOnTop( true );
+    }
+
+    private void initGUI() {
+        try {
+            {
+                GridBagLayout thisLayout = new GridBagLayout();
+                thisLayout.rowWeights = new double[] { 0.0, 0.0 };
+                thisLayout.rowHeights = new int[] { 531, 16 };
+                thisLayout.columnWeights = new double[] { 0.1, 0.1 };
+                thisLayout.columnWidths = new int[] { 7, 20 };
+                getContentPane().setLayout( thisLayout );
+                {
+                    pnButtons = new JPanel();
+                    FlowLayout pnButtonsLayout = new FlowLayout();
+                    pnButtonsLayout.setAlignment( FlowLayout.LEFT );
+                    pnButtons.setLayout( pnButtonsLayout );
+                    getContentPane().add(
+                                          pnButtons,
+                                          new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                  GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
+                                                                  0 ) );
+                    {
+                        btPrint = new JButton( Messages.getMessage( getLocale(), "$MD11785" ) );
+                        pnButtons.add( btPrint );
+                        btPrint.addActionListener( new ActionListener() {
+
+                            public void actionPerformed( ActionEvent event ) {
+                                doPrint();
+                            }
+                        } );
+                    }
+                    {
+                        btCancel = new JButton( Messages.getMessage( getLocale(), "$MD11786" ) );
+                        btCancel.addActionListener( new ActionListener() {
+
+                            public void actionPerformed( ActionEvent e ) {
+                                VectorPrintDialog.this.dispose();
+                            }
+                        } );
+                        pnButtons.add( btCancel );
+
+                    }
+                }
+                {
+                    pnHelp = new JPanel();
+                    FlowLayout pnHelpLayout = new FlowLayout();
+                    pnHelpLayout.setAlignment( FlowLayout.RIGHT );
+                    pnHelp.setLayout( pnHelpLayout );
+                    getContentPane().add(
+                                          pnHelp,
+                                          new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                  GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
+                                                                  0 ) );
+                    {
+                        btHelp = new JButton( Messages.getMessage( getLocale(), "$MD11787" ) );
+                        pnHelp.add( btHelp );
+                    }
+                }
+                {
+                    pnPrint = new JPanel();
+                    GridBagLayout pnPrintLayout = new GridBagLayout();
+                    getContentPane().add(
+                                          pnPrint,
+                                          new GridBagConstraints( 0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                  GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0,
+                                                                  0 ) );
+                    pnPrint.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(), "$MD11788" ) ) );
+                    pnPrintLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.1 };
+                    pnPrintLayout.rowHeights = new int[] { 78, 111, 126, 65, 60, 7 };
+                    pnPrintLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.1 };
+                    pnPrintLayout.columnWidths = new int[] { 117, 158, 151, 7 };
+                    pnPrint.setLayout( pnPrintLayout );
+                    {
+                        pnPreview = new PreviewPanel();
+                        pnPreview.setLayout( new BorderLayout() );
+                        pnPrint.add( pnPreview, new GridBagConstraints( 0, 0, 2, 3, 0.0, 0.0,
+                                                                        GridBagConstraints.CENTER,
+                                                                        GridBagConstraints.BOTH,
+                                                                        new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnPreview.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                    "$MD11789" ) ) );
+                        {
+                            lbPageSize = new JLabel();
+                            pnPreview.add( lbPageSize, BorderLayout.SOUTH );
+                            lbPageSize.setText( Messages.getMessage( getLocale(), "$MD11790" ) );
+                        }
+                    }
+                    {
+                        pnFile = new JPanel();
+                        FlowLayout pnFileLayout = new FlowLayout();
+                        pnFileLayout.setAlignment( FlowLayout.LEFT );
+                        pnFile.setLayout( pnFileLayout );
+                        pnPrint.add( pnFile, new GridBagConstraints( 0, 5, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                     GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ),
+                                                                     0, 0 ) );
+                        pnFile.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                 "$MD11791" ) ) );
+                        {
+                            btLoad = new JButton( Messages.getMessage( getLocale(), "$MD11792" ) );
+                            pnFile.add( btLoad );
+                            btLoad.addActionListener( new ActionListener() {
+
+                                public void actionPerformed( ActionEvent event ) {
+                                    doLoadSettings();
+                                }
+                            } );
+                        }
+                        {
+                            btSave = new JButton( Messages.getMessage( getLocale(), "$MD11793" ) );
+                            pnFile.add( btSave );
+                            btSave.addActionListener( new ActionListener() {
+
+                                public void actionPerformed( ActionEvent event ) {
+                                    doSaveSettings();
+                                }
+                            } );
+                        }
+                    }
+                    {
+                        pnLayoutPosition = new JPanel();
+                        GridBagLayout pnLayoutPositionLayout = new GridBagLayout();
+                        pnLayoutPositionLayout.rowWeights = new double[] { 0.0, 0.1, 0.1, 0.1 };
+                        pnLayoutPositionLayout.rowHeights = new int[] { 39, 7, 7, 7 };
+                        pnLayoutPositionLayout.columnWeights = new double[] { 0.0, 0.0, 0.1 };
+                        pnLayoutPositionLayout.columnWidths = new int[] { 69, 95, 7 };
+                        pnLayoutPosition.setLayout( pnLayoutPositionLayout );
+                        pnPrint.add( pnLayoutPosition, new GridBagConstraints( 2, 0, 2, 2, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.BOTH,
+                                                                               new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnLayoutPosition.setBorder( BorderFactory.createTitledBorder( "layout position" ) );
+                        {
+                            lb1 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
+                            pnLayoutPosition.add( lb1, new GridBagConstraints( 2, 0, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lb2 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
+                            pnLayoutPosition.add( lb2, new GridBagConstraints( 2, 1, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lb3 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
+                            pnLayoutPosition.add( lb3, new GridBagConstraints( 2, 2, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lb4 = new JLabel( Messages.getMessage( getLocale(), "$MD11794" ) );
+                            pnLayoutPosition.add( lb4, new GridBagConstraints( 2, 3, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            spLeft = new JSpinner( new SpinnerNumberModel( 20, 10, 100000, 1 ) );
+                            pnLayoutPosition.add( spLeft, new GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0,
+                                                                                  GridBagConstraints.CENTER,
+                                                                                  GridBagConstraints.HORIZONTAL,
+                                                                                  new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                            spLeft.addChangeListener( printSizeListener );
+                        }
+                        {
+                            spTop = new JSpinner( new SpinnerNumberModel( 20, 10, 100000, 1 ) );
+                            pnLayoutPosition.add( spTop, new GridBagConstraints( 1, 1, 1, 1, 0.0, 0.0,
+                                                                                 GridBagConstraints.CENTER,
+                                                                                 GridBagConstraints.HORIZONTAL,
+                                                                                 new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                            spTop.addChangeListener( printSizeListener );
+                        }
+                        {
+                            spWidth = new JSpinner( new SpinnerNumberModel( 150, 10, 100000, 1 ) );
+                            pnLayoutPosition.add( spWidth, new GridBagConstraints( 1, 2, 1, 1, 0.0, 0.0,
+                                                                                   GridBagConstraints.CENTER,
+                                                                                   GridBagConstraints.HORIZONTAL,
+                                                                                   new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                            spWidth.addChangeListener( printSizeListener );
+                        }
+                        {
+                            spHeight = new JSpinner( new SpinnerNumberModel( 200, 10, 100000, 1 ) );
+                            pnLayoutPosition.add( spHeight, new GridBagConstraints( 1, 3, 1, 1, 0.0, 0.0,
+                                                                                    GridBagConstraints.CENTER,
+                                                                                    GridBagConstraints.HORIZONTAL,
+                                                                                    new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                            spHeight.addChangeListener( printSizeListener );
+                        }
+                        {
+                            lbLeft = new JLabel( Messages.getMessage( getLocale(), "$MD11795" ) );
+                            pnLayoutPosition.add( lbLeft, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0,
+                                                                                  GridBagConstraints.CENTER,
+                                                                                  GridBagConstraints.HORIZONTAL,
+                                                                                  new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lbTop = new JLabel( Messages.getMessage( getLocale(), "$MD11796" ) );
+                            pnLayoutPosition.add( lbTop, new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0,
+                                                                                 GridBagConstraints.CENTER,
+                                                                                 GridBagConstraints.HORIZONTAL,
+                                                                                 new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lbWidth = new JLabel( Messages.getMessage( getLocale(), "$MD11797" ) );
+                            pnLayoutPosition.add( lbWidth, new GridBagConstraints( 0, 2, 1, 1, 0.0, 0.0,
+                                                                                   GridBagConstraints.CENTER,
+                                                                                   GridBagConstraints.HORIZONTAL,
+                                                                                   new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lbHeight = new JLabel( Messages.getMessage( getLocale(), "$MD11798" ) );
+                            pnLayoutPosition.add( lbHeight, new GridBagConstraints( 0, 3, 1, 1, 0.0, 0.0,
+                                                                                    GridBagConstraints.CENTER,
+                                                                                    GridBagConstraints.HORIZONTAL,
+                                                                                    new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                    }
+                    {
+                        pnMapCoord = new JPanel();
+                        GridBagLayout pnMapCoordLayout = new GridBagLayout();
+                        pnPrint.add( pnMapCoord,
+                                     new GridBagConstraints( 2, 2, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                             GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnMapCoord.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                     "$MD11799" ) ) );
+                        pnMapCoordLayout.rowWeights = new double[] { 0.1, 0.1 };
+                        pnMapCoordLayout.rowHeights = new int[] { 7, 7 };
+                        pnMapCoordLayout.columnWeights = new double[] { 0.0, 0.1, 0.1 };
+                        pnMapCoordLayout.columnWidths = new int[] { 68, 7, 7 };
+                        pnMapCoord.setLayout( pnMapCoordLayout );
+                        {
+                            lbMapLeft = new JLabel( Messages.getMessage( getLocale(), "$MD11800" ) );
+                            pnMapCoord.add( lbMapLeft, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            lbMapBottom = new JLabel( Messages.getMessage( getLocale(), "$MD11801" ) );
+                            pnMapCoord.add( lbMapBottom, new GridBagConstraints( 0, 1, 1, 1, 0.0, 0.0,
+                                                                                 GridBagConstraints.CENTER,
+                                                                                 GridBagConstraints.HORIZONTAL,
+                                                                                 new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                        {
+                            spMapLeft = new JSpinner( new SpinnerNumberModel( 0, -9E9, 9E9, 0.5 ) );
+                            spMapLeft.setValue( mapModel.getEnvelope().getMin().getX() );
+                            pnMapCoord.add( spMapLeft, new GridBagConstraints( 1, 0, 2, 1, 0.0, 0.0,
+                                                                               GridBagConstraints.CENTER,
+                                                                               GridBagConstraints.HORIZONTAL,
+                                                                               new Insets( 0, 0, 0, 9 ), 0, 0 ) );
+                            spMapLeft.addChangeListener( printSizeListener );
+                        }
+                        {
+                            spMapBottom = new JSpinner( new SpinnerNumberModel( 0, -9E9, 9E9, 0.5 ) );
+                            spMapBottom.setValue( mapModel.getEnvelope().getMin().getY() );
+                            pnMapCoord.add( spMapBottom, new GridBagConstraints( 1, 1, 2, 1, 0.0, 0.0,
+                                                                                 GridBagConstraints.CENTER,
+                                                                                 GridBagConstraints.HORIZONTAL,
+                                                                                 new Insets( 0, 0, 0, 9 ), 0, 0 ) );
+                            spMapBottom.addChangeListener( printSizeListener );
+                        }
+                    }
+                    {
+                        pnScale = new JPanel();
+                        GridBagLayout pnScaleLayout = new GridBagLayout();
+                        pnPrint.add( pnScale, new GridBagConstraints( 2, 3, 2, 2, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                      GridBagConstraints.BOTH,
+                                                                      new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnScale.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                  "$MD11802" ) ) );
+                        pnScaleLayout.rowWeights = new double[] { 0.1, 0.1 };
+                        pnScaleLayout.rowHeights = new int[] { 7, 7 };
+                        pnScaleLayout.columnWeights = new double[] { 0.1, 0.1 };
+                        pnScaleLayout.columnWidths = new int[] { 7, 7 };
+                        pnScale.setLayout( pnScaleLayout );
+                        {
+                            rbConst = new JRadioButton( Messages.getMessage( getLocale(), "$MD11803" ) );
+                            pnScale.add( rbConst, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0,
+                                                                          GridBagConstraints.CENTER,
+                                                                          GridBagConstraints.HORIZONTAL,
+                                                                          new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                            rbConst.setSelected( true );
+                            bg.add( rbConst );
+                        }
+                        {
+                            rbVariable = new JRadioButton( Messages.getMessage( getLocale(), "$MD11804" ) );
+                            pnScale.add( rbVariable, new GridBagConstraints( 1, 0, 1, 1, 0.0, 0.0,
+                                                                             GridBagConstraints.CENTER,
+                                                                             GridBagConstraints.HORIZONTAL,
+                                                                             new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                            bg.add( rbVariable );
+                        }
+                        {
+                            int[] sc = StringTools.toArrayInt( Messages.getMessage( getLocale(), "$MD11805" ), ",; " );
+                            ListEntry[] le = new ListEntry[sc.length];
+                            for ( int i = 0; i < sc.length; i++ ) {
+                                le[i] = new ListEntry( "1:" + sc[i], sc[i] );
+                            }
+                            cbScale = new JComboBox( new DefaultComboBoxModel( le ) );
+                            cbScale.setSelectedIndex( 6 );
+                            pnScale.add( cbScale, new GridBagConstraints( 0, 1, 2, 1, 0.0, 0.0,
+                                                                          GridBagConstraints.CENTER,
+                                                                          GridBagConstraints.HORIZONTAL,
+                                                                          new Insets( 0, 9, 0, 9 ), 0, 0 ) );
+                            cbScale.addActionListener( new ActionListener() {
+
+                                public void actionPerformed( ActionEvent e ) {
+                                    updatePreview();
+                                }
+                            } );
+                        }
+                    }
+                    {
+                        pnFormat = new JPanel();
+                        GridBagLayout pnFormatLayout = new GridBagLayout();
+                        pnPrint.add( pnFormat, new GridBagConstraints( 0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                       GridBagConstraints.BOTH,
+                                                                       new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnFormat.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                   "$MD11806" ) ) );
+                        pnFormatLayout.rowWeights = new double[] { 0.1 };
+                        pnFormatLayout.rowHeights = new int[] { 7 };
+                        pnFormatLayout.columnWeights = new double[] { 0.1 };
+                        pnFormatLayout.columnWidths = new int[] { 7 };
+                        pnFormat.setLayout( pnFormatLayout );
+                        {
+                            String[] tmp = StringTools.toArray( Messages.getMessage( getLocale(), "$MD11807" ), ",;",
+                                                                true );
+                            ListEntry[] le = new ListEntry[tmp.length / 2];
+                            for ( int i = 0; i < tmp.length; i += 2 ) {
+                                le[i / 2] = new ListEntry( tmp[i], tmp[i + 1] );
+                            }
+                            cbPageFormat = new JComboBox( new DefaultComboBoxModel( le ) );
+                            cbPageFormat.setSelectedIndex( 1 );
+                            pnFormat.add( cbPageFormat, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 9, 0, 9 ), 0, 0 ) );
+
+                            cbPageFormat.addActionListener( new ActionListener() {
+
+                                public void actionPerformed( ActionEvent e ) {
+                                    // if page format has been changed max size of printed map must be changed
+                                    // for new map size (millimeter) left and top border must be considered to
+                                    // ensure that printed map does not overlap paper at the right and at the bottom
+                                    ListEntry le = (ListEntry) ( (JComboBox) e.getSource() ).getSelectedItem();
+                                    String value = (String) le.value;
+                                    Rectangle rect = PageSize.getRectangle( value );
+                                    int width = (int) Math.round( rect.getWidth() / 72 * 25.4 );
+                                    int height = (int) Math.round( rect.getHeight() / 72 * 25.4 );
+                                    width -= ( ( (Number) spLeft.getValue() ).intValue() * 2 );
+                                    height -= ( ( (Number) spTop.getValue() ).intValue() * 2 );
+                                    spWidth.setValue( width );
+                                    spHeight.setValue( height );
+                                    // preview of printed area must be updated
+                                    updatePreview();
+                                }
+                            } );
+                        }
+                    }
+                    {
+                        pnDPI = new JPanel();
+                        GridBagLayout pnDPILayout = new GridBagLayout();
+                        pnPrint.add( pnDPI, new GridBagConstraints( 0, 4, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                    GridBagConstraints.BOTH, new Insets( 0, 0, 0, 0 ),
+                                                                    0, 0 ) );
+                        pnDPI.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(), "$MD11808" ) ) );
+                        pnDPILayout.rowWeights = new double[] { 0.1 };
+                        pnDPILayout.rowHeights = new int[] { 7 };
+                        pnDPILayout.columnWeights = new double[] { 0.1 };
+                        pnDPILayout.columnWidths = new int[] { 7 };
+                        pnDPI.setLayout( pnDPILayout );
+                        {
+                            ComboBoxModel cbDPIModel = new DefaultComboBoxModel( new Integer[] { 72, 96, 150, 300, 600,
+                                                                                                1200 } );
+                            cbDPI = new JComboBox();
+                            pnDPI.add( cbDPI, new GridBagConstraints( 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                      GridBagConstraints.HORIZONTAL,
+                                                                      new Insets( 0, 9, 0, 9 ), 0, 0 ) );
+                            cbDPI.setModel( cbDPIModel );
+                        }
+                    }
+                    {
+                        pnOutput = new JPanel();
+                        GridBagLayout pnOutputLayout = new GridBagLayout();
+                        pnOutputLayout.rowWeights = new double[] { 0.1 };
+                        pnOutputLayout.rowHeights = new int[] { 7 };
+                        pnOutputLayout.columnWeights = new double[] { 0.1, 0.0, 0.1 };
+                        pnOutputLayout.columnWidths = new int[] { 7, 94, 7 };
+                        pnOutput.setLayout( pnOutputLayout );
+                        pnPrint.add( pnOutput, new GridBagConstraints( 2, 5, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                                                                       GridBagConstraints.BOTH,
+                                                                       new Insets( 0, 0, 0, 0 ), 0, 0 ) );
+                        pnOutput.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( getLocale(),
+                                                                                                   "$MD11809" ) ) );
+                        {
+                            btOutputFile = new JButton( "select" );
+                            btOutputFile.addActionListener( new ActionListener() {
+
+                                public void actionPerformed( ActionEvent e ) {
+                                    Preferences prefs = Preferences.userNodeForPackage( VectorPrintDialog.class );
+                                    File file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.externalResource,
+                                                                                   appContainer,
+                                                                                   VectorPrintDialog.this, prefs,
+                                                                                   "print definition",
+                                                                                   IGeoFileFilter.XML );
+                                    tfOutputFile.setText( file.getAbsolutePath() );
+                                }
+                            } );
+                            pnOutput.add( btOutputFile, new GridBagConstraints( 2, 0, 1, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 9, 0, 9 ), 0, 0 ) );
+                        }
+                        {
+                            tfOutputFile = new JTextField();
+                            pnOutput.add( tfOutputFile, new GridBagConstraints( 0, 0, 2, 1, 0.0, 0.0,
+                                                                                GridBagConstraints.CENTER,
+                                                                                GridBagConstraints.HORIZONTAL,
+                                                                                new Insets( 0, 9, 0, 0 ), 0, 0 ) );
+                        }
+                    }
+                }
+            }
+            pnPreview.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
+            pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
+            pnPreview.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
+            pnPreview.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
+            pnPreview.setPageSize( PageSize.getRectangle( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value ) );
+            this.setBounds( 300, 200, 530, 609 );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private void doPrint() {
+        PrintDescriptionBean pdb = new PrintDescriptionBean();
+        pdb.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
+        pdb.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
+        pdb.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
+        pdb.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
+        pdb.setDpi( (Integer) cbDPI.getSelectedItem() );
+
+        pdb.setMapBottom( ( (Number) spMapBottom.getValue() ).doubleValue() );
+        pdb.setMapLeft( ( (Number) spMapLeft.getValue() ).doubleValue() );
+
+        pdb.setPageFormat( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value );
+        if ( rbConst.isSelected() ) {
+            pdb.setScale( (Integer) ( (ListEntry) cbScale.getSelectedItem() ).value );
+        } else {
+            pdb.setScale( -1 );
+        }
+        pdb.setTargetFile( tfOutputFile.getText() );
+
+        VectorPrintCommand cmd = new VectorPrintCommand();
+        cmd.setApplicationContainer( appContainer );
+        cmd.setPrintDefinition( pdb );
+        try {
+            appContainer.getCommandProcessor().executeSychronously( cmd, false );
+        } catch ( Exception e ) {
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
+                                                                                                      "$MD11810" ),
+                                           Messages.getMessage( getLocale(), "$MD11811" ), e );
+        }
+    }
+
+    /**
+     * <pre>
+     * <PrintDefinition xmlns="http://www.deegree.org/print">
+     *    <AreaHeight>180</AreaHeight>
+     *    <AreaWidth>270</AreaWidth>
+     *    <AreaLeft>10</AreaLeft>
+     *    <AreaTop>10</AreaTop>
+     *    <DPI>300</DPI>
+     *    <MapLeft>2597678</MapLeft>
+     *    <MapBottom>5697438</MapBottom>
+     *    <PageFormat>A4</PageFormat>
+     *    <Scale>25000</Scale>
+     *    <TargetFile>e:/temp/test.pdf</TargetFile>
+     * </PrintDefinition>
+     * </pre>
+     */
+    private void doSaveSettings() {
+        Preferences prefs = Preferences.userNodeForPackage( VectorPrintDialog.class );
+        File file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.externalResource, appContainer, this, prefs,
+                                                       "print definition", IGeoFileFilter.XML );
+        if ( file == null ) {
+            // cancel has been pressed
+            return;
+        }
+
+        XMLFragment xml = new XMLFragment( new QualifiedName( "PrintDefinition",
+                                                              URI.create( "http://www.deegree.org/print" ) ) );
+        Document doc = xml.getRootElement().getOwnerDocument();
+        Element root = xml.getRootElement();
+        try {
+            // fill XML document
+            Element el = doc.createElementNS( "http://www.deegree.org/print", "AreaHeight" );
+            XMLTools.setNodeValue( el, spHeight.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "AreaWidth" );
+            XMLTools.setNodeValue( el, spWidth.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "AreaLeft" );
+            XMLTools.setNodeValue( el, spLeft.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "AreaTop" );
+            XMLTools.setNodeValue( el, spTop.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "DPI" );
+            XMLTools.setNodeValue( el, cbDPI.getSelectedItem().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "MapLeft" );
+            XMLTools.setNodeValue( el, spMapLeft.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "MapBottom" );
+            XMLTools.setNodeValue( el, spMapBottom.getValue().toString() );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "PageFormat" );
+            XMLTools.setNodeValue( el, ( (ListEntry) cbPageFormat.getSelectedItem() ).value.toString() );
+            el.setAttribute( "label", ( (ListEntry) cbPageFormat.getSelectedItem() ).title );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "Scale" );
+            if ( rbConst.isSelected() ) {
+                XMLTools.setNodeValue( el, ( (ListEntry) cbPageFormat.getSelectedItem() ).value.toString() );
+            } else {
+                XMLTools.setNodeValue( el, "-1" );
+            }
+            el.setAttribute( "label", ( (ListEntry) cbPageFormat.getSelectedItem() ).title );
+            root.appendChild( el );
+            el = doc.createElementNS( "http://www.deegree.org/print", "TargetFile" );
+            XMLTools.setNodeValue( el, tfOutputFile.getText() );
+            root.appendChild( el );
+
+            // write to file
+            FileOutputStream fos = new FileOutputStream( file );
+            Properties props = new Properties();
+            props.put( OutputKeys.ENCODING, "UTF-8" );
+            xml.write( fos, props );
+            fos.close();
+        } catch ( Exception e ) {
+            LOG.logError( e );
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
+                                                                                                      "$MD11812" ),
+                                           Messages.getMessage( getLocale(), "$MD11813" ), e );
+        }
+
+    }
+
+    /**
+     * <pre>
+     * <PrintDefinition xmlns="http://www.deegree.org/print">
+     *    <AreaHeight>180</AreaHeight>
+     *    <AreaWidth>270</AreaWidth>
+     *    <AreaLeft>10</AreaLeft>
+     *    <AreaTop>10</AreaTop>
+     *    <DPI>300</DPI>
+     *    <MapLeft>2597678</MapLeft>
+     *    <MapBottom>5697438</MapBottom>
+     *    <PageFormat label="Din A4">A4</PageFormat>
+     *    <Scale label="1:25000">25000</Scale>
+     *    <TargetFile>e:/temp/test.pdf</TargetFile>
+     * </PrintDefinition>
+     * </pre>
+     */
+    private void doLoadSettings() {
+        Preferences prefs = Preferences.userNodeForPackage( VectorPrintDialog.class );
+        File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.externalResource, appContainer, this, prefs,
+                                                       "print definition", IGeoFileFilter.XML );
+        if ( file == null ) {
+            // cancel has been pressed
+            return;
+        }
+        FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appContainer );
+        try {
+            FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
+            URL url = fsa.getFileURL( file.getAbsolutePath() );
+
+            XMLFragment xml = new XMLFragment( url );
+            NamespaceContext nsc = CommonNamespaces.getNamespaceContext();
+            nsc.addNamespace( "prnt", URI.create( "http://www.deegree.org/print" ) );
+            int ah = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:AreaHeight", nsc );
+            int aw = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:AreaWidth", nsc );
+            int al = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:AreaLeft", nsc );
+            int at = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:AreaTop", nsc );
+            int dpi = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:DPI", nsc );
+            double ml = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapLeft", nsc );
+            double mb = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapBottom", nsc );
+            String pf = XMLTools.getRequiredNodeAsString( xml.getRootElement(), "prnt:PageFormat", nsc );
+            String pfl = XMLTools.getRequiredNodeAsString( xml.getRootElement(), "prnt:PageFormat/@label", nsc );
+            int sc = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:Scale", nsc, -1 );
+            String scl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:Scale/@label", nsc, null );
+            String tf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:TargetFilet", nsc, "" );
+
+            spHeight.setValue( new Integer( ah ) );
+            spWidth.setValue( new Integer( aw ) );
+            spLeft.setValue( new Integer( al ) );
+            spTop.setValue( new Integer( at ) );
+            cbDPI.setSelectedItem( new Integer( dpi ) );
+            spMapLeft.setValue( new Double( ml ) );
+            spMapBottom.setValue( new Double( mb ) );
+            cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
+            if ( sc > -1 ) {
+                rbConst.setSelected( true );
+                cbScale.setSelectedItem( new ListEntry( scl, sc ) );
+            } else {
+                rbVariable.setSelected( true );
+            }
+            tfOutputFile.setText( tf );
+        } catch ( Exception e ) {
+            LOG.logError( e );
+            DialogFactory.openErrorDialog( appContainer.getViewPlatform(), this, Messages.getMessage( getLocale(),
+                                                                                                      "$MD11814" ),
+                                           Messages.getMessage( getLocale(), "$MD11815" ), e );
+        }
+    }
+
+    private void updatePreview() {
+        removePreviewLayer();
+        addPreviewLayer();
+        Rectangle r = PageSize.getRectangle( (String) ( (ListEntry) cbPageFormat.getSelectedItem() ).value );
+        int pw = (int) Math.round( r.getWidth() / 72 * 25.4 );
+        int ph = (int) Math.round( r.getHeight() / 72 * 25.4 );
+        lbPageSize.setText( Messages.getMessage( getLocale(), "$MD11816", pw, ph ) );
+        pnPreview.setAreaLeft( ( (Number) spLeft.getValue() ).intValue() );
+        pnPreview.setAreaTop( ( (Number) spTop.getValue() ).intValue() );
+        pnPreview.setAreaWidth( ( (Number) spWidth.getValue() ).intValue() );
+        pnPreview.setAreaHeight( ( (Number) spHeight.getValue() ).intValue() );
+        pnPreview.setPageSize( r );
+        pnPreview.repaint();
+    }
+
+    private void addPreviewLayer() {
+        java.awt.Rectangle rect = getCanvasSize();
+        Envelope extent = mapModel.getEnvelope();
+        extent = MapUtils.ensureAspectRatio( extent, (Integer) spWidth.getValue(), (Integer) spHeight.getValue() );
+        if ( rbConst.isSelected() ) {
+            // use scale selected by used
+            double currentScale = MapUtils.calcScale( rect.width, rect.height, extent, extent.getCoordinateSystem(),
+                                                      0.0254 / (Integer) cbDPI.getSelectedItem() );
+            extent = MapUtils.scaleEnvelope( extent, currentScale,
+                                             (Integer) ( (ListEntry) cbScale.getSelectedItem() ).value );
+        }
+        // move rectangle to defined lower left coordinates
+        double dx = ( (Number) spMapLeft.getValue() ).doubleValue() - extent.getMin().getX();
+        double dy = ( (Number) spMapBottom.getValue() ).doubleValue() - extent.getMin().getY();
+        extent.translate( dx, dy );
+
+        try {
+            Geometry geom = GeometryFactory.createSurface( extent, mapModel.getCoordinateSystem() );
+            List<Geometry> list = new ArrayList<Geometry>();
+            list.add( geom );
+            AddMemoryLayerCommand cmd = new AddMemoryLayerCommand();
+            cmd.setApplicationContainer( appContainer );
+            cmd.setTitle( "deegree:PrintBorder" );
+            cmd.setGeometries( list );
+            appContainer.getCommandProcessor().executeSychronously( cmd, true );
+            previewLayer = (Layer) cmd.getResult();
+        } catch ( Exception e ) {
+            LOG.logError( e );
+        }
+    }
+
+    private int convert( double millimeter ) {
+        return (int) Math.round( millimeter * (Integer) cbDPI.getSelectedItem() / 25.4 );
+    }
+
+    private java.awt.Rectangle getCanvasSize() {
+        int w = convert( (Integer) spWidth.getValue() );
+        int h = convert( (Integer) spHeight.getValue() );
+        int x = convert( (Integer) spLeft.getValue() );
+        int y = convert( (Integer) spTop.getValue() );
+        return new java.awt.Rectangle( x, y, w, h );
+    }
+
+    private void removePreviewLayer() {
+        if ( mapModel.exists( previewLayer.getIdentifier() ) ) {
+            mapModel.remove( previewLayer );
+        }
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // inner classes
+    // /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 
+     * TODO add class documentation here
+     * 
+     * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
+     * @author last edited by: $Author: admin $
+     * 
+     * @version $Revision: $, $Date: $
+     */
+    private class PrintSizeListener implements ChangeListener {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+         */
+        public void stateChanged( ChangeEvent arg0 ) {
+            updatePreview();
+        }
+
+    }
+
+    /**
+     * 
+     * TODO add class documentation here
+     * 
+     * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
+     * @author last edited by: $Author: admin $
+     * 
+     * @version $Revision: $, $Date: $
+     */
+    private static class ListEntry {
+        String title;
+
+        Object value;
+
+        /**
+         * @param title
+         * @param value
+         */
+        public ListEntry( String title, Object value ) {
+            this.title = title;
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return title;
+        }
+
+    }
+
+}

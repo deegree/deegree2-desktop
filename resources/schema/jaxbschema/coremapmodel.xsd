@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Mit XMLSpy v2008 sp1 (http://www.altova.com) von Poth (lat/lon GmbH) bearbeitet -->
+<xs:schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:jdbc="http://www.deegree.org/jdbc" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cmm="http://www.deegree.org/coremapmodel" targetNamespace="http://www.deegree.org/coremapmodel" elementFormDefault="qualified">
+	<!-- ============================================================================
+														imporpted schemas
+	===============================================================================-->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="./3.1.1/xlink/xlinks.xsd"/>
+	<xs:import namespace="http://www.deegree.org/jdbc" schemaLocation="jdbc_connection.xsd"/>
+	<!-- ============================================================================ -->
+	<xs:element name="MapModelCollection" type="cmm:MapModelCollectionType"/>
+	<xs:complexType name="MapModelCollectionType">
+		<xs:annotation>
+			<xs:documentation>
+				A project in iGeodesktop must contain a MapModelCollection. As its name says a MapModelCollection contains 1..n MapModels. A MapModelCollection
+				itself has a name and a maximum spatial extent. It may has a description and references to external documents like Excel sheets or Offices documents
+				that contains more detailed description of the data/layers gathered in a MapModelCollection
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element ref="cmm:maxExtent"/>
+			<xs:element ref="cmm:externalResource" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:mapModel" maxOccurs="unbounded"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="maxExtent" type="cmm:EnvelopeType"/>
+	<xs:element name="extent" type="cmm:EnvelopeType"/>
+	<xs:element name="mapModel" type="cmm:MapModelType"/>
+	<xs:complexType name="MapModelType">
+		<xs:annotation>
+			<xs:documentation>
+				A MapModel defines the content of a map and its description. Major part if a list of layers/layergroups that are arragned 
+				in a tree. beside name and unique identifier a map model contains a description of the target device it will be displayed on,
+				a (current) spatial extent and a maximum valid spatial extent. As a MapModelCollection a MapModel may also has references
+				to external resources.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element ref="cmm:targetDevice"/>
+			<xs:element name="supportedCRS" type="cmm:supportedCRSType" minOccurs="0"/>
+			<xs:element ref="cmm:extent"/>
+			<xs:element ref="cmm:maxExtent"/>
+			<xs:element name="layerGroup" type="cmm:LayerGroupType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:externalResource" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="current" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="supportedCRSType">
+		<xs:sequence>
+			<xs:element name="CRS" type="cmm:CRSType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CRSType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="code" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="targetDevice" type="cmm:targetDeviceType"/>
+	<xs:complexType name="targetDeviceType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines width, height (pixel) and resolution as dpi of the device a map model shall be rendered onto.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pixelWidth" type="xs:int"/>
+			<xs:element name="pixelHeight" type="xs:int"/>
+			<xs:element name="dpi" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Datasource" type="cmm:DatasourceType"/>
+	<xs:complexType name="DatasourceType">
+		<xs:sequence>
+			<xs:element ref="cmm:AbstractDatasource"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AbstractDatasource" type="cmm:AbstractDatasourceType" abstract="true"/>
+	<xs:complexType name="AbstractDatasourceType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				Each layer must have 1..n datasources. All concrete datasource definitions must extend the AbstractDatasource which defines
+				several elements that common to all types of datasources.
+				- name: each datasource must have a name. It is strongly recommented to use unique names
+				- extent: defines the spatial extent for which a datasource is valid.
+				- nativeCRS: code of the coordinate reference system the data provided a datasource are stored (the code must be known by deegree)
+				- minScaleDenominator/maxScaleDenominator: scale range a datasource is valid. ScaleDenominators are defined like specified by
+				  OGC SLD 1.0.0 Specification
+				- authenticationInformation: If a user authentication is required for accessing a datasource, authentication type and paramters to be used 
+				  for authentication can be defined here (not supported at the moment)
+				- cache: specifies what kind of cache should be used for a datasource (not supported at the moment)
+				- referenceProperty: Especially for vector and WMS datasources it is possible to define on or more properties/attributes of the provided
+				  data that contains references to resources like officedocuments, images or HTML pages the can be used open a assigned program
+				  automaticliy if a feature/object info action if perfromed on such an object.
+				- layzLoading: if set to true data will just be read from underlying backend if requested (not supported at the moment)
+				- queryable: if set to true a datasource will be considered if a feature/object info action if perfromed 
+				- editable: if set to true data provided by a datasource can be edited (insert/update/delete)
+				- supportToolTips: if set to true info about features/objects will be opened on mouse over events (not supported at the moment)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element ref="cmm:extent"/>
+			<xs:element name="nativeCRS" type="xs:string"/>
+			<xs:element name="minScaleDenominator" type="xs:double" default="0" minOccurs="0"/>
+			<xs:element name="maxScaleDenominator" type="xs:double" default="99999999" minOccurs="0"/>
+			<xs:element name="authenticationInformation" type="cmm:AuthenticationInformationType" minOccurs="0"/>
+			<xs:element name="cache" type="xs:string" minOccurs="0"/>
+			<xs:element name="referenceProperty" type="cmm:QualifiedNameType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:AbstractLinkedTable" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="lazyLoading" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="queryable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="editable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="supportToolTips" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="AbstractLinkedTableType" abstract="true">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element ref="cmm:RelationKey" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="editable" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:element name="AbstractLinkedTable" type="cmm:AbstractLinkedTableType" abstract="true"/>
+	<xs:complexType name="RelationKeyType">
+		<xs:annotation>
+			<xs:documentation>
+				featureProperty must be something like: {http://www.deegree.org/app}:myProperty
+				table column is just the name of a column of the linked table (not case sensitive)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="featureProperty" type="cmm:QualifiedNameType"/>
+			<xs:element name="tableColumn" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RelationKey" type="cmm:RelationKeyType"/>
+	<xs:complexType name="LinkedFileTableType">
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractLinkedTableType">
+				<xs:sequence>
+					<xs:element name="file" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LinkedFileTable" type="cmm:LinkedFileTableType" substitutionGroup="cmm:AbstractLinkedTable"/>
+	<xs:complexType name="LinkedDatabaseTableType">
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractLinkedTableType">
+				<xs:sequence>
+					<xs:element name="connection" type="jdbc:JDBCConnectionType"/>
+					<xs:element name="sqlTemplate" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LinkedDatabaseTable" type="cmm:LinkedDatabaseTableType" substitutionGroup="cmm:AbstractLinkedTable"/>
+	<xs:element name="DatabaseDatasource" type="cmm:DatabaseDatasourceType" substitutionGroup="cmm:AbstractDatasource"/>
+	<xs:complexType name="DatabaseDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Concrete datasource for accessing databases. Beside connection informations a SQL template (must end with WHERE if no
+				condition is defined. E.g.: select * from tab1 where). The SQL template may uses conditions, database functions and joins. 
+				E.g: select a.geom, b.name from tab1 a, tab2 b where area( a.geom ) > 2000 AND a.id = b.fk_tab1
+				Also the name of the geometry field returned from the database must be defined.				
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractDatasourceType">
+				<xs:sequence>
+					<xs:element name="connection" type="jdbc:JDBCConnectionType"/>
+					<xs:element name="sqlTemplate" type="xs:string"/>
+					<xs:element name="geometryField">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="srs" type="xs:string" use="optional" default="-1"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="primaryKeyField" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FileDatasource" type="cmm:FileDatasourceType" substitutionGroup="cmm:AbstractDatasource"/>
+	<xs:complexType name="FileDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Concrete datasource for accessing files, like shapes or georeferenced images. The element file contains the
+				relative or absolute path to the file
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractDatasourceType">
+				<xs:sequence>
+					<xs:element name="file" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MemoryDatasource" type="cmm:MemoryDatasourceType" substitutionGroup="cmm:AbstractDatasource"/>
+	<xs:complexType name="MemoryDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Concrete datasource for accessing features/objects/raster that are not bound to a backend and just exists in the
+				memory of an application
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractDatasourceType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ServiceDatasource" type="cmm:ServiceDatasourceType" substitutionGroup="cmm:AbstractDatasource"/>
+	<xs:complexType name="ServiceDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Root datasource for all service (OWS) based datasources. Concrete service datasources must extend this type. Common				
+				to all services is that URL to thir capabilities (e.g. complete GetCapabilities request) must be defined.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:AbstractDatasourceType">
+				<xs:sequence>
+					<xs:element name="capabilitiesURL">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="cmm:OnlineResource"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WCSDatasource" type="cmm:WCSDatasourceType" substitutionGroup="cmm:ServiceDatasource"/>
+	<xs:complexType name="WCSDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Datasource for accessing an OGC Web Coverage service. Similiar to database datasource a template must be
+				defined for accessing data. In case of a WCS datasource this must be a GetCoverage request without URL,
+				 boundingbox, width, height and CRS. Both parameters will be added by iGeoDesktop when requesting data.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:ServiceDatasourceType">
+				<xs:sequence>
+					<xs:element name="coverage" type="cmm:QualifiedNameType"/>
+					<xs:element name="format" type="xs:string"/>
+					<xs:element name="time" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WFSDatasource" type="cmm:WFSDatasourceType" substitutionGroup="cmm:ServiceDatasource"/>
+	<xs:complexType name="WFSDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Datasource for accessing an OGC Web Feature Service. Similiar to database datasource a template must be
+				defined for accessing data. In case of a WFS datasource this must be a GetFeature request (XML encoding is
+				required). Also the name of the feature property containing geospatial informations must be defined.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:ServiceDatasourceType">
+				<xs:sequence>
+					<xs:element name="geometryProperty" type="cmm:QualifiedNameType"/>
+					<xs:element name="GetFeatureRequest">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="version" type="xs:string" use="optional" default="1.1.0"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WMSDatasource" type="cmm:WMSDatasourceType" substitutionGroup="cmm:ServiceDatasource"/>
+	<xs:complexType name="WMSDatasourceType">
+		<xs:annotation>
+			<xs:documentation>
+				Datasource for accessing an OGC Web Map Service. This is much like WCS datasource but instead of a GetCoverage
+				request a GetMap request must be defined as template.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:ServiceDatasourceType">
+				<xs:sequence>
+					<xs:element name="baseRequest" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AuthenticationInformation" type="cmm:AuthenticationInformationType"/>
+	<xs:complexType name="AuthenticationInformationType">
+		<xs:annotation>
+			<xs:documentation>
+				not supported yet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="cmm:CertificateAI"/>
+			<xs:element name="SessionIDAI"/>
+			<xs:element ref="cmm:UserPasswordAI"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="CertificateAI" type="cmm:CertificateAIType"/>
+	<xs:complexType name="CertificateAIType">
+		<xs:annotation>
+			<xs:documentation>
+				not supported yet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="certificate" type="cmm:OnlineResourceType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="UserPasswordAI" type="cmm:UserPasswordAIType"/>
+	<xs:complexType name="UserPasswordAIType">
+		<xs:annotation>
+			<xs:documentation>
+				not supported yet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="user" type="xs:string" minOccurs="0"/>
+			<xs:element name="password" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LayerGroupType">
+		<xs:annotation>
+			<xs:documentation>
+				As described for element MapModel layers can be arranged in a layer tree. Node (including root) are represented by LayerGroups
+				and leafs are represented by Layers (see below). A layergroup has a title, it may is described by an abstract and it may is selected
+				for one or more actions. So a layer group does not! contain any datasource. A layer group (and so its containd layers and sub
+				layergroups can be visible or not. The attributes queryable and supportToolTips are not supported at the moment.
+				As its name says, a layer group is a grouping of layers. It may be empty but usually at least one layer or one sub layer group will be 
+				available. Layers can be included directly are by reference to an external description (not implemented at the moment). Sub layer 
+				groups must be included directly.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="abstract" type="xs:string" minOccurs="0"/>
+			<xs:element name="selectedFor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="layer" type="cmm:LayerType"/>
+				<xs:element name="layerReference" type="cmm:OnlineResourceType"/>
+				<xs:element name="layerGroup" type="cmm:LayerGroupType"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="visible" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="queryable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="supportToolTips" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="LayerType">
+		<xs:annotation>
+			<xs:documentation>
+				Main part of a MapModel are layers. Each layer may sets up on 0...n datasources where each datasource may
+				connect a different kind of backend (at the moment just one datasource per layer is supported). If a layer is not bound 
+				to a datasource it is a kind of marker or placeholder.
+				Each layer must have an unique identifier and a title. It may has a describing abstract and 0..n references to describing
+				metadata sets. The scale range a layer is valid for is described by maxScaleDenominator and minScaleDenominator 
+				(see datasource for details). as a layer group a layer can be selected for one or more actions (e.g. for editing). 
+				0...n styles are assigned to a layer to define how data read from datasources will be rendered.
+				Important is definition of layer validation. This allows a user to define which topological and geometrical constraints
+				are defined for data assigend to a layer (not completely supported yet).
+				Attributes visible, queryable and supportToolTips are same as for layer group. Attribute editable defines if data
+				assigend to a layer can be edited (insert/update/delete).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element name="abstract" type="xs:string" minOccurs="0"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="metadataURL" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cmm:OnlineResource"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="maxScaleDenominator" type="xs:double" default="99999999" minOccurs="0"/>
+			<xs:element name="minScaleDenominator" type="xs:double" default="0" minOccurs="0"/>
+			<xs:element name="selectedFor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:Datasource" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:Style" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:externalResource" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="cmm:LayerValidation" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="visible" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="queryable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="editable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="supportToolTips" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:element name="LayerValidation" type="cmm:LayerValidationType"/>
+	<xs:complexType name="LayerValidationType">
+		<xs:sequence>
+			<xs:element name="validation" type="cmm:LayerValidationValueType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LayerValidationValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NoIntersectingGeometries"/>
+			<xs:enumeration value="PointsAndMultiPointsOnly"/>
+			<xs:enumeration value="PointsOnly"/>
+			<xs:enumeration value="CurvesAndMultiCurvesOnly"/>
+			<xs:enumeration value="CurvesOnly"/>
+			<xs:enumeration value="SurfacesAndMultiSurfacesOnly"/>
+			<xs:enumeration value="SurfacesOnly"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Style" type="cmm:StyleType"/>
+	<xs:complexType name="StyleType">
+		<xs:annotation>
+			<xs:documentation>
+				A style basicly is a named style. All other styles are derived from this.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:NamedStyle"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="NamedStyle" type="cmm:NamedStyleType"/>
+	<xs:complexType name="NamedStyleType">
+		<xs:annotation>
+			<xs:documentation>
+				A named style must have a name and a title; it may is described more in detail by a short abstract. If more than one
+				style is assigend to a layer the attribute current defines which of theses styles will be used. A named style can be used
+				for WMS based layers because no rendering/styling informations must be known because redering is done by connected
+				WMS.
+				Each style must know its legend representation. This can be done by referencing an image or by including a base64
+				encoded version of the legend directly.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="abstract" type="xs:string" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="legendURL">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="cmm:OnlineResource"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="legendImage" type="xs:base64Binary"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="current" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:element name="DefinedStyle" type="cmm:DefinedStyleType" substitutionGroup="cmm:NamedStyle"/>
+	<xs:complexType name="DefinedStyleType">
+		<xs:annotation>
+			<xs:documentation>
+			A 	DefinedStyle is more or less the same as a NamedStyle but it identifies not an external style (known by a WMS)
+			but an internal style known by the application.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:NamedStyleType">
+				<xs:sequence/>
+				<xs:attribute name="uom" type="xs:string" default="pixel"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DirectStyle" type="cmm:DirectStyleType" substitutionGroup="cmm:DefinedStyle"/>
+	<xs:complexType name="DirectStyleType">
+		<xs:annotation>
+			<xs:documentation>
+			A 	DirectStyle contains a description of how data accessed from a layers datasource should be rendered as SLD document.
+			An embedded SLD document must be XML encoded or included into a CDATA element.
+			</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="cmm:DefinedStyleType">
+				<xs:sequence>
+					<xs:element name="sld" type="xs:string"/>
+				</xs:sequence>				
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	<xs:element name="ReferencedStyle" type="cmm:ReferencedStyleType"/>
+	<xs:complexType name="ReferencedStyleType">
+		<xs:annotation>
+			<xs:documentation>
+			A 	ReferencedStyle is much like a DirectStyle except that a SLD document is not included but referenced. (not supported at the moment)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmm:DefinedStyleType">
+				<xs:sequence>
+					<xs:element name="linkage">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="cmm:OnlineResource"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- 
+		helper
+	-->
+	<xs:element name="externalResource" type="cmm:ExternalResourceType"/>
+	<xs:complexType name="ExternalResourceType">
+		<xs:sequence>
+			<xs:element ref="cmm:OnlineResource"/>
+			<xs:element name="abstract" type="xs:string" minOccurs="0"/>
+			<xs:element name="externalResourceTitle" type="xs:string"/>
+			<xs:element name="externalResourceType" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QualifiedNameType">
+		<xs:sequence>
+			<xs:element name="localName" type="xs:string"/>
+			<xs:element name="namespace" type="xs:string" minOccurs="0"/>
+			<xs:element name="prefix" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="identifier" type="cmm:IdentifierType"/>
+	<xs:complexType name="IdentifierType">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string"/>
+			<xs:element name="namespace" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="OnlineResource" type="cmm:OnlineResourceType"/>
+	<xs:complexType name="OnlineResourceType">
+		<xs:attributeGroup ref="xlink:locatorLink"/>
+	</xs:complexType>
+	<xs:complexType name="EnvelopeType">
+		<xs:sequence/>
+		<xs:attribute name="minx" type="xs:double" use="required"/>
+		<xs:attribute name="miny" type="xs:double" use="required"/>
+		<xs:attribute name="maxx" type="xs:double" use="required"/>
+		<xs:attribute name="maxy" type="xs:double" use="required"/>
+		<xs:attribute name="crs" use="required"/>
+	</xs:complexType>
+</xs:schema>

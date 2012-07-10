@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!--
+    Ant build file for the deegree IGeoDesktop client.
+    Tested with Apache Ant 1.7.0
+
+    This file is part of deegree.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    Copyright (C) 2001-2006 by:
+          EXSE, Department of Geography, University of Bonn
+          http://www.giub.uni-bonn.de/exse/
+          lat/lon GmbH, Bonn, Germany
+          http://www.lat-lon.de
+
+    $HeadURL: https://sushibar/svn/deegree/base/trunk/build.xml $
+    $Revision: 1.2 $, $Date: 2007-10-26 15:02:20 $
+    $Author: schmitz $ - Andreas Schmitz <schmitz@lat-lon.de>
+-->
+<project name="igeodesktop" default="jar" basedir=".">
+
+        <!-- all customizable properties are read from the build.properties file -->
+        <property file="build.properties" />
+
+  <path id="classpath">
+    <fileset dir="lib" >
+      <include name="*/*jar" />
+      <exclude name="igeodesktop.jar" />
+    </fileset>
+    <fileset dir="${d2_base.location}/dist">
+      <include name="deegree2.jar" />
+    </fileset>
+    <fileset dir="${d2_base.location}/lib">
+      <include name="servlet/*jar" />
+    </fileset>
+  </path>
+
+  <path id="run.classpath">
+    <fileset dir="dist" >
+      <include name="*jar" />
+      <exclude name="igeodesktop.jar" />
+    </fileset>
+  </path>
+
+  <target name="init">
+    <mkdir dir="classes" />
+    <copy todir="dist" flatten="true">
+      <fileset dir="lib">
+        <include name="*/*jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="src" destdir="classes" includes="**/*.java" fork="true" debug="true" target="1.5" source="1.5" encoding="UTF-8">
+      <classpath>
+        <path refid="classpath" />
+      </classpath>
+    </javac>
+
+    <copy todir="classes">
+      <fileset dir="src" includes="**/*.properties"/>
+      <fileset dir="src" includes="**/*.prj"/>
+      <fileset dir="src" includes="**/*.xsl" />
+      <fileset dir="src" includes="**/*.xml" />
+      <fileset dir="src" includes="**/*.sql" />
+      <fileset dir="src" includes="**/*.html" />
+      <fileset dir="src" includes="**/*.gif" />
+      <fileset dir="src" includes="**/*.png" />
+      <fileset dir="src" includes="**/*.jpg" />
+      <fileset dir="src" includes="**/*.csv" />
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile">
+    <pathconvert pathsep=" " property="used.libs" refid="run.classpath">
+      <flattenmapper />
+      <map from="../dist/" to="" />
+    </pathconvert>
+
+    <jar destfile="dist/igeodesktop.jar" basedir="classes" includes="**">
+      <manifest>
+        <attribute name="Class-Path" value="${used.libs}" />
+        <attribute name="Main-Class" value="org.deegree.igeo.desktop.IGeoDesktop" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile-fileaccess">
+    <mkdir dir="classes_server" />
+    <javac srcdir="src_server" destdir="classes_server" includes="**/*.java" fork="true" debug="true" target="1.5" source="1.5" encoding="UTF-8">
+      <classpath>
+        <path refid="classpath" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="run" depends="jar">
+    <java jar="dist/igeodesktop.jar" fork="true" maxmemory="512m">
+      <arg value="${run.arg}" />
+    </java>
+  </target>
+
+  <target name="clean">
+    <delete dir="classes" />
+  </target>
+
+        <target name="bind-schema">
+                <pathconvert property="class.path" refid="classpath" />
+                <exec dir="${basedir}" executable="xjc">
+                        <arg line="-d ${output.dir}" />
+                        <arg line="-p ${package.name}" />
+                        <arg line="-classpath ${class.path}" />
+                        <arg line="${schema.file}" />
+                </exec>
+        </target>
+
+        <target name="bind-project-schema" description="generate class files for project.xsd">
+                <ant target="bind-schema">
+                        <property name="output.dir" value="src" />
+                        <property name="package.name" value="org.deegree.igeo.config" />
+                        <property name="schema.file" value="resources/schema/jaxbschema/project.xsd" />
+                </ant>
+        </target>
+
+</project>

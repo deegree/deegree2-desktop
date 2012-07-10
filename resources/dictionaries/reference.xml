@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary gml:id="ExternalCodeLists" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd">
+	<gml:description>External Code Lists Example</gml:description>
+	<gml:name codeSpace="testspace">test</gml:name>
+	<gml:indirectEntry>
+		<gml:DefinitionProxy gml:id="id_1">
+			<gml:csName>my dict</gml:csName>			
+			<gml:definitionRef xlink:href="http://localhost:8080/deegree-dictionary/dictionary"></gml:definitionRef>
+		</gml:DefinitionProxy>
+	</gml:indirectEntry>
+</gml:Dictionary>

@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gml="http://www.opengis.net/gml" xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" targetNamespace="http://www.deegree.org/project" elementFormDefault="qualified" attributeFormDefault="unqualified" jxb:version="2.0">
+	<xs:annotation>
+		<xs:appinfo>
+			<jxb:globalBindings underscoreBinding="asCharInWord"/>
+		</xs:appinfo>
+	</xs:annotation>
+	<!-- ============================================================================
+		imported schemas
+		===============================================================================-->
+	<xs:import namespace="http://www.deegree.org/coremapmodel" schemaLocation="coremapmodel.xsd"/>
+	<xs:import namespace="http://www.deegree.org/settings" schemaLocation="settings.xsd"/>
+	<xs:include schemaLocation="keys.xsd"/>
+	<!-- ============================================================================ -->
+	<xs:element name="Project">
+		<xs:annotation>
+			<xs:documentation>
+				Root elemet of a deegree client project.
+				A project must have 
+				- a name
+				- an identifier (which should be unique in context of other projects)
+				- a View that contains descriptions which modules and how modules assigend to a project are organized within the GUI
+				- some Settings, that means configurations that are independ of assigned modules a mapmodel(s)
+				- a collection of map models defining the content/data that are presented within a project
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element ref="cmm:identifier"/>
+				<xs:element name="View" type="dgp:ViewType"/>
+				<xs:element name="Settings" type="set:SettingsType"/>
+				<xs:element ref="cmm:MapModelCollection"/>
+				<!--
+					<xs:element ref="sec:SecurityConfiguration" minOccurs="0"/>
+				-->
+			</xs:sequence>
+			<xs:attribute name="language" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ViewType">
+		<xs:annotation>
+			<xs:documentation>
+				The View-Element defines how a project shall be visualized. 
+				- For a project (as stand alone application)  a FrameViewForm is mandatory 				
+				- the SupportedViewPlatform element defins which types of platforms/environments (like HTML, Application, JWS etc. ) are supported by a view. For standalone applications
+				  'Application' must be defined. 
+				- The Window element defines size and position of a projects GUI
+				- ModuleRegister enabled registration of a (sub-)module to a view. Because a module contains a view definition itself modules can be nested to create more enhanced GUIs
+				- A project can have a toolbar, menubar and popup-menu; if included modules should be able to add entries to these menu containers their must be defined, even if
+				  a project itself does not define entries
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="dgp:ViewForm"/>
+			<xs:element name="SupportedViewPlatform" type="dgp:SupportedViewPlatformType" maxOccurs="5"/>
+			<xs:element ref="dgp:Window"/>
+			<xs:element ref="dgp:ModuleRegister" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="MenuBar" type="dgp:MenuBarType" minOccurs="0"/>
+			<xs:element name="PopUpMenu" type="dgp:PopUpMenuType" minOccurs="0"/>
+			<xs:element name="ToolBar" type="dgp:ToolbarType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="hasFooter" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:simpleType name="SupportedViewPlatformType">
+		<xs:annotation>
+			<xs:documentation>list of available view platforms/environments at the moment just Application is supported</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Application"/>
+			<xs:enumeration value="Portlet"/>
+			<xs:enumeration value="JSP/HTML"/>
+			<xs:enumeration value="Applet"/>
+			<xs:enumeration value="JME"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ModuleRegister" type="dgp:ModuleRegisterType"/>
+	<xs:complexType name="ModuleRegisterType">
+		<xs:annotation>
+			<xs:documentation>
+				A ModuleRegister enables registering modules to a project or as sub-modules to other modules. So enhanced GUIs can be constructed.
+				A registered module can be a simple module or a module group where 2..n modules are arranged in a defined layout contained (e.g. a grid).
+				Modules can be defined diretly embadding a complete module description or be referenced by an absolute or relative path. For each registered
+				module its postion within a projects GUI will be defined by extensions of a abstract element _ComponentPosition. Valid concrete types/elements
+				depends on layout container of parent module/application.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element ref="dgp:_ComponentPosition"/>
+			</xs:sequence>
+			<xs:choice>
+				<xs:element name="ModuleReference">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="cmm:OnlineResource"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="dgp:Module"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ToolbarType">
+		<xs:annotation>
+			<xs:documentation>
+				A Toolbar may is defined for a complete project. It can be floatable, this means it can be moved by drag&amp;drop into its own window and it
+				may use rollover effect. If the rollover state is true then the border of the toolbar buttons will be drawn only when the mouse pointer hovers over them. 
+				A Toolbar must have an unique identifier (this is for future usage, because it is planned having more than one toolbar) and may have 0..n entries.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier" minOccurs="0"/>
+			<xs:element ref="dgp:ToolBarEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="floatable" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="useRollover" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="vertical" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="PopUpMenuType">
+		<xs:annotation>
+			<xs:documentation>
+				Enabling of popup menu is defined global but content depneds on module where right mouse button is clicked. A popup menu inherited displayes
+				entries from module it is opened on and all modules (and project itself) a module is embedded within.				
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="dgp:PopUpEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Window" type="dgp:WindowType"/>
+	<xs:complexType name="WindowType">
+		<xs:annotation>
+			<xs:documentation>
+				A Window element defines size and position of a module within a projects GUI or the size an position of the main application. 
+				Depending of type of layout a module is embeded this does not have an effect because size and position are controled by 
+				embedding GUI container (e.g. TabLayout)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+		<xs:attribute name="left" type="xs:int" use="optional" default="0"/>
+		<xs:attribute name="top" type="xs:int" use="optional" default="0"/>
+		<xs:attribute name="height" type="xs:int" use="optional" default="500"/>
+		<xs:attribute name="width" type="xs:int" use="optional" default="500"/>
+	</xs:complexType>
+	<xs:element name="ModuleGroup" type="dgp:ModuleGroupType" substitutionGroup="dgp:Module"/>
+	<xs:complexType name="ModuleGroupType">
+		<xs:annotation>
+			<xs:documentation>
+				Two or more modules can be arranged within a modulegroup. The way how the modules are arranged (TabLayout, Splitter, Grid ...) depends
+				on layout definition of the parent module.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:ModuleType">
+				<xs:sequence>
+					<xs:element ref="dgp:ModuleRegister" minOccurs="2" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Module" type="dgp:ModuleType"/>
+	<xs:complexType name="ModuleType">
+		<xs:annotation>
+			<xs:documentation>
+			Available functions within a project and their layout arrangment are defined by modules registered to a project. First modules must have a 
+			name and a unique identifier.
+			- the name of the java class realizing a module must be defined be element className. This enable registering modules that are not part of
+			  deegree, just the Module interface from deegree iGeoDesktop must be implemented.
+			- a module may also have a description explaining a few detailes on its functionality
+			- like a project itself each modul must define its viewform. This means it must define its visual representation 
+			- Each module may register eintries to menubar, toolbar and popmenu as defined for a project
+			- A module may have different states according to the application. A state has a name and a set of parameters. It may be used to store processing
+			  states if a projected it stored and closed before the function/process realized by a moduled has been finished.
+			- Each module may offeres it own help. The registered fragments (html-pages) are included into application/project help when a module is loaded.
+			- Finaly a module may has some init-parameter to define further configuration informations like URLs, timeouts, sizes etc.
+		</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element name="className" type="xs:string"/>
+			<xs:element ref="dgp:ViewForm"/>
+			<xs:element ref="dgp:Menu" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="dgp:PopUpEntry" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="dgp:ToolBarEntry" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="dgp:ApplicationState" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="set:HelpContext" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="init-param" type="dgp:ParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="visible" type="xs:boolean" use="optional" default="true"/>
+	</xs:complexType>
+	<xs:complexType name="MenuBarType">
+		<xs:annotation>
+			<xs:documentation>
+				A menubar is a container for menus that will be assigned to its owner window. At the moment the owner must be the main window
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier" minOccurs="0"/>
+			<xs:element ref="dgp:Menu" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Menu" type="dgp:MenuType"/>
+	<xs:complexType name="MenuType">
+		<xs:annotation>
+			<xs:documentation>
+				A menu is a kind of node (in opposite to leaf) of a tree. It is not assigned a any function but gathers one or more menus and
+				menu items. Beside an unique identifier a menu may have a parent. This enable adding a menu as node into another menu 
+				that is not defined within in same module. A menu also has:
+				- a name that should be a key to a property defined in messages_$language$.properties
+				- a tooltip that also should be a key to a property defined in messages_$language$.properties
+				- a reference (absolute or relative) to an icon image that should be displayed as part of the menu
+				- definition for mnemonic key (The mnemonic is the key which when combined with the look and feel's mouseless modifier 
+   				   (usually Alt) will activate this button if focus is contained somewhere within this button's ancestor window. )
+   				- definition for accelerator key (key combination which invokes the menu item's action listeners without navigating the menu hierarchy. )
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element ref="dgp:parent" minOccurs="0"/>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="tooltip" type="xs:string" minOccurs="0"/>
+			<xs:element name="icon" type="cmm:OnlineResourceType" minOccurs="0"/>
+			<xs:element ref="dgp:mnemonic" minOccurs="0"/>
+			<xs:element ref="dgp:accelerator" minOccurs="0"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="dgp:MenuItem"/>
+				<xs:element ref="dgp:Menu"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MenuItem" type="dgp:MenuItemType"/>
+	<xs:complexType name="MenuItemType">
+		<xs:annotation>
+			<xs:documentation>
+				A MenuItem is similar to a Menu described bove, it is the leaf of the tree defined by MenuBar and Menus. Because a menu item
+				must be embedded within a menu it does not need an indentifier and a parent. name, tooltip, icon, mnemonic and accelerator
+				are defined as for Menu. Additional elements are:
+				- assigendAction: this is the action to be performed if a user clicks on a menu item. It must be the name of an action offered by the 
+				   module a menu item belongs to (e.g. open) or a reference to an action of another module (e.g. $module:EditStyle#editStyle which
+				   invokes the editStyle action of the module named EditStyle). As third option action can be a reference to a static method of a java
+				   class recieving an instance of ApplicationContainer (e.g. $class:de.lat-lon.igeodesktop.example.EventHandler#doSomthing)
+				- entryType defines the type a menu item to be generated; possible values are SimpleItem (default), RadiButtonItem and CheckBoxItem.
+				A menu item can be assigned to a group; all items assigned to the same group will be seperated with a seperator from other items
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="tooltip" type="xs:string" minOccurs="0"/>
+			<xs:element name="assignedAction" type="xs:string"/>
+			<xs:element name="icon" type="cmm:OnlineResourceType" minOccurs="0"/>
+			<xs:element name="entryType" type="dgp:EntryValueType" minOccurs="0"/>
+			<xs:element ref="dgp:mnemonic" minOccurs="0"/>
+			<xs:element ref="dgp:accelerator" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="assignedGroup" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:simpleType name="EntryValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SimpleItem"/>
+			<xs:enumeration value="RadioButtonItem"/>
+			<xs:enumeration value="CheckBoxItem"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PopUpEntry" type="dgp:PopUpEntryType"/>
+	<xs:complexType name="PopUpEntryType">
+		<xs:annotation>
+			<xs:documentation>
+				A PopUpEntry is defined like a MenuItem except that it also knows a unique identifier and parent like Menu
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element ref="dgp:parent" minOccurs="0"/>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="tooltip" type="xs:string" minOccurs="0"/>
+			<xs:element name="assignedAction" type="xs:string"/>
+			<xs:element name="icon" type="cmm:OnlineResourceType" minOccurs="0"/>
+			<xs:element name="entryType" type="dgp:EntryValueType" minOccurs="0"/>
+			<xs:element ref="dgp:mnemonic" minOccurs="0"/>
+			<xs:element ref="dgp:accelerator" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="assignedGroup" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="ToolBarEntry" type="dgp:ToolbarEntryType"/>
+	<xs:complexType name="ToolbarEntryType">
+		<xs:annotation>
+			<xs:documentation>
+				A ToolbarEntry is defined like a MenuItem except that possible entry types are: ToggleButton (default), PushButton, RadioButton and CheckBox
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cmm:identifier"/>
+			<xs:element ref="dgp:parent" minOccurs="0"/>
+			<xs:element name="name" type="xs:string" minOccurs="0"/>
+			<xs:element name="tooltip" type="xs:string" minOccurs="0"/>
+			<xs:element name="assignedAction" type="xs:string"/>
+			<xs:element name="icon" type="cmm:OnlineResourceType" minOccurs="0"/>
+			<xs:element name="entryType" type="dgp:ToolbarEntryValueType" minOccurs="0"/>
+			<xs:element ref="dgp:accelerator" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="assignedGroup" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:simpleType name="ToolbarEntryValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ToggleButton"/>
+			<xs:enumeration value="PushButton"/>
+			<xs:enumeration value="RadioButton"/>
+			<xs:enumeration value="CheckBox"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ViewForm" type="dgp:ViewFormType"/>
+	<xs:complexType name="ViewFormType">
+		<xs:annotation>
+			<xs:documentation>
+				ViewForm is the major element for defining a modules visual appearance. It contains view form definition that defines if a 
+				module should be rendered within its own window (FrameViewForm), as window within an inner frame container (InnerFrameViewForm)
+				and as  part/panel of/within a container for GUI elements (PaneViewForm).
+			    The Layout element defines how the GUI of a module is organized. Most modules will use NoneLayout as layout type because the
+			    container they are embedded defines it. This means in most cases a module is embedded within a ModuleGroup or an inner frame
+			    conatiner. In both cases the container defines the layout of a module. But if a module is a module group the layout defines how included
+			    moduled will be embedded. Possible values are:
+			    - SplittedLayout
+			    - GridLayout
+			    - NoneLayout
+			    - TabLayout
+			    - BorderLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="dgp:_AbstractViewForm"/>
+			<xs:element ref="dgp:Layout" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ComponentState" type="dgp:ComponentStateType"/>
+	<xs:complexType name="ComponentStateType">
+		<xs:annotation>
+			<xs:documentation>
+				each module/componente GUI has a state that e.g. says if a window is closed if it is active etc.. This is defined by ComponentState 
+				element included in _AbstractViewForm
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="windowState" type="dgp:WindowStateType"/>
+			<xs:element name="order" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="active" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="modal" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:simpleType name="WindowStateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="closed"/>
+			<xs:enumeration value="minimized"/>
+			<xs:enumeration value="maximized"/>
+			<xs:enumeration value="normal"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="_AbstractViewForm" type="dgp:_AbstractViewFormType" abstract="true"/>
+	<xs:complexType name="_AbstractViewFormType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				A ViewForm defines a responsible java class for each supported view form (environment) type. Depending on layout of parent
+				conatiner for a stand alone application this will be an extension of JFrame, JPanel, JInternalFrame or JDialog. If a view form is
+				embedded as a JPanel attributes useVerticalScrollBar and useHorizontalScrollBar can be used to define that scrollbars should
+				be used if size of a view form exeeds available space within its container.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="containerClass" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="viewPlatform" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="dgp:ComponentState"/>
+			<xs:element name="MenuBar" type="dgp:MenuBarType" minOccurs="0"/>
+			<xs:element name="PopUpMenu" type="dgp:PopUpMenuType" minOccurs="0"/>
+			<xs:element name="ToolBar" type="dgp:ToolbarType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="useVerticalScrollBar" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="useHorizontalScrollBar" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:element name="FrameViewForm" type="dgp:FrameViewFormType" substitutionGroup="dgp:_AbstractViewForm"/>
+	<xs:complexType name="FrameViewFormType">
+		<xs:annotation>
+			<xs:documentation>
+				view form definition for displaying a module within its own window. A window may be set to be resizeable or not
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractViewFormType">
+				<xs:sequence>
+					<xs:element name="frameTitle" type="xs:string"/>
+				</xs:sequence>
+				<xs:attribute name="resizeable" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="closable" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="InnerFrameViewForm" type="dgp:InnerFrameViewFormType" substitutionGroup="dgp:_AbstractViewForm"/>
+	<xs:complexType name="InnerFrameViewFormType">
+		<xs:annotation>
+			<xs:documentation>
+				view form definition for displaying a module within window contained in an internal frame container (parent must offer this)
+				 A window may be set to be resizeable or not
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractViewFormType">
+				<xs:sequence>
+					<xs:element name="frameTitle" type="xs:string"/>
+				</xs:sequence>
+				<xs:attribute name="resizeable" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaneViewForm" type="dgp:PaneViewFormType" substitutionGroup="dgp:_AbstractViewForm"/>
+	<xs:complexType name="PaneViewFormType">
+		<xs:annotation>
+			<xs:documentation>
+				view form definition for displaying a module contained in a parent container. The parent must be of TabLyout, SplitterLayout,
+				GridLayout or BorderLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractViewFormType">
+				<xs:sequence>
+					<xs:element name="paneTitle" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Layout" type="dgp:LayoutType"/>
+	<xs:annotation>
+		<xs:documentation>
+				Layout type definition
+			</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="LayoutType">
+		<xs:sequence>
+			<xs:element ref="dgp:_AbstractLayout"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="_AbstractLayout" type="dgp:_AbstractLayoutType" abstract="true"/>
+	<xs:complexType name="_AbstractLayoutType" abstract="true">
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="NoneLayout" type="dgp:NoneLayoutType" substitutionGroup="dgp:_AbstractLayout"/>
+	<xs:complexType name="NoneLayoutType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines an emtpy layout. This will be used by modules that do not have children
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractLayoutType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SplittedLayout" type="dgp:SplittedLayoutType" substitutionGroup="dgp:_AbstractLayout"/>
+	<xs:complexType name="SplittedLayoutType">
+		<xs:annotation>
+			<xs:documentation>
+				A splitted layout can be organized vertical or horizontal; if a splitter layout is defined for a modul group just two parents 
+				can be registered to this group
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractLayoutType">
+				<xs:sequence/>
+				<xs:attribute name="vertical" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="GridLayout" type="dgp:GridLayoutType" substitutionGroup="dgp:_AbstractLayout"/>
+	<xs:complexType name="GridLayoutType">
+		<xs:annotation>
+			<xs:documentation>
+				In a GridLayout compones can be organzied in Columns and Rows. Each column can have a different amount of rows.
+				Each row can have a different height; each column can have a different width
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractLayoutType">
+				<xs:sequence>
+					<xs:element name="rows" type="xs:int"/>
+					<xs:element name="cols" type="xs:int"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TabLayout" type="dgp:TabLayoutType" substitutionGroup="dgp:_AbstractLayout"/>
+	<xs:complexType name="TabLayoutType">
+		<xs:annotation>
+			<xs:documentation>
+				A Tablayout organizes module a tabs in a tabsheet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractLayoutType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BorderLayout" type="dgp:BorderLayoutType" substitutionGroup="dgp:_AbstractLayout"/>
+	<xs:complexType name="BorderLayoutType">
+		<xs:annotation>
+			<xs:documentation>
+				a BorderLayout defines fife area where modules can be located. An area maybe left empty but if filled it just can contain one module
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_AbstractLayoutType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="_ComponentPosition" type="dgp:_ComponentPositionType" abstract="true"/>
+	<xs:complexType name="_ComponentPositionType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				For each layout defined for a container an according _ComponentPosition is defined for embedded modules. E.g.
+				if a container uses a GridLayout embedded modules uses GridPosition as concretisation of _ComponentPosition
+				to define in which grid cell each module is located.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="GridPosition" type="dgp:GridPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="GridPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in a GridLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="row" type="xs:int"/>
+					<xs:element name="col" type="xs:int"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TabPosition" type="dgp:TabPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="TabPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in a TabLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="tabPosition" type="xs:int"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BorderPosition" type="dgp:BorderPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="BorderPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in a BorderLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="borderPositionValue" type="dgp:BorderPositionValueType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="BorderPositionValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="west"/>
+			<xs:enumeration value="east"/>
+			<xs:enumeration value="south"/>
+			<xs:enumeration value="north"/>
+			<xs:enumeration value="center"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="SplitterPosition" type="dgp:SplitterPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="SplitterPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in a SplitterLayout
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="splitterPosition" type="dgp:SplitterPositionValueType"/>
+					<xs:element name="size" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="SplitterPositionValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="left"/>
+			<xs:enumeration value="right"/>
+			<xs:enumeration value="top"/>
+			<xs:enumeration value="bottom"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="FooterPosition" type="dgp:FooterPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="FooterPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in footer of an application
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="footerPosition" type="xs:int" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="HeaderPosition" type="dgp:HeaderPositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="HeaderPositionType">
+		<xs:annotation>
+			<xs:documentation>
+				Contretisation of _ComponentPosition for locating modules in header of an application
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element name="headerPosition" type="xs:int" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AbsolutePosition" type="dgp:AbsolutePositionType" substitutionGroup="dgp:_ComponentPosition"/>
+	<xs:complexType name="AbsolutePositionType">
+		<xs:annotation>
+			<xs:documentation>
+				A Window element of an AbsolutPosition defines size and position of a module within a projects GUI or the size an position of the main application. 
+				Depending of type of layout a module is embeded this does not have an effect because size and position are controlled by embedding GUI 
+				container (e.g. TabLayout)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="dgp:_ComponentPositionType">
+				<xs:sequence>
+					<xs:element ref="dgp:Window"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ApplicationState" type="dgp:ApplicationStateType"/>
+	<xs:complexType name="ApplicationStateType">
+		<xs:sequence>
+			<xs:element name="name" type="cmm:QualifiedNameType"/>
+			<xs:element name="Parameter" type="dgp:ParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ParameterType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="parent" type="cmm:IdentifierType"/>
+</xs:schema>

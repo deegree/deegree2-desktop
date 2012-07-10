@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<jnlp spec="1.0+" codebase="http://web.lat-lon.de/~schmitz/jnlp/" href="igeodesktop.jnlp">
+  <information>
+    <title>iGeoDesktop</title>
+    <vendor>lat/lon</vendor>
+    <homepage href="http://www.lat-lon.de"/>
+    <description>iGeoDesktop</description>
+    <description kind="short">iGeoDesktop</description>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5" max-heap-size="512m"/>
+    <jar href="igeodesktop.jar" main="true"/>
+    <jar href="activation.jar"/>
+    <jar href="batik-awt-util.jar"/>
+    <jar href="commons-beanutils-1.5.jar"/>
+    <jar href="commons-codec-1.3.jar"/>
+    <jar href="commons-collections-3.1.jar"/>
+    <jar href="commons-digester-1.7.jar"/>
+    <jar href="commons-discovery-0.2.jar"/>
+    <jar href="commons-httpclient-2.0.2-deegreeversion.jar"/>
+    <jar href="commons-lang-2.1.jar"/>
+    <jar href="commons-logging.jar"/>
+    <jar href="deegree2.jar"/>
+    <jar href="ehcache-1.2.0_03.jar"/>
+    <jar href="forms-1.2.0.jar"/>
+    <jar href="igeodesktop.jar"/>
+    <jar href="itext-1.4.4.jar"/>
+    <jar href="j3dcore.jar"/>
+    <jar href="j3dutils.jar"/>
+    <jar href="jai_codec.jar"/>
+    <jar href="jai_core.jar"/>
+    <jar href="jasperreports-1.2.0.jar"/>
+    <jar href="jaxb-api.jar"/>
+    <jar href="jaxb-impl.jar"/>
+    <jar href="jaxen-1.1.1.jar"/>
+    <jar href="jsr173_1.0_api.jar"/>
+    <jar href="jts-1.8.jar"/>
+    <jar href="log4j-1.2.9.jar"/>
+    <jar href="looks-2.1.4.jar"/>
+    <jar href="mlibwrapper_jai.jar"/>
+    <jar href="postgis100.jar"/>
+    <jar href="postgresql-8.0-311.jdbc3.jar"/>
+    <jar href="sjsxp.jar"/>
+    <jar href="vecmath.jar"/>
+    <jar href="xerces_2_5_0.jar"/>
+  </resources>
+  <application-desc>
+    <argument>http://web.lat-lon.de/~schmitz/jnlp/paneview_config.xml</argument>
+  </application-desc>
+</jnlp>

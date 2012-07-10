@@ -1,0 +1,2 @@
+http://localhost:8888/igeodesktop?action=selectFeatures&OBJECTIDS=SGID100_CountyBoundaries1,SGID100_CountyBoundaries8,SGID100_CountyBoundaries13&LAYER=SGID100_CountyBoundaries
+http://localhost:8888/igeodesktop?action=setBBOX&bbox=372233.9342431239,4460438,489069,4552689

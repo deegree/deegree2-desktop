@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="D:\java\projekte\deegree2_client\src\org\deegree\igeo\views\swing\layerlist\metaContent2html.xsl"?>
+<iso19115:MD_Metadata xmlns:iso19115="http://schemas.opengis.net/iso19115full" xmlns:smXML="http://metadata.dgiwg.org/smXML">
+	<iso19115:fileIdentifier>
+		<smXML:CharacterString>{42AE2814-FCC1-4BC2-BAF4-CA3E55514997}</smXML:CharacterString>
+	</iso19115:fileIdentifier>
+	<iso19115:language>
+		<smXML:CharacterString>en</smXML:CharacterString>
+	</iso19115:language>
+	<iso19115:characterSet>
+		<smXML:MD_CharacterSetCode codeList="MD_CharacterSetCode" codeListValue="utf8"/>
+	</iso19115:characterSet>
+	<iso19115:hierarchyLevel>
+		<smXML:MD_ScopeCode codeList="MD_ScopeCode" codeListValue="dataset"/>
+	</iso19115:hierarchyLevel>
+	<iso19115:hierarchyLevelName>
+		<smXML:CharacterString>dataset</smXML:CharacterString>
+	</iso19115:hierarchyLevelName>
+	<iso19115:contact>
+		<smXML:CI_ResponsibleParty>
+			<smXML:positionName>
+				<smXML:CharacterString>SGID Administrator</smXML:CharacterString>
+			</smXML:positionName>
+			<smXML:contactInfo>
+				<smXML:CI_Contact>
+					<smXML:phone>
+						<smXML:CI_Telephone>
+							<smXML:voice>
+								<smXML:CharacterString>(801) 537-9201</smXML:CharacterString>
+							</smXML:voice>
+							<smXML:facsimile>
+								<smXML:CharacterString>(801) 538-3317</smXML:CharacterString>
+							</smXML:facsimile>
+						</smXML:CI_Telephone>
+					</smXML:phone>
+					<smXML:address>
+						<smXML:CI_Address>
+							<smXML:deliveryPoint>
+								<smXML:CharacterString>5130 State Office Building</smXML:CharacterString>
+							</smXML:deliveryPoint>
+							<smXML:city>
+								<smXML:CharacterString>Salt Lake City</smXML:CharacterString>
+							</smXML:city>
+							<smXML:administrativeArea>
+								<smXML:CharacterString>Utah</smXML:CharacterString>
+							</smXML:administrativeArea>
+							<smXML:postalCode>
+								<smXML:CharacterString>84114</smXML:CharacterString>
+							</smXML:postalCode>
+							<smXML:country>
+								<smXML:CharacterString>USA</smXML:CharacterString>
+							</smXML:country>
+							<smXML:electronicMailAddress>
+								<smXML:CharacterString>cclark@utah.gov</smXML:CharacterString>
+							</smXML:electronicMailAddress>
+						</smXML:CI_Address>
+					</smXML:address>
+				</smXML:CI_Contact>
+			</smXML:contactInfo>
+			<smXML:role>
+				<smXML:CI_RoleCode codeList="MD_ScopeCode" codeListValue="pointOfContact"/>
+			</smXML:role>
+		</smXML:CI_ResponsibleParty>
+	</iso19115:contact>
+	<iso19115:dateStamp>
+		<smXML:DateTime>2004-04-20T00:00:00</smXML:DateTime>
+	</iso19115:dateStamp>
+	<iso19115:metadataStandardName>
+		<smXML:CharacterString>ISO 19115 Geographic Information Metadata</smXML:CharacterString>
+	</iso19115:metadataStandardName>
+	<iso19115:metadataStandardVersion>
+		<smXML:CharacterString>DIS</smXML:CharacterString>
+	</iso19115:metadataStandardVersion>
+	<iso19115:identificationInfo>
+		<smXML:MD_DataIdentification>
+			<smXML:citation>
+				<smXML:CI_Citation>
+					<smXML:title>
+						<smXML:CharacterString>County Boundaries of Utah</smXML:CharacterString>
+					</smXML:title>
+					<smXML:date>
+						<smXML:CI_Date>
+							<smXML:date>
+								<smXML:DateTime>2001-01-01T00:00:00</smXML:DateTime>
+							</smXML:date>
+							<smXML:dateType>
+								<smXML:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="publication"/>
+							</smXML:dateType>
+						</smXML:CI_Date>
+					</smXML:date>
+					<smXML:series>
+						<smXML:CI_Series>
+							<smXML:name>
+								<smXML:CharacterString>State of Utah SGID</smXML:CharacterString>
+							</smXML:name>
+							<smXML:issueIdentification>
+								<smXML:CharacterString>None</smXML:CharacterString>
+							</smXML:issueIdentification>
+						</smXML:CI_Series>
+					</smXML:series>
+					<smXML:otherCitationDetails>
+						<smXML:CharacterString>Digital data at 1:24,000</smXML:CharacterString>
+					</smXML:otherCitationDetails>
+				</smXML:CI_Citation>
+			</smXML:citation>
+			<smXML:abstract>
+				<smXML:CharacterString>This data set represents county boundaries in Utah at 1:24,000 scale.</smXML:CharacterString>
+			</smXML:abstract>
+			<smXML:purpose>
+				<smXML:CharacterString>To show the county boundaries in Utah at 1:24,000 scale.</smXML:CharacterString>
+			</smXML:purpose>
+			<smXML:status>
+				<smXML:MD_ProgressCode codeList="MD_ProgressCode" codeListValue="completed"/>
+			</smXML:status>
+			<smXML:pointOfContact>
+				<smXML:CI_ResponsibleParty>
+					<smXML:individualName>
+						<smXML:CharacterString>Cindy Clark</smXML:CharacterString>
+					</smXML:individualName>
+					<smXML:organisationName>
+						<smXML:CharacterString>Automated Geographic Reference Center</smXML:CharacterString>
+					</smXML:organisationName>
+					<smXML:positionName>
+						<smXML:CharacterString>SGID Administrator</smXML:CharacterString>
+					</smXML:positionName>
+					<smXML:contactInfo>
+						<smXML:CI_Contact>
+							<smXML:phone>
+								<smXML:CI_Telephone>
+									<smXML:voice>
+										<smXML:CharacterString>(801) 537-9201</smXML:CharacterString>
+									</smXML:voice>
+									<smXML:facsimile>
+										<smXML:CharacterString>(801) 538-3317</smXML:CharacterString>
+									</smXML:facsimile>
+								</smXML:CI_Telephone>
+							</smXML:phone>
+							<smXML:address>
+								<smXML:CI_Address>
+									<smXML:deliveryPoint>
+										<smXML:CharacterString>5130 State Office Building</smXML:CharacterString>
+									</smXML:deliveryPoint>
+									<smXML:city>
+										<smXML:CharacterString>Salt Lake City</smXML:CharacterString>
+									</smXML:city>
+									<smXML:administrativeArea>
+										<smXML:CharacterString>Utah</smXML:CharacterString>
+									</smXML:administrativeArea>
+									<smXML:postalCode>
+										<smXML:CharacterString>84114</smXML:CharacterString>
+									</smXML:postalCode>
+									<smXML:country>
+										<smXML:CharacterString>USA</smXML:CharacterString>
+									</smXML:country>
+									<smXML:electronicMailAddress>
+										<smXML:CharacterString>cclark@utah.gov</smXML:CharacterString>
+									</smXML:electronicMailAddress>
+								</smXML:CI_Address>
+							</smXML:address>
+						</smXML:CI_Contact>
+					</smXML:contactInfo>
+					<smXML:role>
+						<smXML:CI_RoleCode codeList="MD_ScopeCode" codeListValue="pointOfContact"/>
+					</smXML:role>
+				</smXML:CI_ResponsibleParty>
+			</smXML:pointOfContact>
+			<smXML:descriptiveKeywords>
+				<smXML:MD_Keywords>
+					<smXML:keyword>
+						<smXML:CharacterString>Administrative</smXML:CharacterString>
+					</smXML:keyword>
+					<smXML:keyword>
+						<smXML:CharacterString>County</smXML:CharacterString>
+					</smXML:keyword>
+					<smXML:keyword>
+						<smXML:CharacterString>boundaries</smXML:CharacterString>
+					</smXML:keyword>
+					<smXML:type>
+						<smXML:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="theme"/>
+					</smXML:type>
+					<smXML:thesaurusName>
+						<smXML:CI_Citation>
+							<smXML:title>
+								<smXML:CharacterString>None</smXML:CharacterString>
+							</smXML:title>
+							<smXML:date>
+								<smXML:CI_Date>
+									<smXML:date>
+										<smXML:Date>2004-04-20</smXML:Date>
+									</smXML:date>
+									<smXML:dateType>
+										<smXML:CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="creation"/>
+									</smXML:dateType>
+								</smXML:CI_Date>
+							</smXML:date>
+						</smXML:CI_Citation>
+					</smXML:thesaurusName>
+				</smXML:MD_Keywords>
+			</smXML:descriptiveKeywords>
+			<smXML:descriptiveKeywords>
+				<smXML:MD_Keywords>
+					<smXML:keyword>
+						<smXML:CharacterString>Utah</smXML:CharacterString>
+					</smXML:keyword>
+					<smXML:type>
+						<smXML:MD_KeywordTypeCode codeList="MD_KeywordTypeCode" codeListValue="place"/>
+					</smXML:type>
+				</smXML:MD_Keywords>
+			</smXML:descriptiveKeywords>
+			<smXML:resourceConstraints>
+				<smXML:MD_LegalConstraints>
+					<smXML:useLimitation>
+						<smXML:CharacterString>For use at 1:24,000 scale.
+
+Data released to the Receiving Agency (RA) remains the property of the originating data source (see Source_Information) and cannot be reproduced for sale by the RA without the written consent of that data source.  Redistribution of datasets unchanged as obtained from the AGRC and without fee is allowed.
+
+Any hardcopies utilizing these data sets shall clearly indicate their source.  If the RA has modified the data in any way, they are obligated to describe the types of modifications they have performed on the hardcopy map.  RA specifically agrees not to misrepresent these data sets, nor to imply that changes they made were approved by the AGRC.</smXML:CharacterString>
+					</smXML:useLimitation>
+					<smXML:otherConstraints>
+						<smXML:CharacterString>None</smXML:CharacterString>
+					</smXML:otherConstraints>
+				</smXML:MD_LegalConstraints>
+			</smXML:resourceConstraints>
+			<smXML:resourceFormat>
+				<smXML:MD_Format>
+					<smXML:name>
+						<smXML:CharacterString>SDE Feature Class</smXML:CharacterString>
+					</smXML:name>
+					<smXML:version>
+						<smXML:CharacterString>1.0.0</smXML:CharacterString>
+					</smXML:version>
+				</smXML:MD_Format>
+			</smXML:resourceFormat>
+			<smXML:language>
+				<smXML:CharacterString>en</smXML:CharacterString>
+			</smXML:language>
+			<smXML:topicCategory>
+				<smXML:MD_TopicCategoryCode>geoscientificInformation</smXML:MD_TopicCategoryCode>
+			</smXML:topicCategory>
+			<smXML:environmentDescription>
+				<smXML:CharacterString>Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 1; ESRI ArcCatalog 8.3.0.800</smXML:CharacterString>
+			</smXML:environmentDescription>
+			<smXML:extent>
+				<smXML:EX_Extent>
+					<smXML:geographicElement>
+						<smXML:EX_GeographicBoundingBox>
+							<smXML:westBoundLongitude>
+								<smXML:approximateLongitude>-114.28</smXML:approximateLongitude>
+							</smXML:westBoundLongitude>
+							<smXML:eastBoundLongitude>
+								<smXML:approximateLongitude>-108.9</smXML:approximateLongitude>
+							</smXML:eastBoundLongitude>
+							<smXML:southBoundLatitude>
+								<smXML:approximateLatitude>36.96</smXML:approximateLatitude>
+							</smXML:southBoundLatitude>
+							<smXML:northBoundLatitude>
+								<smXML:approximateLatitude>42.04</smXML:approximateLatitude>
+							</smXML:northBoundLatitude>
+						</smXML:EX_GeographicBoundingBox>
+					</smXML:geographicElement>
+				</smXML:EX_Extent>
+			</smXML:extent>
+			<smXML:supplementalInformation>
+				<smXML:CharacterString>The Utah Office of the USDA Soil Conservation Service, renamed the National Resource Conservation Service (NRCS), digitized the data.  The source was USGS 7.5-minute quadrangle paper maps.  It is also the tile index for all directories with county tile units.</smXML:CharacterString>
+			</smXML:supplementalInformation>
+		</smXML:MD_DataIdentification>
+	</iso19115:identificationInfo>
+	<iso19115:metadataConstraints>
+		<smXML:MD_LegalConstraints>
+			<smXML:otherConstraints>
+				<smXML:CharacterString>accessConstraint: None; useConstraint: None</smXML:CharacterString>
+			</smXML:otherConstraints>
+		</smXML:MD_LegalConstraints>
+	</iso19115:metadataConstraints>
+	<iso19115:dataQualityInfo>
+		<smXML:DQ_DataQuality>
+			<smXML:scope>
+				<smXML:DQ_Scope>
+					<smXML:level>
+						<smXML:MD_ScopeCode codeList="MD_ScopeCode" codeListValue="dataset"/>
+					</smXML:level>
+				</smXML:DQ_Scope>
+			</smXML:scope>
+			<smXML:lineage>
+				<smXML:LI_Lineage>
+					<smXML:source>
+						<smXML:LI_Source>
+							<smXML:description>
+								<smXML:CharacterString> |  |  | </smXML:CharacterString>
+							</smXML:description>
+							<smXML:scaleDenominator>
+								<smXML:MD_RepresentativeFraction>
+									<smXML:denominator>
+										<smXML:positiveInteger>24000</smXML:positiveInteger>
+									</smXML:denominator>
+								</smXML:MD_RepresentativeFraction>
+							</smXML:scaleDenominator>
+						</smXML:LI_Source>
+					</smXML:source>
+					<smXML:processStep>
+						<smXML:LI_ProcessStep>
+							<smXML:description>
+								<smXML:CharacterString>Dataset copied.</smXML:CharacterString>
+							</smXML:description>
+						</smXML:LI_ProcessStep>
+					</smXML:processStep>
+					<smXML:processStep>
+						<smXML:LI_ProcessStep>
+							<smXML:description>
+								<smXML:CharacterString>Dataset copied.</smXML:CharacterString>
+							</smXML:description>
+						</smXML:LI_ProcessStep>
+					</smXML:processStep>
+				</smXML:LI_Lineage>
+			</smXML:lineage>
+			<smXML:report>
+				<smXML:DQ_CompletenessCommission>
+					<smXML:nameOfMeasure>
+						<smXML:CharacterString>%</smXML:CharacterString>
+					</smXML:nameOfMeasure>
+					<smXML:DQ_QuantitativeResult>
+						<smXML:UomLength>
+							<smXML:uomName>
+								<smXML:CharacterString>uom Name</smXML:CharacterString>
+							</smXML:uomName>
+							<smXML:conversionTolSOstandardUnit>
+								<smXML:Real>1</smXML:Real>
+							</smXML:conversionTolSOstandardUnit>
+						</smXML:UomLength>
+						<smXML:value>
+							<smXML:Record>100</smXML:Record>
+						</smXML:value>
+					</smXML:DQ_QuantitativeResult>
+				</smXML:DQ_CompletenessCommission>
+			</smXML:report>
+		</smXML:DQ_DataQuality>
+	</iso19115:dataQualityInfo>
+	<iso19115:metadataMaintenance>
+		<smXML:MD_MaintenanceInformation>
+			<smXML:maintenanceAndUpdateFrequency>
+				<smXML:MD_MaintenanceFrequencyCode codeList="MD_MaintenanceFrequencyCode" codeListValue="asNeeded"/>
+			</smXML:maintenanceAndUpdateFrequency>
+		</smXML:MD_MaintenanceInformation>
+	</iso19115:metadataMaintenance>
+	<iso19115:spatialRepresentationInfo>
+		<smXML:MD_VectorSpatialRepresentation>
+			<smXML:topologyLevel>
+				<smXML:MD_TopologyLevelCode codeList="MD_TopologyLevelCode" codeListValue="geometryOnly"/>
+			</smXML:topologyLevel>
+			<smXML:geometricObjects>
+				<smXML:MD_GeometricObjects>
+					<smXML:geometricObjectType>
+						<smXML:MD_GeometricObjectTypeCode codeList="MD_GeometricObjectTypeCode" codeListValue="surface"/>
+					</smXML:geometricObjectType>
+				</smXML:MD_GeometricObjects>
+			</smXML:geometricObjects>
+		</smXML:MD_VectorSpatialRepresentation>
+	</iso19115:spatialRepresentationInfo>
+	<iso19115:referenceSystemInfo>
+		<smXML:MD_ReferenceSystem>
+			<smXML:referenceSystemIdentifier>
+				<smXML:RS_Identifier>
+					<smXML:code>
+						<smXML:CharacterString>NAD_1983_UTM_Zone_12N</smXML:CharacterString>
+					</smXML:code>
+				</smXML:RS_Identifier>
+			</smXML:referenceSystemIdentifier>
+		</smXML:MD_ReferenceSystem>
+	</iso19115:referenceSystemInfo>
+	<iso19115:referenceSystemInfo>
+		<smXML:MD_ReferenceSystem>
+			<smXML:referenceSystemIdentifier>
+				<smXML:RS_Identifier>
+					<smXML:code>
+						<smXML:CharacterString>GCS_North_American_1983</smXML:CharacterString>
+					</smXML:code>
+				</smXML:RS_Identifier>
+			</smXML:referenceSystemIdentifier>
+		</smXML:MD_ReferenceSystem>
+	</iso19115:referenceSystemInfo>
+</iso19115:MD_Metadata>

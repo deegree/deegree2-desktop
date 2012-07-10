@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2008 sp1 (http://www.altova.com) von Poth (lat/lon GmbH) bearbeitet -->
+<xs:schema xmlns:set="http://www.deegree.org/settings" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.deegree.org/settings" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ============================================================================
+		imported schemas
+		===============================================================================-->
+	<xs:import namespace="http://www.deegree.org/coremapmodel" schemaLocation="coremapmodel.xsd"/>
+	<!-- ============================================================================ -->
+	<xs:element name="Settings" type="set:SettingsType"/>
+	<xs:complexType name="SettingsType">
+		<xs:annotation>
+			<xs:documentation>
+				general setting of a project that are not related to the map models and the registered modules 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="language" default="en" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="changeable" type="xs:boolean" use="optional" default="true"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Snapping" type="set:SnappingType" minOccurs="0"/>
+			<xs:element name="MapHandling" type="set:MapHandlingType"/>
+			<xs:element name="DigitizingOptions" type="set:DigitizingOptionsType" minOccurs="0"/>
+			<xs:element name="Validation" type="set:ValidationType" minOccurs="0"/>
+			<xs:element name="DataAdapter" type="set:DataAdapterType"/>
+			<xs:element name="ProjectTemplates" type="set:ProjectTemplatesType" minOccurs="0"/>
+			<xs:element name="DatabaseDrivers" type="set:DatabaseDriversType" minOccurs="0"/>
+			<xs:element name="FileFilter" type="set:FileFilterType" minOccurs="0"/>
+			<xs:element name="HelpPage">
+				<xs:annotation>
+					<xs:documentation>
+						register for help pages (HTML) that are not assigned to a specific module
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="set:HelpContext" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="changeable" type="xs:boolean" use="optional" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CursorDefinitions" type="set:CursorDefinitionsType" minOccurs="0"/>
+			<xs:element name="Clipboard" type="set:ClipboardType" minOccurs="0"/>
+			<xs:element name="Graphics" type="set:GraphicsType" minOccurs="0"/>
+			<xs:element name="Security" type="set:SecurityType" minOccurs="0"/>
+			<xs:element name="Formats" type="set:FormatsType" minOccurs="0"/>
+			<xs:element name="ExternalReferences" type="set:ExternalReferencesType" minOccurs="0"/>
+			<xs:element name="FileAccess" type="set:FileAccessType" minOccurs="0"/>
+			<xs:element name="Dictionaries" type="set:DictionariesType" minOccurs="0"/>
+			<xs:element name="WFSDefaultStyle" type="set:WFSDefaultStyleType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="_ChangeableType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				This will be extend by most types. It enables setting if a user is allowed to changed a value of a setting-parameter
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="changeable" type="xs:boolean" use="optional" default="true"/>
+	</xs:complexType>
+	<xs:complexType name="SnappingType">
+		<xs:annotation>
+			<xs:documentation>
+				Settings for snapping operation. Using this element it can be defined which layers will be target for snapping
+				and what's the snapping distance (radius aroud mouse cursor). Also it can be defined which unit of measure
+				will be used for defining snapping distance (metre and pixel are valid values)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tolerance">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="uom" type="xs:string" default="Pixel"/>
+							<xs:attribute name="val" type="xs:float" default="20"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="snapLayer" type="set:SnapLayerType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SnapLayerType">
+		<xs:annotation>
+			<xs:documentation>
+				For each layer that is defined as snapping target it can be defined what kind of snapping it is sensible for.
+				At least one type must be selected (true)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="layer" type="cmm:IdentifierType"/>
+				</xs:sequence>
+				<xs:attribute name="vertex" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="startNode" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="endNode" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="edge" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="edgeCenter" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MapHandlingType">
+		<xs:annotation>
+			<xs:documentation>
+				Here the procentual change of map extension for zoom and pan operations is defined
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="zoomLevel">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="val" type="xs:float" default="25"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="panLevel">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="val" type="xs:float" default="25"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DigitizingOptionsType">
+		<xs:annotation>
+			<xs:documentation>
+				Here two settings important for digitizing actions are defined:
+				- vertices is similar to snapping distance explained above.
+				- graphicLineSize defines the with of drawing line when digitizing a line feature 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="vertices" type="set:VerticesType"/>
+					<xs:element name="graphicLineSize" type="set:GraphicLineSizeType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GraphicLineSizeType">
+		<xs:annotation>
+			<xs:documentation>
+				Line with for digitizing can be defined in pixel or metre
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="uom" type="xs:string" default="pixel"/>
+				<xs:attribute name="val" type="xs:float" default="1"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VerticesType">
+		<xs:annotation>
+			<xs:documentation>
+				 Its value defines the radius of a circle around the mouse cursor. If attributes handleNearest all vertices 
+				 within this circle will be considered for action. If handleNearest is true just the vertex nearest to mouse click point will be
+				 deleted or moved. If useNearest is true n selected vertices will be merged to the one nearest to mouse click point.
+		  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="searchRadius">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="uom" type="xs:string" default="pixel"/>
+							<xs:attribute name="val" type="xs:float" default="25"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="handleNearest" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="useNearest" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="ValidationType">
+		<xs:annotation>
+			<xs:documentation>
+				Within iGeoDesktop geometries of a layer can be tested to be valid. Three types of tests are availble:
+				- tests for metrics; e.g. minimum distance between to vertices of a line
+				- tests for types; e.g. a layer may just should contain points
+				- tests for topology; e.g. geometries of a layer must nit intersect
+				Using validation type element it can be defined which tests are activated by default.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GeometryMetrics" type="set:GeometryMetricsType"/>
+			<xs:element name="GeometryTypes" type="set:GeometryTypeType"/>
+			<xs:element name="GeometryTopology" type="set:GeometryTopologyType"/>
+		</xs:sequence>
+		<xs:attribute name="printWarning" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="GeometryMetricsType">
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence/>
+				<xs:attribute name="checkForValidGeometries" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="disallowRepeatedPoints" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="checkForPolygonOrientation" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="disallowDoubleGeomerties" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="minSegmentLength" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="minSegmentLengthValue" type="xs:float" use="optional" default="0.001"/>
+				<xs:attribute name="ensureSimpleLines" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="minPolygonArea" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="minPolygonAreaValue" type="xs:float" use="optional" default="0.01"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeometryTypeType">
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence/>
+				<xs:attribute name="allowPoints" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowLinestrings" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowPolygons" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowMultiPoints" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowMultiLinestrings" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowMultiPolygons" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowHoles" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="allowGeometryCollections" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="allowNoneLinearInterpolation" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeometryTopologyType">
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence/>
+				<xs:attribute name="allowIntersection" type="xs:boolean" default="false"/>
+				<xs:attribute name="allowTouching" type="xs:boolean" default="true"/>
+				<xs:attribute name="allowEqualGeometries" type="xs:boolean" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataAdapterType">
+		<xs:annotation>
+			<xs:documentation>
+				For each project data adapter for accessing WMS/WFS/WCS and known raster data formats can be configured. If
+				no data adpater element will be defined deegree uses default behavior
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="WFSFeatureAdapter" type="set:WFSFeatureAdapterType" minOccurs="0"/>
+					<xs:element name="WMSGridCoverageAdapter" type="set:WMSGridCoverageAdapterType" minOccurs="0"/>
+					<xs:element name="WCSGridCoverageAdapter" type="set:ServiceAdapterType" minOccurs="0"/>
+					<xs:element name="KnownRasterFormats" minOccurs="0">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="changeable" type="xs:boolean" use="optional" default="true"/>
+									<xs:attribute name="val" type="xs:string" use="optional" default="|gif|tif|tiff|jpg|jpeg|png|bmp|"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServiceAdapterType">
+		<xs:annotation>
+			<xs:documentation>
+				general service adapter settings. 
+				- Classes for evaluating/parsing service capabilities of a specific version can be set
+				- timeout (milli seconds) to be used for accessing a service
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CapabilitiesEvaluator" nillable="true" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="version" type="xs:string" use="optional" default="1.1.0"/>
+							<xs:attribute name="val" type="xs:string" use="required"/>
+							<xs:attribute name="changeable" type="xs:boolean" use="optional" default="false"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Timeout" nillable="true">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="changeable" type="xs:boolean" use="optional" default="false"/>
+							<xs:attribute name="val" type="xs:int" use="optional" default="30000"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WMSGridCoverageAdapterType">
+		<xs:annotation>
+			<xs:documentation>
+				concrete data adapter for WMS. Beside general service adapter parameter value for featureCount parameter
+				performing GetFeatureInfo requests can be defined
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:ServiceAdapterType">
+				<xs:sequence>
+					<xs:element name="featureCount" nillable="true">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="changeable" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="val" type="xs:int" use="optional" default="1"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WFSFeatureAdapterType">
+		<xs:annotation>
+			<xs:documentation>
+				Service adapater for WFS; several parameter for performing requests can be defined:
+				- MaxFeature: maximum number of feature that can be requested with one GetFeature request
+				- DataLoader: java class for performing data access requests against a WFS of defined version
+				- DataWriter: java class for performing transactions against a WFS of defined version
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:ServiceAdapterType">
+				<xs:sequence>
+					<xs:element name="MaxFeature" nillable="true">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="changeable" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="val" type="xs:int" use="optional" default="5000"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DataLoader" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="version" type="xs:string" use="optional" default="1.1.0"/>
+									<xs:attribute name="val" type="xs:string" use="optional" default="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DataWriter" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="version" type="xs:string" use="optional" default="1.1.0"/>
+									<xs:attribute name="val" type="xs:string" use="optional" default="org.deegree.igeo.dataadapter.WFS110DataWriter"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectTemplatesType">
+		<xs:annotation>
+			<xs:documentation>
+				Describes a project template that can be used to create a new (empty) project. A template has a name a relative
+				or absolute path to a template file and a description. For each template there should exist a jpg-image with the same
+				name as the project file, stored in the same directory
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Template" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="file" type="xs:string" use="required"/>
+									<xs:attribute name="desc" type="xs:string" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DatabaseDriversType">
+		<xs:annotation>
+			<xs:documentation>
+				Because a database connection may be used more than one time it is possible to reference an already defined
+				connection. A reference to a database driver includes a human readable name and the name of the referenced 
+				(not supported yet)
+				database driver.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="database" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="driver" type="xs:string" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FileFilterType">
+		<xs:annotation>
+			<xs:documentation>
+				Within a project file a list of supported file formats can be defined. A file format description contains:
+				- a human readable name
+				- the extension assigned to a format ( e.g. shp or gml)
+				- a short description (e.g. esri shape file)
+				- and information if it is a vector or a raster file format
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Format" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="extension" type="xs:string" use="required"/>
+									<xs:attribute name="desc" type="xs:string" use="required"/>
+									<xs:attribute name="isVector" type="xs:boolean" use="optional" default="false"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CursorDefinitionsType">
+		<xs:annotation>
+			<xs:documentation>
+				For each action (see toobar-, menu- and popup-entries) it is possible to register a mouse cursor. A registered 
+				cursor must have a name that is known by internal cursor registry and must be assigend to an action.
+				(not supported yet)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Cursor" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="action" type="xs:string" use="required"/>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="HelpContext" type="set:HelpContextType"/>
+	<xs:complexType name="HelpContextType">
+		<xs:annotation>
+			<xs:documentation>
+				As described above help pages can be registered to an application as itself as well as to each registered module. A help
+				page is a reference (URL) to a HTML page containing help, informations etc.. For each page there can be a list of keywords
+				that describe the content of the page and that will be made available to a user to find the help he needs. 
+				If more than one page	is registered to a module or a application one must be defined as default. The default page will be 
+				presented to a user if he request help for a modul or the application itself. The other pages are available through their 
+				keywords. 
+				Each page can be assigned to a language to enable multi language support; ISO code must be used for language description
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="page">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cmm:OnlineResource"/>
+						<xs:element name="keyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="mainPage" type="xs:boolean" use="optional" default="false"/>
+					<xs:attribute name="language" type="xs:string" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClipboardType">
+		<xs:annotation>
+			<xs:documentation>
+				For storing objects/features in application clipboard some settings can be made:
+				- format: in which format features will be stored in clipboard (at the moment just text/xml; subtype=gml/3.1.1 is supported)
+				- maxObjects: the maximum number of objects that can be copied into a clipboard
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="format" type="xs:string" use="optional" default="text/xml; subtype=gml/3.1.1"/>
+				<xs:attribute name="maxObjects" type="xs:int" use="optional" default="1000"/>
+				<xs:attribute name="changeable" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="GraphicsType">
+		<xs:annotation>
+			<xs:documentation>
+				Collects user specific settings around SLD and the StyleEditor (ClassificationPreset and StylePreset are not used, yet). 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="SymbolDefinitions" type="set:GraphicDefinitionsType" minOccurs="0"/>
+					<xs:element name="FillGraphicDefinitions" type="set:GraphicDefinitionsType" minOccurs="0"/>
+					<xs:element name="DashArrayDefinitions" type="set:DashArrayDefinitionsType" minOccurs="0"/>
+					<xs:element name="ClassificationPreset" type="set:PresetType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="StylePreset" type="set:PresetType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="SymbolizerPreset" type="set:PresetType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="ColorSchemes" type="set:ColorSchemesType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GraphicDefinitionsType">
+		<xs:annotation>
+			<xs:documentation>
+				For user specific graphic object, e.g. images used as symbol or fill graphics. The required attributes are:
+                 - name: unique name of the graphic (displayed in the selection list) 
+                 - file: the url referencing the graphic
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Graphic" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" type="xs:string" use="required"/>
+							<xs:attribute name="file" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DashArrayDefinitionsType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines a line as dash pattern:
+                 - name: unique name of the pattern (displayed in the selection list)
+                 - array: a comma sepereated list of int or float values encoding the dash pattern. The first number gives the length in
+                   pixels of dash to draw, the second gives the amount of space to leave, and this pattern repeats. If an odd number of
+                   values is given, then the pattern is expanded by repeating it twice to give an even number of values.  
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DashArray" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" type="xs:string" use="required"/>
+							<xs:attribute name="array" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PresetType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines SLD symbolizer used as presets in the StyleDialog:
+                 - Preset/OnlineReource: the symbolizer as text or stored an external file  
+                 - name: unique name of the preset (displayed in the selection list)
+                 - type: the type of the preset (TODO: not used)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Preset" type="xs:string"/>
+			<xs:element ref="cmm:OnlineResource"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="ColorSchemesType">
+		<xs:annotation>
+			<xs:documentation>
+				For user specific color schemes:
+                 - Colorlist/OnlineResource: direct or external reference to a list of colors representing the color schema 
+                 - name: unique name of the color list (displayed in the selection list)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Colorlist" type="set:ColorListType"/>
+			<xs:element ref="cmm:OnlineResource"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ColorListType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines a color at a position:
+                 - position: the position of the color - must be a float value between 0 and 100
+                 - color: the color as hexadecimal value
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ColorListEntry" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="position">
+							<xs:simpleType>
+								<xs:restriction base="xs:float">
+									<xs:minInclusive value="0"/>
+									<xs:maxInclusive value="100"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="color" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SecurityType">
+		<xs:annotation>
+			<xs:documentation>
+				If an application is used as part of a SDI a user may must authenticate hisself before he is allowed to access
+				some resources. The way how authentication must be performed is defined by this element
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Authentication" type="set:AuthenticationType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AuthenticationType">
+		<xs:annotation>
+			<xs:documentation>
+				A authentication requires three types of informations:
+				- a list of the OWS that is protected by a specific authentication method (this enables a project to have different 
+					authentication types for different OWS - at the moment just one authentication is supported)
+				- a authentication method; this is a java class that implements org.deegree.kernel.Command interface and offers a 
+					constructor with signature: String user, String password, URL was 
+				- URL of a authentication server (at the moment just WAS is supported)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="protectedServer" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="method" type="xs:string"/>
+			<xs:element name="AuthenticationServer" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="default" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="FormatsType">
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Format" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="name" type="xs:string" use="required"/>
+							<xs:attribute name="pattern" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExternalReferencesType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines which program shall be invoked for a file extension. This will be used in context of object/layer info functionality
+				as described for AbstractDatasource/referenceProperty
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Reference" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="extension" type="xs:string" use="required"/>
+							<xs:attribute name="program" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FileAccessType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines a java class responsible for reading/writing files of a specific type. A class must implement org.deegree.igeo.io.FileSystemAccess
+				interface. Valid fileType values are: project, module, geoDataFile, metadata, stylePattern, externalResource, printTemplate, printResult, image
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="Access" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:attribute name="fileType" type="xs:string" use="required"/>
+							<xs:attribute name="class" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DictionariesType">
+		<xs:annotation>
+			<xs:documentation>
+				Through this element GML dictionaries can be registered to use predefined lists instead of free text entries for editing feature properties
+				and creating a WFS GetFeature query
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element ref="cmm:OnlineResource" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WFSDefaultStyleType">
+		<xs:annotation>
+			<xs:documentation>
+				Default style to be used when creating a new layer by loading features from a WFS. 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="set:_ChangeableType">
+				<xs:sequence>
+					<xs:element name="style" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,12 @@
+
+OpenStreetMap Copyright
+========================
+
+OpenStreetMap Daten können frei unter der Creative Commons Attribution-ShareAlike 2.0 Lizenz genutzt werden:
+NRW_forest, NRW_river, NRW_roads, NRW_suburb, NRW_town, NRW_water, nrw_osm
+
+de: Kartendaten und Karten (c) 'OpenStreetMap' und Mitwirkende, CC-BY-SA
+en: Map data and maps (c) 'OpenStreetMap' and contributors, CC-BY-SA
+
+Informationen zum OpenStreetMap-Projekt: http://www.openstreetmap.org/ 
+Details zur Lizenz: http://creativecommons.org/licenses/by-sa/2.0/

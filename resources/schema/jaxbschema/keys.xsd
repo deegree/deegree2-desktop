@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.deegree.org/project" xmlns:gml="http://www.opengis.net/gml"
+    xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:element name="accelerator" type="dgp:AcceleratorType" />
+    <xs:complexType name="AcceleratorType">
+        <xs:sequence>
+            <xs:element ref="dgp:mnemonic"></xs:element>
+            <xs:element ref="dgp:mask"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="mnemonic" type="dgp:MnemonicType" />
+    <xs:simpleType name="MnemonicType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="cancel" />
+            <xs:enumeration value="backspace" />
+            <xs:enumeration value="tab" />
+            <xs:enumeration value="enter" />
+            <xs:enumeration value="clear" />
+            <xs:enumeration value="shift" />
+            <xs:enumeration value="ctrl" />
+            <xs:enumeration value="alt" />
+            <xs:enumeration value="pause" />
+            <xs:enumeration value="caps lock" />
+            <xs:enumeration value="kana" />
+            <xs:enumeration value="final" />
+            <xs:enumeration value="kanji" />
+            <xs:enumeration value="escape" />
+            <xs:enumeration value="convert" />
+            <xs:enumeration value="no convert" />
+            <xs:enumeration value="accept" />
+            <xs:enumeration value="mode change" />
+            <xs:enumeration value="space" />
+            <xs:enumeration value="page up" />
+            <xs:enumeration value="page down" />
+            <xs:enumeration value="end" />
+            <xs:enumeration value="home" />
+            <xs:enumeration value="left" />
+            <xs:enumeration value="up" />
+            <xs:enumeration value="right" />
+            <xs:enumeration value="down" />
+            <xs:enumeration value="comma" />
+            <xs:enumeration value="minus" />
+            <xs:enumeration value="period" />
+            <xs:enumeration value="slash" />
+            <xs:enumeration value="0" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="2" />
+            <xs:enumeration value="3" />
+            <xs:enumeration value="4" />
+            <xs:enumeration value="5" />
+            <xs:enumeration value="6" />
+            <xs:enumeration value="7" />
+            <xs:enumeration value="8" />
+            <xs:enumeration value="9" />
+            <xs:enumeration value="semicolon" />
+            <xs:enumeration value="equals" />
+            <xs:enumeration value="a" />
+            <xs:enumeration value="b" />
+            <xs:enumeration value="c" />
+            <xs:enumeration value="d" />
+            <xs:enumeration value="e" />
+            <xs:enumeration value="f" />
+            <xs:enumeration value="g" />
+            <xs:enumeration value="h" />
+            <xs:enumeration value="i" />
+            <xs:enumeration value="j" />
+            <xs:enumeration value="k" />
+            <xs:enumeration value="l" />
+            <xs:enumeration value="m" />
+            <xs:enumeration value="n" />
+            <xs:enumeration value="o" />
+            <xs:enumeration value="p" />
+            <xs:enumeration value="q" />
+            <xs:enumeration value="r" />
+            <xs:enumeration value="s" />
+            <xs:enumeration value="t" />
+            <xs:enumeration value="u" />
+            <xs:enumeration value="v" />
+            <xs:enumeration value="w" />
+            <xs:enumeration value="x" />
+            <xs:enumeration value="y" />
+            <xs:enumeration value="z" />            
+            <xs:enumeration value="open bracket" />
+            <xs:enumeration value="back slash" />
+            <xs:enumeration value="close bracket" />
+            <xs:enumeration value="numpad-0" />
+            <xs:enumeration value="numpad-1" />
+            <xs:enumeration value="numpad-2" />
+            <xs:enumeration value="numpad-3" />
+            <xs:enumeration value="numpad-4" />
+            <xs:enumeration value="numpad-5" />
+            <xs:enumeration value="numpad-6" />
+            <xs:enumeration value="numpad-7" />
+            <xs:enumeration value="numpad-8" />
+            <xs:enumeration value="numpad-9" />
+            <xs:enumeration value="numpad *" />
+            <xs:enumeration value="numpad +" />
+            <xs:enumeration value="numpad ," />
+            <xs:enumeration value="numpad -" />
+            <xs:enumeration value="numpad ." />
+            <xs:enumeration value="numpad /" />
+            <xs:enumeration value="f1" />
+            <xs:enumeration value="f2" />
+            <xs:enumeration value="f3" />
+            <xs:enumeration value="f4" />
+            <xs:enumeration value="f5" />
+            <xs:enumeration value="f6" />
+            <xs:enumeration value="f7" />
+            <xs:enumeration value="f8" />
+            <xs:enumeration value="f9" />
+            <xs:enumeration value="f10" />
+            <xs:enumeration value="f11" />
+            <xs:enumeration value="f12" />
+            <xs:enumeration value="delete" />
+            <xs:enumeration value="dead grave" />
+            <xs:enumeration value="dead acute" />
+            <xs:enumeration value="dead circumflex" />
+            <xs:enumeration value="dead tilde" />
+            <xs:enumeration value="dead macron" />
+            <xs:enumeration value="dead breve" />
+            <xs:enumeration value="dead above dot" />
+            <xs:enumeration value="dead diaeresis" />
+            <xs:enumeration value="dead above ring" />
+            <xs:enumeration value="dead double acute" />
+            <xs:enumeration value="dead caron" />
+            <xs:enumeration value="dead cedilla" />
+            <xs:enumeration value="dead ogonek" />
+            <xs:enumeration value="dead iota" />
+            <xs:enumeration value="dead voiced sound" />
+            <xs:enumeration value="dead semivoiced sound" />
+            <xs:enumeration value="num lock" />
+            <xs:enumeration value="scroll lock" />
+            <xs:enumeration value="ampersand" />
+            <xs:enumeration value="asterisk" />
+            <xs:enumeration value="double quote" />
+            <xs:enumeration value="less" />
+            <xs:enumeration value="print screen" />
+            <xs:enumeration value="insert" />
+            <xs:enumeration value="help" />
+            <xs:enumeration value="meta" />
+            <xs:enumeration value="greater" />
+            <xs:enumeration value="left brace" />
+            <xs:enumeration value="right brace" />
+            <xs:enumeration value="back quote" />
+            <xs:enumeration value="quote" />
+            <xs:enumeration value="up" />
+            <xs:enumeration value="down" />
+            <xs:enumeration value="left" />
+            <xs:enumeration value="right" />
+            <xs:enumeration value="alphanumeric" />
+            <xs:enumeration value="katakana" />
+            <xs:enumeration value="hiragana" />
+            <xs:enumeration value="full-width" />
+            <xs:enumeration value="half-width" />
+            <xs:enumeration value="roman characters" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="mask" type="dgp:MaskType" />
+    <xs:simpleType name="MaskType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ALT" />
+            <xs:enumeration value="CTRL" />
+            <xs:enumeration value="META" />
+            <xs:enumeration value="SHIFT" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

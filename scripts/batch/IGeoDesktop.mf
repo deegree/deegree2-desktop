@@ -1,0 +1,4 @@
+Manifest-Version: 1.2
+Class-Path: . 
+Main-Class: org.deegree.igeo.desktop.IGeoDesktop
+Created-By: 1.4 (Sun Microsystems Inc.)

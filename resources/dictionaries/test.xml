@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary gml:id="ExternalCodeLists" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd">
+	<gml:description>External Code Lists Example</gml:description>
+	<gml:name codeSpace="testspace">test</gml:name>
+	<gml:dictionaryEntry>
+		<gml:DefinitionCollection gml:id="id_1">		
+			<gml:csName codeSpace="http://www.deegree.org/app">Counties</gml:csName>
+			<gml:dictionaryEntry>
+				<gml:Definition gml:id="id_1_1">
+					<gml:description>bla bla</gml:description>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:code">100</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:de">Dorf</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:en">Village</gml:name>
+				</gml:Definition>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:Definition gml:id="id_1_2">
+					<gml:description>bla bla</gml:description>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:code">200</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:de">Stadt</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:en">City</gml:name>
+				</gml:Definition>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:Definition gml:id="id_1_3">
+					<gml:description>bla bla</gml:description>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:code">300</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:de">Land</gml:name>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:en">Country</gml:name>
+				</gml:Definition>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:Definition gml:id="id_1_4">
+					<gml:description>bla bla</gml:description>
+					<gml:name codeSpace="urn:org:deegree:igeodesktop:code">400</gml:name>
+					<gml:name>Global</gml:name>
+				</gml:Definition>
+			</gml:dictionaryEntry>
+		</gml:DefinitionCollection>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+        <gml:DefinitionCollection gml:id="id_2">        
+            <gml:csName codeSpace="http://www.deegree.org/app">SGID100_CountyBoundaries/SHAPE_AREA</gml:csName>
+            <gml:dictionaryEntry>
+                <gml:Definition gml:id="id_2_1">
+                    <gml:description>bla bla</gml:description>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:code">1</gml:name>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:en">Saltlake</gml:name>
+                </gml:Definition>
+            </gml:dictionaryEntry>
+            <gml:dictionaryEntry>
+                <gml:Definition gml:id="id_2_2">
+                    <gml:description>bla bla</gml:description>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:code">2</gml:name>
+                    <gml:name>Elwood</gml:name>
+                </gml:Definition>
+            </gml:dictionaryEntry>
+            <gml:dictionaryEntry>
+                <gml:Definition gml:id="id_2_4">
+                    <gml:description>bla bla</gml:description>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:code">3</gml:name>
+                </gml:Definition>
+            </gml:dictionaryEntry>
+        </gml:DefinitionCollection>
+    </gml:dictionaryEntry>
+    <gml:dictionaryEntry>
+        <gml:DefinitionCollection gml:id="id_3">        
+            <gml:csName codeSpace="http://www.deegree.org/app">StateBoundary/state</gml:csName>
+            <gml:dictionaryEntry>
+                <gml:Definition gml:id="id_3_1">
+                    <gml:description>bla bla</gml:description>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:code">Mask</gml:name>
+                </gml:Definition>
+            </gml:dictionaryEntry>
+            <gml:dictionaryEntry>
+                <gml:Definition gml:id="id_3_2">
+                    <gml:description>bla bla</gml:description>
+                    <gml:name codeSpace="urn:org:deegree:igeodesktop:code">Utah</gml:name>
+                </gml:Definition>
+            </gml:dictionaryEntry>
+        </gml:DefinitionCollection>
+    </gml:dictionaryEntry>
+</gml:Dictionary>

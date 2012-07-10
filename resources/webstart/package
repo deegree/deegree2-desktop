@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function sign {
+  for file
+  do
+    $JAVA_HOME/bin/jarsigner -keystore keystore -storepass keystore "$file" alias
+  done
+}
+
+if(ant -f ../../build.xml) then
+  sign ../../dist/*jar
+  scp ../../dist/igeodesktop.jar web.lat-lon.de:public_html/jnlp/
+fi
