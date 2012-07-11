@@ -444,8 +444,13 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
         this.layer = layer;
         viewsTabbedPane.setName( layer.getTitle() );
 
-        FeatureTableModel ftm = new FeatureTableModel( featureCollection,
-                                                       owner.getApplicationContainer().getSettings().getDictionaries() );
+        DefaultTableModel ftm;
+
+        if ( featureCollection.size() == 1 ) {
+            ftm = new WMSFeatureTableModel( featureCollection );
+        } else {
+            ftm = new FeatureTableModel( featureCollection );
+        }
         this.tabFeat.setModel( ftm );
 
         markSelectedFeatures( layer, featureCollection );
