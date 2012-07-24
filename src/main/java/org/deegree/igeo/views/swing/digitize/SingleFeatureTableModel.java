@@ -66,7 +66,7 @@ import org.deegree.model.spatialschema.WKTAdapter;
  * 
  */
 class SingleFeatureTableModel extends DefaultTableModel {
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( SingleFeatureTableModel.class );
 
     private static final long serialVersionUID = 4602900533757748840L;
@@ -132,9 +132,8 @@ class SingleFeatureTableModel extends DefaultTableModel {
     public int getRowCount() {
         if ( properties == null ) {
             return 0;
-        } else {
-            return properties.size() - 1;
         }
+        return properties.size();
 
     }
 
@@ -143,20 +142,19 @@ class SingleFeatureTableModel extends DefaultTableModel {
         QualifiedName qn = properties.get( rowIndex ).getName();
         if ( columnIndex == 0 ) {
             return qn.getLocalName();
-        } else {
-            Object o = null;
-            if ( feature.getProperties( qn ) != null && feature.getProperties( qn )[0] != null ) {
-                o = feature.getProperties( qn )[0].getValue( "" );
-                if ( o instanceof Geometry ) {
-                    try {
-                        o = WKTAdapter.export( (Geometry) o );
-                    } catch ( GeometryException e ) {
-                        LOG.logWarning( "ignore", e );
-                    }
+        }
+        Object o = null;
+        if ( feature.getProperties( qn ) != null && feature.getProperties( qn )[0] != null ) {
+            o = feature.getProperties( qn )[0].getValue( "" );
+            if ( o instanceof Geometry ) {
+                try {
+                    o = WKTAdapter.export( (Geometry) o );
+                } catch ( GeometryException e ) {
+                    LOG.logWarning( "ignore", e );
                 }
             }
-            return o;
         }
+        return o;
     }
 
     /**
@@ -169,18 +167,16 @@ class SingleFeatureTableModel extends DefaultTableModel {
         QualifiedName qn = properties.get( rowIndex ).getName();
         if ( columnIndex == 0 ) {
             return qn;
-        } else {
-            return feature.getProperties( qn )[0];
         }
+        return feature.getProperties( qn )[0];
     }
 
     @Override
     public boolean isCellEditable( int rowIndex, int columnIndex ) {
         if ( columnIndex == 1 ) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override

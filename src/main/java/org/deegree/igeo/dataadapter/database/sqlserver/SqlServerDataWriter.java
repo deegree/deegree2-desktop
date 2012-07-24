@@ -99,10 +99,12 @@ public class SqlServerDataWriter extends AbstractDatabaseWriter {
                     }
                 }
             } else {
-                if ( pt[i].getType() == Types.GEOMETRY ) {
-                    stmt.setNull( index++, Types.OTHER );
-                } else {
-                    stmt.setNull( index++, pt[i].getType() );
+                if ( !ignoreValue( pt[i].getName().getLocalName(), tableName, connection ) ) {
+                    if ( pt[i].getType() == Types.GEOMETRY ) {
+                        stmt.setNull( index++, Types.OTHER );
+                    } else {
+                        stmt.setNull( index++, pt[i].getType() );
+                    }
                 }
             }
         }

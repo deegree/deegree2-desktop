@@ -62,7 +62,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -96,17 +98,17 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
     private static final long serialVersionUID = -1491068289424777009L;
 
-    private static final ILogger LOG = LoggerFactory.getLogger( EditFeaturePanel.class );
+    static final ILogger LOG = LoggerFactory.getLogger( EditFeaturePanel.class );
 
     private BaseInfoPanel baseInfoPanel;
 
-    private JTabbedPane tabbedPane;
+    JTabbedPane tabbedPane;
 
     private FeatureCollection featureCollection;
 
-    private DigitizerModule<Container> digitizerModule;
+    DigitizerModule<Container> digitizerModule;
 
-    private ApplicationContainer<Container> appContainer;
+    ApplicationContainer<Container> appContainer;
 
     private Map<String, SingleFeatureTableModel> properties = new HashMap<String, SingleFeatureTableModel>();
 
@@ -121,7 +123,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
                                                                          featureCollection.size() );
         Iterator<Feature> iter = featureCollection.iterator();
         while ( iter.hasNext() ) {
-            Feature feature = (Feature) iter.next();
+            Feature feature = iter.next();
             this.featureCollection.add( feature );
         }
         this.appContainer = appContainer;
@@ -132,7 +134,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
     private void initGUI( Layer layer, FeatureCollection featureCollection ) {
         try {
-            tabbedPane = new JTabbedPane( JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT );
+            tabbedPane = new JTabbedPane( SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT );
             this.setFocusCycleRoot( false );
             setLayout( new BorderLayout() );
             Iterator<Feature> iterator = featureCollection.iterator();
@@ -161,6 +163,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * @param layerName
      * @param feature
      */
+    @Override
     public void setFeature( Layer layer, FeatureCollection featureCollection ) {
         // update base info
         this.featureCollection = FeatureFactory.createFeatureCollection( UUID.randomUUID().toString(),
@@ -180,8 +183,8 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
     }
 
     private void addFeatureTabPane( Layer layer, Feature feature ) {
-        JScrollPane jScrollPane1 = new JScrollPane( JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
+        JScrollPane jScrollPane1 = new JScrollPane( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
         jScrollPane1.setMaximumSize( new Dimension( 680, 600 ) );
         JPanel rootPanel = new JPanel();
         tabbedPane.addTab( feature.getId(), rootPanel );
@@ -202,6 +205,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * 
      * @see org.deegree.client.application.modules.IEditFeature#getFeature()
      */
+    @Override
     public FeatureCollection getFeatureCollection() {
         int tc = tabbedPane.getTabCount();
         FeatureCollection fc = FeatureFactory.createFeatureCollection( featureCollection.getId(), tc );
@@ -218,6 +222,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * 
      * @see org.deegree.igeo.modules.EditFeature#getCurrentFeature()
      */
+    @Override
     public Feature getCurrentFeature() {
         int index = tabbedPane.getSelectedIndex();
         // get current feature
@@ -245,6 +250,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
         panel.setLayout( new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
         JButton save = new JButton( Messages.getMessage( getLocale(), "$MD10062" ) );
         save.addActionListener( new ActionListener() {
+            @Override
             public void actionPerformed( ActionEvent evt ) {
                 digitizerModule.propertyEditingFinished( false, false );
             }
@@ -252,6 +258,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
         JButton saveAndClose = new JButton( Messages.getMessage( getLocale(), "$MD10062a" ) );
         saveAndClose.addActionListener( new ActionListener() {
+            @Override
             public void actionPerformed( ActionEvent evt ) {
                 digitizerModule.propertyEditingFinished( false, true );
             }
@@ -259,6 +266,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
         JButton cancel = new JButton( Messages.getMessage( getLocale(), "$MD10063" ) );
         cancel.addActionListener( new ActionListener() {
+            @Override
             public void actionPerformed( ActionEvent evt ) {
                 digitizerModule.propertyEditingFinished( true, false );
             }
@@ -267,6 +275,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
         JButton delete = new JButton( Messages.getMessage( getLocale(), "$MD11826" ) );
         delete.setToolTipText( Messages.getMessage( getLocale(), "$MD11827" ) );
         delete.addActionListener( new ActionListener() {
+            @Override
             public void actionPerformed( ActionEvent evt ) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 int idx = tabbedPane.getSelectedIndex();
@@ -317,6 +326,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * 
      * @see org.deegree.igeo.modules.EditFeature#setDigitizerModule(org.deegree.igeo.modules.DigitizerModule)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void setDigitizerModule( DigitizerModule<?> digitizerModule ) {
         this.digitizerModule = (DigitizerModule<Container>) digitizerModule;
@@ -327,6 +337,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * 
      * @see org.deegree.igeo.modules.EditFeature#dispose()
      */
+    @Override
     public void dispose() {
         super.removeAll();
     }
@@ -372,6 +383,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
         }
 
         // This method is called when a cell value is edited by the user.
+        @Override
         public Component getTableCellEditorComponent( JTable table, Object value, boolean isSelected, int rowIndex,
                                                       int vColIndex ) {
 
@@ -449,40 +461,38 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
 
         // This method is called when editing is completed.
         // It must return the new value to be stored in the cell.
+        @Override
         public Object getCellEditorValue() {
             if ( val instanceof Double || val instanceof Float ) {
                 if ( comp instanceof JComboBox ) {
                     ComboBoxItem item = (ComboBoxItem) ( (JComboBox) comp ).getSelectedItem();
                     return Double.parseDouble( item.pair.first );
-                } else {
-                    try {
-                        spFloat.commitEdit();
-                    } catch ( ParseException e ) {
-                        LOG.logWarning( "ignore", e );
-                    }
-                    return spFloat.getValue();
                 }
+                try {
+                    spFloat.commitEdit();
+                } catch ( ParseException e ) {
+                    LOG.logWarning( "ignore", e );
+                }
+                return spFloat.getValue();
             } else if ( val instanceof Number ) {
                 if ( comp instanceof JComboBox ) {
                     ComboBoxItem item = (ComboBoxItem) ( (JComboBox) comp ).getSelectedItem();
                     return Integer.parseInt( item.pair.first );
-                } else {
-                    try {
-                        spInt.commitEdit();
-                    } catch ( ParseException e ) {
-                        LOG.logWarning( "ignore", e );
-                    }
-                    return ( (Number) spInt.getValue() ).intValue();
                 }
+                try {
+                    spInt.commitEdit();
+                } catch ( ParseException e ) {
+                    LOG.logWarning( "ignore", e );
+                }
+                return ( (Number) spInt.getValue() ).intValue();
             } else if ( val instanceof Date ) {
                 return TimeTools.createCalendar( tfText.getText() ).getTime();
             } else {
                 if ( comp instanceof JComboBox ) {
                     ComboBoxItem item = (ComboBoxItem) ( (JComboBox) comp ).getSelectedItem();
                     return item.pair.first;
-                } else {
-                    return tfText.getText();
                 }
+                return tfText.getText();
             }
         }
     }
@@ -522,6 +532,11 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
             return super.equals( obj );
         }
 
+        @Override
+        public int hashCode() {
+            return pair.hashCode();
+        }
+
     }
 
     /**
@@ -535,12 +550,13 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * @version $Revision$, $Date$
      * 
      */
-    private class FeatureTableCellRenderer implements TableCellRenderer {
+    class FeatureTableCellRenderer implements TableCellRenderer {
 
         private DictionaryCollection dictCol = appContainer.getSettings().getDictionaries();
 
         // This method is called each time a cell in a column
         // using this renderer needs to be rendered.
+        @Override
         public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected,
                                                         boolean hasFocus, int rowIndex, int vColIndex ) {
 
@@ -581,26 +597,27 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
             // Return the configured component
             if ( value != null ) {
                 return new JLabel( value.toString() );
-            } else {
-                return new JLabel();
             }
+            return new JLabel();
         }
 
         // The following methods override the defaults for performance reasons
-        @SuppressWarnings("unused")
         public void validate() {
+            // The following methods override the defaults for performance reasons
         }
 
-        @SuppressWarnings("unused")
         public void revalidate() {
+            // The following methods override the defaults for performance reasons
         }
 
         @SuppressWarnings("unused")
         protected void firePropertyChange( String propertyName, Object oldValue, Object newValue ) {
+            // The following methods override the defaults for performance reasons
         }
 
         @SuppressWarnings("unused")
         public void firePropertyChange( String propertyName, boolean oldValue, boolean newValue ) {
+            // The following methods override the defaults for performance reasons
         }
     }
 
@@ -613,7 +630,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
      * 
      * @version. $Revision$, $Date$
      */
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+    static class ButtonRenderer extends JButton implements TableCellRenderer {
 
         private static final long serialVersionUID = 2403325936293687523L;
 
@@ -621,6 +638,7 @@ public class EditFeaturePanel extends JPanel implements EditFeature {
             setOpaque( true );
         }
 
+        @Override
         public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected,
                                                         boolean hasFocus, int row, int column ) {
             if ( isSelected ) {
