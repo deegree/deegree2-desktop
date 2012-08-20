@@ -65,7 +65,7 @@ public class JdbcConnectionCreator {
         String password = connectionType.getPassword();
         return new JDBCConnection( connectionType.getDriver(), connectionType.getUrl(), connectionType.getUser(),
                                    password != null ? Encryption.decrypt( password ) : null,
-                                   connectionType.getPassword() != null );
+                                   password != null );
     }
 
 }

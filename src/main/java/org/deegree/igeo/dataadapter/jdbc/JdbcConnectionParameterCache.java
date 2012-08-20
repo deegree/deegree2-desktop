@@ -92,7 +92,8 @@ public class JdbcConnectionParameterCache {
             urlToLogin.put( url, new Pair<String, String>( u, p ) );
         }
         Pair<String, String> pair = urlToLogin.get( url );
-        return new JDBCConnection( driver, url, pair.first, pair.second, false );
+        // if password from module config was not null, we can save it back again
+        return new JDBCConnection( driver, url, pair.first, pair.second, passwd != null );
     }
 
     /**
