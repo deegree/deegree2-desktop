@@ -1024,7 +1024,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         }
 
     }
-
+    
     /**
      * <pre>
      * <PrintDefinition xmlns="http://www.deegree.org/print">
@@ -1081,13 +1081,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
             String scl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:Scale/@label", nsc, null );
             String tf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:TargetFilet", nsc, "" );
 
-            spHeight.setValue( ah );
-            spWidth.setValue( aw );
-            spLeft.setValue( al );
-            spTop.setValue( at );
-            cbDPI.setSelectedItem( new Integer( dpi ) );
-            spMapLeft.setValue( new Double( ml ) );
-            spMapBottom.setValue( new Double( mb ) );
+            // set pageFormat first, to avoid that spHeight and spWidth from the imported file are overwritten!
             if ( pf != null ) {
                 cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
             } else {
@@ -1097,6 +1091,13 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
                 tfPageWidth.setValue( pfw );
                 tfPageWidth.setEnabled( true );
             }
+            spHeight.setValue( ah );
+            spWidth.setValue( aw );
+            spLeft.setValue( al );
+            spTop.setValue( at );
+            cbDPI.setSelectedItem( new Integer( dpi ) );
+            spMapLeft.setValue( new Double( ml ) );
+            spMapBottom.setValue( new Double( mb ) );
             if ( sc > -1 ) {
                 rbConst.setSelected( true );
                 cbScale.setSelectedItem( new ListEntry( scl, sc ) );
