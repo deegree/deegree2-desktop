@@ -994,8 +994,8 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
                 XMLTools.setNodeValue( h, Integer.toString( ( (Number) tfPageHeight.getValue() ).intValue() ) );
                 h.setAttribute( "unit", "mm" );
                 subEl.appendChild( h );
-                el.appendChild( subEl );
             }
+            el.appendChild( subEl );
             root.appendChild( el );
             el = doc.createElementNS( "http://www.deegree.org/print", "Scale" );
             if ( rbConst.isSelected() ) {
@@ -1024,7 +1024,7 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         }
 
     }
-    
+
     /**
      * <pre>
      * <PrintDefinition xmlns="http://www.deegree.org/print">
@@ -1071,24 +1071,28 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
             int dpi = XMLTools.getRequiredNodeAsInt( xml.getRootElement(), "prnt:DPI", nsc );
             double ml = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapLeft", nsc );
             double mb = XMLTools.getRequiredNodeAsDouble( xml.getRootElement(), "prnt:MapBottom", nsc );
-            String pf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:PageFormat/prnt:Named", nsc, null );
-            String pfl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:PageFormat/prnt:Named/@label", nsc, null );
-            int pfw = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:PageFormat/prnt:Extent/prnt:width", nsc,
-                                             inMM( PageSize.A4.getWidth() ) );
-            int pfh = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:PageFormat/prnt:Extent/prnt:height", nsc,
-                                             inMM( PageSize.A4.getHeight() ) );
+            String pageFormatName = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:PageFormat/prnt:Named", nsc,
+                                                              null );
+            String pageFormatLabel = XMLTools.getNodeAsString( xml.getRootElement(),
+                                                               "prnt:PageFormat/prnt:Named/@label", nsc, null );
+            int pageFormatWidth = XMLTools.getNodeAsInt( xml.getRootElement(),
+                                                         "prnt:PageFormat/prnt:Extent/prnt:width", nsc, -1 );
+            int pageFormatHeight = XMLTools.getNodeAsInt( xml.getRootElement(),
+                                                          "prnt:PageFormat/prnt:Extent/prnt:height", nsc, -1 );
             int sc = XMLTools.getNodeAsInt( xml.getRootElement(), "prnt:Scale", nsc, -1 );
             String scl = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:Scale/@label", nsc, null );
             String tf = XMLTools.getNodeAsString( xml.getRootElement(), "prnt:TargetFilet", nsc, "" );
 
             // set pageFormat first, to avoid that spHeight and spWidth from the imported file are overwritten!
-            if ( pf != null ) {
-                cbPageFormat.setSelectedItem( new ListEntry( pfl, pf ) );
+            if ( pageFormatName != null ) {
+                cbPageFormat.setSelectedItem( new ListEntry( pageFormatLabel, pageFormatName ) );
+            } else if ( pageFormatWidth < 0 ) {
+                cbPageFormat.setSelectedIndex( 2 );
             } else {
                 cbPageFormat.setSelectedIndex( 0 );
-                tfPageHeight.setValue( pfh );
+                tfPageHeight.setValue( pageFormatHeight );
                 tfPageHeight.setEnabled( true );
-                tfPageWidth.setValue( pfw );
+                tfPageWidth.setValue( pageFormatWidth );
                 tfPageWidth.setEnabled( true );
             }
             spHeight.setValue( ah );
@@ -1310,6 +1314,37 @@ public class VectorPrintDialog extends javax.swing.JDialog implements org.deegre
         @Override
         public String toString() {
             return title;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ( ( title == null ) ? 0 : title.hashCode() );
+            result = prime * result + ( ( value == null ) ? 0 : value.hashCode() );
+            return result;
+        }
+
+        @Override
+        public boolean equals( Object obj ) {
+            if ( this == obj )
+                return true;
+            if ( obj == null )
+                return false;
+            if ( !( obj instanceof ListEntry ) )
+                return false;
+            ListEntry other = (ListEntry) obj;
+            if ( title == null ) {
+                if ( other.title != null )
+                    return false;
+            } else if ( !title.equals( other.title ) )
+                return false;
+            if ( value == null ) {
+                if ( other.value != null )
+                    return false;
+            } else if ( !value.equals( other.value ) )
+                return false;
+            return true;
         }
 
     }
