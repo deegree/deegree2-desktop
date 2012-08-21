@@ -41,6 +41,7 @@ import static org.deegree.igeo.i18n.Messages.get;
 import static org.deegree.igeo.views.DialogFactory.openErrorDialog;
 import static org.deegree.igeo.views.swing.util.IconRegistry.getIcon;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,8 +50,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -58,6 +62,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import org.deegree.datatypes.QualifiedName;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.framework.xml.XMLParsingException;
@@ -81,6 +86,7 @@ import org.deegree.igeo.mapmodel.Layer;
 import org.deegree.igeo.mapmodel.NamedStyle;
 import org.deegree.igeo.settings.Settings;
 import org.deegree.igeo.style.LayerCache;
+import org.deegree.igeo.style.LayerCache.CachedLayer;
 import org.deegree.igeo.style.perform.SldIO;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.HelpManager;
@@ -500,23 +506,7 @@ public class RuleDialog extends DefaultFrame implements ActionListener {
     }
 
     private void applyStyle() {
-        NamedStyle style = null;
-        if ( !styleChanged && importedSls != null && importedSls.getNamedLayers().length > 0 ) {
-            AbstractStyle[] styles = importedSls.getNamedLayers()[0].getStyles();
-            for ( AbstractStyle at : styles ) {
-                if ( at instanceof UserStyle ) {
-                    UserStyle us = (UserStyle) at;
-                    DirectStyleType dst = new DirectStyleType();
-                    dst.setName( us.getName() );
-                    dst.setTitle( us.getTitle() );
-                    dst.setAbstract( us.getAbstract() );
-                    dst.setCurrent( true );
-                    dst.setUom( getUom().toString().toLowerCase() );
-                    style = new DirectStyle( dst, us, layer );
-                    break;
-                }
-            }
-        }
+        NamedStyle style = getStyleFromImportedSld();
         if ( style == null ) {
             style = getMergedStyle();
         }
@@ -531,6 +521,79 @@ public class RuleDialog extends DefaultFrame implements ActionListener {
                                            Messages.getMessage( getLocale(), "$MD11250" ),
                                            Messages.getMessage( getLocale(), "$MD11251" ), e );
         }
+    }
+
+    private NamedStyle getStyleFromImportedSld() {
+        if ( !styleChanged && importedSls != null && importedSls.getNamedLayers().length > 0 ) {
+            AbstractStyle[] styles = importedSls.getNamedLayers()[0].getStyles();
+            for ( AbstractStyle at : styles ) {
+                if ( at instanceof UserStyle ) {
+                    UserStyle us = (UserStyle) at;
+                    DirectStyleType dst = new DirectStyleType();
+                    dst.setName( us.getName() );
+                    dst.setTitle( us.getTitle() );
+                    dst.setAbstract( us.getAbstract() );
+                    dst.setCurrent( true );
+                    dst.setUom( getUom().toString().toLowerCase() );
+                    setFeatureTypeName( us );
+                    return new DirectStyle( dst, us, layer );
+                }
+            }
+        }
+        return null;
+    }
+
+    private void setFeatureTypeName( UserStyle us ) {
+        FeatureTypeStyle[] featureTypeStyles = us.getFeatureTypeStyles();
+        for ( FeatureTypeStyle featureTypeStyle : featureTypeStyles ) {
+            String featureTypeName = getFeatureTypeName( featureTypeStyle.getFeatureTypeName() );
+            featureTypeStyle.setFeatureTypeName( featureTypeName );
+        }
+    }
+
+    private String getFeatureTypeName( String featureTypeName ) {
+
+        CachedLayer cachedLayer = LayerCache.getInstance().getCachedLayer( layer.getIdentifier() );
+        Set<QualifiedName> featureTypes = cachedLayer.getFeatureTypes();
+        QualifiedName featureType = null;
+        for ( QualifiedName availableFeatureType : featureTypes ) {
+            if ( featureType == null ) {
+                featureType = availableFeatureType;
+            }
+            if ( availableFeatureType.equals( new QualifiedName( featureTypeName ) ) ) {
+                return availableFeatureType.getFormattedString();
+            }
+        }
+        if ( featureTypes.size() > 1 ) {
+            return getFeatureTypeSelectedByUser( featureTypes, featureType.getFormattedString() );
+        } else if ( featureTypes.size() == 1 ) {
+            return featureType.getFormattedString();
+        }
+        return featureTypeName;
+    }
+
+    private String getFeatureTypeSelectedByUser( Set<QualifiedName> featureTypes, String defaultFeatureName ) {
+        JPanel panel = new JPanel() {
+            private static final long serialVersionUID = -8531703257413252791L;
+
+            @Override
+            public String toString() {
+                return get( "$MD11869" );
+            }
+        };
+        panel.setLayout( new BorderLayout() );
+        panel.add( new JLabel( get( "$MD11870" ) ) );
+        JComboBox featureTypeNames = new JComboBox();
+        for ( QualifiedName featureType : featureTypes ) {
+            featureTypeNames.addItem( featureType );
+        }
+        panel.add( featureTypeNames );
+
+        PanelDialog panelDialog = PanelDialog.create( this, panel, true );
+        if ( panelDialog.clickedOk ) {
+            return ( (QualifiedName) featureTypeNames.getSelectedItem() ).getFormattedString();
+        }
+        return defaultFeatureName;
     }
 
     /**
