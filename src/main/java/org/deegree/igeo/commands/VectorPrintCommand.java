@@ -35,7 +35,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.commands;
 
-import static org.deegree.framework.util.MapUtils.DEFAULT_PIXEL_SIZE;
 import static org.deegree.graphics.MapFactory.createMapView;
 
 import java.awt.Graphics2D;
@@ -138,7 +137,11 @@ public class VectorPrintCommand extends AbstractCommand {
         mm.getTargetDevice().setPixelWidth( rect.width );
         mm.getTargetDevice().setPixelHeight( rect.height );
         Theme[] themes = getThemes( extent );
-        MapView mv = createMapView( "iGeoDesktop", extent, mm.getCoordinateSystem(), themes, DEFAULT_PIXEL_SIZE );
+        MapView mv = createMapView( "iGeoDesktop", extent, mm.getCoordinateSystem(), themes,
+                                    0.0254 / printDefinition.getDpi() );
+        for ( Theme t : mv.getAllThemes() ) {
+            t.setStyles( t.getStyles() );
+        }
         mv.paint( g );
         kill( g );
 
