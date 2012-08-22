@@ -3,8 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>deegree2-igeodesktop</artifactId>
   <name>deegree2-igeodesktop</name>
-  <version>0.4.4-SNAPSHOT</version>
+  <version>0.4.7-SNAPSHOT</version>
   <packaging>jar</packaging>
+
+  <scm>
+    <connection>scm:svn:http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</connection>
+    <developerConnection>scm:svn:svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/trunk</developerConnection>
+    <url>http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</url>
+  </scm>
 
   <parent>
     <groupId>org.deegree2</groupId>
@@ -28,22 +34,27 @@
     </repository>
   </repositories>
 
-  <scm>
-    <connection>scm:svn:http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/trunk</developerConnection>
-    <url>http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</url>
-  </scm>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-    <deegreedesktop.version>0.4.4</deegreedesktop.version>
- 	<deegree.core.version>2.6-pre1-SNAPSHOT</deegree.core.version> 
- 	<spring.version>3.1.1.RELEASE</spring.version> 
+    <deegreedesktop.version>0.4.7</deegreedesktop.version>
+    <deegree.core.version>2.6-pre1-SNAPSHOT</deegree.core.version>
+    <spring.version>3.1.1.RELEASE</spring.version>
   </properties>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <preparationGoals>clean install</preparationGoals>
+          <tagBase>svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/tags</tagBase>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <arguments>-e</arguments>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
@@ -61,7 +72,7 @@
         </configuration>
       </plugin>
       <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.5</version>
         <executions>
@@ -139,43 +150,45 @@
       </plugin>
 
       <plugin>
-          <groupId>com.akathist.maven.plugins.launch4j</groupId>
-          <artifactId>launch4j-maven-plugin</artifactId>
-          <version>1.5.1</version>
-          <executions>
-            <execution>
-              <id>l4j-clui</id>
-              <phase>package</phase>
-              <goals><goal>launch4j</goal></goals>
-              <configuration>
-                <headerType>gui</headerType>
-                <outfile>target/deegreeDesktop.exe</outfile>
-                <errTitle></errTitle>
-                <classPath>
-                  <mainClass>org.deegree.igeo.desktop.IGeoDesktop</mainClass>
-                  <jarLocation>lib/</jarLocation>
-                </classPath>
-                <jre>
-                  <minVersion>1.5.0</minVersion>
-                  <maxVersion>1.6.0</maxVersion>
-                  <initialHeapSize>500</initialHeapSize>
-                  <maxHeapSize>1024</maxHeapSize>
-                </jre>
-                <versionInfo>
-                  <fileVersion>${deegreedesktop.version}.0</fileVersion>
-                  <txtFileVersion>-pre1</txtFileVersion>
-                  <fileDescription>deegreeDesktop release</fileDescription>
-                  <copyright>LGPL</copyright>
-                  <productVersion>${deegreedesktop.version}.0</productVersion>
-                  <txtProductVersion>-pre1</txtProductVersion>
-                  <productName>deegree Desktop</productName>
-                  <internalName>deegreeDesktop</internalName>
-                  <originalFilename>deegreeDesktop.exe</originalFilename>
-                </versionInfo>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>1.5.1</version>
+        <executions>
+          <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals>
+              <goal>launch4j</goal>
+            </goals>
+            <configuration>
+              <headerType>gui</headerType>
+              <outfile>target/deegreeDesktop.exe</outfile>
+              <errTitle></errTitle>
+              <classPath>
+                <mainClass>org.deegree.igeo.desktop.IGeoDesktop</mainClass>
+                <jarLocation>lib/</jarLocation>
+              </classPath>
+              <jre>
+                <minVersion>1.5.0</minVersion>
+                <maxVersion>1.6.0</maxVersion>
+                <initialHeapSize>500</initialHeapSize>
+                <maxHeapSize>1024</maxHeapSize>
+              </jre>
+              <versionInfo>
+                <fileVersion>${deegreedesktop.version}.0</fileVersion>
+                <txtFileVersion>-pre1</txtFileVersion>
+                <fileDescription>deegreeDesktop release</fileDescription>
+                <copyright>LGPL</copyright>
+                <productVersion>${deegreedesktop.version}.0</productVersion>
+                <txtProductVersion>-pre1</txtProductVersion>
+                <productName>deegree Desktop</productName>
+                <internalName>deegreeDesktop</internalName>
+                <originalFilename>deegreeDesktop.exe</originalFilename>
+              </versionInfo>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
     </plugins>
   </build>
@@ -419,28 +432,28 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-test</artifactId>
-	    <version>${spring.version}</version>
-	    <scope>test</scope>
-	</dependency>
-  <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
       <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
       <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>cglib</groupId>
-      	<artifactId>cglib-nodep</artifactId>
-      	<version>2.2</version>
-      	<scope>test</scope>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>2.2</version>
+      <scope>test</scope>
     </dependency>
     <!-- TODO: move dependency to profile -->
     <dependency>
@@ -454,7 +467,8 @@
       <artifactId>deegree2-oracle</artifactId>
       <version>${deegree.core.version}</version>
     </dependency>
-    <!-- the source for this specific 'release' can be found at https://github.com/hwbllmnn/GeoRegression/tags (it's the deegreedesktop1 tag) -->
+    <!-- the source for this specific 'release' can be found at https://github.com/hwbllmnn/GeoRegression/tags (it's the 
+      deegreedesktop1 tag) -->
     <dependency>
       <groupId>org.georegression</groupId>
       <artifactId>georegression</artifactId>
