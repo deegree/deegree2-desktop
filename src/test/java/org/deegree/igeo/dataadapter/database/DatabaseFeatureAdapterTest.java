@@ -64,6 +64,7 @@ import org.deegree.model.feature.FeatureFactory;
 import org.deegree.model.feature.FeatureProperty;
 import org.deegree.model.spatialschema.GeometryFactory;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -211,7 +212,8 @@ public class DatabaseFeatureAdapterTest {
             resultSet.next();
             assertEquals( intValue, resultSet.getInt( INT_COL ) );
             assertEquals( stringValue, resultSet.getString( STRING_COL ) );
-            // Assert failed: http://stackoverflow.com/questions/7982969/how-is-sql-servers-timestamp2-supposed-to-work-in-jdbc
+            // Assert failed:
+            // http://stackoverflow.com/questions/7982969/how-is-sql-servers-timestamp2-supposed-to-work-in-jdbc
             // assertEquals( dateValue.getTime(), resultSet.getTimestamp( DATE_COL ).getTime() );
             assertEquals( decimalValue, resultSet.getDouble( DECIMAL_COL ), 0 );
             assertEquals( floatValue, resultSet.getFloat( FLOAT_COL ), 0 );
@@ -269,11 +271,16 @@ public class DatabaseFeatureAdapterTest {
     }
 
     private Connection aquireConnection()
-                            throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        DriverManager.registerDriver( (Driver) Class.forName( connection.getDriver() ).newInstance() );
-        Connection conn = DriverManager.getConnection( connection.getUrl(), connection.getUser(),
-                                                       connection.getPassword() );
-        return conn;
+                            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        try {
+            DriverManager.registerDriver( (Driver) Class.forName( connection.getDriver() ).newInstance() );
+            Connection conn = DriverManager.getConnection( connection.getUrl(), connection.getUser(),
+                                                           connection.getPassword() );
+            return conn;
+        } catch ( SQLException e ) {
+            Assume.assumeNoException( e );
+        }
+        return null;
     }
 
     private String getSQLServer2008CreateTableStatement() {
