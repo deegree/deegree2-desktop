@@ -155,7 +155,7 @@
         <version>2.12</version>
         <configuration>
           <excludes>
-            <exclude>**/DatabaseConnectionManagerTest.java</exclude>
+            <exclude>**/DatabaseConnectionManagerTest.java,**/DatabaseFeatureAdapterTest.java</exclude>
           </excludes>
           <!-- <excludedGroups>org.deegree.igeo.jdbc.DatabaseTest</excludedGroups> -->
         </configuration>
