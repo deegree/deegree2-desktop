@@ -118,6 +118,7 @@ public class DatabaseFeatureAdapterTest {
     public void createTable()
                             throws Exception {
         Connection conn = aquireConnection();
+        Assume.assumeNotNull( conn );
 
         Statement statement = conn.createStatement();
         String sql = getSQLServer2008CreateTableStatement();
@@ -133,6 +134,7 @@ public class DatabaseFeatureAdapterTest {
     public void deleteTable()
                             throws Exception {
         Connection conn = aquireConnection();
+        Assume.assumeNotNull( conn );
 
         Statement statement = conn.createStatement();
         try {
@@ -158,6 +160,7 @@ public class DatabaseFeatureAdapterTest {
         databaseFeatureAdapter.commitChanges();
 
         Connection conn = aquireConnection();
+        Assume.assumeNotNull( conn );
         Statement statement = conn.createStatement();
         try {
             String sql = "SELECT * FROM " + tableName;
@@ -205,6 +208,7 @@ public class DatabaseFeatureAdapterTest {
         databaseFeatureAdapter.commitChanges();
 
         Connection conn = aquireConnection();
+        Assume.assumeNotNull( conn );
         Statement statement = conn.createStatement();
         try {
             String sql = "SELECT * FROM " + tableName;
@@ -278,9 +282,9 @@ public class DatabaseFeatureAdapterTest {
                                                            connection.getPassword() );
             return conn;
         } catch ( SQLException e ) {
-            Assume.assumeNoException( e );
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     private String getSQLServer2008CreateTableStatement() {
