@@ -21,7 +21,7 @@
   <repositories>
     <repository>
       <id>deegree-repo</id>
-      <url>http://artefacts.deegree.org/repo</url>
+      <url>http://repo.deegree.org/content/groups/public/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -38,6 +38,7 @@
     <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
     <deegree.core.version>2.6-pre1-SNAPSHOT</deegree.core.version>
     <spring.version>3.1.1.RELEASE</spring.version>
+    <checkstyle.config.location>src/main/resources/checkstyle.xml</checkstyle.config.location>
   </properties>
 
   <build>
@@ -200,8 +201,47 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.9.1</version>
+        <configuration>
+          <enableRulesSummary>false</enableRulesSummary>
+<!--configLocation>${checkstyle.config.location}</configLocation-->
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.5.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+      </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.9.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.5.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <profiles>
     <profile>
