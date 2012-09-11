@@ -319,8 +319,8 @@ public class PrintActions {
                     g.dispose();
                 } else {
                     // scale up a little so the legend becomes readable
-                    g.drawImage( legend, 0, 0, Math.round( Math.min( dim.first, legend.getWidth() * 3 ) ),
-                                 Math.round( Math.min( dim.second, legend.getHeight() * 3 ) ), null );
+                    g.drawImage( legend, 0, 0, Math.min( dim.first, legend.getWidth() * 3 ),
+                                 Math.min( dim.second, legend.getHeight() * 3 ), null );
                 }
                 g.dispose();
                 return out;
