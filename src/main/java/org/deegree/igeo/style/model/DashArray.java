@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-20012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -46,6 +45,7 @@ import org.deegree.framework.utils.HashCodeUtil;
 /**
  * <code>DashArray</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -57,8 +57,6 @@ public class DashArray {
     private String name;
 
     private float[] dashArray;
-
-    private int fHashCode;
 
     /**
      * @param name
@@ -123,18 +121,18 @@ public class DashArray {
              || ( dashArray == null && ( (DashArray) obj ).dashArray != null ) ) {
             return false;
         }
-        return ( name.equals( ( (DashArray) obj ).name ) && dashArray.equals( dashArray ) );
+        boolean equalNames = name.equals( ( (DashArray) obj ).name );
+        boolean equalArrays = java.util.Arrays.equals( dashArray, ( (DashArray) obj ).getDashArray() );
+        return ( equalNames && equalArrays );
 
     }
 
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
-            int result = HashCodeUtil.SEED;
-            result = HashCodeUtil.hash( result, dashArray );
-            result = HashCodeUtil.hash( result, name );
-        }
-        return fHashCode;
+        int result = HashCodeUtil.SEED;
+        result = HashCodeUtil.hash( result, dashArray );
+        result = HashCodeUtil.hash( result, name );
+        return result;
     }
 
     private int draw( Graphics g, int imageWidth, int position ) {
