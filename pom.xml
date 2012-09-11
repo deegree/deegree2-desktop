@@ -33,6 +33,19 @@
     </repository>
   </repositories>
 
+<!-- remove distributionManagement on deegree2-base release 2.6-pre2 -->
+  <distributionManagement>
+    <repository>
+      <id>deegree-releases</id>
+      <url>http://repo.deegree.org/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>deegree-snapshots</id>
+      <url>http://repo.deegree.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
