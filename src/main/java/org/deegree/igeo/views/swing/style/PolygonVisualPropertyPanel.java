@@ -73,6 +73,7 @@ import org.deegree.model.filterencoding.FilterEvaluationException;
 /**
  * <code>PolygonStylePanel</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -156,16 +157,14 @@ public class PolygonVisualPropertyPanel extends AbstractVisualPropertyPanel {
             if ( fill != null ) {
 
                 CssParameter fillColorParam = (CssParameter) fill.getCssParameters().get( "fill" );
-                if ( fillColorParam != null && fillColorParam != null
-                     && fillColorParam.getValueAsPropertyName() != null ) {
+                if ( fillColorParam != null && fillColorParam.getValueAsPropertyName() != null ) {
                     fillColorPanel.setValue( fillColorParam.getValueAsPropertyName() );
                 } else {
                     fillColorPanel.setValue( fill.getFill( null ) );
                 }
 
                 CssParameter fillTransparencyParam = (CssParameter) fill.getCssParameters().get( "fill-opacity" );
-                if ( fillTransparencyParam != null && fillTransparencyParam != null
-                     && fillTransparencyParam.getValueAsPropertyName() != null ) {
+                if ( fillTransparencyParam != null && fillTransparencyParam.getValueAsPropertyName() != null ) {
                     fillTransparencyPanel.setValue( fillTransparencyParam.getValueAsPropertyName() );
                 } else {
                     fillTransparencyPanel.setValue( fill.getOpacity( null ) );
@@ -188,15 +187,13 @@ public class PolygonVisualPropertyPanel extends AbstractVisualPropertyPanel {
             Stroke stroke = ps.getStroke();
             if ( stroke != null ) {
                 CssParameter strokeColorParam = (CssParameter) stroke.getCssParameters().get( "stroke" );
-                if ( strokeColorParam != null && strokeColorParam != null
-                     && strokeColorParam.getValueAsPropertyName() != null ) {
+                if ( strokeColorParam != null && strokeColorParam.getValueAsPropertyName() != null ) {
                     colorPanel.setValue( strokeColorParam.getValueAsPropertyName() );
                 } else {
                     colorPanel.setValue( stroke.getStroke( null ) );
                 }
                 CssParameter strokeTransparencyParam = (CssParameter) stroke.getCssParameters().get( "stroke-opacity" );
-                if ( strokeTransparencyParam != null && strokeTransparencyParam != null
-                     && strokeTransparencyParam.getValueAsPropertyName() != null ) {
+                if ( strokeTransparencyParam != null && strokeTransparencyParam.getValueAsPropertyName() != null ) {
                     transparencyPanel.setValue( strokeTransparencyParam.getValueAsPropertyName() );
                 } else {
                     transparencyPanel.setValue( stroke.getOpacity( null ) );
