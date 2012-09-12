@@ -63,7 +63,7 @@ public class DashArrayTest {
 	}
 	
 	@Test
-	public void test_equals_for_DashArrays_with_same_values () {
+	public void test_equals_with_same_values () {
 		//arrange
 		String daName = "testDashArray";
 		float[] daArray = {1f, 2f};
@@ -75,7 +75,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_equals_for_DashArrays_with_same_name_and_diffenent_arrays () {
+	public void test_equals_with_same_name_and_diffenent_arrays () {
 		//arrange
 		String daName = "testDashArray";
 		float[] daArray1 = {1f, 2f};
@@ -88,7 +88,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_equals_for_DashArrays_with_different_name_and_same_array () {
+	public void test_equals_with_different_name_and_same_array () {
 		//arrange
 		String daName1 = "testDashArray1";
 		String daName2 = "testDashArray2";
@@ -101,7 +101,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_equals_for_DashArrays_with_different_values () {
+	public void test_equals_with_different_values () {
 		//arrange
 		String daName1 = "testDashArray1";
 		String daName2 = "testDashArray2";
@@ -128,7 +128,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_hashCode_for_DashArray_with_same_values() {
+	public void test_hashCode_with_same_values() {
 		//arrange
 		String daName = "testDashArray";
 		float[] daArray = {1f, 2f};
@@ -142,7 +142,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_hashCode_for_DashArray_with_same_name_and_different_array() {
+	public void test_hashCode_with_same_name_and_different_array() {
 		//arrange
 		String daName = "testDashArray";
 		float[] daArray1 = {1f, 2f};
@@ -157,7 +157,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_hashCode_for_DashArray_with_different_name_and_same_array() {
+	public void test_hashCode_with_different_name_and_same_array() {
 		//arrange
 		String daName1 = "testDashArray1";
 		String daName2 = "testDashArray2";		
@@ -172,7 +172,7 @@ public class DashArrayTest {
 	}
 
 	@Test
-	public void test_hashCode_for_DashArray_with_different_values() {
+	public void test_hashCode_with_different_values() {
 		//arrange
 		String daName1 = "testDashArray1";
 		String daName2 = "testDashArray2";		
