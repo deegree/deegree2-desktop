@@ -85,7 +85,6 @@ public class SldPropertyTest {
 		assertTrue(hashCode1 == hashCode2);
 	}
 
-	@Ignore
 	@Test
 	public void test_equals_with_different_sldName() {
 		// arrange
@@ -104,7 +103,6 @@ public class SldPropertyTest {
 	}
 
 	@Test
-	@Ignore
 	public void test_equals_with_different_name() {
 		// arrange
 		String sldName = "testSldName";
@@ -122,7 +120,6 @@ public class SldPropertyTest {
 	}
 
 	@Test
-	@Ignore
 	public void test_equals_with_different_typeCode() {
 		// arrange
 		String sldName = "testSldName";
@@ -140,7 +137,6 @@ public class SldPropertyTest {
 	}
 
 	@Test
-	@Ignore
 	public void test_equals_with_different_values() {
 		// arrange
 		String sldName1 = "testSldName1";
