@@ -42,6 +42,7 @@ import org.deegree.framework.utils.HashCodeUtil;
 /**
  * <code>SldProperty</code> to store an SLdValue like FontStyle and hist type
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -55,8 +56,6 @@ public class SldProperty {
     private String sldName;
 
     private String name;
-    
-    private int fHashCode;
 
     /**
      * 
@@ -103,15 +102,13 @@ public class SldProperty {
         return typeCode == ( (SldProperty) obj ).typeCode && name.equals( ( (SldProperty) obj ).name )
                && sldName.equals( ( (SldProperty) obj ).sldName );
     }
-    
+
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
-            int result = HashCodeUtil.SEED;
-            result = HashCodeUtil.hash( result, name );
-            result = HashCodeUtil.hash( result, sldName );
-            result = HashCodeUtil.hash( result, typeCode );
-        }
-        return fHashCode;
+        int result = HashCodeUtil.SEED;
+        result = HashCodeUtil.hash( result, name );
+        result = HashCodeUtil.hash( result, sldName );
+        result = HashCodeUtil.hash( result, typeCode );
+        return result;
     }
 }
