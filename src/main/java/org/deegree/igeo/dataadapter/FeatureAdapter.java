@@ -265,8 +265,10 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
     }
 
     /**
+     * Updates the feature provided.
      * 
      * @param feature
+     *            to update
      */
     public Feature updateFeature( Feature feature ) {
         FeatureCollection fc = featureCollections.get( datasource.getName() );
@@ -278,7 +280,7 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
         ListIterator<Changes> li = list.listIterator();
         while ( li.hasNext() ) {
             Changes change = li.next();
-            if ( change.feature.getId().equals( feature ) && change.changeType == CHANGE_TYPE.update ) {
+            if ( change.feature.getId().equals( feature.getId() ) && change.changeType == CHANGE_TYPE.update ) {
                 li.remove();
             }
         }
@@ -289,8 +291,10 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
     }
 
     /**
+     * Deletes the feature provided
      * 
      * @param feature
+     *            to delete
      */
     public void deleteFeature( Feature feature ) {
         featureCollections.get( datasource.getName() ).remove( feature.getId() );
@@ -299,7 +303,7 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
         ListIterator<Changes> li = list.listIterator();
         while ( li.hasNext() ) {
             Changes change = li.next();
-            if ( change.feature.getId().equals( feature ) ) {
+            if ( change.feature.getId().equals( feature.getId() ) ) {
                 li.remove();
             }
         }
