@@ -43,11 +43,12 @@ import java.net.URI;
 import java.util.UUID;
 
 import org.deegree.framework.util.StringTools;
+import org.deegree.framework.utils.HashCodeUtil;
 
 /**
+ * TODO add Class description
  * 
- * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -120,9 +121,17 @@ public class Identifier implements Serializable {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int result = HashCodeUtil.SEED;
+        result = HashCodeUtil.hash( result, value );
+        result = HashCodeUtil.hash( result, namespace );
+        return result;
+    }
+
     /**
      * 
-     * @return {$namespca$}:$value or if namespace == null just $value$
+     * @return {$namespace$}:$value or if namespace == null just $value$
      */
     public String getAsQualifiedString() {
         if ( namespace != null ) {
