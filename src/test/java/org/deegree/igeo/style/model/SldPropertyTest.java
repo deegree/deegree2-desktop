@@ -38,7 +38,6 @@ package org.deegree.igeo.style.model;
 
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -52,15 +51,22 @@ import org.junit.Test;
  */
 public class SldPropertyTest {
 
-	// Tests for equals()
+    private static String SLD_NAME = "testSldName";
+    private static String SLD_NAME1 = "testSldName1";
+    private static String SLD_NAME2 = "testSldName2";
+
+    private static String NAME = "testName";
+    private static String NAME1 = "testName1";
+    private static String NAME2 = "testName2";
+    
+    private static int TYPE_CODE = 0;
+    private static int TYPE_CODE1 = 1;
+    private static int TYPE_CODE2 = 2;
 
 	@Test
 	public void test_equals_with_same_SldPropertys() {
 		// arrange
-		String sldName = "testSldName";
-		String name = "testName";
-		int typeCode = 0;
-		SldProperty sld = new SldProperty(typeCode, sldName, name);
+		SldProperty sld = new SldProperty(TYPE_CODE, SLD_NAME, NAME);
 		// act
 		int hashCode1 = sld.hashCode();
 		int hashCode2 = sld.hashCode();
@@ -72,11 +78,8 @@ public class SldPropertyTest {
 	@Test
 	public void test_equals_with_same_properties() {
 		// arrange
-		String sldName = "testSldName";
-		String name = "testName";
-		int typeCode = 0;
-		SldProperty sld1 = new SldProperty(typeCode, sldName, name);
-		SldProperty sld2 = new SldProperty(typeCode, sldName, name);
+		SldProperty sld1 = new SldProperty(TYPE_CODE, SLD_NAME, NAME);
+		SldProperty sld2 = new SldProperty(TYPE_CODE, SLD_NAME, NAME);
 		// act
 		int hashCode1 = sld1.hashCode();
 		int hashCode2 = sld2.hashCode();
@@ -88,12 +91,8 @@ public class SldPropertyTest {
 	@Test
 	public void test_equals_with_different_sldName() {
 		// arrange
-		String sldName1 = "testSldName1";
-		String sldName2 = "testSldName2";
-		String name = "testName";
-		int typeCode = 0;
-		SldProperty sld1 = new SldProperty(typeCode, sldName1, name);
-		SldProperty sld2 = new SldProperty(typeCode, sldName2, name);
+		SldProperty sld1 = new SldProperty(TYPE_CODE, SLD_NAME1, NAME);
+		SldProperty sld2 = new SldProperty(TYPE_CODE, SLD_NAME2, NAME);
 		// act
 		int hashCode1 = sld1.hashCode();
 		int hashCode2 = sld2.hashCode();
@@ -105,12 +104,8 @@ public class SldPropertyTest {
 	@Test
 	public void test_equals_with_different_name() {
 		// arrange
-		String sldName = "testSldName";
-		String name1 = "testName1";
-		String name2 = "testName2";
-		int typeCode = 0;
-		SldProperty sld1 = new SldProperty(typeCode, sldName, name1);
-		SldProperty sld2 = new SldProperty(typeCode, sldName, name2);
+		SldProperty sld1 = new SldProperty(TYPE_CODE, SLD_NAME, NAME1);
+		SldProperty sld2 = new SldProperty(TYPE_CODE, SLD_NAME, NAME2);
 		// act
 		int hashCode1 = sld1.hashCode();
 		int hashCode2 = sld2.hashCode();
@@ -122,12 +117,8 @@ public class SldPropertyTest {
 	@Test
 	public void test_equals_with_different_typeCode() {
 		// arrange
-		String sldName = "testSldName";
-		String name = "testName";
-		int typeCode1 = 1;
-		int typeCode2 = 2;
-		SldProperty sld1 = new SldProperty(typeCode1, sldName, name);
-		SldProperty sld2 = new SldProperty(typeCode2, sldName, name);
+		SldProperty sld1 = new SldProperty(TYPE_CODE1, SLD_NAME, NAME);
+		SldProperty sld2 = new SldProperty(TYPE_CODE2, SLD_NAME, NAME);
 		// act
 		int hashCode1 = sld1.hashCode();
 		int hashCode2 = sld2.hashCode();
@@ -139,14 +130,8 @@ public class SldPropertyTest {
 	@Test
 	public void test_equals_with_different_values() {
 		// arrange
-		String sldName1 = "testSldName1";
-		String sldName2 = "testSldName2";
-		String name1 = "testName1";
-		String name2 = "testName2";
-		int typeCode1 = 1;
-		int typeCode2 = 2;
-		SldProperty sld1 = new SldProperty(typeCode1, sldName1, name1);
-		SldProperty sld2 = new SldProperty(typeCode2, sldName2, name2);
+		SldProperty sld1 = new SldProperty(TYPE_CODE1, SLD_NAME1, NAME1);
+		SldProperty sld2 = new SldProperty(TYPE_CODE2, SLD_NAME2, NAME2);
 		// act
 		int hashCode1 = sld1.hashCode();
 		int hashCode2 = sld2.hashCode();
