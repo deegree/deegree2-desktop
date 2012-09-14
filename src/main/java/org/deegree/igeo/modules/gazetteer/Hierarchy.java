@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -64,7 +64,8 @@ import org.w3c.dom.Element;
  *  &lt;/Hierarchy&gt;
  * </pre>
  * 
- * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
+ * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -112,7 +113,7 @@ public class Hierarchy {
             ftnode = (Element) XMLTools.getNode( node, "FeatureType", CommonNamespaces.getNamespaceContext() );
             ftName = XMLTools.getAttrValue( ftnode, null, "name", null );
             nsp = XMLTools.getAttrValue( ftnode, null, "namespace", null );
-            properties = readPropertyNames( nsc, ftnode );            
+            properties = readPropertyNames( nsc, ftnode );
             HierarchyNode hn = new HierarchyNode( new QualifiedName( ftName, URI.create( nsp ) ), properties, nm,
                                                   freeSearch );
             parent.setChildNode( hn );
@@ -124,12 +125,13 @@ public class Hierarchy {
     private Map<String, String> readPropertyNames( NamespaceContext nsc, Element ftnode )
                             throws XMLParsingException {
         String geogrIdPr = XMLTools.getRequiredNodeAsString( ftnode, "./GeographicIdentifier/@property", nsc );
-        String altGeogrIdPr = XMLTools.getNodeAsString( ftnode, "./AlternativeGeographicIdentifier/@property", nsc, null );
-        String displayName = XMLTools.getNodeAsString( ftnode, "./DisplayName/@property", nsc, geogrIdPr );        
+        String altGeogrIdPr = XMLTools.getNodeAsString( ftnode, "./AlternativeGeographicIdentifier/@property", nsc,
+                                                        null );
+        String displayName = XMLTools.getNodeAsString( ftnode, "./DisplayName/@property", nsc, geogrIdPr );
         String parentIdPr = XMLTools.getNodeAsString( ftnode, "./ParentIdentifier/@property", nsc, null );
         String geoExtPr = XMLTools.getRequiredNodeAsString( ftnode, "./GeographicExtent/@property", nsc );
         String highlightGeometry = XMLTools.getNodeAsString( ftnode, "./HighlightGeometry/@property", nsc, geoExtPr );
-        String posPr = XMLTools.getNodeAsString( ftnode, "./Position/@property", nsc, null );        
+        String posPr = XMLTools.getNodeAsString( ftnode, "./Position/@property", nsc, null );
         Map<String, String> properties = new HashMap<String, String>();
         properties.put( "GeographicIdentifier", geogrIdPr );
         properties.put( "AlternativeGeographicIdentifier", altGeogrIdPr );
@@ -164,14 +166,16 @@ public class Hierarchy {
     }
 
     /**
+     * Returns the parent node matching the passed name.
      * 
      * @param name
+     *            to search parent by
      * @return parent node for {@link HierarchyNode} matching passed name
      */
     public HierarchyNode getParentOf( String name ) {
         HierarchyNode node = root;
         while ( node.getChildNode() != null ) {
-            if ( node.getChildNode().equals( name ) ) {
+            if ( node.getChildNode().getName().equals( name ) ) {
                 return node;
             }
             node = node.getChildNode();
@@ -180,14 +184,16 @@ public class Hierarchy {
     }
 
     /**
+     * Returns the parent node matching the passed name.
      * 
      * @param name
+     *            to search child by
      * @return child node for {@link HierarchyNode} matching passed name
      */
     public HierarchyNode getChildOf( String name ) {
         HierarchyNode node = root;
         do {
-            if ( node.equals( name ) ) {
+            if ( node.getName().equals( name ) ) {
                 return node;
             }
             node = node.getChildNode();
