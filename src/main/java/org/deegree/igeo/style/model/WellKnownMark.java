@@ -62,6 +62,7 @@ import org.deegree.model.spatialschema.GeometryFactory;
 /**
  * <code>WellKnownMark</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -69,12 +70,10 @@ import org.deegree.model.spatialschema.GeometryFactory;
  * 
  */
 public class WellKnownMark extends Symbol {
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( WellKnownMark.class );
 
     private String sldName;
-    
-    private int fHashCode;
 
     /**
      * @param sldName
@@ -119,22 +118,26 @@ public class WellKnownMark extends Symbol {
 
     @Override
     public boolean equals( Object obj ) {
-        if ( obj == null || !( obj instanceof WellKnownMark ) ) {
+        if ( obj == null ) {
+            return false;
+        }
+        if ( !( obj instanceof WellKnownMark ) ) {
             return false;
         }
         if ( sldName == null && ( (WellKnownMark) obj ).sldName != null ) {
             return false;
         }
-        return sldName.equals( ( (WellKnownMark) obj ).sldName );
+        Boolean equalSldNames = sldName.equals( ( (WellKnownMark) obj ).sldName );
+        Boolean equalNames = getName().equals( ( (WellKnownMark) obj ).getName() );                                
+        return equalSldNames && equalNames;
     }
-    
+
     @Override
     public int hashCode() {
-        if ( fHashCode == 0 ) {
             int result = HashCodeUtil.SEED;
             result = HashCodeUtil.hash( result, sldName );
-        }
-        return fHashCode;
+            result = HashCodeUtil.hash( result, getName() );
+        return result;
     }
 
     private static Feature createFeature() {
