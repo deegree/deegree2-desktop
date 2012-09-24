@@ -79,6 +79,7 @@ import org.deegree.igeo.views.swing.util.wizard.Wizard;
 /**
  * <code>PrintOptionsPanel</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  * @author last edited by: $Author$
  * 
@@ -87,7 +88,7 @@ import org.deegree.igeo.views.swing.util.wizard.Wizard;
 public class PrintOptionsPanel extends JPanel implements DocumentListener, ActionListener {
 
     private static final long serialVersionUID = -7307405601676884335L;
-    
+
     private static final ILogger LOG = LoggerFactory.getLogger( PrintOptionsPanel.class );
 
     JTextField fileField;
@@ -329,7 +330,6 @@ public class PrintOptionsPanel extends JPanel implements DocumentListener, Actio
 
     class Scale {
         int scale;
-        private int fHashCode;
 
         Scale( String s ) {
             int first = 1;
@@ -345,17 +345,14 @@ public class PrintOptionsPanel extends JPanel implements DocumentListener, Actio
             if ( o instanceof Scale ) {
                 return ( (Scale) o ).scale == scale;
             }
-
             return false;
         }
-        
+
         @Override
         public int hashCode() {
-            if ( fHashCode == 0 ) {
-                int result = HashCodeUtil.SEED;
-                result = HashCodeUtil.hash( result, scale );                
-            }
-            return fHashCode;
+            int result = HashCodeUtil.SEED;
+            result = HashCodeUtil.hash( result, scale );
+            return result;
         }
 
         @Override
