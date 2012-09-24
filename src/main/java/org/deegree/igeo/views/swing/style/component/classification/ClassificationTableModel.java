@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -81,6 +80,7 @@ import org.deegree.model.filterencoding.PropertyName;
 /**
  * <code>ClassificationTableModel</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -582,12 +582,11 @@ public class ClassificationTableModel<U extends Comparable<U>> extends AbstractT
             newRow.setLineColor( ( (FillColor) thematicGrouping.getLineColor() ).getColor() );
         } else if ( lineColor instanceof LinearGradient ) {
             Color prevColor = null;
-            if ( rows.size() > 0 && selectedRow > 0 && rows.get( selectedRow - 1 ).getLineColor() instanceof Color ) {
+            if ( rows.size() > 0 && selectedRow > 0 ) {
                 prevColor = (Color) rows.get( selectedRow - 1 ).getLineColor();
             }
             Color nextColor = null;
-            if ( rows.size() > 0 && selectedRow < rows.size()
-                 && rows.get( selectedRow ).getLineColor() instanceof Color ) {
+            if ( rows.size() > 0 && selectedRow < rows.size() ) {
                 nextColor = (Color) rows.get( selectedRow ).getLineColor();
             }
             Color c = calculateMiddleColor( prevColor, nextColor );
