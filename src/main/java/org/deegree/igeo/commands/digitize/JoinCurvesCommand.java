@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -65,6 +65,7 @@ import org.deegree.model.spatialschema.Position;
  * </ul>
  * Curves can be connected by direct connection, by stretching each each curve till intersection and by an arc.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -337,26 +338,26 @@ public class JoinCurvesCommand extends AbstractCommand {
 
     private void executeStretchAndShortenLines()
                             throws Exception {
-        Pair<Position[], Position[]> segments = findSegements( );
-        Position[] segment1 = segments.first;
-        Position[] segment2 = segments.second;
-        // find intersection of segments
-        double[] line1 = LineUtils.getLineFromPoints( segment1[0], segment1[1] );
-        double[] line2 = LineUtils.getLineFromPoints( segment2[0], segment2[1] );
-        Position intersection = LineUtils.getLineIntersection( line1[0], line1[1], line2[0], line2[1] );
-        Envelope tmp1 = GeometryFactory.createCurve( segment1, curve1.getCoordinateSystem() ).getEnvelope();
-        Envelope tmp2 = GeometryFactory.createCurve( segment2, curve1.getCoordinateSystem() ).getEnvelope();
-        if ( tmp1.contains( intersection ) ) {
-            // intersection is contained within curve segment 1, so just segment 2 must be stretched
-            LOG.logWarning( "not implemented yet" );
-        } else if ( tmp2.contains( intersection ) ) {
-            // intersection is contained within curve segment 2, so just segment 1 must be stretched
-            LOG.logWarning( "not implemented yet" );
-        } else {
-            // intersection is outside of both curve segments
-            LOG.logWarning( "not implemented yet" );
-        }
-
+//        Pair<Position[], Position[]> segments = findSegements( );
+//        Position[] segment1 = segments.first;
+//        Position[] segment2 = segments.second;
+//        // find intersection of segments
+//        double[] line1 = LineUtils.getLineFromPoints( segment1[0], segment1[1] );
+//        double[] line2 = LineUtils.getLineFromPoints( segment2[0], segment2[1] );
+//        Position intersection = LineUtils.getLineIntersection( line1[0], line1[1], line2[0], line2[1] );
+//        Envelope tmp1 = GeometryFactory.createCurve( segment1, curve1.getCoordinateSystem() ).getEnvelope();
+//        Envelope tmp2 = GeometryFactory.createCurve( segment2, curve1.getCoordinateSystem() ).getEnvelope();
+//        if ( tmp1.contains( intersection ) ) {
+//            // intersection is contained within curve segment 1, so just segment 2 must be stretched
+//            LOG.logWarning( "not implemented yet" );
+//        } else if ( tmp2.contains( intersection ) ) {
+//            // intersection is contained within curve segment 2, so just segment 1 must be stretched
+//            LOG.logWarning( "not implemented yet" );
+//        } else {
+//            // intersection is outside of both curve segments
+//            LOG.logWarning( "not implemented yet" );
+//        }
+        LOG.logWarning( "stretchAndShortenLines is not implemented yet" );
     }
 
     private void executeSplitLines() {
