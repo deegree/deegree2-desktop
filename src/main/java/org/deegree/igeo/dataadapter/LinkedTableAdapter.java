@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -53,6 +53,7 @@ import org.deegree.model.feature.schema.PropertyType;
 /**
  * adapter class for linking tables of alpha numeric data to layers
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -62,7 +63,7 @@ public class LinkedTableAdapter extends FeatureAdapter {
 
     private static final ILogger LOG = LoggerFactory.getLogger( LinkedTableAdapter.class );
 
-    private boolean isLazyLoading = false;
+    // private boolean isLazyLoading = false;
 
     private FeatureAdapter featureAdapter;
 
@@ -86,19 +87,20 @@ public class LinkedTableAdapter extends FeatureAdapter {
 
     @Override
     public FeatureCollection getFeatureCollection() {
-        if ( fc == null && !isLazyLoading ) {
-            try {
-                fc = createFeatureCollection();
-            } catch ( IOException e ) {
-                LOG.logError( e );
-            }
-        } else {
-            try {
-                fc = createFeatureCollection();
-            } catch ( IOException e ) {
-                LOG.logError( e );
-            }
+        // TODO check if handling of lazy loading needs to be implemented
+        // if ( fc == null && !isLazyLoading ) {
+        try {
+            fc = createFeatureCollection();
+        } catch ( IOException e ) {
+            LOG.logError( e );
         }
+        // } else {
+        // try {
+        // fc = createFeatureCollection();
+        // } catch ( IOException e ) {
+        // LOG.logError( e );
+        // }
+        // }
         return fc;
     }
 
