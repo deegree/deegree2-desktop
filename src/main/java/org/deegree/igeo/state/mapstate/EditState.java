@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -111,6 +110,7 @@ import org.deegree.model.spatialschema.Surface;
 /**
  * 
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -553,13 +553,14 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreatePointDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreatePointDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
     }
@@ -1337,13 +1338,14 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new DeleteVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new DeleteVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
 
@@ -1392,13 +1394,14 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new MoveVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new MoveVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
 
@@ -1520,13 +1523,14 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new InsertVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new InsertVertexDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
 
@@ -1589,13 +1593,14 @@ public class EditState extends ToolState {
 
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new MoveFeatureDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new MoveFeatureDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
 
@@ -1693,13 +1698,14 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreateLinestringDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreateLinestringDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
 
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
 
@@ -1752,12 +1758,13 @@ public class EditState extends ToolState {
             DrawingPane drawingPane = null;
             if ( "Application".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreateLinestringDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else if ( "Applet".equalsIgnoreCase( platform ) ) {
                 drawingPane = new CreateLinestringDrawingPane( appContainer );
+                drawingPane.setGraphicContext( g );
             } else {
                 LOG.logWarning( "view platfroms other than Application and Applet are not supported yet" );
             }
-            drawingPane.setGraphicContext( g );
             return drawingPane;
         }
     }
