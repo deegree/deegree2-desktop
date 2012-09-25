@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -414,49 +413,44 @@ public class MapModel implements ChangeListener {
         return false;
     }
 
+    class GetLayerByIdentifierMapModelVisitor implements MapModelVisitor {
+        Identifier identifier;
+
+        public GetLayerByIdentifierMapModelVisitor( Identifier identifier ) {
+            this.identifier = identifier;
+        }
+
+        private Layer layer;
+
+        public void visit( Layer layer )
+                                throws Exception {
+            if ( layer.getIdentifier().equals( identifier ) ) {
+                this.layer = layer;
+            }
+        }
+
+        public void visit( LayerGroup layerGroup )
+                                throws Exception {
+        }
+
+        public Layer getLayer() {
+            return layer;
+        }
+    }
+
     /**
      * 
      * @param identifier
      * @return layer matching passed {@link Identifier}
      */
-    @SuppressWarnings("unchecked")
     public Layer getLayerByIdentifier( final Identifier identifier ) {
-        MapModelVisitor v = new MapModelVisitor() {
-
-            private Layer layer;
-
-            public void visit( Layer layer )
-                                    throws Exception {
-                if ( layer.getIdentifier().equals( identifier ) ) {
-                    this.layer = layer;
-                }
-            }
-
-            public void visit( LayerGroup layerGroup )
-                                    throws Exception {
-            }
-
-            @SuppressWarnings("unused")
-            public Layer getLayer() {
-                return layer;
-            }
-
-        };
+        GetLayerByIdentifierMapModelVisitor v = new GetLayerByIdentifierMapModelVisitor( identifier );
         try {
             walkLayerTree( v );
+            return v.getLayer();
         } catch ( Exception e ) {
             throw new MapModelException( e.getMessage(), e );
         }
-
-        Class<MapModelVisitor> c = (Class<MapModelVisitor>) v.getClass();
-        Method m;
-        try {
-            m = c.getMethod( "getLayer", (Class[]) null );
-            return (Layer) m.invoke( v, (Object[]) null );
-        } catch ( Exception e ) {
-            throw new MapModelException( e.getMessage(), e );
-        }
-
     }
 
     /**
