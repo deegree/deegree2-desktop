@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -390,7 +390,7 @@ public class DatabaseSelectPanel extends AbstractLinkedDataPanel {
         } catch ( Exception e ) {
             throw e;
         } finally {
-            rs.close();
+            if ( rs != null ) rs.close();
             stmt.close();
         }
         Collections.sort( tables );
