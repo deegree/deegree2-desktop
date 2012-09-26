@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -108,7 +107,7 @@ import org.deegree.model.spatialschema.Geometry;
  * interface and provides some additional GUI elements for validating layers and geometries as well as for set up some
  * digitizing options.
  * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -938,13 +937,15 @@ public class DigitizerFunctionSelectPanel extends javax.swing.JPanel implements 
         public void actionPerformed( ActionEvent e ) {
             appContainer.resetToolbar();
             AbstractButton button = (AbstractButton) e.getSource();
-            if ( digitizerModule != null && button instanceof JToggleButton ) {
-                // inform registered DigitizerModule about current selected action
-                digitizerModule.setDigitizingAction( button.getActionCommand() );
-                setExplainationText( button );
-            } else {
-                // must be a JButton
-                digitizerModule.performDigitizingAction( button.getActionCommand() );
+            if ( digitizerModule != null ) {
+            	if ( button instanceof JToggleButton ) {
+            		// inform registered DigitizerModule about current selected action
+            		digitizerModule.setDigitizingAction( button.getActionCommand() );
+            		setExplainationText( button );
+            	} else {
+            		// must be a JButton
+            		digitizerModule.performDigitizingAction( button.getActionCommand() );
+            	}
             }
         }
 
