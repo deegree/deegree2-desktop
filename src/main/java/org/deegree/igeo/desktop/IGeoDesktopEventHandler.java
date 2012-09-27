@@ -109,6 +109,7 @@ import com.jgoodies.looks.plastic.PlasticTheme;
 /**
  * handler class for events produced by {@link IGeoDesktop} mein application
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -405,12 +406,16 @@ public class IGeoDesktopEventHandler {
         m.marshal( igeo.getProject(), bos );
         ByteArrayInputStream bis = new ByteArrayInputStream( bos.toByteArray() );
         Map<String, String> map = KVP2Map.toMap( file.getPath() );
-        if ( map.get( "FILE" ) != null && !file.isAbsolute() ) {
-            LOG.logInfo( "save to: ", map.get( "FILE" ) );
-            fsa.writeFile( new File( map.get( "FILE" ) ), bis );
+        if ( fsa != null) {
+	        if ( map.get( "FILE" ) != null && !file.isAbsolute() ) {
+	            LOG.logInfo( "save to: ", map.get( "FILE" ) );
+	            fsa.writeFile( new File( map.get( "FILE" ) ), bis );
+	        } else {
+	            LOG.logInfo( "save to ", file );
+	            fsa.writeFile( file, bis );
+	        }
         } else {
-            LOG.logInfo( "save to ", file );
-            fsa.writeFile( file, bis );
+        	LOG.logWarning("file " + file + " could not be safed.");
         }
         igeo.setNew( false );
     }
