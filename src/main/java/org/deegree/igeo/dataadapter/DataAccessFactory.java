@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -75,6 +74,7 @@ import org.deegree.model.spatialschema.Envelope;
 /**
  * Factory class for creating data access adapters and data sources
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -197,7 +197,7 @@ public class DataAccessFactory {
      * @param datasource
      * @param mapModel
      * @param layer
-     * @return according adapter for the passed datasource
+     * @return according adapter for the passed datasource, maybe <code>null</code>
      */
     public static DataAccessAdapter createDataAccessAdapter( Datasource datasource, MapModel mapModel, Layer layer ) {
         DataAccessAdapter daa = null;
@@ -239,7 +239,8 @@ public class DataAccessFactory {
                 daa = new LinkedTableAdapter( (FeatureAdapter) daa, lt );
             }
         }
-        daa.addChangeListener( layer );
+        if ( daa != null )
+        	daa.addChangeListener( layer );
 
         return daa;
     }
