@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -53,6 +53,7 @@ import org.deegree.model.feature.FeatureCollection;
 /**
  * abstract class for reading alpha numeric data to be linked to layers
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -164,8 +165,8 @@ public abstract class LinkedTable {
                 if ( fc.size() > 0 ) {
                     delete( fc );
                 }
+                changeList.clear();
             }
-            changeList.clear();
         } catch ( Exception e ) {
             changeList = new ArrayList<Changes>( tmp );
             Collections.copy( changeList, tmp );
