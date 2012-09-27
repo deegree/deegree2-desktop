@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -135,9 +134,9 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
 /**
- * Main class for running iGeodesktop as a swing application
+ * Main class for running deegree desktop as a swing application
  * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -724,6 +723,9 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
                             item.setIcon( new ImageIcon( url ) );
                             url = PopUpRegister.class.getResource( "/org/deegree/igeo/views/images/checkbox_selected.gif" );
                             item.setSelectedIcon( new ImageIcon( url ) );
+                        } else {
+                        	// item is null.
+                        	return;
                         }
                         item.setName( menuItem.getAssignedAction() );
                         if ( listener instanceof IModule ) {
