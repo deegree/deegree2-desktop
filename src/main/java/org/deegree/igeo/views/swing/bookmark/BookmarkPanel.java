@@ -2,7 +2,7 @@
 
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -21,12 +21,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -91,6 +90,7 @@ import org.deegree.kernel.CommandProcessor;
  * 
  * TODO add class documentation here
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -151,144 +151,12 @@ public class BookmarkPanel extends javax.swing.JPanel {
                 this.add( pn_toolbar, BorderLayout.NORTH );
                 pn_toolbar.setLayout( pn_toolbarLayout );
                 pn_toolbar.setPreferredSize( new java.awt.Dimension( 316, 40 ) );
-                {
-                    bt_goto = new JButton( IconRegistry.getIcon( "bookmark_show.png" ) );
-                    bt_goto.setToolTipText( Messages.getMessage( getLocale(), "$MD11145" ) );
-                    pn_toolbar.add( bt_goto );
-                    bt_goto.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            int[] rows = tab_bookmarks.getSelectedRows();
-                            if ( rows == null || rows.length == 0 ) {
-                                DialogFactory.openWarningDialog( "application", BookmarkPanel.this,
-                                                                 Messages.getMessage( getLocale(), "$MD11146" ),
-                                                                 Messages.getMessage( getLocale(), "$MD11147" ) );
-                                return;
-                            }
-                            List<BookmarkEntry> bookmarks = owner.readFromCache();
-                            String name = (String) tab_bookmarks.getValueAt( rows[0], 0 );                                   
-                            BookmarkModule.BookmarkEntry bme = null;
-                            for ( BookmarkEntry bookmarkEntry : bookmarks ) {
-                                if ( bookmarkEntry.name.equals( name ) ) {
-                                    bme = bookmarkEntry;
-                                    break;
-                                }
-                            }
-                            CommandProcessor processor = appCont.getCommandProcessor();
-                            try {
-                                if ( bme.allMapModels ) {
-                                    List<MapModel> mms = appCont.getMapModelCollection().getMapModels();
-                                    for ( MapModel mapModel : mms ) {
-                                        ZoomCommand cmd = new ZoomCommand( mapModel );
-                                        cmd.setZoomBox( bme.env, -1, -1 );
-                                        processor.executeSychronously( cmd, true );
-                                    }
-                                } else {
-                                    MapModel mapModel = appCont.getMapModel( bme.mapModel );
-                                    ZoomCommand cmd = new ZoomCommand( mapModel );
-                                    cmd.setZoomBox( bme.env, -1, -1 );
-                                    processor.executeSychronously( cmd, true );
-                                }
-                            } catch ( Exception ex ) {
-                                LOG.logError( ex.getMessage(), ex );
-                                DialogFactory.openErrorDialog( appCont.getViewPlatform(), BookmarkPanel.this,
-                                                               Messages.getMessage( getLocale(), "$MD11330" ),
-                                                               Messages.getMessage( getLocale(), "$MD11331" ), ex );
-                            }
-                        }
-                    } );
-                }
-                {
-                    bt_add = new JButton( IconRegistry.getIcon( "bookmark_add.png" ) );
-                    bt_add.setToolTipText( Messages.getMessage( getLocale(), "$MD11148" ) );
-                    pn_toolbar.add( bt_add );
-                    bt_add.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            owner.addBookmark();
-                            DefaultTableModel tab_bookmarksModel = updateTableModel( owner.readFromCache() );
-                            tab_bookmarks.setModel( tab_bookmarksModel );
-                        }
-                    } );
-                }
-                {
-                    bt_remove = new JButton( IconRegistry.getIcon( "bookmark_delete.png" ) );
-                    bt_remove.setToolTipText( Messages.getMessage( getLocale(), "$MD11149" ) );
-                    pn_toolbar.add( bt_remove );
-                    bt_remove.addActionListener( new ActionListener() {
-
-                        public void actionPerformed( ActionEvent arg0 ) {
-                            int[] rows = tab_bookmarks.getSelectedRows();
-                            if ( rows == null || rows.length == 0 ) {
-                                DialogFactory.openWarningDialog( "application", BookmarkPanel.this,
-                                                                 Messages.getMessage( getLocale(), "$MD11150" ),
-                                                                 Messages.getMessage( getLocale(), "$MD11151" ) );
-                                return;
-                            }
-                            DefaultTableModel dtm = (DefaultTableModel) tab_bookmarks.getModel();
-                            dtm.removeRow( rows[0] );
-                            List<BookmarkEntry> bookmarks = owner.readFromCache();
-                            bookmarks.remove( rows[0] );
-                            owner.writeToCache( bookmarks );
-                        }
-                    } );
-                }
-                {
-                    bt_export = new JButton( IconRegistry.getIcon( "bookmark_export.png" ) );
-                    bt_export.setToolTipText( Messages.getMessage( getLocale(), "$MD11152" ) );
-                    pn_toolbar.add( bt_export );
-                    bt_export.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            try {
-                                Preferences prefs = Preferences.userNodeForPackage( BookmarkPanel.class );
-                                File file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.externalResource,
-                                                                               appCont, BookmarkPanel.this, prefs,
-                                                                               "bookmark file", IGeoFileFilter.XML );
-                                FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appCont );
-                                FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
-                                fsa.getFileURL( file.getAbsolutePath() );
-                                List<BookmarkEntry> bookmarks = owner.readFromCache();
-                                Util.saveBookmarks( bookmarks, file );
-                            } catch ( Exception ex ) {
-                                LOG.logError( ex );
-                            }
-                        }
-                    } );
-                }
-                {
-                    bt_load = new JButton( IconRegistry.getIcon( "bookmark_import.png" ) );
-                    bt_load.setToolTipText( Messages.getMessage( getLocale(), "$MD11153" ) );
-                    pn_toolbar.add( bt_load );
-                    bt_load.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            try {
-                                Preferences prefs = Preferences.userNodeForPackage( BookmarkPanel.class );
-                                File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.externalResource,
-                                                                               appCont, BookmarkPanel.this, prefs,
-                                                                               "bookmark file", IGeoFileFilter.XML );
-                                FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appCont );
-                                FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
-                                fsa.getFileURL( file.getAbsolutePath() );
-                                List<BookmarkEntry> bookmarks = Util.loadBookmarks( file );
-                                owner.writeToCache( bookmarks );
-                                DefaultTableModel model = updateTableModel( bookmarks );
-                                tab_bookmarks.setModel( model );
-                            } catch ( Exception ex ) {
-                                LOG.logError( ex );
-                            }
-                        }
-                    } );
-                }
-                {
-                    bt_help = new JButton( IconRegistry.getIcon( "help.png" ) );
-                    bt_help.setToolTipText( Messages.getMessage( getLocale(), "$MD11154" ) );
-                    pn_toolbar.add( bt_help );
-                    bt_help.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            HelpFrame hf = HelpFrame.getInstance( new HelpManager( owner.getApplicationContainer() ) );
-                            hf.setVisible( true );
-                            hf.gotoKeyword( "Bookmark:Bookmark" );
-                        }
-                    } );
-                }
+                initGotoButton();
+                initAddButton();
+                initRemoveButton();
+                initExportButton();
+                initLoadButton();
+                initHelpButton();
             }
             {
                 pn_list = new JPanel();
@@ -329,6 +197,162 @@ public class BookmarkPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
+
+	private void initHelpButton() {
+		{
+		    bt_help = new JButton( IconRegistry.getIcon( "help.png" ) );
+		    bt_help.setToolTipText( Messages.getMessage( getLocale(), "$MD11154" ) );
+		    pn_toolbar.add( bt_help );
+		    bt_help.addActionListener( new ActionListener() {
+		        public void actionPerformed( ActionEvent e ) {
+		            HelpFrame hf = HelpFrame.getInstance( new HelpManager( owner.getApplicationContainer() ) );
+		            hf.setVisible( true );
+		            hf.gotoKeyword( "Bookmark:Bookmark" );
+		        }
+		    } );
+		}
+	}
+
+	private void initLoadButton() {
+		{
+		    bt_load = new JButton( IconRegistry.getIcon( "bookmark_import.png" ) );
+		    bt_load.setToolTipText( Messages.getMessage( getLocale(), "$MD11153" ) );
+		    pn_toolbar.add( bt_load );
+		    bt_load.addActionListener( new ActionListener() {
+		        public void actionPerformed( ActionEvent e ) {
+		            try {
+		                Preferences prefs = Preferences.userNodeForPackage( BookmarkPanel.class );
+		                File file = GenericFileChooser.showOpenDialog( FILECHOOSERTYPE.externalResource,
+		                                                               appCont, BookmarkPanel.this, prefs,
+		                                                               "bookmark file", IGeoFileFilter.XML );
+		                FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appCont );
+		                FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
+		                fsa.getFileURL( file.getAbsolutePath() );
+		                List<BookmarkEntry> bookmarks = Util.loadBookmarks( file );
+		                owner.writeToCache( bookmarks );
+		                DefaultTableModel model = updateTableModel( bookmarks );
+		                tab_bookmarks.setModel( model );
+		            } catch ( Exception ex ) {
+		                LOG.logError( ex );
+		            }
+		        }
+		    } );
+		}
+	}
+
+	private void initExportButton() {
+		{
+		    bt_export = new JButton( IconRegistry.getIcon( "bookmark_export.png" ) );
+		    bt_export.setToolTipText( Messages.getMessage( getLocale(), "$MD11152" ) );
+		    pn_toolbar.add( bt_export );
+		    bt_export.addActionListener( new ActionListener() {
+		        public void actionPerformed( ActionEvent e ) {
+		            try {
+		                Preferences prefs = Preferences.userNodeForPackage( BookmarkPanel.class );
+		                File file = GenericFileChooser.showSaveDialog( FILECHOOSERTYPE.externalResource,
+		                                                               appCont, BookmarkPanel.this, prefs,
+		                                                               "bookmark file", IGeoFileFilter.XML );
+		                FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appCont );
+		                FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
+		                fsa.getFileURL( file.getAbsolutePath() );
+		                List<BookmarkEntry> bookmarks = owner.readFromCache();
+		                Util.saveBookmarks( bookmarks, file );
+		            } catch ( Exception ex ) {
+		                LOG.logError( ex );
+		            }
+		        }
+		    } );
+		}
+	}
+
+	private void initRemoveButton() {
+		{
+		    bt_remove = new JButton( IconRegistry.getIcon( "bookmark_delete.png" ) );
+		    bt_remove.setToolTipText( Messages.getMessage( getLocale(), "$MD11149" ) );
+		    pn_toolbar.add( bt_remove );
+		    bt_remove.addActionListener( new ActionListener() {
+
+		        public void actionPerformed( ActionEvent arg0 ) {
+		            int[] rows = tab_bookmarks.getSelectedRows();
+		            if ( rows == null || rows.length == 0 ) {
+		                DialogFactory.openWarningDialog( "application", BookmarkPanel.this,
+		                                                 Messages.getMessage( getLocale(), "$MD11150" ),
+		                                                 Messages.getMessage( getLocale(), "$MD11151" ) );
+		                return;
+		            }
+		            DefaultTableModel dtm = (DefaultTableModel) tab_bookmarks.getModel();
+		            dtm.removeRow( rows[0] );
+		            List<BookmarkEntry> bookmarks = owner.readFromCache();
+		            bookmarks.remove( rows[0] );
+		            owner.writeToCache( bookmarks );
+		        }
+		    } );
+		}
+	}
+
+	private void initAddButton() {
+		{
+		    bt_add = new JButton( IconRegistry.getIcon( "bookmark_add.png" ) );
+		    bt_add.setToolTipText( Messages.getMessage( getLocale(), "$MD11148" ) );
+		    pn_toolbar.add( bt_add );
+		    bt_add.addActionListener( new ActionListener() {
+		        public void actionPerformed( ActionEvent e ) {
+		            owner.addBookmark();
+		            DefaultTableModel tab_bookmarksModel = updateTableModel( owner.readFromCache() );
+		            tab_bookmarks.setModel( tab_bookmarksModel );
+		        }
+		    } );
+		}
+	}
+
+	private void initGotoButton() {
+		{
+		    bt_goto = new JButton( IconRegistry.getIcon( "bookmark_show.png" ) );
+		    bt_goto.setToolTipText( Messages.getMessage( getLocale(), "$MD11145" ) );
+		    pn_toolbar.add( bt_goto );
+		    bt_goto.addActionListener( new ActionListener() {
+		        public void actionPerformed( ActionEvent e ) {
+		            int[] rows = tab_bookmarks.getSelectedRows();
+		            if ( rows == null || rows.length == 0 ) {
+		                DialogFactory.openWarningDialog( "application", BookmarkPanel.this,
+		                                                 Messages.getMessage( getLocale(), "$MD11146" ),
+		                                                 Messages.getMessage( getLocale(), "$MD11147" ) );
+		                return;
+		            }
+		            List<BookmarkEntry> bookmarks = owner.readFromCache();
+		            String name = (String) tab_bookmarks.getValueAt( rows[0], 0 );                                   
+		            BookmarkModule.BookmarkEntry bme = null;
+		            for ( BookmarkEntry bookmarkEntry : bookmarks ) {
+		                if ( bookmarkEntry.name.equals( name ) ) {
+		                    bme = bookmarkEntry;
+		                    break;
+		                }
+		            }
+		            CommandProcessor processor = appCont.getCommandProcessor();
+		            try {
+		                if ( bme.allMapModels ) {
+		                    List<MapModel> mms = appCont.getMapModelCollection().getMapModels();
+		                    for ( MapModel mapModel : mms ) {
+		                        ZoomCommand cmd = new ZoomCommand( mapModel );
+		                        cmd.setZoomBox( bme.env, -1, -1 );
+		                        processor.executeSychronously( cmd, true );
+		                    }
+		                } else {
+		                    MapModel mapModel = appCont.getMapModel( bme.mapModel );
+		                    ZoomCommand cmd = new ZoomCommand( mapModel );
+		                    cmd.setZoomBox( bme.env, -1, -1 );
+		                    processor.executeSychronously( cmd, true );
+		                }
+		            } catch ( Exception ex ) {
+		                LOG.logError( ex.getMessage(), ex );
+		                DialogFactory.openErrorDialog( appCont.getViewPlatform(), BookmarkPanel.this,
+		                                               Messages.getMessage( getLocale(), "$MD11330" ),
+		                                               Messages.getMessage( getLocale(), "$MD11331" ), ex );
+		            }
+		        }
+		    } );
+		}
+	}
 
     private DefaultTableModel updateTableModel( List<BookmarkEntry> bookmarks ) {
         String s = Messages.getMessage( getLocale(), "$MD11155" );
