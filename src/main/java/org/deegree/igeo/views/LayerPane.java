@@ -73,6 +73,7 @@ import org.deegree.model.spatialschema.Envelope;
  * The <code>LayerPanel</code> represents a layer of a map as JComponent. One layerPanel is equivalent to the graphical
  * representation of one layer defined in the project configurationfile.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -107,20 +108,18 @@ public class LayerPane implements ChangeListener {
      * 
      * @param g
      */
-    public void paint( Graphics g ) {
-        synchronized ( mapModel ) {
-            if ( g != null && layer.isVisible() ) {
-                mapView.setBoundingBox( this.mapModel.getEnvelope() );
-                try {
-                    if ( !valid ) {
-                        createMapView();
-                    }
-                    mapView.paint( g );
-                } catch ( Throwable e ) {
-                    DialogFactory.openErrorDialog( "application", (Component) parentModule.getViewForm(),
-                                                   e.getMessage(), "rendering error", e );
-                    LOG.logError( e.getMessage(), e );
+    public synchronized void paint( Graphics g ) {
+        if ( g != null && layer.isVisible() ) {
+            mapView.setBoundingBox( this.mapModel.getEnvelope() );
+            try {
+                if ( !valid ) {
+                    createMapView();
                 }
+                mapView.paint( g );
+            } catch ( Throwable e ) {
+                DialogFactory.openErrorDialog( "application", (Component) parentModule.getViewForm(),
+                                               e.getMessage(), "rendering error", e );
+                LOG.logError( e.getMessage(), e );
             }
         }
     }
@@ -170,22 +169,20 @@ public class LayerPane implements ChangeListener {
         return themes;
     }
 
-    private void createMapView()
+    private synchronized void createMapView()
                             throws ViewException {
-        synchronized ( mapModel ) {
-            try {
-                Envelope extent = this.mapModel.getEnvelope();
-                List<Theme> layerThemes = createThemes( this.layer.getCurrentStyle(), this.layer.getDataAccess(),
-                                                        extent.getCoordinateSystem() );
-                mapView = MapFactory.createMapView( this.layer.getTitle(), extent, extent.getCoordinateSystem(),
-                                                    layerThemes.toArray( new Theme[layerThemes.size()] ),
-                                                    MapUtils.DEFAULT_PIXEL_SIZE );
-            } catch ( Exception e ) {
-                LOG.logError( e.getMessage(), e );
-                throw new ViewException( e.getMessage(), e );
-            }
-            valid = true;
+        try {
+            Envelope extent = this.mapModel.getEnvelope();
+            List<Theme> layerThemes = createThemes( this.layer.getCurrentStyle(), this.layer.getDataAccess(),
+                                                    extent.getCoordinateSystem() );
+            mapView = MapFactory.createMapView( this.layer.getTitle(), extent, extent.getCoordinateSystem(),
+                                                layerThemes.toArray( new Theme[layerThemes.size()] ),
+                                                MapUtils.DEFAULT_PIXEL_SIZE );
+        } catch ( Exception e ) {
+            LOG.logError( e.getMessage(), e );
+            throw new ViewException( e.getMessage(), e );
         }
+        valid = true;
     }
 
     /**
@@ -263,6 +260,7 @@ public class LayerPane implements ChangeListener {
             case visibilityChanged: {
                 valid = false;
             }
+            default:
             }
 
         } else if ( event instanceof MapModelChangedEvent ) {
