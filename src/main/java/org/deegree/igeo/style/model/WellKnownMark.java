@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -124,11 +123,23 @@ public class WellKnownMark extends Symbol {
         if ( !( obj instanceof WellKnownMark ) ) {
             return false;
         }
-        if ( sldName == null && ( (WellKnownMark) obj ).sldName != null ) {
-            return false;
+        Boolean equalSldNames = false;
+        if ( sldName == null ) {
+        	if ( ( (WellKnownMark) obj ).sldName == null ) {
+        		equalSldNames = true;
+        	}
+        } else if (( (WellKnownMark) obj ).sldName != null) {
+        	equalSldNames = sldName.equals( ( (WellKnownMark) obj ).sldName );
+        	
         }
-        Boolean equalSldNames = sldName.equals( ( (WellKnownMark) obj ).sldName );
-        Boolean equalNames = getName().equals( ( (WellKnownMark) obj ).getName() );                                
+        Boolean equalNames = false;
+        if ( getName() == null ) {
+        	if ( ( (WellKnownMark) obj ).getName() == null ) {
+        		equalNames = true;
+        	}
+        } else if (( (WellKnownMark) obj ).getName() != null) {
+        	equalNames = getName().equals( ( (WellKnownMark) obj ).getName() );                                
+        }
         return equalSldNames && equalNames;
     }
 
