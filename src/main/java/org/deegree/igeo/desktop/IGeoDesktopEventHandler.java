@@ -126,6 +126,9 @@ public class IGeoDesktopEventHandler {
             eventName = ( (JMenuItem) event.getSource() ).getName();
         } else if ( event.getSource() instanceof JButton ) {
             eventName = ( (JButton) event.getSource() ).getName();
+        } else {
+        	LOG.logError ( "could not determine name of event " + event );
+        	return;
         }
         if ( eventName.startsWith( "$class:" ) ) {
             // if a event name starts with '$class:' the event name contains name of class
@@ -719,6 +722,9 @@ public class IGeoDesktopEventHandler {
         } else if ( tmp.endsWith( ".gif" ) || tmp.endsWith( ".bmp" ) || tmp.endsWith( ".png" ) || tmp.endsWith( ".jpg" )
                     || tmp.endsWith( ".jpeg" ) || tmp.endsWith( ".tif" ) || tmp.endsWith( ".tiff" ) ) {
             env = WorldFile.readWorldFile( fileName, WorldFile.TYPE.CENTER ).getEnvelope();
+        } else {
+        	// env is null
+        	return null;
         }
         CoordinateSystem crs = null;
         if ( env.getCoordinateSystem() == null ) {
