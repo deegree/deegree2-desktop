@@ -405,4 +405,11 @@ public class FileGridCoverageAdapter extends GridCoverageAdapter {
 
     }
 
+    @Override
+    public void invalidate() {
+        this.tiledImage = null;
+        this.image = null;
+        super.invalidate();
+    }
+
 }

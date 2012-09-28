@@ -1063,6 +1063,7 @@ public class Layer implements MapModelEntry {
         if ( dataAccess != null ) {
             for ( DataAccessAdapter da : this.dataAccess ) {
                 da.removeChangeListener( this );
+                da.invalidate();
             }
             dataAccess = null;
         }
