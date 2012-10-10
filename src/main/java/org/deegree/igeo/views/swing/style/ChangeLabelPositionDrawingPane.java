@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -47,6 +47,7 @@ import org.deegree.igeo.ApplicationContainer;
 /**
  * TODO add class documentation here
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -54,13 +55,13 @@ import org.deegree.igeo.ApplicationContainer;
  */
 public class ChangeLabelPositionDrawingPane extends EditFeatureStyleDrawingPane {
 
-    protected static Color fillColor = new Color( 1f, 1f, 1f, 0.4f );
+    protected static final Color fillColor = new Color( 1f, 1f, 1f, 0.4f );
 
-    protected static Color rectDrawColor = new Color( 0f, 0.9f, 0.4f );
+    protected static final Color rectDrawColor = new Color( 0f, 0.9f, 0.4f );
 
-    protected static Color anchorColor = Color.RED;
+    protected static final Color anchorColor = Color.RED;
 
-    protected static Stroke rectStroke = new BasicStroke( 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1,
+    protected static final Stroke rectStroke = new BasicStroke( 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1,
                                                           new float[] { 5, 5 }, 0 );
 
     /**
