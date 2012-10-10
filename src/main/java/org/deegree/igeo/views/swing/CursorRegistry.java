@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -48,8 +47,9 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 /**
+ * TODO add class description
  * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -57,31 +57,32 @@ import javax.imageio.ImageIO;
  */
 public class CursorRegistry {
 
-    public static Cursor DRAW_CURSOR = new Cursor( Cursor.CROSSHAIR_CURSOR );
+    public final static Cursor DRAW_CURSOR = new Cursor( Cursor.CROSSHAIR_CURSOR );
 
-    public static Cursor DRAG_CURSOR = new Cursor( Cursor.HAND_CURSOR );
+    public final static Cursor DRAG_CURSOR = new Cursor( Cursor.HAND_CURSOR );
 
-    public static Cursor MOVE_CURSOR = new Cursor( Cursor.MOVE_CURSOR );
+    public final static Cursor MOVE_CURSOR = new Cursor( Cursor.MOVE_CURSOR );
 
-    public static Cursor DELETE_CURSOR = new Cursor( Cursor.MOVE_CURSOR );
+    public final static Cursor DELETE_CURSOR = new Cursor( Cursor.MOVE_CURSOR );
 
-    public static Cursor SELECT_CURSOR = new Cursor( Cursor.CROSSHAIR_CURSOR );
+    public final static Cursor SELECT_CURSOR = new Cursor( Cursor.CROSSHAIR_CURSOR );
 
-    public static Cursor DEFAULT_CURSOR = new Cursor( Cursor.DEFAULT_CURSOR );
+    public final static Cursor DEFAULT_CURSOR = new Cursor( Cursor.DEFAULT_CURSOR );
 
-    public static Cursor WAIT_CURSOR = new Cursor( Cursor.WAIT_CURSOR );
+    public final static Cursor WAIT_CURSOR = new Cursor( Cursor.WAIT_CURSOR );
 
-    public static Cursor RULER_CURSOR;
+    public final static Cursor RULER_CURSOR;
     static {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         URL url = CursorRegistry.class.getResource( "/org/deegree/igeo/views/images/rulercursor.gif" );
+        Image rulerImage = null;
         try {
-            Image rulerImage = ImageIO.read( url );
-            RULER_CURSOR = toolkit.createCustomCursor( rulerImage, new Point( 16, 16 ), "RulerCursor" );
+            rulerImage = ImageIO.read( url );
         } catch ( IOException e ) {
-            // TODO Auto-generated catch block
+        	// TODO add default image to prevent cursor to disappear if exception is catched
             e.printStackTrace();
         }
+        RULER_CURSOR = toolkit.createCustomCursor( rulerImage, new Point( 16, 16 ), "RulerCursor" );
     }
 
 }
