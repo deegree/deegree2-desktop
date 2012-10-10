@@ -732,7 +732,7 @@
 					<ns2:identifier>
 						<ns2:value>TBprint</ns2:value>
 					</ns2:identifier>
-					<tooltip>$MD10348</tooltip>
+					<tooltip>$MD10348v</tooltip>
 					<assignedAction>openVectorPrint</assignedAction>
 					<icon ns3:href="../icons/pdf.png"/>
 					<entryType>PushButton</entryType>
