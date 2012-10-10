@@ -718,7 +718,7 @@
 					<MenuItem>
 						<name>$MD10348</name>
 						<tooltip>$MD10348</tooltip>
-						<assignedAction>openVectorPrint</assignedAction>
+						<assignedAction>print</assignedAction>
 						<icon ns3:href="../icons/s_pdf.png"/>
 					</MenuItem>
                     <MenuItem>
@@ -757,7 +757,6 @@
 					<value>400</value>
 				</init-param>
 			</Module>
-			
 		</ModuleRegister>
 		<!-- Digitizer. Ermöglicht die Bearbeitung der Geometrie. -->
 		<ModuleRegister>

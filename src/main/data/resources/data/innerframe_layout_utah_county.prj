@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns4:Project 
-xmlns="http://www.deegree.org/coremapmodel" 
-xmlns:ns2="http://www.w3.org/1999/xlink" 
-xmlns:ns3="http://www.deegree.org/jdbc" 
-xmlns:ns4="http://www.deegree.org/project" 
-xmlns:ns5="http://www.deegree.org/settings" 
-language="de"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/schemas/igeodesktop/0.4.3/project.xsd">
+<ns4:Project xmlns="http://www.deegree.org/coremapmodel" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.deegree.org/jdbc" xmlns:ns4="http://www.deegree.org/project" xmlns:ns5="http://www.deegree.org/settings" language="de">
 	<ns4:name>TestProject</ns4:name>
 	<identifier>
 		<value>TP1</value>
@@ -27,7 +19,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 		</ns4:ViewForm>
 		<ns4:SupportedViewPlatform>Application</ns4:SupportedViewPlatform>
 		<ns4:Window width="998" height="810" top="93" left="93"/>
-		<!--LayerGroupModule-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="270" height="636" top="2" left="1"/>
@@ -50,7 +41,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 						<ns4:TabLayout/>
 					</ns4:Layout>
 				</ns4:ViewForm>
-				<!--LayerTree-->
 				<ns4:ModuleRegister>
 					<ns4:TabPosition>
 						<ns4:tabPosition>0</ns4:tabPosition>
@@ -148,7 +138,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 						</ns4:PopUpEntry>
 					</ns4:Module>
 				</ns4:ModuleRegister>
-				<!--Legend-->
 				<ns4:ModuleRegister>
 					<ns4:TabPosition>
 						<ns4:tabPosition>1</ns4:tabPosition>
@@ -189,7 +178,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 						</ns4:PopUpEntry>
 					</ns4:Module>
 				</ns4:ModuleRegister>
-				<!--MapOverview-->
 				<ns4:ModuleRegister>
 					<ns4:TabPosition>
 						<ns4:tabPosition>2</ns4:tabPosition>
@@ -224,7 +212,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:ModuleRegister>
 			</ns4:ModuleGroup>
 		</ns4:ModuleRegister>
-		<!--MapModellCollection-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="388" height="504" top="185" left="351"/>
@@ -274,7 +261,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--BookmarkModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="388" height="504" top="257" left="478"/>
@@ -327,7 +313,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--AddLayerModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="288" height="500" top="138" left="420"/>
@@ -425,17 +410,14 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--MapModel-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="715" height="632" top="2" left="273"/>
 			</ns4:AbsolutePosition>
 			<ns4:ModuleReference>
 				<OnlineResource ns2:href="./map_module_iframe.mdx"/>
-				<!--OnlineResource ns2:href="./map_module.mdx"/-->
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		<!--ZoomByCoordinatesModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="400" height="210" top="250" left="270"/>
@@ -478,7 +460,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--ExifModule-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="600" height="500" top="50" left="650"/>
@@ -487,7 +468,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<OnlineResource ns2:href="./exif_module.mdx"/>
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		<!--MeasureModul-->
 		<ns4:ModuleRegister>
 			<ns4:FooterPosition>
 				<ns4:footerPosition>1</ns4:footerPosition>
@@ -533,7 +513,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:Menu>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--AnalysisModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="600" height="500" top="50" left="650"/>
@@ -542,7 +521,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<OnlineResource ns2:href="./analysis_module.mdx"/>
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		<!--BufferModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="520" height="250" top="0" left="187"/>
@@ -587,7 +565,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--IntersectionModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="520" height="250" top="0" left="177"/>
@@ -636,7 +613,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--CopyPasteModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="600" height="500" top="50" left="650"/>
@@ -645,7 +621,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<OnlineResource ns2:href="./copypaste_module.mdx"/>
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		<!--PrintModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="364" height="390" top="252" left="535"/>
@@ -659,7 +634,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<ns4:ViewForm>
 					<ns4:FrameViewForm>
 						<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.print.PrintWizard
-						</ns4:containerClass>
+            </ns4:containerClass>
 						<ns4:ComponentState modal="true" active="true">
 							<ns4:windowState>closed</ns4:windowState>
 						</ns4:ComponentState>
@@ -680,57 +655,36 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 						<ns4:assignedAction>print</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_pdf.png"/>
 					</ns4:MenuItem>
-						<ns4:MenuItem>
+					<ns4:MenuItem>
 						<ns4:name>$MD10348a</ns4:name>
 						<ns4:tooltip>$MD10348a</ns4:tooltip>
 						<ns4:assignedAction>directPrint</ns4:assignedAction>
 						<ns4:icon ns2:href="../icons/s_printer.png"/>
 					</ns4:MenuItem>
-					<!--ns4:MenuItem>
-						<ns4:name>$MD10364</ns4:name>
-						<ns4:tooltip>$MD10364</ns4:tooltip>
-						<ns4:assignedAction>editSettings</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_report_edit.png"/>
-					</ns4:MenuItem-->
-					<!--ns4:MenuItem>
-						<ns4:name>$MD10365</ns4:name>
-						<ns4:tooltip>$MD10365</ns4:tooltip>
-						<ns4:assignedAction>editTemplates</ns4:assignedAction>
-						<ns4:icon ns2:href="../icons/s_ireport.png"/>
-					</ns4:MenuItem-->
 				</ns4:Menu>
-				<!--ns4:ToolBarEntry>
-					<identifier>
-						<value>TBprint2</value>
-					</identifier>
-					<ns4:tooltip>$MD10348a</ns4:tooltip>
-					<ns4:assignedAction>directPrint</ns4:assignedAction>
-					<ns4:icon ns2:href="../icons/printer.png"/>
-					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry-->
-				<!--ns4:ToolBarEntry>
+				<ns4:ToolBarEntry>
 					<identifier>
 						<value>TBprint</value>
 					</identifier>
-					<ns4:tooltip>$MD10348</ns4:tooltip>
-					<ns4:assignedAction>print</ns4:assignedAction>
+					<ns4:tooltip>$MD10348v</ns4:tooltip>
+					<ns4:assignedAction>openVectorPrint</ns4:assignedAction>
 					<ns4:icon ns2:href="../icons/pdf.png"/>
 					<ns4:entryType>PushButton</ns4:entryType>
-				</ns4:ToolBarEntry-->
+				</ns4:ToolBarEntry>
 				<ns4:init-param>
 					<ns4:name>templates</ns4:name>
-					<ns4:value>            
-					Hochformat; ../jaspertemplates/report1.jrxml; ../jaspertemplates/hochformat.jpg, 
-                    Querformat; ../jaspertemplates/super.jrxml; ../jaspertemplates/querformat.jpg
-					  </ns4:value>
+					<ns4:value>
+            test report; ../jaspertemplates/super.jrxml,
+            DinA4 Report; ../jaspertemplates/DinA4_L.jrxml
+          </ns4:value>
 				</ns4:init-param>
 				<ns4:init-param>
 					<ns4:name>noTemplateImage</ns4:name>
-					<ns4:value>../jaspertemplates/querformat.jpg</ns4:value>
+					<ns4:value>../jaspertemplates/noimage.jpg</ns4:value>
 				</ns4:init-param>
 				<ns4:init-param>
 					<ns4:name>ireportLocation</ns4:name>
-					<ns4:value>../../../../iReport-3.0.0/</ns4:value>
+					<ns4:value>D:/programme/JasperSoft/iReport-2.0.0/</ns4:value>
 				</ns4:init-param>
 				<ns4:init-param>
 					<ns4:name>dpi</ns4:name>
@@ -738,7 +692,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--DigitizerModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="443" height="446" top="553" left="20"/>
@@ -816,7 +769,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--PointForPolygonModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="400" height="550" top="100" left="100"/>
@@ -847,7 +799,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--EditStyleModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="350" height="575" top="266" left="267"/>
@@ -940,7 +891,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns5:HelpContext>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--LayerInfoModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="681" height="400" top="275" left="246"/>
@@ -975,7 +925,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:ToolBarEntry>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--ScaleModul-->
 		<ns4:ModuleRegister>
 			<ns4:HeaderPosition>
 				<ns4:headerPosition>10</ns4:headerPosition>
@@ -1004,7 +953,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
-		<!--ImageViewerModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="600" height="500" top="50" left="650"/>
@@ -1013,7 +961,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<OnlineResource ns2:href="open_imageviewer.mdx"/>
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		<!--ExternalProgramModul-->
 		<ns4:ModuleRegister>
 			<ns4:AbsolutePosition>
 				<ns4:Window width="600" height="500" top="50" left="650"/>
@@ -1022,10 +969,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				<OnlineResource ns2:href="./external_program.mdx"/>
 			</ns4:ModuleReference>
 		</ns4:ModuleRegister>
-		
-		<!--MenuBar-->
 		<ns4:MenuBar>
-			<!--Projekt-->
 			<ns4:Menu>
 				<identifier>
 					<value>MB1</value>
@@ -1069,7 +1013,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 					<ns4:mnemonic>a</ns4:mnemonic>
 				</ns4:MenuItem>
 			</ns4:Menu>
-			<!--Ansicht-->
 			<ns4:Menu>
 				<identifier>
 					<value>MB1view</value>
@@ -1107,7 +1050,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 					</ns4:accelerator>
 				</ns4:MenuItem>
 			</ns4:Menu>
-			<!--Bearbeiten-->
 			<ns4:Menu>
 				<identifier>
 					<value>MB1edit</value>
@@ -1135,7 +1077,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 					</ns4:accelerator>
 				</ns4:MenuItem>
 			</ns4:Menu>
-			<!--Werkzeuge-->
 			<ns4:Menu>
 				<identifier>
 					<value>MB1tools</value>
@@ -1154,8 +1095,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 				</ns4:MenuItem>
 			</ns4:Menu>
 		</ns4:MenuBar>
-		
-		<!--ToolBar-->
 		<ns4:ToolBar useRollover="true" floatable="true">
 			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
 				<identifier>
@@ -1199,8 +1138,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			</ns4:ToolBarEntry>
 		</ns4:ToolBar>
 	</ns4:View>
-	
-	<!--Settings/Help/-->
 	<ns4:Settings>
 		<ns5:Snapping>
 			<ns5:tolerance val="20.0" uom="Pixel"/>
@@ -1295,7 +1232,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<ns5:Format isVector="true" desc="GML 2 or 3.1 file" extension="gml" name="GML file"/>
 			<ns5:Format isVector="true" desc="GML 2 or 3.1 file" extension="xml" name="XML file"/>
 		</ns5:FileFilter>
-		
 		<ns5:HelpPage changeable="true">
 			<ns5:HelpContext>
 				<ns5:page>
@@ -1326,9 +1262,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<ns5:Cursor name="default" action="default"/>
 		</ns5:CursorDefinitions>
 		<ns5:Clipboard maxObjects="1000" format="text/xml; subtype=gml/3.1.1"/>
-		<ns5:Graphics>
-			
-		</ns5:Graphics>
+		<ns5:Graphics/>
 		<ns5:Formats changeable="true">
 			<ns5:Format pattern="##.000" name="number"/>
 		</ns5:Formats>
@@ -1340,11 +1274,9 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<OnlineResource ns2:href="../dictionaries/test.xml"/>
 		</ns5:Dictionaries>
 	</ns4:Settings>
-	
-	<!--MapModelCollection: Layerdefinitionen WMS/WFS/...-->
 	<MapModelCollection>
 		<name>TestMMC</name>
-		<maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
+		<maxExtent crs="EPSG:26912" maxy="3653798.05" maxx="564791.803125" miny="4107118.55" minx="252400.003125"/>
 		<externalResource>
 			<OnlineResource ns2:href="./docs/deegree_client_portal_specification.odt"/>
 			<abstract>
@@ -1357,7 +1289,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 			<externalResourceTitle>deegree client and portal concept and specification</externalResourceTitle>
 			<externalResourceType>Open Office document</externalResourceType>
 		</externalResource>
-		<mapModel current="true">
+		<mapModel current="false">
 			<name>TestMM</name>
 			<identifier>
 				<value>MM1</value>
@@ -1377,7 +1309,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 					<code>EPSG:4326</code>
 				</CRS>
 			</supportedCRS>
-			<extent crs="EPSG:26912" maxy="4466152.355479435" maxx="450486.8828252965" miny="4443097.035970255" minx="423351.65702567704"/>
+			<extent crs="EPSG:26912" maxy="4502638.666543529" maxx="522937.98117174447" miny="4387874.7431392735" minx="387865.2499530469"/>
 			<maxExtent crs="EPSG:26912" maxy="4653798.05" maxx="664791.803125" miny="4107118.55" minx="252400.003125"/>
 			<layerGroup>
 				<identifier>
@@ -1408,7 +1340,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 							<title>Utah_Boundary</title>
 							<abstract>default3</abstract>
 							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAFUlEQVR42mNgGAWjYBSMglEwCqgDAAZUAAEyx8IOAAAAAElFTkSuQmCC</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah_Boundary&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah_Boundary&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#666666&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah_Boundary&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah_Boundary&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#666666&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
@@ -1436,7 +1368,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 							<title>Städte</title>
 							<abstract>default3</abstract>
 							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAPElEQVR42mNgGAWjYOABIzGK/s9k+A/XkI5fDzNRhhkDGVIQ3GDM0NC4haERl3omanuZadCH4SgYBWQAALmFC/GY64ecAAAAAElFTkSuQmCC</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Städte&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Städte&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_TownDemographics2000&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PointSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Graphic&gt;&lt;Mark&gt;&lt;WellKnownName&gt;circle&lt;/WellKnownName&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#ffcc00&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#ff9900&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;square&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/Mark&gt;&lt;Opacity&gt;1.0&lt;/Opacity&gt;&lt;Size&gt;6.0&lt;/Size&gt;&lt;Rotation&gt;0.0&lt;/Rotation&gt;&lt;/Graphic&gt;&lt;/PointSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Städte&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Städte&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_TownDemographics2000&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PointSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Graphic&gt;&lt;Mark&gt;&lt;WellKnownName&gt;circle&lt;/WellKnownName&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#ffcc00&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#ff9900&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;square&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/Mark&gt;&lt;Opacity&gt;1.0&lt;/Opacity&gt;&lt;Size&gt;6.0&lt;/Size&gt;&lt;Rotation&gt;0.0&lt;/Rotation&gt;&lt;/Graphic&gt;&lt;/PointSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
@@ -1465,16 +1397,16 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 							<abstract>default3</abstract>
 							<legendImage>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</legendImage>
 							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Höhenmeter&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Höhenmeter (app:ELEV)&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Elevation&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_ELEVATION_Contours500Ft&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;alle Werte kleiner als 5200&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5200.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#666600&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5200 bis 5900&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5200.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#887d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5900 bis 6600&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa9300&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;6600 bis 7300&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#ccaa00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;7300 bis 8000&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eec100&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8000 bis 8700&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eeb500&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8700 bis 9400&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cc8800&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;9400 bis 10100&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa5b00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;10100 bis 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#882d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;Werte größer als 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;/ogc:Filter&gt;
-&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#660000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#666600&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5200 bis 5900&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5200.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#887d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;5900 bis 6600&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[5900.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa9300&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;6600 bis 7300&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[6600.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#ccaa00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;7300 bis 8000&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[7300.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eec100&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8000 bis 8700&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8000.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#eeb500&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;8700 bis 9400&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[8700.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cc8800&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;9400 bis 10100&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[9400.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#aa5b00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;10100 bis 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:And&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10100.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyIsLessThan&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsLessThan&gt;&lt;/ogc:And&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#882d00&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;Werte größer als 10800&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'&gt;&lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;ogc:PropertyName xmlns:app=&quot;http://www.deegree.org/app&quot;&gt;app:ELEV&lt;/ogc:PropertyName&gt;&lt;ogc:Literal&gt;&lt;![CDATA[10800.0]]&gt;&lt;/ogc:Literal&gt;&lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;&lt;/ogc:Filter&gt;
+&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;LineSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;round&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#660000&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/LineSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
@@ -1510,7 +1442,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 								<title>SGID93_WATER_LakesDLG100</title>
 								<abstract>default3</abstract>
 								<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVR42mOsr7/+n4FKoLFRk5GJgcpg1MBRA0cNHDVw1EAaGUh1AAByqQQmyRa1PQAAAABJRU5ErkJggg==</legendImage>
-								<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Seen&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;SGID93_WATER_LakesDLG100&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_WATER_LakesDLG100&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#7f7fd7&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke'&gt;#4b4bbe&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+								<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Seen&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;SGID93_WATER_LakesDLG100&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_WATER_LakesDLG100&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#7f7fd7&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#4b4bbe&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 							</DirectStyle>
 						</Style>
 					</layer>
@@ -1565,7 +1497,6 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 								<name>default</name>
 								<title>default</title>
 								<abstract>default</abstract>
-								<legendImage></legendImage>
 							</NamedStyle>
 						</Style>
 					</layer>
@@ -1594,7 +1525,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 							<title>Gemeinden</title>
 							<abstract>default3</abstract>
 							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVR42mNMS0v7z0AlMGvWLEYmBiqDUQNHDRw1cNTAUQNpZCDVAQBCRQQmnvcbwAAAAABJRU5ErkJggg==</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Gemeinden&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Gemeinden&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_Municipalities&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#666666&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#5c5a5a&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Gemeinden&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Gemeinden&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:SGID93_Municipalities&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#666666&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#5c5a5a&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
@@ -1622,7 +1553,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../resources/META-INF/s
 							<title>Utah County</title>
 							<abstract>default3</abstract>
 							<legendImage>iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVR42mOsr6/3YqASaGxs3MbEQGUwauCogaMGjho4aiCNDKQ6AAAizQQmd5K1rAAAAABJRU5ErkJggg==</legendImage>
-							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah County&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah County&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.29&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cccccc&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;0.65&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
+							<sld>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;StyledLayerDescriptor version='1.0.0' xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&gt;&lt;NamedLayer&gt;&lt;Name&gt;Utah County&lt;/Name&gt;&lt;UserStyle xmlns='http://www.opengis.net/sld' xmlns:gml='http://www.opengis.net/gml' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xlink='http://www.w3.org/1999/xlink' &gt;&lt;Name&gt;default1&lt;/Name&gt;&lt;Title&gt;Utah County&lt;/Title&gt;&lt;Abstract&gt;default3&lt;/Abstract&gt;&lt;FeatureTypeStyle&gt;&lt;Title&gt;Regel 1&lt;/Title&gt;&lt;FeatureTypeName&gt;{http://www.deegree.org/app}:Utah_CO&lt;/FeatureTypeName&gt;&lt;SemanticTypeIdentifier&gt;generic:any&lt;/SemanticTypeIdentifier&gt;&lt;Rule&gt;&lt;Name&gt;default&lt;/Name&gt;&lt;Title&gt;default&lt;/Title&gt;&lt;Abstract&gt;default&lt;/Abstract&gt;&lt;MinScaleDenominator&gt;0.0&lt;/MinScaleDenominator&gt;&lt;MaxScaleDenominator&gt;1.0E9&lt;/MaxScaleDenominator&gt;&lt;PolygonSymbolizer&gt;&lt;Geometry&gt;&lt;ogc:PropertyName xmlns:app='http://www.deegree.org/app'&gt;app:GEOM&lt;/ogc:PropertyName&gt;&lt;/Geometry&gt;&lt;Fill&gt;&lt;CssParameter name='fill-opacity'&gt;0.29&lt;/CssParameter&gt;&lt;CssParameter name='fill'&gt;#808080&lt;/CssParameter&gt;&lt;/Fill&gt;&lt;Stroke&gt;&lt;CssParameter name='stroke-dasharray'&gt;1.0,0.0&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linejoin'&gt;mitre&lt;/CssParameter&gt;&lt;CssParameter name='stroke'&gt;#cccccc&lt;/CssParameter&gt;&lt;CssParameter name='stroke-opacity'&gt;0.65&lt;/CssParameter&gt;&lt;CssParameter name='stroke-linecap'&gt;butt&lt;/CssParameter&gt;&lt;CssParameter name='stroke-width'&gt;1.0&lt;/CssParameter&gt;&lt;/Stroke&gt;&lt;/PolygonSymbolizer&gt;&lt;/Rule&gt;&lt;/FeatureTypeStyle&gt;&lt;/UserStyle&gt;&lt;/NamedLayer&gt;&lt;/StyledLayerDescriptor&gt;</sld>
 						</DirectStyle>
 					</Style>
 				</layer>
