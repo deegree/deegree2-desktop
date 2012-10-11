@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -50,6 +49,7 @@ import org.deegree.model.filterencoding.PropertyName;
 /**
  * <code>ValueRange</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -227,37 +227,36 @@ public class ValueRange<U extends Comparable<U>> implements Comparable<ValueRang
         return getLabel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( max == null ) ? 0 : max.hashCode() );
+        result = prime * result + ( ( min == null ) ? 0 : min.hashCode() );
+        return result;
+    }
+
     @Override
     public boolean equals( Object obj ) {
-        if ( obj != null && obj instanceof ValueRange<?> ) {
-            ValueRange<?> vr = (ValueRange<?>) obj;
-            boolean minsAreEqual = false;
-            boolean maxsAreEqual = false;
-            // compare mins
-            if ( min != null ) {
-                minsAreEqual = min.equals( vr.min );
-            } else if ( min == null && vr.min == null ) {
-                minsAreEqual = true;
-            } else if ( min == null && vr.min != null ) {
-                minsAreEqual = vr.min.equals( min );
-            }
-
-            // compare max
-            if ( max != null ) {
-                maxsAreEqual = max.equals( vr.max );
-            } else if ( max == null && vr.max == null ) {
-                maxsAreEqual = true;
-            } else if ( max == null && vr.max != null ) {
-                maxsAreEqual = vr.max.equals( max );
-            }
-            return minsAreEqual && maxsAreEqual;
-        }
-        return false;
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        ValueRange<?> other = (ValueRange<?>) obj;
+        if ( max == null ) {
+            if ( other.max != null )
+                return false;
+        } else if ( !max.equals( other.max ) )
+            return false;
+        if ( min == null ) {
+            if ( other.min != null )
+                return false;
+        } else if ( !min.equals( other.min ) )
+            return false;
+        return true;
     }
 
     /*
