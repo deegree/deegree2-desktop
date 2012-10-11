@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  and
  lat/lon GmbH
@@ -47,10 +47,10 @@ import org.deegree.framework.xml.XMLFragment;
 import org.xml.sax.SAXException;
 
 /**
- * The <code></code> class TODO add class documentation here.
+ * The <code>DictionaryCollection</code> class TODO add class documentation here.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
- * 
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
  */
 public class DictionaryCollection {
 
-    private static List<Dictionary> dicts;
+    private List<Dictionary> dicts;
 
     /**
      * 
