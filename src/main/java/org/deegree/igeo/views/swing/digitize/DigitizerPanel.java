@@ -115,7 +115,7 @@ import org.deegree.model.spatialschema.Surface;
 import org.deegree.model.spatialschema.SurfacePatch;
 
 /**
- * Panl that will be used for drawing all digitizing operations like adding new geometries, moving vertices or selecting
+ * Panel that will be used for drawing all digitizing operations like adding new geometries, moving vertices or selecting
  * a geometry for removing. Because in deegree2 it is not so easy to draw specific features/geometries of a layers with
  * a different style than the others this class implements several drawing methods for selected and newly digitized
  * geometries. In future implementation this shall be removed to a central rendering module/engine.
