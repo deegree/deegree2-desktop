@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -50,6 +50,7 @@ import org.deegree.model.spatialschema.Point;
 /**
  * TODO add class documentation here
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:name@deegree.org">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -61,7 +62,7 @@ public class LabelSelectDrawingPane extends EditFeatureStyleDrawingPane {
 
     private static Color rectDrawColor = new Color( 0f, 0.9f, 0.4f );
     
-    protected static Color anchorColor = Color.RED;
+    private static Color anchorColor = Color.RED;
 
     private static Stroke rectStroke = new BasicStroke( 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1,
                                                         new float[] { 5, 5 }, 0 );
