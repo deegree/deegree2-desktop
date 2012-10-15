@@ -109,8 +109,8 @@ import org.deegree.igeo.dataadapter.wms.WMS130CapabilitiesEvaluator;
  * Manages settings for a project. If no settings are defined with a project they will be read from the general users
  * setting; if there are not settings defined either they will be read from general setting made by an administrator
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Your Name</a>
- * 
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -133,6 +133,8 @@ public class Settings {
     private DigitizingLinesOpt digitizingLinesOpt;
 
     /**
+     * constructs a new Settings Instance
+     * 
      * @param appCont
      * @param adminSettings
      * @param userSettings
@@ -167,9 +169,9 @@ public class Settings {
      * 
      * @return <code>true</code> if language can be changed
      */
-    public boolean isLanguageChangeable() {
+    public boolean languageIsChangeable() {
         return ( adminSettings == null || adminSettings.getLanguage().isChangeable() )
-               && ( userSettings == null | userSettings.getLanguage().isChangeable() );
+               && ( userSettings == null || userSettings.getLanguage().isChangeable() );
     }
 
     /**
@@ -254,7 +256,7 @@ public class Settings {
      */
     public void setPanLevel( float panLevel ) {
         if ( ( adminSettings == null || adminSettings.getMapHandling().isChangeable() )
-             && ( userSettings == null | userSettings.getMapHandling().isChangeable() ) ) {
+             && ( userSettings == null || userSettings.getMapHandling().isChangeable() ) ) {
             if ( projectSettings.getMapHandling() == null ) {
                 MapHandlingType mht = new MapHandlingType();
                 projectSettings.setMapHandling( mht );
