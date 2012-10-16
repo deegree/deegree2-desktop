@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -49,7 +48,7 @@ import org.deegree.igeo.config.OnlineResourceType;
  * Class for handling certificates 
  * TODO - just a dummy implementation
  * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -59,16 +58,18 @@ public class CertificateAI implements AuthenticationInformation {
 
     private String certificate;
     private URL url;
-    private CertificateAIType certificateAI;
+    private CertificateAIType certificateAIType;
 
     /**
+     * constructs a new CertificateAI.
      * 
-     * @param url
+     * @param certificateAIType used to create CertificateAI
      * @throws IOException
      */
-    public CertificateAI( CertificateAIType certificateAI ) throws IOException {
-        OnlineResourceType ot = certificateAI.getCertificate();
-        URL url = new URL( ot.getHref() );
+    public CertificateAI( CertificateAIType certificateAIType ) throws IOException {
+    	this.certificateAIType = certificateAIType;
+        OnlineResourceType ort = certificateAIType.getCertificate();
+        URL url = new URL( ort.getHref() );
         this.certificate = FileUtils.readTextFile( url ).toString();        
     }
 
@@ -96,7 +97,7 @@ public class CertificateAI implements AuthenticationInformation {
         this.url = url;
         OnlineResourceType ort = new OnlineResourceType();
         ort.setHref( url.toExternalForm() );
-        certificateAI.setCertificate( ort );
+        certificateAIType.setCertificate( ort );
     }
 
 }
