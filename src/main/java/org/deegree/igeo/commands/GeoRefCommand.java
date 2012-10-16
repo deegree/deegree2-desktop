@@ -1,7 +1,7 @@
 //$HeadURL: svn+ssh://aschmitz@wald.intevation.org/deegree/base/trunk/resources/eclipse/files_template.xml $
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2011 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -47,6 +47,7 @@ import org.deegree.kernel.AbstractCommand;
 
 /**
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  * @author last edited by: $Author: stranger $
  * 
@@ -83,7 +84,7 @@ public class GeoRefCommand extends AbstractCommand {
         ProcessBuilder pb = new ProcessBuilder();
         pb.command( prefix + "gdalwarp", "-t_srs", crs, sourceFile.toString(), file.toString() + "_tmp" );
         Process p = pb.start();
-        Reader in = new InputStreamReader( p.getInputStream() );
+        Reader in = new InputStreamReader( p.getInputStream(), "UTF-8" );
 
         StringBuilder log = new StringBuilder();
 
@@ -120,7 +121,7 @@ public class GeoRefCommand extends AbstractCommand {
             pb.command( prefix + "gdal_translate", "-co", "TFW=YES", file.toString() + "_tmp", file.toString() );
         }
         p = pb.start();
-        in = new InputStreamReader( p.getInputStream() );
+        in = new InputStreamReader( p.getInputStream(), "UTF-8" );
         while ( ( c = ( (char) in.read() ) ) != '\n' && c != '\uffff' )
             log.append( c );
         log.append( '\n' );
