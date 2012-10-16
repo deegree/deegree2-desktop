@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -49,19 +48,17 @@ import org.deegree.igeo.mapmodel.LayerGroup;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.kernel.AbstractCommand;
 import org.deegree.kernel.Command;
-import org.deegree.model.Identifier;
 
 /**
  * {@link Command} implementation for storing changes of data/layer into according backend
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
  * @version. $Revision$, $Date$
  */
 public class CommitDataChangesCommand extends AbstractCommand {
-
-    private Identifier identifier;
 
     private QualifiedName name = new QualifiedName( "Commit Data Changes" );
 
@@ -113,15 +110,6 @@ public class CommitDataChangesCommand extends AbstractCommand {
             List<LayerGroup> groups = group.getLayerGroups();
             collect( groups );
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.kernel.Command#getIdentifier()
-     */
-    public Identifier getIdentifier() {
-        return identifier;
     }
 
     /*
