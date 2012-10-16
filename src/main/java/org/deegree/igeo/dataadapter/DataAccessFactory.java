@@ -147,14 +147,14 @@ public class DataAccessFactory {
      */
     public static Datasource createDatasource( String name, FeatureCollection featureCollection ) {
         Envelope env = null;
+        MemoryDatasourceType mdst = new MemoryDatasourceType();
+        mdst.setName( name );
         try {
             env = featureCollection.getBoundedBy();
+            mdst.setExtent( Util.convertEnvelope( env ) );
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-        MemoryDatasourceType mdst = new MemoryDatasourceType();
-        mdst.setName( name );
-        mdst.setExtent( Util.convertEnvelope( env ) );
         mdst.setEditable( true );
         mdst.setLazyLoading( false );
         mdst.setQueryable( true );
