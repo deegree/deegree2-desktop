@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2009 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -717,7 +717,7 @@ public class IGeoDesktopEventHandler {
             env = sf.getFileMBR();
         } else if ( tmp.endsWith( ".xml" ) || tmp.endsWith( ".gml" ) ) {
             GMLFeatureCollectionDocument doc = new GMLFeatureCollectionDocument();
-            doc.load( file.toURL() );
+            doc.load( file.toURI().toURL() );
             env = doc.parse().getBoundedBy();
         } else if ( tmp.endsWith( ".gif" ) || tmp.endsWith( ".bmp" ) || tmp.endsWith( ".png" ) || tmp.endsWith( ".jpg" )
                     || tmp.endsWith( ".jpeg" ) || tmp.endsWith( ".tif" ) || tmp.endsWith( ".tiff" ) ) {
