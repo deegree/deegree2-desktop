@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -70,6 +69,7 @@ import org.deegree.model.filterencoding.FilterEvaluationException;
 /**
  * <code>LineVisualPropertyPanel</code>
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -98,6 +98,11 @@ public class LineVisualPropertyPanel extends AbstractVisualPropertyPanel {
     // private DisplacementPanel displacementPanel;
     // private LineOffsetPanel lineOffsetPanel;
 
+    /**
+     * constructs a new LineVisualPropertyPanel
+     * 
+     * @param owner StyleDialog owning this instance. Must not be <code>null</code>.
+     */
     public LineVisualPropertyPanel( StyleDialog owner ) {
         super( owner, new LineVisualPropertyPerformer() );
         init();
@@ -159,17 +164,19 @@ public class LineVisualPropertyPanel extends AbstractVisualPropertyPanel {
 
             CssParameter widthParam = (CssParameter) stroke.getCssParameters().get( "stroke-width" );
 
-            if ( widthParam != null && widthParam.getValueAsPropertyName() != null ) {
-                widthPanel.setValue( widthParam.getValueAsPropertyName() );
-            } else {
-                ParameterValueType pvt = (ParameterValueType) widthParam.getValue();
-                double defaultValue;
-                try {
-                    defaultValue = stroke.getWidth( null );
-                } catch ( Exception e ) {
-                    defaultValue = SldValues.getDefaultLineWidth();
-                }
-                widthPanel.setValue( UnitsValue.readFromParameterValueType( pvt, defaultValue ) );
+            if ( widthParam != null ) {
+	            if ( widthParam.getValueAsPropertyName() != null ) {
+	                widthPanel.setValue( widthParam.getValueAsPropertyName() );
+	            } else {
+	                ParameterValueType pvt = (ParameterValueType) widthParam.getValue();
+	                double defaultValue;
+	                try {
+	                    defaultValue = stroke.getWidth( null );
+	                } catch ( Exception e ) {
+	                    defaultValue = SldValues.getDefaultLineWidth();
+	                }
+	                widthPanel.setValue( UnitsValue.readFromParameterValueType( pvt, defaultValue ) );
+	            }
             }
             lineCapPanel.setValue( stroke.getLineCap( null ) );
             lineStylePanel.setValue( stroke.getDashArray( null ) );
@@ -207,7 +214,7 @@ public class LineVisualPropertyPanel extends AbstractVisualPropertyPanel {
         // lineProperties.addTab( "Line Offset", lineOffsetPanel );
         // lineProperties.addTab( "Displacement", displacementPanel );
         styleAttributeContainer.addTab( get( "$MD10919" ), presetsPanel );
-        if ( getOwner().getPropertyNames() != null && getOwner().getPropertyNames().size() > 0 ) {
+        if ( getOwner().getPropertyNames().size() > 0 ) {
             classificationPanel = new LineClassificationPanel( this );
             styleAttributeContainer.addTab( get( "$MD10936" ), classificationPanel );
         }
