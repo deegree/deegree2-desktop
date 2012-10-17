@@ -1,7 +1,7 @@
 //$HeadURL: svn+ssh://jwanhoff@svn.wald.intevation.org/deegree/deegree2/deegree2-base/trunk/deegree2-core/resources/eclipse/files_template.xml $
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2010 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -90,10 +90,10 @@ public class Encryption {
             Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.ENCRYPT_MODE, key );
 
-            byte[] encrypted = cipher.doFinal( textToEncrypt.getBytes() );
+            byte[] encrypted = cipher.doFinal( textToEncrypt.getBytes( "UTF-8" ) );
             return new BASE64Encoder().encode( encrypted );
         } catch ( Exception e ) {
-            LOG.logError( "Could not encrypt, return original text:" + e.getMessage() );
+            LOG.logError( "Could not encrypt, returning original text:" + e.getMessage() );
             return textToEncrypt;
         }
     }
@@ -121,7 +121,7 @@ public class Encryption {
             Key key = loadKey( ciph, passFilename );
             cipher.init( Cipher.DECRYPT_MODE, key );
             byte[] decrypted = cipher.doFinal( new BASE64Decoder().decodeBuffer( textToDecryt ) );
-            return new String( decrypted );
+            return new String( decrypted, "UTF-8" );
         } catch ( Exception e ) {
             LOG.logError( "Could not decrypt, return original text:" + e.getMessage() );
             return textToDecryt;
@@ -145,6 +145,6 @@ public class Encryption {
         prop.load( is );
         is.close();
         String pass = prop.getProperty( "passphrase" );
-        return new SecretKeySpec( pass.getBytes(), cipher );
+        return new SecretKeySpec( pass.getBytes( "UTF-8" ), cipher );
     }
 }

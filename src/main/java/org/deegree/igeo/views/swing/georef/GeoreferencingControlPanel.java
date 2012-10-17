@@ -387,7 +387,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
             pb.command( "gdalwarp" );
             Process p = pb.start();
             in = p.getInputStream();
-            String s = new String( IOUtils.toByteArray( in ) );
+            String s = new String( IOUtils.toByteArray( in ), "UTF-8" );
             if ( p.waitFor() != 1 || !s.startsWith( "Usage:" ) ) {
                 JFileChooser dlg = new JFileChooser( new File( prefix ) );
                 dlg.setDialogTitle( Messages.get( "$DI10092" ) );
@@ -518,7 +518,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         	sourceFile = file;
         	PrintStream out = null;
             try {
-                worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld" );
+                worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld", "UTF-8" );
                 out = new PrintStream( new FileOutputStream( worldFile ) );
                 // use the image coordinate system here (identity matrix, no translation), just flip
                 out.println( 1 );
