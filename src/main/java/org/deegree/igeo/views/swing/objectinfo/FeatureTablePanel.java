@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -111,10 +110,10 @@ import org.deegree.model.spatialschema.GeometryException;
 
 /**
  * 
- * The <code></code> class TODO add class documentation here.
+ * The <code>FeatureTablePanel</code> class. TODO add class documentation here.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
- * 
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -437,7 +436,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
      * sets a new FeatureCollection to be displayed with a {@link FeatureTablePanel}
      * 
      * @param layer
-     * @param featureCollection
+     * @param featureCollection  must not be <code>null</code>
      */
     public void setFeatureCollection( Layer layer, final FeatureCollection featureCollection ) {
         this.featureCollection = featureCollection;
@@ -472,24 +471,21 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
 
         this.invalidate();
         this.repaint();
-        if ( featureCollection != null ) {
-            Thread th = new Thread() {
-                @Override
-                public void run() {
-                    GMLFeatureAdapter ada = new GMLFeatureAdapter( true );
-                    try {
-                        XMLFragment xml = ada.export( featureCollection );
-                        taGML.setText( xml.getAsPrettyString() );
-                    } catch ( Exception e ) {
-                        LOG.logDebug( "Stack trace", e );
-                        DialogFactory.openErrorDialog( "Application", null, Messages.get( "$MD10538" ),
-                                                       Messages.get( "$MD10539" ), e );
-                    }
-
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                GMLFeatureAdapter ada = new GMLFeatureAdapter( true );
+                try {
+                    XMLFragment xml = ada.export( featureCollection );
+                    taGML.setText( xml.getAsPrettyString() );
+                } catch ( Exception e ) {
+                    LOG.logDebug( "Stack trace", e );
+                    DialogFactory.openErrorDialog( "Application", null, Messages.get( "$MD10538" ),
+                                                   Messages.get( "$MD10539" ), e );
                 }
-            };
-            th.start();
-        }
+            }
+        };
+        th.start();    
     }
 
     private void markSelectedFeatures( Layer layer, final FeatureCollection featureCollection ) {
