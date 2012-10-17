@@ -990,7 +990,7 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
 
     /**
      * 
-     * The <code>IGeoDesktop</code> class TODO add class documentation here.
+     * The <code>MenuNode</code> class TODO add class documentation here.
      * 
      * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
      * 
@@ -1052,7 +1052,8 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
                 new LoginDialog( g );
             }
         } catch ( Exception e ) {
-            spw.dispose();
+        	if ( spw != null )
+        		spw.dispose();
             String msg = e.getMessage();
             if ( msg == null || msg.trim().length() == 0 ) {
                 msg = e.getClass().getName();
