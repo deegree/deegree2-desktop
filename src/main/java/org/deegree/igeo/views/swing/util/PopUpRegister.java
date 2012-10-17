@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -70,8 +69,9 @@ import org.deegree.igeo.views.swing.ControlElement;
 import org.deegree.igeo.views.swing.PopUpMenu;
 
 /**
+ * TODO add class description
  * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -131,7 +131,9 @@ public class PopUpRegister {
 
             for ( PopUpEntryType entry : popupEntries ) {
                 JMenuItem menuItem = null;
-                if ( entry.getEntryType() == null || entry.getEntryType() == EntryValueType.SIMPLE_ITEM ) {
+                if ( entry.getEntryType() == null ) {
+                	menuItem = new JMenuItem( Messages.getMessage( component.getLocale(), entry.getName() ) );
+                } else if ( entry.getEntryType() == EntryValueType.SIMPLE_ITEM ) {
                     menuItem = new JMenuItem( Messages.getMessage( component.getLocale(), entry.getName() ) );
                 } else if ( entry.getEntryType() == EntryValueType.RADIO_BUTTON_ITEM ) {
                     menuItem = new JRadioButtonMenuItem( Messages.getMessage( component.getLocale(), entry.getName() ) );
@@ -141,6 +143,9 @@ public class PopUpRegister {
                     menuItem = new JCheckBoxMenuItem( Messages.getMessage( component.getLocale(), entry.getName() ) );
                     menuItem.setIcon( IconRegistry.getIcon( "checkbox_unselected.gif" ) );
                     menuItem.setSelectedIcon( IconRegistry.getIcon( "checkbox_selected.gif" ) );
+                } else {
+                	// TODO is a log message necessary? This case should not happen.
+                	menuItem = new JMenuItem( Messages.getMessage( component.getLocale(), entry.getName() ) );
                 }
                 addIcon( appContainer, entry.getIcon(), menuItem );
                 menuItem.setName( entry.getAssignedAction() );
