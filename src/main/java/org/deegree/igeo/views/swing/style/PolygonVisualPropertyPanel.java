@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -201,17 +201,19 @@ public class PolygonVisualPropertyPanel extends AbstractVisualPropertyPanel {
 
                 // widthPanel
                 CssParameter widthParam = (CssParameter) stroke.getCssParameters().get( "stroke-width" );
-                if ( widthParam != null && widthParam.getValueAsPropertyName() != null ) {
-                    widthPanel.setValue( widthParam.getValueAsPropertyName() );
-                } else {
-                    ParameterValueType pvt = (ParameterValueType) widthParam.getValue();
-                    double defaultValue;
-                    try {
-                        defaultValue = stroke.getWidth( null );
-                    } catch ( Exception e ) {
-                        defaultValue = SldValues.getDefaultLineWidth();
-                    }
-                    widthPanel.setValue( UnitsValue.readFromParameterValueType( pvt, defaultValue ) );
+                if ( widthParam != null ) {
+	                if ( widthParam.getValueAsPropertyName() != null ) {
+	                    widthPanel.setValue( widthParam.getValueAsPropertyName() );
+	                } else {
+	                    ParameterValueType pvt = (ParameterValueType) widthParam.getValue();
+	                    double defaultValue;
+	                    try {
+	                        defaultValue = stroke.getWidth( null );
+	                    } catch ( Exception e ) {
+	                        defaultValue = SldValues.getDefaultLineWidth();
+	                    }
+	                    widthPanel.setValue( UnitsValue.readFromParameterValueType( pvt, defaultValue ) );
+	                }
                 }
                 lineStylePanel.setValue( stroke.getDashArray( null ) );
             }
