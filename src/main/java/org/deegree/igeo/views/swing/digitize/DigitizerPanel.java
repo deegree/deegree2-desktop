@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -120,6 +120,7 @@ import org.deegree.model.spatialschema.SurfacePatch;
  * a different style than the others this class implements several drawing methods for selected and newly digitized
  * geometries. In future implementation this shall be removed to a central rendering module/engine.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
  * 
@@ -360,12 +361,12 @@ public class DigitizerPanel extends JPanel {
                     FeatureCollection fc = null;
                     try {
                         fc = ( (FeatureAdapter) adapter ).getFeatureCollection( mapModel.getEnvelope() );
+	                    Iterator<Feature> iterator = fc.iterator();
+	                    while ( iterator.hasNext() ) {
+	                        drawFeature( g, gt, iterator.next() );
+	                    }
                     } catch ( FilterEvaluationException e ) {
-                        e.printStackTrace();
-                    }
-                    Iterator<Feature> iterator = fc.iterator();
-                    while ( iterator.hasNext() ) {
-                        drawFeature( g, gt, iterator.next() );
+                    	e.printStackTrace();
                     }
                 }
             }
