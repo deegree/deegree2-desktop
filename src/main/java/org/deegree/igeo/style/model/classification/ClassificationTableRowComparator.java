@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -48,8 +47,9 @@ import org.deegree.igeo.style.model.classification.Column.COLUMNTYPE;
 import org.deegree.model.filterencoding.PropertyName;
 
 /**
- * <code>ClassificationTableRowComparator</code>
+ * <code>ClassificationTableRowComparator</code> TODO add class documentation
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Lyn Buesching</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -72,33 +72,39 @@ public class ClassificationTableRowComparator<U extends Comparable<U>> implement
     // f < s -> -
     // f > s -> +
     public int compare( ClassificationTableRow<U> o1, ClassificationTableRow<U> o2 ) {
-        if ( o1 == null && o2 == null ) {
+    	Boolean o1IsNull = Boolean.valueOf(o1 == null);
+    	Boolean o2IsNull = Boolean.valueOf(o2 == null);
+    	if ( o1IsNull && o2IsNull ) {
             return 0;
-        } else if ( o1 == null && o2 != null ) {
+        } else if ( o1IsNull ) {
             return 1;
-        } else if ( o1 != null && o2 == null ) {
+        } else if ( o2IsNull ) {
             return -1;
         }
+    	
         Object value1 = o1.getValue( selectedColumn );
         Object value2 = o1.getValue( selectedColumn );
-        if ( value1 == null && value2 == null ) {
+        Boolean value1IsNull = Boolean.valueOf(value1 == null);
+        Boolean value2IsNull = Boolean.valueOf(value2 == null);        
+        if ( value1IsNull && value2IsNull ) {
             return 0;
-        } else if ( value1 == null && value2 != null ) {
+        } else if ( value1IsNull ) {
             return 1;
-        } else if ( value1 != null && value2 == null ) {
+        } else if ( value2IsNull ) {
             return -1;
         }
+        
         if ( value1 instanceof PropertyName && value2 instanceof PropertyName ) {
-            if ( ( (PropertyName) value1 ).toString() != null && ( (PropertyName) value2 ).toString() == null ) {
-                return -1;
-            } else if ( ( (PropertyName) value1 ).toString() == null
-                        && ( (PropertyName) value2 ).toString() != null ) {
+        	Boolean value1StringIsNull = Boolean.valueOf(((PropertyName) value1 ).toString() == null);
+        	Boolean value2StringIsNull = Boolean.valueOf(((PropertyName) value2 ).toString() == null);
+        	if ( value1StringIsNull && value2StringIsNull ) {
+        		return 0;
+        	} else if ( value1StringIsNull ) {
                 return 1;
-            } else if ( ( (PropertyName) value1 ).toString() != null
-                        && ( (PropertyName) value2 ).toString() != null ) {
-                return ( (PropertyName) value1 ).toString().compareTo( ( (PropertyName) value2 ).toString() );
+            } else if ( value2StringIsNull ) {
+                return -1;
             } else {
-                return 0;
+            	return ( (PropertyName) value1 ).toString().compareTo( ( (PropertyName) value2 ).toString() );
             }
         }
 
