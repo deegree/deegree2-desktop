@@ -1,7 +1,7 @@
 //$HeadURL: svn+ssh://aschmitz@wald.intevation.org/deegree/base/trunk/resources/eclipse/files_template.xml $
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2011 by:
+ Copyright (C) 2001-2012 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -115,7 +115,9 @@ import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.GeometryFactory;
 
 /**
+ * TODO add class documentation
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  * @author last edited by: $Author: stranger $
  * 
@@ -239,6 +241,13 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         buttons.enable( false );
     }
 
+    /**
+     * 
+     * @param leftModule
+     * @param left
+     * @param rightModule
+     * @param right map model. Must not be <code>null</code>.
+     */
     public void setMapModel( DefaultMapModule<?> leftModule, MapModel left, DefaultMapModule<?> rightModule,
                              MapModel right ) {
         this.leftModule = leftModule;
@@ -506,10 +515,11 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
 
         }
         if ( file != null ) {
+        	sourceFile = file;
+        	PrintStream out = null;
             try {
-                sourceFile = file;
                 worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld" );
-                PrintStream out = new PrintStream( new FileOutputStream( worldFile ) );
+                out = new PrintStream( new FileOutputStream( worldFile ) );
                 // use the image coordinate system here (identity matrix, no translation), just flip
                 out.println( 1 );
                 out.println( 0 );
@@ -526,6 +536,9 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
                 appContainer.getCommandProcessor().executeSychronously( cmd, true );
             } catch ( Throwable e ) {
                 e.printStackTrace();
+            } finally {
+            	if (out != null)
+            		out.close();            	
             }
 
             String crsName = right.getCoordinateSystem().getPrefixedName();
