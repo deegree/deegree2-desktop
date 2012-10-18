@@ -111,7 +111,7 @@ public class ClassificationCalculator<U extends Comparable<U>> {
                 result.add( new ValueRange<U>( null, values.get( 0 ), 0 ) );
                 result.add( new ValueRange<U>( values.get( 0 ), null, values.size() ) );
             } else {
-                int valuesPerClass = (int) Math.floor( values.size() / numberOfClasses );
+                int valuesPerClass = values.size() / numberOfClasses;
 
                 // position of the max value inserted in the last class
                 int pos = valuesPerClass - 1;
