@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -81,8 +80,8 @@ import org.deegree.model.spatialschema.Surface;
  * {@link Command} implementation for creating buffers around geometries of a layer. The result will be added as new
  * layer.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
- * 
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -189,9 +188,7 @@ public class BufferCommand extends AbstractCommand {
                         System.gc();
                         return;
                     }
-                    if ( processMonitor != null ) {
-                        processMonitor.updateStatus( cnt++, "" );
-                    }
+                    processMonitor.updateStatus( cnt++, "" );
                     Feature feature = (Feature) iterator.next();
                     if ( this.propertyForBufferDistance != null ) {
                         fillDistancesFromProperty( feature );
