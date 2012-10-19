@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,13 +20,12 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
-
+ http://www.lat-lon.de
+ 
  Prof. Dr. Klaus Greve
  Department of Geography
  University of Bonn
@@ -56,9 +55,9 @@ import org.deegree.model.spatialschema.Position;
 import org.deegree.model.spatialschema.Surface;
 
 /**
+ * TODO add class documentation
  * 
- * 
- * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:bh@intevation.de">Bernhard Herzog</a>
  * @author last edited by: $Author$
  * 
@@ -66,9 +65,9 @@ import org.deegree.model.spatialschema.Surface;
  */
 public class CreatePolygonDrawingPane extends SwingGeoDrawingPane {
 
-    protected static Color FILLCOLOR = new Color( 1f, 1f, 1f, 0.6f );
+    protected final static Color FILLCOLOR = new Color( 1f, 1f, 1f, 0.6f );
 
-    protected static Color DRAWCOLOR = new Color( 0f, 1f, 0.5f, 0.8f );
+    protected final static Color DRAWCOLOR = new Color( 0f, 1f, 0.5f, 0.8f );
 
     protected BasicStroke stroke = new BasicStroke( 4 );
 
