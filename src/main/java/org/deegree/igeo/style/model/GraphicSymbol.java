@@ -1,6 +1,6 @@
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2007 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -19,12 +19,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ http://www.lat-lon.de/
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -59,8 +58,9 @@ import org.deegree.framework.log.LoggerFactory;
 import com.sun.media.jai.codec.MemoryCacheSeekableStream;
 
 /**
- * <code>GraphicSymbol</code>
+ * <code>GraphicSymbol</code> TODO add class documentation
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching</a>
  * @author last edited by: $Author$
  * 
@@ -141,8 +141,8 @@ public class GraphicSymbol extends Symbol implements Comparable<GraphicSymbol> {
                 TranscoderInput input = new TranscoderInput( in );
 
                 if ( size > 0 ) {
-                    trc.addTranscodingHint( KEY_HEIGHT, new Float( size ) );
-                    trc.addTranscodingHint( KEY_WIDTH, new Float( size ) );
+                    trc.addTranscodingHint( KEY_HEIGHT, Float.valueOf( size ) );
+                    trc.addTranscodingHint( KEY_WIDTH, Float.valueOf( size ) );
                 }
                 trc.transcode( input, output );
                 bos.close();
@@ -186,12 +186,17 @@ public class GraphicSymbol extends Symbol implements Comparable<GraphicSymbol> {
     }
 
     public int compareTo( GraphicSymbol o ) {
-        if ( o.getName() == null && this.getName() != null ) {
+        String ownName = this.getName();
+        String otherName = o.getName();
+        Boolean ownNameIsNull = Boolean.valueOf( ownName == null );
+        Boolean otherNameIsNull = Boolean.valueOf( otherName == null );
+        if ( otherNameIsNull && ownNameIsNull ) {
+            return 0;
+        } else if ( otherNameIsNull && !ownNameIsNull ) {
             return 1;
-        }
-        if ( o.getName() != null && this.getName() == null ) {
+        } else if ( !otherNameIsNull && ownNameIsNull ) {
             return -1;
-        }
-        return this.getName().compareTo( o.getName() );
+        } else
+            return ownName.compareTo( otherName );
     }
 }
