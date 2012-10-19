@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ http://www.lat-lon.de/
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -39,10 +38,10 @@
 package org.deegree.igeo.settings;
 
 /**
- * The <code></code> class TODO add class documentation here.
+ * The <code>ElementSettings</code> class. Abstract base class for settings and options.
  * 
+ * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
- * 
  * @author last edited by: $Author$
  * 
  * @version $Revision$, $Date$
@@ -53,7 +52,10 @@ abstract class ElementSettings {
     protected boolean changeable;
 
     /**
+     * constructs new ElementSettings
+     * 
      * @param changeable
+     *            settings will be changeable if set to <code>true</code>
      */
     public ElementSettings( boolean changeable ) {
         super();
