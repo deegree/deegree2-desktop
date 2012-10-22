@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ http://www.lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -98,8 +97,7 @@ import org.deegree.igeo.views.swing.util.IconRegistry;
 import org.deegree.kernel.Command;
 
 /**
- * 
- * 
+ * TODO add class documentation
  * 
  * @author <a href="mailto:poth@lat-lon.de">Andreas Poth</a>
  * @author last edited by: $Author$
@@ -531,11 +529,12 @@ public class DnDJTree extends JTree implements DragSourceListener, DropTargetLis
                     LayerNode ln = ( (LayerNode) value );
                     label_ = ( (LayerNode) value ).getTreeLabel();
                     // select tree node if layer is selected for action
-                    label_.setSelected( ( (Layer) ln.getUserObject() ).getSelectedFor().contains(
-                                                                                                  MapModel.SELECTION_ACTION ) );
+                    label_.setSelected( ( (Layer) ln.getUserObject() ).getSelectedFor().contains( MapModel.SELECTION_ACTION ) );
                 } else if ( value instanceof LayerGroupNode ) {
                     label_ = ( (LayerGroupNode) value ).getTreeLabel();
                     label_.setSelected( false );
+                } else {
+                    throw new RuntimeException( "label_ not initialized!" );
                 }
                 label_.setFocus( hasFocus );
                 label_.setTree( tree );
