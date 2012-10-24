@@ -47,6 +47,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
@@ -63,6 +64,7 @@ import org.deegree.igeo.views.swing.AttributeCriteriaPanel;
 import org.deegree.igeo.views.swing.util.GuiUtils;
 import org.deegree.igeo.views.swing.util.IconRegistry;
 import org.deegree.kernel.Command;
+import org.deegree.model.Identifier;
 import org.deegree.model.feature.schema.PropertyType;
 import org.deegree.model.filterencoding.ComplexFilter;
 import org.deegree.model.filterencoding.Filter;
@@ -82,7 +84,7 @@ public class SelectByAttributeDialog extends JDialog {
 
     private static final long serialVersionUID = 8985710922491934454L;
 
-    private AttributeCriteriaPanel attrPanel;
+    private AttributeCriteriaPanel attributePanel;
 
     private Layer layer;
 
@@ -93,7 +95,7 @@ public class SelectByAttributeDialog extends JDialog {
      * @param mapModel
      */
     public SelectByAttributeDialog( MapModel mapModel ) {
-        setSize( new Dimension( 450, 550 ) );
+        setSize( new Dimension( 450, 600 ) );
         Point p = GuiUtils.getCenterOfMainFrame();
         setLocation( p.x - getWidth() / 2, p.y - getHeight() / 2 );
         appCont = mapModel.getApplicationContainer();
@@ -119,11 +121,13 @@ public class SelectByAttributeDialog extends JDialog {
         QualifiedName featureType = ( (FeatureAdapter) ada ).getSchema().getName();
         PropertyType[] pt = ( (FeatureAdapter) ada ).getSchema().getProperties();
         List<QualifiedName> propertyNames = new ArrayList<QualifiedName>( pt.length );
+        
         for ( PropertyType propertyType : pt ) {
             if ( propertyType.getType() != Types.GEOMETRY ) {
                 propertyNames.add( propertyType.getName() );
             }
         }
+        
         DictionaryCollection dictCollection = appCont.getSettings().getDictionaries();
         initGUI( propertyNames, featureType, dictCollection );
 
@@ -135,15 +139,23 @@ public class SelectByAttributeDialog extends JDialog {
     private void initGUI( List<QualifiedName> propertyNames, QualifiedName featureType,
                           DictionaryCollection dictCollection ) {
         setLayout( new BorderLayout() );
-        add( attrPanel = new AttributeCriteriaPanel( propertyNames, featureType, dictCollection ), BorderLayout.CENTER );
-        JPanel pnButtons = new JPanel( new FlowLayout( FlowLayout.LEFT ) );
-        JButton btOK = new JButton( Messages.getMessage( getLocale(), "$MD11598" ), IconRegistry.getIcon( "accept.png" ) );
-        btOK.addActionListener( new ActionListener() {
+        
+        // adds an attribute panel that holds the criteria to be applied in the feature search
+        add( attributePanel = new AttributeCriteriaPanel( propertyNames, featureType, dictCollection ), BorderLayout.CENTER );
 
-            public void actionPerformed( ActionEvent e ) {
-                List<Operation> allOperations = new ArrayList<Operation>();
-                List<Operation> attOperations = attrPanel.getOperations();
-
+        JPanel applyAndCloseButtonsPanel = new JPanel( new FlowLayout( FlowLayout.LEFT ) );
+        
+        /** adds an gml-id text field
+        final JTextField gmlIdValueTextField = new JTextField("Hier gml-id eingeben",120);
+        applyAndCloseButtonsPanel.add(gmlIdValueTextField); **/
+        
+        JButton applyButton = new JButton( Messages.getMessage( getLocale(), "$MD11598" ), IconRegistry.getIcon( "accept.png" ) );
+        applyButton.addActionListener( new ActionListener() {
+        	
+        	// applies the filter operations given in the attribute panel
+            public void actionPerformed( ActionEvent e ) {               
+            	List<Operation> allOperations = new ArrayList<Operation>();
+                List<Operation> attOperations = attributePanel.getOperations();
                 for ( Operation operation : attOperations ) {
                     allOperations.add( operation );
                 }
@@ -155,14 +167,24 @@ public class SelectByAttributeDialog extends JDialog {
                     } else {
                         // create a logical operation out of all operations combined with the logical
                         // operation
-                        int operation = OperationDefines.getIdByName( attrPanel.getOperation() );
+                        int operation = OperationDefines.getIdByName( attributePanel.getOperation() );
                         finalOperation = new LogicalOperation( operation, allOperations );
                     }
-                    // create the filter
+                    
+                    /** Enables GML-ID search
+                    Identifier identifier = new Identifier(gmlIdValueTextField.getText(), null);
+                    List<Identifier> fid = new ArrayList<Identifier>();
+                    fid.add(identifier); 
+                    Command cmdFid = new SelectFeatureCommand( layer, fid, false);
+                    **/                   
+                    
+                    // create the attribute filter                 
                     Filter filter = new ComplexFilter( finalOperation );
                     Command cmd = new SelectFeatureCommand( layer, filter, false );
                     try {
+                    	// apply the attribute filter
                         appCont.getCommandProcessor().executeSychronously( cmd, true );
+                        // appCont.getCommandProcessor().executeSychronously( cmdFid, true );
                     } catch ( Exception ex ) {
                         DialogFactory.openErrorDialog( appCont.getViewPlatform(), SelectByAttributeDialog.this,
                                                        Messages.getMessage( getLocale(), "$MD11600" ),
@@ -176,17 +198,17 @@ public class SelectByAttributeDialog extends JDialog {
                 }
             }
         } );
-        pnButtons.add( btOK );
-        JButton btClose = new JButton( Messages.getMessage( getLocale(), "$MD11599" ),
+        applyAndCloseButtonsPanel.add( applyButton );
+        JButton closeButton = new JButton( Messages.getMessage( getLocale(), "$MD11599" ),
                                        IconRegistry.getIcon( "cancel.png" ) );
-        btClose.addActionListener( new ActionListener() {
+        closeButton.addActionListener( new ActionListener() {
 
             public void actionPerformed( ActionEvent e ) {
                 dispose();
             }
         } );
-        pnButtons.add( btClose );
-        add( pnButtons, BorderLayout.SOUTH );
+        applyAndCloseButtonsPanel.add( closeButton );
+        add( applyAndCloseButtonsPanel, BorderLayout.SOUTH );
     }
 
 }
