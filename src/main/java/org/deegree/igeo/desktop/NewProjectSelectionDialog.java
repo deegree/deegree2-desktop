@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -103,6 +104,8 @@ class NewProjectSelectionDialog extends javax.swing.JDialog {
 
     private static final long serialVersionUID = -5680059587928210444L;
 
+    private static final Charset charset = Charset.forName( "UTF-8" );
+    
     private JTextField loadingProject;
 
     private JPanel templatePanel;
@@ -217,13 +220,13 @@ class NewProjectSelectionDialog extends javax.swing.JDialog {
         InputStreamReader isr = null;
         if ( res.startsWith( "file:" ) || res.startsWith( "http:" ) || res.startsWith( "ftp:" ) ) {
             try {
-                isr = new InputStreamReader( new URL( res ).openStream() );
+                isr = new InputStreamReader( new URL( res ).openStream(), charset );
             } catch ( IOException e1 ) {
                 e1.printStackTrace();
-                isr = new InputStreamReader( getClass().getResourceAsStream( "countries.csv" ) );
+                isr = new InputStreamReader( getClass().getResourceAsStream( "countries.csv" ), charset );
             }
         } else {
-            isr = new InputStreamReader( getClass().getResourceAsStream( res ) );
+            isr = new InputStreamReader( getClass().getResourceAsStream( res ), charset );
         }
         BufferedReader br = new BufferedReader( isr );
         List<Country> list = new ArrayList<Country>();
