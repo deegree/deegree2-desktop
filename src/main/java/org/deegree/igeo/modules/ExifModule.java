@@ -69,6 +69,7 @@ import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
 import org.apache.sanselan.formats.jpeg.exifRewrite.ExifRewriter;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata.GPSInfo;
+import org.apache.sanselan.formats.tiff.write.TiffImageWriterLossless;
 import org.apache.sanselan.formats.tiff.write.TiffOutputSet;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
@@ -239,10 +240,20 @@ public class ExifModule<T> extends DefaultModule<T> {
         }
     }
 
-    private static Pair<Feature, String> obtainFeatureFromImage( File file, GeoTransformer transformer ) {
+    private Pair<Feature, String> obtainFeatureFromImage( File file, GeoTransformer transformer ) {
         try {
             IImageMetadata metadata = Sanselan.getMetadata( file );
-            GPSInfo gps = ( (JpegImageMetadata) metadata ).getExif().getGPS();
+            GPSInfo gps = null;
+            if ( metadata instanceof JpegImageMetadata ) {
+                gps = ( (JpegImageMetadata) metadata ).getExif().getGPS();
+            } else if ( metadata instanceof TiffImageMetadata ) {
+                gps = ( (TiffImageMetadata) metadata ).getGPS();
+            } else {
+                DialogFactory.openErrorDialog( appContainer.getViewPlatform(),
+                                               ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10898" ),
+                                               get( "$DI10017" ) );
+                return new Pair<Feature, String>();
+            }
 
             Point point = createPoint( gps.getLongitudeAsDegreesEast(), gps.getLatitudeAsDegreesNorth(), unrealWGS84 );
             point = (Point) transformer.transform( point );
@@ -300,6 +311,8 @@ public class ExifModule<T> extends DefaultModule<T> {
                         if ( metadata instanceof JpegImageMetadata ) {
                             TiffImageMetadata exif = ( (JpegImageMetadata) metadata ).getExif();
                             outputSet = exif.getOutputSet();
+                        } else if ( metadata instanceof TiffImageMetadata ) {
+                            outputSet = ( (TiffImageMetadata) metadata ).getOutputSet();
                         }
                         if ( metadata == null ) {
                             outputSet = new TiffOutputSet();
@@ -327,8 +340,12 @@ public class ExifModule<T> extends DefaultModule<T> {
                         out.close();
 
                         byte[] bs = out.toByteArray();
-                        new ExifRewriter().updateExifMetadataLossless( bs, new FileOutputStream( file ), outputSet );
-
+                        FileOutputStream os = new FileOutputStream( file );
+                        if ( metadata == null || metadata instanceof JpegImageMetadata ) {
+                            new ExifRewriter().updateExifMetadataLossless( bs, os, outputSet );
+                        } else {
+                            new TiffImageWriterLossless( bs ).write( os, outputSet );
+                        }
                         prefs.put( "lastExifSaveDir" + getVersionNumber(), file.getParent() );
 
                         DialogFactory.openInformationDialog( appContainer.getViewPlatform(),
