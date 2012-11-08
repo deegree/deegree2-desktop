@@ -84,6 +84,8 @@ public class MeasurePanel extends JPanel {
 
     private DrawingPane drawingPane;
 
+    private Container parent;
+
     /**
      * 
      * @param module
@@ -96,6 +98,7 @@ public class MeasurePanel extends JPanel {
     public MeasurePanel( IModule<Container> module, MapTool<?> mapTool, Container parent ) {
         this.module = module;
         this.mapTool = mapTool;
+        this.parent = parent;
 
         if ( parent instanceof JFrame ) {
             JFrame viewForm = (JFrame) parent;
@@ -136,6 +139,10 @@ public class MeasurePanel extends JPanel {
         parent.add( this, 0 );
     }
 
+    public Container getMapContainer() {
+        return parent;
+    }
+    
     @Override
     public void repaint() {
         // this is a dummy panel

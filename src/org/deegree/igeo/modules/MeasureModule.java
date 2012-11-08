@@ -165,14 +165,15 @@ public class MeasureModule<T> extends DefaultModule<T> implements ChangeListener
      * removes the measure panel from the mapModule
      */
     private void removeMeasurePanel() {
-        if ( measurePanel != null ) {            
-            MouseListener[] ml = measurePanel.getParent().getMouseListeners();
+        if ( measurePanel != null ) {     
+            Container mapContainer = measurePanel.getMapContainer();
+            MouseListener[] ml = mapContainer.getMouseListeners();
             for ( MouseListener mouseListener : ml ) {                
-                measurePanel.getParent().removeMouseListener( mouseListener );
+                mapContainer.removeMouseListener( mouseListener );
             }
-            MouseMotionListener[] mml = measurePanel.getParent().getMouseMotionListeners();
+            MouseMotionListener[] mml = mapContainer.getMouseMotionListeners();
             for ( MouseMotionListener mouseMotionListener : mml ) {
-                measurePanel.getParent().removeMouseMotionListener( mouseMotionListener );
+                mapContainer.removeMouseMotionListener( mouseMotionListener );
             }
             mapModule.clear();
             measurePanel = null;
