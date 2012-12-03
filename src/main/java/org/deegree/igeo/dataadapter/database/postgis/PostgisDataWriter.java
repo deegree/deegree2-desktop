@@ -92,7 +92,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
     }
 
     protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
-                                   PropertyType[] pt, String table, Connection conn )
+                                  PropertyType[] pt, String table, Connection conn )
                             throws GeometryException, SQLException {
         for ( int i = 0; i < pt.length; i++ ) {
             Object value = feature.getDefaultProperty( pt[i].getName() ).getValue();
@@ -102,7 +102,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
             if ( value != null ) {
                 if ( pt[i].getType() == Types.GEOMETRY ) {
                     value = PGgeometryAdapter.export( (Geometry) value, Integer.parseInt( datasource.getSRID() ) );
-                    stmt.setObject( i + 1, value );
+                    stmt.setObject( i + 1, value, Types.OTHER );
                 } else {
                     stmt.setObject( i + 1, value, pt[i].getType() );
                 }
@@ -114,7 +114,7 @@ public class PostgisDataWriter extends AbstractDatabaseWriter {
                 }
             }
         }
-        return pt.length;
+        return pt.length + 1;
     }
 
     protected void setWhereCondition( PreparedStatement stmt, DatabaseDatasource datasource, PropertyType[] pt,

@@ -136,7 +136,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             PropertyType[] pt = ft.getProperties();
             boolean isFirst = true;
             List<String> sqlSnippets = new ArrayList<String>();
-            int noOfValuesToInsert = 0;
             for ( int i = 0; i < pt.length; i++ ) {
                 String columnName = pt[i].getName().getLocalName();
                 String sqlSnippet = getSqlSnippet( columnName, table, conn, datasource );
@@ -145,7 +144,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
                         sb.append( ',' );
                     }
                     sb.append( columnName );
-                    noOfValuesToInsert++;
                     isFirst = false;
                     sqlSnippets.add( sqlSnippet );
                 }
@@ -220,7 +218,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             StringBuilder sb = new StringBuilder( 1000 );
             sb.append( "UPDATE " ).append( table ).append( " SET " );
             boolean isFirst = true;
-            int noOfValuesToInsert = 0;
             for ( int i = 0; i < pt.length; i++ ) {
                 String columnName = pt[i].getName().getLocalName();
                 String sqlSnipppet = getSqlSnippet( columnName, table, conn, datasource );
@@ -229,7 +226,6 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
                         sb.append( ',' );
                     }
                     sb.append( columnName ).append( " = " ).append( sqlSnipppet );
-                    noOfValuesToInsert++;
                     isFirst = false;
                 }
             }
@@ -241,8 +237,8 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
             // stmt.setQueryTimeout( timeout );
             while ( iterator.hasNext() ) {
                 Feature feature = iterator.next();
-                int lastIndex = setFieldValues( stmt, datasource, feature, pt, table, conn );
-                setWhereCondition( stmt, datasource, pt, feature, lastIndex );
+                int nextIndex = setFieldValues( stmt, datasource, feature, pt, table, conn );
+                setWhereCondition( stmt, datasource, pt, feature, nextIndex );
                 stmt.execute();
             }
             conn.commit();
@@ -291,6 +287,23 @@ public abstract class AbstractDatabaseWriter implements DatabaseDataWriter {
         return pool.acquireConnection( jdbc.getDriver(), jdbc.getUrl(), jdbc.getUser(), jdbc.getPassword() );
     }
 
+    /**
+     * 
+     * @param stmt
+     *            to add the values, never <code>null</code>
+     * @param datasource
+     *            never <code>null</code>
+     * @param feature
+     *            never <code>null</code>
+     * @param pt
+     *            list of {@link PropertyType}s containing the values to add, never <code>null</code>
+     * @param table
+     *            name of the table, never <code>null</code>
+     * @param conn
+     *            never <code>null</code>
+     * @return the next index a value can be inserted (beginning with 1)
+     * @throws Exception
+     */
     abstract protected int setFieldValues( PreparedStatement stmt, DatabaseDatasource datasource, Feature feature,
                                            PropertyType[] pt, String table, Connection conn )
                             throws Exception;
