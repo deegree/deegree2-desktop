@@ -35,6 +35,14 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.model.filterencoding;
 
+import java.util.List;
+
+import org.deegree.igeo.commands.SelectFeatureCommand;
+import org.deegree.igeo.i18n.Messages;
+import org.deegree.igeo.views.DialogFactory;
+import org.deegree.igeo.views.swing.map.SelectByAttributeDialog;
+import org.deegree.kernel.Command;
+import org.deegree.model.Identifier;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.filterencoding.FilterEvaluationException;
 import org.deegree.model.filterencoding.Operation;
@@ -51,33 +59,44 @@ import org.deegree.model.filterencoding.Operation;
  */
 public class FeatureIdOperation implements Operation {
 
-    @Override
-    public String getOperatorName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	private String idToCheck;
 
-    @Override
-    public int getOperatorId() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	public FeatureIdOperation(String id) {
+		if (id.equals(null)) {
+			idToCheck = "";
+		} else {
+			this.idToCheck = id;
+		}
+		;
+	}
 
-    @Override
-    public boolean evaluate( Feature feature )
-                            throws FilterEvaluationException {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public String getOperatorName() {
+		// TODO Auto-generated method stub
+		return "FeatureIdOperation";
+	}
 
-    @Override
-    public StringBuffer to100XML() {
-        throw new UnsupportedOperationException( "FeatureIdOperation is not implemented!" );
-    }
+	@Override
+	public int getOperatorId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-    @Override
-    public StringBuffer to110XML() {
-        throw new UnsupportedOperationException( "FeatureIdOperation is not implemented!" );
-    }
+	@Override
+	public boolean evaluate(Feature feature) throws FilterEvaluationException {
+		return idToCheck.equals(feature.getId());
+	}
+
+	@Override
+	public StringBuffer to100XML() {
+		throw new UnsupportedOperationException(
+				"FeatureIdOperation is not implemented!");
+	}
+
+	@Override
+	public StringBuffer to110XML() {
+		throw new UnsupportedOperationException(
+				"FeatureIdOperation is not implemented!");
+	}
 
 }

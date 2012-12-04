@@ -176,25 +176,7 @@ public class SelectByAttributeDialog extends JDialog {
         }
     }
     
-    private void performFidSearch( List<Identifier> fids ) {
-    	System.out.println("Searching for "+fids.get(0)+" with URI "+fids.get(0).toString());
-    	
-    	if ( fids.size() > 0 ) {
-            Command cmdFid = new SelectFeatureCommand( layer, fids, false);
-            try { 
-            	appCont.getCommandProcessor().executeSychronously( cmdFid, true );
-            } catch ( Exception ex ) {
-                DialogFactory.openErrorDialog( appCont.getViewPlatform(), SelectByAttributeDialog.this,
-                                               Messages.getMessage( getLocale(), "$MD11600" ),
-                                               Messages.getMessage( getLocale(), "$MD11601" ), ex );
-            }
-        } else {
-            DialogFactory.openWarningDialog( appCont.getViewPlatform(), this,
-                                             Messages.getMessage( getLocale(), "$MD11602" ),
-                                             Messages.getMessage( getLocale(), "$MD11603" ) );
-            return;
-        }
-    }
+    
 
     private void initGUI( List<QualifiedName> propertyNames, QualifiedName featureType,
                           DictionaryCollection dictCollection ) {

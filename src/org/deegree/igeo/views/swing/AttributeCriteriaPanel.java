@@ -111,7 +111,7 @@ public class AttributeCriteriaPanel extends JPanel implements ActionListener {
         // collects all attribute criteria
         this.attCritPanel = new JPanel();
         this.attCritPanel.setLayout( new FlowLayout( FlowLayout.LEFT, 5, 4 ) );
-        this.attCritPanel.setPreferredSize( new Dimension( 290, 30 ) );
+        this.attCritPanel.setPreferredSize( new Dimension( 500, 30 ) );
         JScrollPane attCritScroll = new JScrollPane( this.attCritPanel );
         attCritScroll.setBorder( BorderFactory.createTitledBorder( Messages.getMessage( Locale.getDefault(), "$MD10146" ) ) );
 
