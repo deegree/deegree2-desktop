@@ -273,9 +273,7 @@ public class DatabaseFeatureAdapter extends FeatureAdapter {
                 }
                 fp[i] = FeatureFactory.createGeneratedValueFeatureProperty( pt[i].getName(), valueGenerator );
             } else {
-                // second parameter forces creating a double value if type equals Types.NUMERIC
-                Object value = getDefaultValueForType( typeCode, 1 );
-                fp[i] = FeatureFactory.createFeatureProperty( pt[i].getName(), value );
+                fp[i] = FeatureFactory.createFeatureProperty( pt[i].getName(),null );
             }
         }
         return FeatureFactory.createFeature( "ID1", ft, fp );

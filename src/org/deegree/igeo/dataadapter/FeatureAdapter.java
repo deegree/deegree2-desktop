@@ -333,71 +333,9 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
         FeatureProperty[] fp = new FeatureProperty[pt.length];
         for ( int i = 0; i < fp.length; i++ ) {
             int typeCode = pt[i].getType();
-            // second parameter forces creating a double value if type equals Types.NUMERIC
-            Object value = getDefaultValueForType( typeCode, 1 );
-            fp[i] = FeatureFactory.createFeatureProperty( pt[i].getName(), value );
+            fp[i] = FeatureFactory.createFeatureProperty( pt[i].getName(), null );
         }
         return FeatureFactory.createFeature( "ID1", ft, fp );
-    }
-
-    /**
-     * 
-     * @param type
-     * @param precision
-     * @return default value for passed data type
-     */
-    protected Object getDefaultValueForType( int type, int precision ) {
-        Object s = null;
-        Random r = new Random();
-        switch ( type ) {
-        case Types.VARCHAR:
-        case Types.CHAR:
-            s = "string" + IDGenerator.getInstance().generateUniqueID();
-            break;
-        case Types.NUMERIC: {
-            if ( precision <= 1 ) {
-                s = 0;
-                break;
-            }
-            s = Math.random();
-            break;
-        }
-        case Types.DECIMAL:
-            s = 0;
-            break;
-        case Types.DOUBLE:
-        case Types.REAL:
-            s = Math.random();
-            break;
-        case Types.FLOAT:
-            s = r.nextFloat();
-            break;
-        case Types.INTEGER:
-        case Types.SMALLINT:
-        case Types.BIGINT:
-            s = r.nextInt( Short.MAX_VALUE );
-            break;
-        case Types.TIMESTAMP:
-        case Types.TIME:
-        case Types.DATE:
-            s = new Date();
-            break;
-        case Types.BIT:
-        case Types.BOOLEAN:
-            s = false;
-            break;
-        case Types.GEOMETRY:
-        case Types.OTHER:
-        case Types.STRUCT:
-            s = null;
-            break;
-        case Types.FEATURE:
-            s = null;
-            break;
-        default:
-            LOG.logWarning( "could not create default value for SQLType: " + type + ", null will be used" );
-        }
-        return s;
     }
 
     /**
