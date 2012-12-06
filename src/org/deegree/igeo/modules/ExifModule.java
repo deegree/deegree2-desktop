@@ -1,7 +1,7 @@
 //$HeadURL$
 /*----------------    FILE HEADER  ------------------------------------------
  This file is part of deegree.
- Copyright (C) 2001-2008 by:
+ Copyright (C) 2001-2012 by:
  Department of Geography, University of Bonn
  http://www.giub.uni-bonn.de/deegree/
  lat/lon GmbH
@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ E-Mail: info@lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -41,23 +40,11 @@ package org.deegree.igeo.modules;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static java.util.prefs.Preferences.userNodeForPackage;
-import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static javax.swing.JFileChooser.FILES_AND_DIRECTORIES;
 import static org.deegree.crs.coordinatesystems.GeographicCRS.WGS84;
 import static org.deegree.framework.log.LoggerFactory.getLogger;
 import static org.deegree.framework.util.CollectionUtils.collectionToString;
 import static org.deegree.igeo.Version.getVersionNumber;
 import static org.deegree.igeo.i18n.Messages.get;
-import static org.deegree.igeo.views.DialogFactory.openErrorDialog;
-import static org.deegree.igeo.views.DialogFactory.openInformationDialog;
-import static org.deegree.igeo.views.DialogFactory.openInputDialog;
-import static org.deegree.igeo.views.DialogFactory.openWarningDialog;
-import static org.deegree.model.feature.FeatureFactory.createFeature;
-import static org.deegree.model.feature.FeatureFactory.createFeatureCollection;
-import static org.deegree.model.feature.FeatureFactory.createFeatureProperty;
-import static org.deegree.model.feature.FeatureFactory.createFeatureType;
-import static org.deegree.model.feature.FeatureFactory.createGeometryPropertyType;
-import static org.deegree.model.feature.FeatureFactory.createSimplePropertyType;
 import static org.deegree.model.spatialschema.GeometryFactory.createPoint;
 import static org.deegree.ogcbase.CommonNamespaces.getNamespaceContext;
 
@@ -67,7 +54,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,6 +69,7 @@ import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
 import org.apache.sanselan.formats.jpeg.exifRewrite.ExifRewriter;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata.GPSInfo;
+import org.apache.sanselan.formats.tiff.write.TiffImageWriterLossless;
 import org.apache.sanselan.formats.tiff.write.TiffOutputSet;
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
@@ -107,6 +94,7 @@ import org.deegree.model.crs.CoordinateSystem;
 import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureCollection;
+import org.deegree.model.feature.FeatureFactory;
 import org.deegree.model.feature.FeatureProperty;
 import org.deegree.model.feature.schema.FeatureType;
 import org.deegree.model.feature.schema.PropertyType;
@@ -114,8 +102,9 @@ import org.deegree.model.spatialschema.Geometry;
 import org.deegree.model.spatialschema.Point;
 
 /**
- * <code>ExifModule</code>
+ * Module for to read data from exif header of georeferenced jpeg images
  * 
+ * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  * @author last edited by: $Author$
  * 
@@ -137,21 +126,18 @@ public class ExifModule<T> extends DefaultModule<T> {
     private static final FeatureType featureType;
 
     static {
-        try {
-            APPNS = new URI( "http://www.deegree.org/app" );
-            nsContext.addNamespace( "app", APPNS );
-        } catch ( URISyntaxException e ) {
-            LOG.logError( "Unknown error", e );
-        }
+        APPNS = URI.create( "http://www.deegree.org/app" );
+        nsContext.addNamespace( "app", APPNS );
 
         geometry = new QualifiedName( "app", "geometry", APPNS );
         imageLocation = new QualifiedName( "app", "imageLocation", APPNS );
         PropertyType[] pts = {
-                              createGeometryPropertyType( geometry, new QualifiedName( "gml", "PointPropertyType",
-                                                                                       APPNS ), 1, 1 ),
-                              createSimplePropertyType( imageLocation, Types.VARCHAR, 1, 1 ) };
+                              FeatureFactory.createGeometryPropertyType( geometry,
+                                                                         new QualifiedName( "gml", "PointPropertyType",
+                                                                                            APPNS ), 1, 1 ),
+                              FeatureFactory.createSimplePropertyType( imageLocation, Types.VARCHAR, 1, 1 ) };
 
-        featureType = createFeatureType( new QualifiedName( "app", "geoimage", APPNS ), false, pts );
+        featureType = FeatureFactory.createFeatureType( new QualifiedName( "app", "geoimage", APPNS ), false, pts );
     }
 
     static {
@@ -174,11 +160,11 @@ public class ExifModule<T> extends DefaultModule<T> {
             Preferences prefs = userNodeForPackage( ExifModule.class );
             String last = prefs.get( "lastExifDir" + getVersionNumber(), null );
             JFileChooser chooser = new JFileChooser( last );
-            chooser.setFileSelectionMode( FILES_AND_DIRECTORIES );
+            chooser.setFileSelectionMode( JFileChooser.FILES_AND_DIRECTORIES );
             chooser.setMultiSelectionEnabled( true );
-            if ( chooser.showOpenDialog( ( (IGeoDesktop) appContainer ).getMainWndow() ) == APPROVE_OPTION ) {
-                String name = openInputDialog( appContainer.getViewPlatform(), getViewForm(), get( "$MD10558" ),
-                                               get( "$MD10559" ) );
+            if ( chooser.showOpenDialog( ( (IGeoDesktop) appContainer ).getMainWndow() ) == JFileChooser.APPROVE_OPTION ) {
+                String name = DialogFactory.openInputDialog( appContainer.getViewPlatform(), getViewForm(),
+                                                             get( "$MD10558" ), get( "$MD10559" ) );
                 if ( name == null ) {
                     return;
                 }
@@ -188,11 +174,11 @@ public class ExifModule<T> extends DefaultModule<T> {
 
                 CoordinateSystem crs = mm.getCoordinateSystem();
                 GeoTransformer transformer = null;
-                if ( !mm.getCoordinateSystem().equals( WGS84 ) ) {
+                if ( !mm.getCoordinateSystem().getCRS().equals( WGS84 ) ) {
                     transformer = new GeoTransformer( crs );
                 }
 
-                FeatureCollection col = createFeatureCollection( randomUUID().toString(), 0 );
+                FeatureCollection col = FeatureFactory.createFeatureCollection( randomUUID().toString(), 0 );
                 // col.setFeatureType( featureType );
 
                 LinkedList<String> errors = new LinkedList<String>();
@@ -210,8 +196,10 @@ public class ExifModule<T> extends DefaultModule<T> {
                 }
 
                 if ( !errors.isEmpty() ) {
-                    openWarningDialog( appContainer.getViewPlatform(), ( (IGeoDesktop) appContainer ).getMainWndow(),
-                                       get( "$MD10895", collectionToString( errors, "\n" ) ), get( "$DI10036" ) );
+                    DialogFactory.openWarningDialog( appContainer.getViewPlatform(),
+                                                     ( (IGeoDesktop) appContainer ).getMainWndow(),
+                                                     get( "$MD10895", collectionToString( errors, "\n" ) ),
+                                                     get( "$DI10036" ) );
                 }
 
                 Datasource ds = DataAccessFactory.createDatasource( UUID.randomUUID().toString(), col );
@@ -252,18 +240,28 @@ public class ExifModule<T> extends DefaultModule<T> {
         }
     }
 
-    private static Pair<Feature, String> obtainFeatureFromImage( File file, GeoTransformer transformer ) {
+    private Pair<Feature, String> obtainFeatureFromImage( File file, GeoTransformer transformer ) {
         try {
             IImageMetadata metadata = Sanselan.getMetadata( file );
-            GPSInfo gps = ( (JpegImageMetadata) metadata ).getExif().getGPS();
+            GPSInfo gps = null;
+            if ( metadata instanceof JpegImageMetadata ) {
+                gps = ( (JpegImageMetadata) metadata ).getExif().getGPS();
+            } else if ( metadata instanceof TiffImageMetadata ) {
+                gps = ( (TiffImageMetadata) metadata ).getGPS();
+            } else {
+                DialogFactory.openErrorDialog( appContainer.getViewPlatform(),
+                                               ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10898" ),
+                                               get( "$DI10017" ) );
+                return new Pair<Feature, String>();
+            }
 
             Point point = createPoint( gps.getLongitudeAsDegreesEast(), gps.getLatitudeAsDegreesNorth(), unrealWGS84 );
             point = (Point) transformer.transform( point );
 
-            FeatureProperty geom = createFeatureProperty( geometry, point );
-            FeatureProperty loc = createFeatureProperty( imageLocation, file.getAbsolutePath() );
-            return new Pair<Feature, String>( createFeature( randomUUID().toString(), featureType,
-                                                             new FeatureProperty[] { loc, geom } ), null );
+            FeatureProperty geom = FeatureFactory.createFeatureProperty( geometry, point );
+            FeatureProperty loc = FeatureFactory.createFeatureProperty( imageLocation, file.getAbsolutePath() );
+            return new Pair<Feature, String>( FeatureFactory.createFeature( randomUUID().toString(), featureType,
+                                                                            new FeatureProperty[] { loc, geom } ), null );
 
         } catch ( IOException e ) {
             LOG.logError( "While loading a file: ", e );
@@ -305,7 +303,7 @@ public class ExifModule<T> extends DefaultModule<T> {
                     Preferences prefs = userNodeForPackage( ExifModule.class );
                     String last = prefs.get( "lastExifSaveDir" + getVersionNumber(), null );
                     JFileChooser chooser = new JFileChooser( last );
-                    if ( chooser.showOpenDialog( ( (IGeoDesktop) appContainer ).getMainWndow() ) == APPROVE_OPTION ) {
+                    if ( chooser.showOpenDialog( ( (IGeoDesktop) appContainer ).getMainWndow() ) == JFileChooser.APPROVE_OPTION ) {
                         File file = chooser.getSelectedFile();
 
                         IImageMetadata metadata = Sanselan.getMetadata( file );
@@ -313,15 +311,17 @@ public class ExifModule<T> extends DefaultModule<T> {
                         if ( metadata instanceof JpegImageMetadata ) {
                             TiffImageMetadata exif = ( (JpegImageMetadata) metadata ).getExif();
                             outputSet = exif.getOutputSet();
+                        } else if ( metadata instanceof TiffImageMetadata ) {
+                            outputSet = ( (TiffImageMetadata) metadata ).getOutputSet();
                         }
                         if ( metadata == null ) {
                             outputSet = new TiffOutputSet();
                         }
 
                         if ( outputSet == null ) {
-                            openErrorDialog( appContainer.getViewPlatform(),
-                                             ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10898" ),
-                                             get( "$DI10017" ) );
+                            DialogFactory.openErrorDialog( appContainer.getViewPlatform(),
+                                                           ( (IGeoDesktop) appContainer ).getMainWndow(),
+                                                           get( "$MD10898" ), get( "$DI10017" ) );
                             return;
                         }
 
@@ -340,22 +340,28 @@ public class ExifModule<T> extends DefaultModule<T> {
                         out.close();
 
                         byte[] bs = out.toByteArray();
-                        new ExifRewriter().updateExifMetadataLossless( bs, new FileOutputStream( file ), outputSet );
-
+                        FileOutputStream os = new FileOutputStream( file );
+                        if ( metadata == null || metadata instanceof JpegImageMetadata ) {
+                            new ExifRewriter().updateExifMetadataLossless( bs, os, outputSet );
+                        } else {
+                            new TiffImageWriterLossless( bs ).write( os, outputSet );
+                        }
                         prefs.put( "lastExifSaveDir" + getVersionNumber(), file.getParent() );
 
-                        openInformationDialog( appContainer.getViewPlatform(),
-                                               ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10900" ),
-                                               get( "$DI10018" ) );
+                        DialogFactory.openInformationDialog( appContainer.getViewPlatform(),
+                                                             ( (IGeoDesktop) appContainer ).getMainWndow(),
+                                                             get( "$MD10900" ), get( "$DI10018" ) );
 
                     }
                 } else {
-                    openErrorDialog( appContainer.getViewPlatform(), ( (IGeoDesktop) appContainer ).getMainWndow(),
-                                     get( "$MD10897" ), get( "$DI10017" ) );
+                    DialogFactory.openErrorDialog( appContainer.getViewPlatform(),
+                                                   ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10897" ),
+                                                   get( "$DI10017" ) );
                 }
             } catch ( IOException e ) {
-                openErrorDialog( appContainer.getViewPlatform(), ( (IGeoDesktop) appContainer ).getMainWndow(),
-                                 get( "$MD10899", e ), get( "$DI10017" ) );
+                DialogFactory.openErrorDialog( appContainer.getViewPlatform(),
+                                               ( (IGeoDesktop) appContainer ).getMainWndow(), get( "$MD10899", e ),
+                                               get( "$DI10017" ) );
             } catch ( Exception e ) {
                 LOG.logError( "Unknown error", e );
             }
