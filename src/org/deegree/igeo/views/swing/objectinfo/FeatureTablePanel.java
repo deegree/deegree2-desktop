@@ -236,6 +236,17 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
                             if ( rows != null && rows.length > 0 && tabFeat.getModel() instanceof FeatureTableModel ) {
                                 FeatureTableModel ftm = (FeatureTableModel) tabFeat.getModel();
                                 FeatureCollection fc = ftm.getFeatureCollection();
+                                zoomToFeatureCollection( rows, fc );
+                            } else if ( tabFeat.getModel() instanceof WMSFeatureTableModel ) {
+                                rows = new int[] { 0 };
+                                WMSFeatureTableModel model = (WMSFeatureTableModel) tabFeat.getModel();
+                                FeatureCollection fc = model.getFeatureCollection();
+                                zoomToFeatureCollection( rows, fc );
+                            }
+                        }
+
+                        private void zoomToFeatureCollection( int[] rows, FeatureCollection fc ) {
+                            if ( rows.length > 0 ) {
                                 Envelope env = null;
                                 try {
                                     env = fc.getFeature( rows[0] ).getBoundedBy();
