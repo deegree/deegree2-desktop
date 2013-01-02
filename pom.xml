@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>deegree2-igeodesktop</artifactId>
   <name>deegree2-igeodesktop</name>
-  <version>0.4.8</version>
+  <version>0.4.9-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <scm>
-    <connection>scm:svn:http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/tags/deegree2-igeodesktop-0.4.8</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/tags/deegree2-igeodesktop-0.4.8</developerConnection>
-    <url>http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/tags/deegree2-igeodesktop-0.4.8</url>
+    <connection>scm:svn:http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</connection>
+    <developerConnection>scm:svn:svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/trunk</developerConnection>
+    <url>http://svn.wald.intevation.org/svn/deegree/deegree2/deegree2-igeodesktop/trunk</url>
   </scm>
 
   <parent>
