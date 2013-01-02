@@ -33,7 +33,7 @@
     </repository>
   </repositories>
 
-<!-- remove distributionManagement on deegree2-base release 2.6-pre2 -->
+  <!-- remove distributionManagement on deegree2-base release 2.6-pre2 -->
   <distributionManagement>
     <repository>
       <id>deegree-releases</id>
