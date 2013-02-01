@@ -416,8 +416,7 @@ public class WMSGridCoverageAdapter extends GridCoverageAdapter {
 
             int cnt = appCont.getSettings().getWMSGridCoveragesAdapter().getFeatureCount();
             sb.append( "feature_count=" ).append( cnt ).append( "&x=" ).append( x ).append( "&" );
-            sb.append( "y=" ).append( y );
-            sb.append( "&version=" ).append( baseRequest.getVersion() );
+            sb.append( "y=" ).append( y ).append( "&" );
             sb.append( StringTools.replace( baseRequest.getRequestParameter(), "GetMap", "GetFeatureInfo", false ) );
             sb.append( "&QUERY_layers=" );
             org.deegree.ogcwebservices.wms.operation.GetMap.Layer[] ll = baseRequest.getLayers();
