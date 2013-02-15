@@ -33,6 +33,20 @@
     </repository>
   </repositories>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>deegree-plugin-repo</id>
+      <url>http://repo.deegree.org/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
   <!-- remove distributionManagement on deegree2-base release 2.6-pre2 -->
   <distributionManagement>
     <repository>
