@@ -227,27 +227,28 @@ public class LayerComponent extends JComponent implements ChangeListener {
          */
         public Object call()
                                 throws Exception {
+            synchronized ( LayerComponent.this ) {
+                forceRepaint = false;
 
-            forceRepaint = false;
+                // create a new image if image is null or size of the map model has changed
+                layerImage = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
 
-            // create a new image if image is null or size of the map model has changed
-            layerImage = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
+                // create graphics of the image to paint
+                Graphics2D layerGraphics = layerImage.createGraphics();
+                layerGraphics.setClip( 0, 0, getWidth(), getHeight() );
 
-            // create graphics of the image to paint
-            Graphics2D layerGraphics = layerImage.createGraphics();
-            layerGraphics.setClip( 0, 0, getWidth(), getHeight() );
+                // clear the old image
+                layerGraphics.setBackground( new Color( 0, 0, 0, 0 ) );
+                layerGraphics.clearRect( 0, 0, layerImage.getWidth(), layerImage.getHeight() );
 
-            // clear the old image
-            layerGraphics.setBackground( new Color( 0, 0, 0, 0 ) );
-            layerGraphics.clearRect( 0, 0, layerImage.getWidth(), layerImage.getHeight() );
+                // draw layer
+                layerPane.paint( layerGraphics );
 
-            // draw layer
-            layerPane.paint( layerGraphics );
+                layerGraphics.dispose();
 
-            layerGraphics.dispose();
-
-            repaint();
-            return null;
+                repaint();
+                return null;
+            }
         }
 
     }
