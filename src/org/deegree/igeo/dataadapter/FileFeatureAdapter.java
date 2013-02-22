@@ -41,10 +41,9 @@ package org.deegree.igeo.dataadapter;
 import static org.deegree.crs.coordinatesystems.GeographicCRS.WGS84;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
@@ -203,22 +202,34 @@ public class FileFeatureAdapter extends FeatureAdapter {
     }
 
     private void loadGPXFile() {
+        File file = ( (FileDatasource) datasource ).getFile();
+        file = getAbsoluteFilePath( file );
+        datasource.setNativeCoordinateSystem( CRSFactory.create( WGS84 ) );
+
+        FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( mapModel.getApplicationContainer() );
+        InputStream is = null;
         try {
-            File file = ( (FileDatasource) datasource ).getFile();
-            file = getAbsoluteFilePath( file );
-            datasource.setNativeCoordinateSystem( CRSFactory.create( WGS84 ) );
-            FileInputStream fis = new FileInputStream( file );
-            FeatureCollection featureCollection = GPXReader.read( fis );
-            featureCollection.setEnvelopesUpdated();
-            featureCollection = transform( featureCollection );
-            try {
-                datasource.setExtent( featureCollection.getBoundedBy() );
-            } catch ( GeometryException e ) {
-                LOG.logError( "Unknown error", e );
-            }
-            featureCollections.put( datasource.getName(), featureCollection );
-        } catch ( FileNotFoundException e ) {
+            FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.geoDataFile );
+            is = fsa.getFileURL( file.getAbsolutePath() ).openStream();
+        } catch ( Exception e ) {
+            LOG.logError( e.getMessage(), e );
+            throw new DataAccessException( Messages.getMessage( Locale.getDefault(), "$DG10070",
+                                                                file.getAbsolutePath(), e.getMessage() ) );
         }
+
+        FeatureCollection featureCollection = GPXReader.read( is );
+        featureCollection.setEnvelopesUpdated();
+        featureCollection = transform( featureCollection );
+        try {
+            if ( featureCollection.size() > 0 ) {
+                datasource.setExtent( featureCollection.getBoundedBy() );
+            } else {
+                datasource.setExtent( mapModel.getEnvelope() );
+            }
+        } catch ( GeometryException e ) {
+            LOG.logError( "Unknown error", e );
+        }
+        featureCollections.put( datasource.getName(), featureCollection );
     }
 
     private void loadGMLFile() {
@@ -346,8 +357,7 @@ public class FileFeatureAdapter extends FeatureAdapter {
                         if ( nm.endsWith( ".shp" ) ) {
                             loadShapeFile();
                         } else {
-                            DialogFactory.openErrorDialog(
-                                                           layer.getOwner().getApplicationContainer().getViewPlatform(),
+                            DialogFactory.openErrorDialog( layer.getOwner().getApplicationContainer().getViewPlatform(),
                                                            null, "lazy loading not supported for file: " + nm,
                                                            "error lazy loading" );
                         }
@@ -355,7 +365,7 @@ public class FileFeatureAdapter extends FeatureAdapter {
                     }
                     // perform all inserts, updates, deletes that has been performed on this
                     // data source adapter on the feature collection read from the adapted datasource
-                    updateFeatureCollection();                    
+                    updateFeatureCollection();
                 }
             }
         } else if ( featureCollections.get( datasource.getName() ) == null ) {
