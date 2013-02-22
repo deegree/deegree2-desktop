@@ -350,7 +350,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
         // register mouse listener to request window focus
         addMouseListener( new DMCMouseListener() );
         // register mouse wheel listener to perform zooming by mouse wheel
-        addMouseWheelListener( new DMCMouseWheelListener() );
+        // addMouseWheelListener( new DMCMouseWheelListener() );
 
         setPreferredSize( new Dimension( this.mapModel.getTargetDevice().getPixelWidth(),
                                          this.mapModel.getTargetDevice().getPixelHeight() ) );
