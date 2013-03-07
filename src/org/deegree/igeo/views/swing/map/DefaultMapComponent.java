@@ -325,8 +325,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                 privateFooter.addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(), mapCoordsLabel ) );
             } else if ( appContainer.getFooter() != null
                         && !appContainer.getFooter().hasEntry( getMmcFooterentryName() ) ) {
-                appContainer.getFooter().addEntry(
-                                                   new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
+                appContainer.getFooter().addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
                                                                                   mapCoordsLabel ) );
             }
         } else {
@@ -334,10 +333,9 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                 privateFooter.addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(), mapCoordsLabel ) );
             } else if ( appContainer.getFooter() != null
                         && !appContainer.getFooter().hasEntry( getMmcFooterentryName() ) ) {
-                appContainer.getFooter().addEntry(
-                                                   new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
+                appContainer.getFooter().addEntry( new MapMouseCoordsFooterEntry( getMmcFooterentryName(),
                                                                                   mapCoordsLabel ) );
-            }            
+            }
         }
         mapCoordsLabel.updateCRSList();
 
@@ -350,7 +348,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
         // register mouse listener to request window focus
         addMouseListener( new DMCMouseListener() );
         // register mouse wheel listener to perform zooming by mouse wheel
-        // addMouseWheelListener( new DMCMouseWheelListener() );
+        addMouseWheelListener( new DMCMouseWheelListener() );
 
         setPreferredSize( new Dimension( this.mapModel.getTargetDevice().getPixelWidth(),
                                          this.mapModel.getTargetDevice().getPixelHeight() ) );
@@ -607,7 +605,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
 
         @Override
         public void keyPressed( KeyEvent e ) {
-            
+
             EnvelopeImpl tmp = (EnvelopeImpl) mapModel.getEnvelope();
             Envelope env = (Envelope) tmp.clone();
             Settings settings = appContainer.getSettings();
@@ -670,7 +668,7 @@ public class DefaultMapComponent extends JComponent implements IView<Container>,
                     DialogFactory.openErrorDialog( appContainer.getViewPlatform(), DefaultMapComponent.this,
                                                    Messages.getMessage( getLocale(), "$MD11253" ),
                                                    Messages.getMessage( getLocale(), "$MD11252", env ), ex );
-            }
+                }
             }
 
         }
