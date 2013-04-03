@@ -603,7 +603,6 @@ public abstract class ApplicationContainer<T> {
                     invokeChildren( (IModuleGroup<T>) module, e );
                 }
             }
-            System.gc();
         }
     }
 
