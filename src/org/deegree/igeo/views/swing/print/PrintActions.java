@@ -180,6 +180,8 @@ public class PrintActions {
             public boolean forward() {
                 Map<String, Object> parameters = new HashMap<String, Object>();
 
+                LOG.logInfo( "------------------------- start printing ---------------------" );
+
                 try {
                     int width = options.width.getInt();
                     int height = options.height.getInt();
@@ -197,11 +199,10 @@ public class PrintActions {
                     final Envelope extent;
 
                     if ( options.selectScale.isSelected() ) {
-                        Envelope e = scaleEnvelope( originalExtent, calcScale( mm.getTargetDevice().getPixelWidth(),
-                                                                               mm.getTargetDevice().getPixelHeight(),
-                                                                               originalExtent,
-                                                                               originalExtent.getCoordinateSystem(),
-                                                                               DEFAULT_PIXEL_SIZE ),
+                        Envelope e = scaleEnvelope( originalExtent,
+                                                    calcScale( mm.getTargetDevice().getPixelWidth(),
+                                                               mm.getTargetDevice().getPixelHeight(), originalExtent,
+                                                               originalExtent.getCoordinateSystem(), DEFAULT_PIXEL_SIZE ),
                                                     ( (Scale) options.scale.getSelectedItem() ).scale );
                         extent = fitEnvelope( e, width, height );
                     } else {
@@ -256,7 +257,7 @@ public class PrintActions {
                         URL url = new URL( loc.substring( 0, idx ) + ".jasper" );
                         LOG.logInfo( "try using tempale: ", url );
                         jasperReport = (JasperReport) JRLoader.loadObject( url );
-                    } catch ( Throwable e ) {                        
+                    } catch ( Throwable e ) {
                         String s = FileUtils.readTextFile( reportPanel.report.getSystemId() ).toString();
                         LOG.logInfo( "compiled tempale not available, use xml file: ", s );
                         JasperDesign jasperDesign = net.sf.jasperreports.engine.xml.JRXmlLoader.load( new ByteArrayInputStream(
@@ -283,6 +284,7 @@ public class PrintActions {
                             write( (RenderedImage) result, "png", options.file );
                         }
                     }
+                    LOG.logInfo( "----------------------- done printing -----------------------------" );
                 } catch ( IOException e ) {
                     unknownError( LOG, e, reportPanel ); // the template was already loaded
                     // before...
@@ -374,7 +376,7 @@ public class PrintActions {
                     g.setClip( 0, 0, width, height );
                     mv.paint( g );
                     g.dispose();
-                   
+
                 } catch ( Exception e ) {
                     throw e;
                 } finally {
