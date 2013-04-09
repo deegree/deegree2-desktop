@@ -44,6 +44,9 @@ import java.awt.Container;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.ButtonModel;
 import javax.swing.JFrame;
@@ -58,10 +61,13 @@ import org.deegree.igeo.modules.IModule;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.swing.CursorRegistry;
 import org.deegree.ogcwebservices.OWSUtils;
-import org.deegree.ogcwebservices.getcapabilities.InvalidCapabilitiesException;
 import org.deegree.ogcwebservices.wms.capabilities.WMSCapabilities;
 import org.deegree.ogcwebservices.wms.capabilities.WMSCapabilitiesDocument;
 import org.deegree.ogcwebservices.wms.capabilities.WMSCapabilitiesDocumentFactory;
+import org.deegree.owscommon_new.DCP;
+import org.deegree.owscommon_new.HTTP;
+import org.deegree.owscommon_new.Operation;
+import org.deegree.owscommon_new.OperationsMetadata;
 import org.xml.sax.SAXException;
 
 /**
@@ -152,7 +158,7 @@ public class AddWMSWizard extends AddServiceWizard<Container> {
                      && enterServicesField.getText().length() > 0 ) {
 
                     String wmsUrl = enterServicesField.getText();
-                    String capabilitiesUrl = OWSUtils.validateHTTPGetBaseURL( wmsUrl );                    
+                    String capabilitiesUrl = OWSUtils.validateHTTPGetBaseURL( wmsUrl );
                     capabilitiesUrl = capabilitiesUrl + "SERVICE=WMS&REQUEST=GetCapabilities";
                     // add authentication informations if available
                     String tmp = HttpUtils.normalizeURL( capabilitiesUrl );
@@ -163,7 +169,7 @@ public class AddWMSWizard extends AddServiceWizard<Container> {
                     if ( bm.getActionCommand() != null ) {
                         capabilitiesUrl = capabilitiesUrl + "&VERSION=" + bm.getActionCommand().trim();
                     }
-                    
+
                     LOG.logDebug( "send 'GetCapabilities'-request: " + capabilitiesUrl );
 
                     WMSCapabilitiesDocument wmsCapsDoc = null;
@@ -214,7 +220,40 @@ public class AddWMSWizard extends AddServiceWizard<Container> {
                     WMSCapabilities wmsCapabilities = null;
                     try {
                         wmsCapabilities = (WMSCapabilities) wmsCapsDoc.parseCapabilities();
-                    } catch ( InvalidCapabilitiesException e ) {
+
+                        String pref = wmsUrl.contains( "?" ) ? wmsUrl.substring( 0, wmsUrl.indexOf( "?" ) - 1 )
+                                                            : wmsUrl;
+                        boolean alwaysUseBase = false;
+
+                        OperationsMetadata md = wmsCapabilities.getOperationMetadata();
+                        for ( Operation oper : md.getOperations() ) {
+                            for ( DCP dcp : oper.getDCP() ) {
+                                if ( dcp instanceof HTTP ) {
+                                    HTTP http = (HTTP) dcp;
+                                    List<URL> urls = http.getGetOnlineResources();
+                                    ListIterator<URL> iter = urls.listIterator();
+                                    while ( iter.hasNext() ) {
+                                        URL url = iter.next();
+                                        if ( !url.toString().startsWith( pref ) ) {
+                                            if ( !alwaysUseBase ) {
+                                                alwaysUseBase = !DialogFactory.openConfirmDialogYESNO( appContainer.getViewPlatform(),
+                                                                                                       AddWMSWizard.this,
+                                                                                                       get( "$DI10097",
+                                                                                                            url.toString() ),
+                                                                                                       get( "$DI10096" ) );
+                                            }
+                                            if ( alwaysUseBase ) {
+                                                url = new URL( wmsUrl );
+                                                iter.set( url );
+                                            }
+                                        }
+                                    }
+                                    http.setGetOnlineResources( urls );
+                                }
+                            }
+                        }
+
+                    } catch ( Exception e ) {
                         LOG.logError( get( "$DG10061", wmsUrl ), e );
                         DialogFactory.openErrorDialog( appContainer.getViewPlatform(), AddWMSWizard.this,
                                                        e.getMessage(), getClass().getSimpleName() );
