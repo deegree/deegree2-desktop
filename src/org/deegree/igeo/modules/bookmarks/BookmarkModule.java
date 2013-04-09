@@ -35,23 +35,29 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.igeo.modules.bookmarks;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
 import org.deegree.igeo.ApplicationContainer;
+import org.deegree.igeo.config.ModuleRegisterType;
 import org.deegree.igeo.config.ModuleType;
+import org.deegree.igeo.config.ParameterType;
+import org.deegree.igeo.config.Project;
+import org.deegree.igeo.config.ViewType;
 import org.deegree.igeo.config._ComponentPositionType;
 import org.deegree.igeo.desktop.IGeoDesktop;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.ActionDescription;
+import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
 import org.deegree.igeo.modules.DefaultModule;
 import org.deegree.igeo.modules.IModule;
 import org.deegree.igeo.modules.ModuleCapabilities;
-import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
 import org.deegree.igeo.views.swing.bookmark.NewBookmarkDialog;
 import org.deegree.model.Identifier;
 import org.deegree.model.spatialschema.Envelope;
@@ -108,13 +114,34 @@ public class BookmarkModule<T> extends DefaultModule<T> {
      * @param bookmarks
      */
     public void writeToCache( List<BookmarkEntry> bookmarks ) {
-        try {
-            String file = System.getProperty( "user.home" ) + System.getProperty( "file.separator" )
-                          + "bookmarks.igeo.xml";
-            File f = new File( file );
-            Util.saveBookmarks( bookmarks, f );
-        } catch ( Exception e ) {
-            LOG.logError( e );
+        Project p = getApplicationContainer().getProject();
+        ViewType vt = p.getView();
+        for ( ModuleRegisterType mr : vt.getModuleRegister() ) {
+            String id = mr.getModule() != null ? mr.getModule().getValue().getIdentifier().getValue() : null;
+            if ( id != null && getIdentifier().getValue().equals( id ) ) {
+                List<ParameterType> list = mr.getModule().getValue().getInitParam();
+                ParameterType parameter = null;
+                for ( ParameterType pt : list ) {
+                    if ( pt.getName().equals( "bookmarks-xml" ) ) {
+                        parameter = pt;
+                    }
+                }
+                if ( parameter == null ) {
+                    parameter = new ParameterType();
+                    parameter.setName( "bookmarks-xml" );
+                    list.add( parameter );
+                }
+
+                try {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    Util.saveBookmarks( bookmarks, bos );
+                    String val = new String( bos.toByteArray(), "UTF-8" );
+                    parameter.setValue( val );
+                } catch ( Exception e ) {
+                    LOG.logError( e );
+                }
+
+            }
         }
     }
 
@@ -124,13 +151,29 @@ public class BookmarkModule<T> extends DefaultModule<T> {
      * @return
      */
     public List<BookmarkEntry> readFromCache() {
-        String file = System.getProperty( "user.home" ) + System.getProperty( "file.separator" ) + "bookmarks.igeo.xml";
-        File f = new File( file );
-        List<BookmarkEntry> bookmarks = null;
-        try {
-            bookmarks = Util.loadBookmarks( f );
-        } catch ( Exception e ) {
-            LOG.logError( e );
+        List<BookmarkEntry> bookmarks = new ArrayList<BookmarkEntry>();
+        Project p = getApplicationContainer().getProject();
+        ViewType vt = p.getView();
+        for ( ModuleRegisterType mr : vt.getModuleRegister() ) {
+            String id = mr.getModule() != null ? mr.getModule().getValue().getIdentifier().getValue() : null;
+            if ( id != null && getIdentifier().getValue().equals( id ) ) {
+                List<ParameterType> list = mr.getModule().getValue().getInitParam();
+                ParameterType parameter = null;
+                for ( ParameterType pt : list ) {
+                    if ( pt.getName().equals( "bookmarks-xml" ) ) {
+                        parameter = pt;
+                    }
+                }
+                try {
+                    if ( parameter != null ) {
+                        ByteArrayInputStream in = new ByteArrayInputStream( parameter.getValue().getBytes( "UTF-8" ) );
+                        bookmarks = Util.loadBookmarks( in );
+                        in.close();
+                    }
+                } catch ( Exception e ) {
+                    LOG.logError( e );
+                }
+            }
         }
         return bookmarks;
     }
