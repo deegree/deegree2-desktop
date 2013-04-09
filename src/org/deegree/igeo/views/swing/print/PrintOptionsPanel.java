@@ -325,7 +325,7 @@ public class PrintOptionsPanel extends JPanel implements DocumentListener, Actio
 
     }
 
-    class Scale {
+    static class Scale {
         int scale;
 
         Scale( String s ) {

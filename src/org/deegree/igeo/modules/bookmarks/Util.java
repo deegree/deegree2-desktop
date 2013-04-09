@@ -32,11 +32,11 @@
  http://www.geographie.uni-bonn.de/deegree/
 
  e-mail: info@deegree.org
-----------------------------------------------------------------------------*/
+ ----------------------------------------------------------------------------*/
 package org.deegree.igeo.modules.bookmarks;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,14 +62,15 @@ import org.deegree.model.spatialschema.GeometryFactory;
  * @version $Revision: $, $Date: $
  */
 public class Util {
-    
+
     /**
      * 
      * @param bookmarks
      * @param file
      * @throws Exception
      */
-    public static void saveBookmarks(List<BookmarkEntry> bookmarks, File file) throws Exception {
+    public static void saveBookmarks( List<BookmarkEntry> bookmarks, OutputStream out )
+                            throws Exception {
         BookmarkList bml = new BookmarkList();
         List<BookmarkType> list = bml.getBookmark();
         for ( BookmarkEntry bookmarkEntry : bookmarks ) {
@@ -90,50 +91,48 @@ public class Util {
         }
         JAXBContext jc = JAXBContext.newInstance( "org.deegree.igeo.modules.bookmarks" );
         Marshaller m = jc.createMarshaller();
-        FileOutputStream fos = new FileOutputStream( file );
-        m.marshal( bml, fos );
-        fos.flush();
-        fos.close();
+        m.marshal( bml, out );
+        out.flush();
+        out.close();
     }
-    
+
     /**
      * 
      * @param file
      * @return
      * @throws Exception
      */
-    public static  List<BookmarkEntry> loadBookmarks(File file) throws Exception {
+    public static List<BookmarkEntry> loadBookmarks( InputStream in )
+                            throws Exception {
         List<BookmarkEntry> bookmarks = new ArrayList<BookmarkEntry>();
-        if ( file.exists() ) {
-            try {
-                JAXBContext jc = JAXBContext.newInstance( "org.deegree.igeo.modules.bookmarks" );
-                Unmarshaller u = jc.createUnmarshaller();
-                BookmarkList bml = (BookmarkList) u.unmarshal( file );
-                List<BookmarkType> list = bml.getBookmark();
-                for ( BookmarkType bookmarkType : list ) {
-                    String name = bookmarkType.getName();
-                    String desc = bookmarkType.getDescription();
-                    boolean allMapModels = bookmarkType.isAllMapModels();
-                    Identifier mapModelId = null;
-                    if ( bookmarkType.getMapModelId() != null ) {
-                        String nsp = bookmarkType.getMapModelId().getNamespace();
-                        String val = bookmarkType.getMapModelId().getValue();
-                        URI nspURI = null;
-                        if ( nsp != null ) {
-                            nspURI = URI.create( nsp );
-                        }
-                        mapModelId = new Identifier( val, nspURI );
+        try {
+            JAXBContext jc = JAXBContext.newInstance( "org.deegree.igeo.modules.bookmarks" );
+            Unmarshaller u = jc.createUnmarshaller();
+            BookmarkList bml = (BookmarkList) u.unmarshal( in );
+            List<BookmarkType> list = bml.getBookmark();
+            for ( BookmarkType bookmarkType : list ) {
+                String name = bookmarkType.getName();
+                String desc = bookmarkType.getDescription();
+                boolean allMapModels = bookmarkType.isAllMapModels();
+                Identifier mapModelId = null;
+                if ( bookmarkType.getMapModelId() != null ) {
+                    String nsp = bookmarkType.getMapModelId().getNamespace();
+                    String val = bookmarkType.getMapModelId().getValue();
+                    URI nspURI = null;
+                    if ( nsp != null ) {
+                        nspURI = URI.create( nsp );
                     }
-                    Envelope env = Util.convertEnvelope( bookmarkType.getEnvelope() );
-                    bookmarks.add( new BookmarkEntry( mapModelId, name, desc, env, allMapModels ) );
+                    mapModelId = new Identifier( val, nspURI );
                 }
-            } catch ( Exception e ) {
-                e.printStackTrace();
+                Envelope env = Util.convertEnvelope( bookmarkType.getEnvelope() );
+                bookmarks.add( new BookmarkEntry( mapModelId, name, desc, env, allMapModels ) );
             }
+        } catch ( Exception e ) {
+            e.printStackTrace();
         }
         return bookmarks;
     }
-    
+
     /**
      * 
      * @param envelope
