@@ -50,6 +50,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -76,15 +78,15 @@ import org.deegree.igeo.io.FileSystemAccess;
 import org.deegree.igeo.io.FileSystemAccessFactory;
 import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.bookmarks.BookmarkModule;
-import org.deegree.igeo.modules.bookmarks.Util;
 import org.deegree.igeo.modules.bookmarks.BookmarkModule.BookmarkEntry;
+import org.deegree.igeo.modules.bookmarks.Util;
 import org.deegree.igeo.views.DialogFactory;
 import org.deegree.igeo.views.HelpManager;
 import org.deegree.igeo.views.swing.HelpFrame;
 import org.deegree.igeo.views.swing.util.GenericFileChooser;
+import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.igeo.views.swing.util.IGeoFileFilter;
 import org.deegree.igeo.views.swing.util.IconRegistry;
-import org.deegree.igeo.views.swing.util.GenericFileChooser.FILECHOOSERTYPE;
 import org.deegree.kernel.CommandProcessor;
 
 /**
@@ -165,7 +167,7 @@ public class BookmarkPanel extends javax.swing.JPanel {
                                 return;
                             }
                             List<BookmarkEntry> bookmarks = owner.readFromCache();
-                            String name = (String) tab_bookmarks.getValueAt( rows[0], 0 );                                   
+                            String name = (String) tab_bookmarks.getValueAt( rows[0], 0 );
                             BookmarkModule.BookmarkEntry bme = null;
                             for ( BookmarkEntry bookmarkEntry : bookmarks ) {
                                 if ( bookmarkEntry.name.equals( name ) ) {
@@ -246,7 +248,7 @@ public class BookmarkPanel extends javax.swing.JPanel {
                                 FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
                                 fsa.getFileURL( file.getAbsolutePath() );
                                 List<BookmarkEntry> bookmarks = owner.readFromCache();
-                                Util.saveBookmarks( bookmarks, file );
+                                Util.saveBookmarks( bookmarks, new FileOutputStream( file ) );
                             } catch ( Exception ex ) {
                                 LOG.logError( ex );
                             }
@@ -267,7 +269,7 @@ public class BookmarkPanel extends javax.swing.JPanel {
                                 FileSystemAccessFactory fsaf = FileSystemAccessFactory.getInstance( appCont );
                                 FileSystemAccess fsa = fsaf.getFileSystemAccess( FILECHOOSERTYPE.externalResource );
                                 fsa.getFileURL( file.getAbsolutePath() );
-                                List<BookmarkEntry> bookmarks = Util.loadBookmarks( file );
+                                List<BookmarkEntry> bookmarks = Util.loadBookmarks( new FileInputStream( file ) );
                                 owner.writeToCache( bookmarks );
                                 DefaultTableModel model = updateTableModel( bookmarks );
                                 tab_bookmarks.setModel( model );

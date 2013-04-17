@@ -64,7 +64,7 @@ import org.deegree.model.spatialschema.Point;
  * @version. $Revision: 6251 $, $Date: 2007-03-19 16:59:28 +0100 (Mo, 19 Mrz 2007) $
  */
 public class MeasureAreaState extends MapState {
-    
+
     private MeasureResultLabel measureResultLabel;
 
     /**
@@ -82,7 +82,7 @@ public class MeasureAreaState extends MapState {
 
     @Override
     public DrawingPane createDrawingPane( String platform, Graphics g ) {
-       
+
         if ( "Application".equalsIgnoreCase( platform ) ) {
             drawingPane = new CreatePolygonDrawingPane( appContainer );
         } else if ( "Applet".equalsIgnoreCase( platform ) ) {
@@ -100,7 +100,7 @@ public class MeasureAreaState extends MapState {
         drawingPane.setGraphicContext( g );
         return drawingPane;
     }
-    
+
     /**
      * sets the label calculating and representing the result of the measurment
      * 
@@ -110,7 +110,7 @@ public class MeasureAreaState extends MapState {
     public void setMeasureResultLabel( MeasureResultLabel label ) {
         this.measureResultLabel = label;
     }
-    
+
     @Override
     public void mouseMoved( MouseEvent event ) {
         if ( drawingPane != null && drawingPane.isDrawing() ) {
@@ -119,14 +119,14 @@ public class MeasureAreaState extends MapState {
             drawingPane.draw( p.x, p.y );
             if ( measureResultLabel != null ) {
                 measureResultLabel.setCurrentPoint( p.getX(), p.getY(), c.getWidth(), c.getHeight() );
-            } 
+            }
             c.repaint();
         }
     }
-    
+
     @Override
     public void mousePressed( MouseEvent event ) {
-        
+
         Component c = event.getComponent();
         java.awt.Point p = MapTools.adjustPointToPanelSize( event.getPoint(), c.getWidth(), c.getHeight() );
         if ( event.getClickCount() > 1 ) {
@@ -137,14 +137,16 @@ public class MeasureAreaState extends MapState {
                 c.setCursor( CursorRegistry.DEFAULT_CURSOR );
             }
         } else {
-            if ( drawingPane.isDrawing() ) {
-                drawingPane.stopDrawing( p.x, p.y );       
+            if ( drawingPane != null && drawingPane.isDrawing() ) {
+                drawingPane.stopDrawing( p.x, p.y );
                 if ( measureResultLabel != null ) {
                     measureResultLabel.addPoint( p.getX(), p.getY(), c.getWidth(), c.getHeight() );
-                }  
+                }
             } else {
                 c.setCursor( CursorRegistry.RULER_CURSOR );
-                drawingPane.startDrawing( p.x, p.y );            
+                if ( drawingPane != null ) {
+                    drawingPane.startDrawing( p.x, p.y );
+                }
                 if ( measureResultLabel != null ) {
                     measureResultLabel.setStartPoint( p.getX(), p.getY(), c.getWidth(), c.getHeight() );
                 }
