@@ -82,6 +82,7 @@ public class DefaultInnerFrame extends JInternalFrame implements IView<Container
      * 
      */
     public DefaultInnerFrame() {
+        super( "", true, true );
         addComponentListener( new DIFComponentListener() );
         addInternalFrameListener( new DIFInternalFrameListener() );
     }
@@ -225,7 +226,7 @@ public class DefaultInnerFrame extends JInternalFrame implements IView<Container
 
         @Override
         public void internalFrameActivated( InternalFrameEvent event ) {
-            owner.getComponentStateAdapter().setActive( true );            
+            owner.getComponentStateAdapter().setActive( true );
         }
 
         @Override
