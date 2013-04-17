@@ -103,7 +103,7 @@ public class AddLayerFrame extends DefaultFrame implements ActionListener, TreeS
 
     private static final String WFS = "WFS";
 
-    private static final String MEMORY = "Memory";
+    // private static final String MEMORY = "Memory";
 
     static final String FILE_RASTER = "File_raster";
 
@@ -172,9 +172,9 @@ public class AddLayerFrame extends DefaultFrame implements ActionListener, TreeS
                                                                FILE_RASTER, false );
         DefaultMutableTreeNode rasterFileNode = new DefaultMutableTreeNode( rasterFileEntry );
 
-        String memoryLabel = Messages.getMessage( Locale.getDefault(), "$MD10019" );
-        DatasourceEntry memoryEntry = new DatasourceEntry( "memorylayer_icon.gif", memoryLabel, MEMORY, false );
-        DefaultMutableTreeNode memoryNode = new DefaultMutableTreeNode( memoryEntry );
+        // String memoryLabel = Messages.getMessage( Locale.getDefault(), "$MD10019" );
+        // DatasourceEntry memoryEntry = new DatasourceEntry( "memorylayer_icon.gif", memoryLabel, MEMORY, false );
+        // DefaultMutableTreeNode memoryNode = new DefaultMutableTreeNode( memoryEntry );
 
         String dbLabel = Messages.getMessage( Locale.getDefault(), "$MD10018" );
         DatasourceEntry vectordbEntry = new DatasourceEntry( "databaselayer_icon.gif", dbLabel, DB_VECTOR, false );
@@ -184,7 +184,7 @@ public class AddLayerFrame extends DefaultFrame implements ActionListener, TreeS
         DatasourceEntry rasterdbEntry = new DatasourceEntry( "databaselayer_icon.gif", rasterdbLabel, DB_RASTER, false );
         DefaultMutableTreeNode rasterDatabaseNode = new DefaultMutableTreeNode( rasterdbEntry );
 
-        datasourcesRoot.add( memoryNode );
+        // datasourcesRoot.add( memoryNode );
         datasourcesRoot.add( vectorGroupNode );
         datasourcesRoot.add( rasterGroupNode );
 
