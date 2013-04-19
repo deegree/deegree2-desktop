@@ -320,7 +320,7 @@ public class DeleteVertexCommand extends MoveVertexCommand {
         if ( surfaceList.size() == 0 ) {
             throw new CommandException( Messages.getMessage( Locale.getDefault(), "$MD10318" ) );
         }
-        return GeometryFactory.createMultiSurface( surfaces );
+        return GeometryFactory.createMultiSurface( surfaceList.toArray( new Surface[surfaceList.size()] ) );
     }
 
     /**
