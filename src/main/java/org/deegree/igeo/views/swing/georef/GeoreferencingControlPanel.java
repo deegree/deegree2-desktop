@@ -518,7 +518,7 @@ public class GeoreferencingControlPanel extends JPanel implements ActionListener
         	sourceFile = file;
         	PrintStream out = null;
             try {
-                worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld", "UTF-8" );
+                worldFile = new File( file.toString().substring( 0, file.toString().length() - 4 ) + ".wld" );
                 out = new PrintStream( new FileOutputStream( worldFile ) );
                 // use the image coordinate system here (identity matrix, no translation), just flip
                 out.println( 1 );

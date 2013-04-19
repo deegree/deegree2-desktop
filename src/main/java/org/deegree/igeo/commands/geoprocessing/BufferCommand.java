@@ -184,10 +184,6 @@ public class BufferCommand extends AbstractCommand {
 
                 FeatureType bufferedFeatureType = createBufferedFeatureType( ft );
                 while ( iterator.hasNext() ) {
-                    if ( processMonitor.isCanceled() ) {
-                        System.gc();
-                        return;
-                    }
                     processMonitor.updateStatus( cnt++, "" );
                     Feature feature = (Feature) iterator.next();
                     if ( this.propertyForBufferDistance != null ) {
@@ -297,9 +293,6 @@ public class BufferCommand extends AbstractCommand {
                 geom = origGeom.getBuffer( distance, segments, capStyle );
                 break;
             }
-            // buffer calculation requires a lot of memory; ensure that it will be disposed
-            // after calculation of each buffer
-            System.gc();
             // clone feature to ensure that the new layer contains its own instances
             Feature nfeature = createBufferedFeature( feature, bufferedFeatureType, distance );
             FeatureProperty fp = nfeature.getDefaultProperty( geomProperty );

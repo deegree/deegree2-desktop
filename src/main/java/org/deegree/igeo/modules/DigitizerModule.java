@@ -633,7 +633,6 @@ public class DigitizerModule<T> extends DefaultModule<T> {
         }
         removeDigitizerPanel();
         addDigitizerPanel();
-        System.gc();
     }
 
     /**
