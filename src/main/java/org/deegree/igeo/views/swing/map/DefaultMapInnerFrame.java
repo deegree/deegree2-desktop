@@ -150,6 +150,8 @@ public class DefaultMapInnerFrame extends DefaultInnerFrame implements ChangeLis
             ApplicationContainer<Container> appCont = owner.getApplicationContainer();
             String mmId = owner.getInitParameter( "assignedMapModel" );
             appCont.setActiveMapModel( appCont.getMapModel( new Identifier( mmId ) ) );
+            appCont.getActiveMapModule().getMapTool().resetState();
+            appCont.resetToolbar();
         }
     }
 
