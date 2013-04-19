@@ -415,7 +415,6 @@ public class IGeoDesktop extends AbstractiGeoDesktop {
         // initialize new list for tool bar and menu buttons
         toolbarButtons = new HashMap<String, List<AbstractButton>>();
         menuItems = new HashMap<String, AbstractButton>();
-        System.gc();
     }
 
     @Override

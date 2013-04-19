@@ -263,7 +263,6 @@ public class IGeoDesktopPanel extends IGeoDesktop {
         // initialize new list for tool bar
         toolbarButtons = new HashMap<String, List<AbstractButton>>();
         menuItems = new HashMap<String, AbstractButton>();
-        System.gc();
     }
 
     /**
