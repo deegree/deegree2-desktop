@@ -39,20 +39,17 @@ package org.deegree.igeo.dataadapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import org.deegree.datatypes.QualifiedName;
 import org.deegree.datatypes.Types;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.framework.util.IDGenerator;
 import org.deegree.framework.util.StringTools;
 import org.deegree.igeo.dataadapter.FeatureChangedEvent.FEATURE_CHANGE_TYPE;
 import org.deegree.igeo.mapmodel.Datasource;
@@ -195,7 +192,7 @@ public abstract class FeatureAdapter extends DataAccessAdapter {
      * 
      * @return name of first geometry property
      */
-    private PropertyName getGeomPropertyName() {
+    protected PropertyName getGeomPropertyName() {
         PropertyType[] pts = getSchema().getProperties();
 
         // Feature feat = featureCollections.get( datasource.getName() ).getFeature( 0 );

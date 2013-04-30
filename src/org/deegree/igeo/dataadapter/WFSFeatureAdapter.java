@@ -67,6 +67,7 @@ import org.deegree.model.crs.GeoTransformer;
 import org.deegree.model.feature.Feature;
 import org.deegree.model.feature.FeatureCollection;
 import org.deegree.model.feature.schema.GMLSchema;
+import org.deegree.model.filterencoding.PropertyName;
 import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.GeometryException;
 import org.deegree.ogcwebservices.wfs.operation.GetFeature;
@@ -463,5 +464,11 @@ public class WFSFeatureAdapter extends FeatureAdapter {
         } else {
             throw new IOException( Messages.getMessage( Locale.getDefault(), "$DG10085", layer.getTitle() ) );
         }
+    }
+
+    @Override
+    protected PropertyName getGeomPropertyName() {
+        QualifiedName geometryProperty = ( (WFSDatasource) datasource ).getGeometryProperty();
+        return new PropertyName( geometryProperty );
     }
 }
