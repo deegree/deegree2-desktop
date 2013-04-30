@@ -181,6 +181,11 @@ public class MapTool<T> {
         fireMapStateChangedEvent();
     }
 
+    public void setCopyCoordinatesState() {
+        this.state = new CopyCoordinatesState( appContainer );
+        fireMapStateChangedEvent();
+    }
+
     /**
      * sets select state
      */
