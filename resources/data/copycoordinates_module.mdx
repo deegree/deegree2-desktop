@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgp:Module xmlns:dgp="http://www.deegree.org/project" xmlns:cmm="http://www.deegree.org/coremapmodel" xmlns:set="http://www.deegree.org/settings" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.deegree.org/project ../schema/jaxbschema/project.xsd">
+	<dgp:name>CCModule</dgp:name>
+	<cmm:identifier>
+		<cmm:value>F28z9</cmm:value>
+	</cmm:identifier>
+	<dgp:className>org.deegree.igeo.modules.CopyCoordinatesModule</dgp:className>
+	<dgp:ViewForm>
+		<dgp:PaneViewForm>
+			<dgp:containerClass viewPlatform="Application">org.deegree.igeo.views</dgp:containerClass>
+			<dgp:ComponentState active="false" modal="false">
+				<dgp:windowState>closed</dgp:windowState>
+			</dgp:ComponentState>
+			<dgp:paneTitle>CopyCoordinatesModule</dgp:paneTitle>
+		</dgp:PaneViewForm>
+		<dgp:Layout>
+			<dgp:NoneLayout/>
+		</dgp:Layout>
+	</dgp:ViewForm>
+	<dgp:Menu>
+		<cmm:identifier>
+			<cmm:value>CopyCoordinatesMenue</cmm:value>
+		</cmm:identifier>
+		<dgp:parent>
+			<cmm:value>MB1edit</cmm:value>
+		</dgp:parent>
+		<dgp:name>CopyCoordinates</dgp:name>
+		<dgp:MenuItem>
+			<dgp:name>$copyCoordinates.name</dgp:name>
+			<dgp:tooltip>$CopyCoordinates.tooltip</dgp:tooltip>
+			<dgp:assignedAction>copyCoordinates</dgp:assignedAction>
+		</dgp:MenuItem>
+	</dgp:Menu>
+        <dgp:ToolBarEntry assignedGroup="TBSelectGroup">
+                <cmm:identifier>
+                        <cmm:value>rtdfdg412</cmm:value>
+                </cmm:identifier>
+                <dgp:name/>
+                <dgp:tooltip>$CopyCoordinates.tooltip</dgp:tooltip>
+                <dgp:assignedAction>copyCoordinates</dgp:assignedAction>
+                <dgp:icon xlink:href="../icons/clear_clipboard.png"/>
+                <dgp:entryType>ToggleButton</dgp:entryType>
+        </dgp:ToolBarEntry>
+</dgp:Module>
