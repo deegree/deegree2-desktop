@@ -20,12 +20,11 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  Contact:
 
- Andreas Poth
  lat/lon GmbH
  Aennchenstr. 19
  53177 Bonn
  Germany
- E-Mail: poth@lat-lon.de
+ http://www.lat-lon.de
 
  Prof. Dr. Klaus Greve
  Department of Geography
@@ -53,12 +52,10 @@ import org.deegree.kernel.Command;
 import org.deegree.model.spatialschema.Point;
 
 /**
- * 
+ * MapState that is used to copy coordinates from map by mouse click
  * 
  * @author <a href="mailto:wanhoff@lat-lon.de">Jeronimo Wanhoff</a>
  * @author last edited by: $Author: wanhoff $
- * 
- * @version. $Revision: 6251 $, $Date: 2007-03-19 16:59:28 +0100 (Mo, 19 Mrz 2007) $
  */
 public class CopyCoordinatesState extends MapState {
 
@@ -90,7 +87,7 @@ public class CopyCoordinatesState extends MapState {
         Point pt = createPoint( trans.getSourceX( e.getX() ), trans.getSourceY( e.getY() ), mm.getCoordinateSystem() );
         return pt;
     }
-    
+
     @Override
     public void mousePressed( MouseEvent event ) {
         MapModel mm = appContainer.getMapModel( null );
