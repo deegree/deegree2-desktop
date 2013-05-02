@@ -37,9 +37,12 @@
 
 package org.deegree.igeo.state.mapstate;
 
+import static java.awt.Toolkit.getDefaultToolkit;
 import static org.deegree.model.spatialschema.GeometryFactory.createPoint;
 
 import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 
 import org.deegree.graphics.transformation.GeoTransform;
@@ -81,18 +84,25 @@ public class CopyCoordinatesState extends MapState {
         return null;
     }
 
+    @Override
+    public void mousePressed( MouseEvent event ) {
+        Point pt = getCoordinatesFromMouseEvent( event );
+        copyCoordinatesToClipboard( pt );
+    }
+
+    private void copyCoordinatesToClipboard( Point pt ) {
+        if ( "application".equalsIgnoreCase( appContainer.getViewPlatform() ) ) {
+            String coordinateString = pt.getX() + " " + pt.getY();
+            Toolkit tk = getDefaultToolkit();
+            tk.getSystemClipboard().setContents( new StringSelection( coordinateString ), null );
+        }
+    }
+
     private Point getCoordinatesFromMouseEvent( MouseEvent e ) {
         MapModel mm = appContainer.getMapModel( null );
         GeoTransform trans = mm.getToTargetDeviceTransformation();
         Point pt = createPoint( trans.getSourceX( e.getX() ), trans.getSourceY( e.getY() ), mm.getCoordinateSystem() );
         return pt;
-    }
-
-    @Override
-    public void mousePressed( MouseEvent event ) {
-        MapModel mm = appContainer.getMapModel( null );
-        Point pt = getCoordinatesFromMouseEvent( event );
-        System.out.println( pt.getX() + " " + pt.getY() + " " + mm.getCoordinateSystem().getFormattedString() );
     }
 
 }
