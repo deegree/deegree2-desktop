@@ -47,6 +47,7 @@ import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.config.ModuleType;
 import org.deegree.igeo.config._ComponentPositionType;
 import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
+import org.deegree.igeo.state.mapstate.CopyCoordinatesState;
 import org.deegree.igeo.state.mapstate.MapStateChangedEvent;
 
 /**
@@ -90,7 +91,7 @@ public class CopyCoordinatesModule<T> extends DefaultModule<T> implements Change
      * method assigned to action
      */
     public void copyCoordinates() {
-        this.mapModule.getMapTool().setCopyCoordinatesState();
+        this.mapModule.getMapTool().setState( new CopyCoordinatesState( appContainer ) );
     }
 
     /*
