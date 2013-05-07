@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns4:Project xmlns="http://www.deegree.org/coremapmodel" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.deegree.org/jdbc" xmlns:ns4="http://www.deegree.org/project" xmlns:ns5="http://www.deegree.org/settings" language="de">
+<ns4:Project xmlns="http://www.deegree.org/coremapmodel" 
+xmlns:ns2="http://www.w3.org/1999/xlink" 
+xmlns:ns3="http://www.deegree.org/jdbc" 
+xmlns:ns4="http://www.deegree.org/project" 
+xmlns:ns5="http://www.deegree.org/settings" language="de"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.deegree.org/project ../schema/jaxbschema/project.xsd">
   <ns4:name>TestProject</ns4:name>
   <identifier>
     <value>TP1</value>
@@ -664,6 +670,11 @@
       <ns4:ModuleReference>
         <OnlineResource ns2:href="./copypaste_module.mdx"/>
       </ns4:ModuleReference>
+    </ns4:ModuleRegister>    
+    <ns4:ModuleRegister>
+      <ns4:AbsolutePosition>
+        <ns4:Window width="600" height="500" top="50" left="650"/>
+      </ns4:AbsolutePosition>
       <ns4:ModuleReference>
         <OnlineResource ns2:href="./copycoordinates_module.mdx"/>
       </ns4:ModuleReference>
