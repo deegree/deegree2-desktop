@@ -38,6 +38,8 @@ package org.deegree.igeo.modules;
 
 import static org.deegree.framework.log.LoggerFactory.getLogger;
 
+import java.awt.Color;
+import java.awt.Container;
 import java.util.Map;
 
 import org.deegree.framework.log.ILogger;
@@ -46,9 +48,14 @@ import org.deegree.igeo.ChangeListener;
 import org.deegree.igeo.ValueChangedEvent;
 import org.deegree.igeo.config.ModuleType;
 import org.deegree.igeo.config._ComponentPositionType;
+import org.deegree.igeo.mapmodel.MapModel;
 import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
 import org.deegree.igeo.state.mapstate.CopyCoordinatesState;
 import org.deegree.igeo.state.mapstate.MapStateChangedEvent;
+import org.deegree.igeo.state.mapstate.MapTool;
+import org.deegree.igeo.state.mapstate.ToolState;
+import org.deegree.igeo.views.swing.map.CopyCoordinatesPanel;
+import org.deegree.model.Identifier;
 
 /**
  * Module that is used to copy coordinates from map by mouse click
@@ -63,6 +70,8 @@ public class CopyCoordinatesModule<T> extends DefaultModule<T> implements Change
     private static final ILogger LOG = getLogger( CopyCoordinatesModule.class );
 
     private DefaultMapModule<?> mapModule;
+
+    private CopyCoordinatesPanel copyCoordinatesPanel;
 
     static {
         ActionDescription ad1 = new ActionDescription( "copyCoordinates", "copy coordinates into clip board", null,
@@ -91,19 +100,46 @@ public class CopyCoordinatesModule<T> extends DefaultModule<T> implements Change
      * method assigned to action
      */
     public void copyCoordinates() {
-        this.mapModule.getMapTool().setState( new CopyCoordinatesState( appContainer ) );
+        MapTool<?> mapTool = this.mapModule.getMapTool();
+        initCopyCoordinatesPanel( mapTool );
+        mapTool.setState( new CopyCoordinatesState( appContainer ) );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.deegree.igeo.ChangeListener#valueChanged(org.deegree.igeo.ValueChangedEvent)
-     */
+    public void initCopyCoordinatesPanel( MapTool<?> mapTool ) {
+        if ( copyCoordinatesPanel == null ) {
+            Object mapModelViewForm = this.mapModule.getViewForm();
+            if ( mapModelViewForm instanceof Container ) {
+                String mmId = getInitParameter( "assignedMapModel" );
+                MapModel mapModel = appContainer.getMapModel( new Identifier( mmId ) );
+                Container container = (Container) mapModelViewForm;
+                copyCoordinatesPanel = createCopyCoordinatesPanel( mapTool, mapModel, container );
+            }
+        }
+    }
+
+    private CopyCoordinatesPanel createCopyCoordinatesPanel( MapTool<?> mapTool, MapModel mapModel, Container container ) {
+        CopyCoordinatesPanel copyCoordinatesPanel = new CopyCoordinatesPanel( mapTool, container );
+        int width = mapModel.getTargetDevice().getPixelWidth();
+        int height = mapModel.getTargetDevice().getPixelHeight();
+        copyCoordinatesPanel.setBounds( 0, 0, width, height );
+        copyCoordinatesPanel.setBackground( new Color( 255, 255, 255, 0 ) );
+        copyCoordinatesPanel.setVisible( true );
+        return copyCoordinatesPanel;
+    }
+
+    @Override
     public void valueChanged( ValueChangedEvent event ) {
         if ( event instanceof MapStateChangedEvent ) {
             this.mapModule.getMapTool().removeChangeListener( this );
             this.mapModule = appContainer.getActiveMapModule();
             this.mapModule.getMapTool().addChangeListener( this );
+            ToolState state = ( (MapStateChangedEvent) event ).getState();
+            if ( state instanceof CopyCoordinatesState ) {
+                copyCoordinatesPanel.connect();
+            } else {
+                copyCoordinatesPanel.disconnect();
+            }
         }
     }
+
 }
