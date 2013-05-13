@@ -29,27 +29,18 @@
       <include name="*/*jar" />
       <exclude name="igeodesktop.jar" />
     </fileset>
-    <fileset dir="${d2_base.location}">
-      <include name="**/deegree2-core-${deegree_version}.jar" />
-      <include name="**/deegree2-oracle-${deegree_version}.jar" />
-      <exclude name="**/*desktop*.jar" />
+    <fileset dir="${d2_base.location}/dist">
+      <include name="deegree2.jar" />
     </fileset>
-<!--
     <fileset dir="${d2_base.location}/lib">
       <include name="servlet/*jar" />
     </fileset>
--->
   </path>
 
   <path id="run.classpath">
     <fileset dir="dist" >
       <include name="*jar" />
       <exclude name="igeodesktop.jar" />
-    </fileset>
-    <fileset dir="${d2_base.location}">
-      <include name="**/deegree2-core-${deegree_version}.jar" />
-      <include name="**/deegree2-oracle-${deegree_version}.jar" />
-      <exclude name="**/*desktop*.jar" />
     </fileset>
   </path>
 
@@ -59,16 +50,11 @@
       <fileset dir="lib">
         <include name="*/*jar"/>
       </fileset>
-      <fileset dir="${d2_base.location}">
-        <include name="**/deegree2-core-${deegree_version}.jar" />
-        <include name="**/deegree2-oracle-${deegree_version}.jar" />
-        <exclude name="**/*desktop*.jar" />
-      </fileset>
     </copy>
   </target>
 
   <target name="compile" depends="init">
-    <javac srcdir="src" destdir="classes" includes="**/*.java" fork="true" debug="true" target="1.6" source="1.6" encoding="UTF-8">
+    <javac srcdir="src" destdir="classes" includes="**/*.java" fork="true" debug="true" target="1.5" source="1.5" encoding="UTF-8">
       <classpath>
         <path refid="classpath" />
       </classpath>
@@ -104,7 +90,7 @@
 
   <target name="compile-fileaccess">
     <mkdir dir="classes_server" />
-    <javac srcdir="src_server" destdir="classes_server" includes="**/*.java" fork="true" debug="true" target="1.6" source="1.6" encoding="UTF-8">
+    <javac srcdir="src_server" destdir="classes_server" includes="**/*.java" fork="true" debug="true" target="1.5" source="1.5" encoding="UTF-8">
       <classpath>
         <path refid="classpath" />
       </classpath>
@@ -112,7 +98,7 @@
   </target>
 
   <target name="run" depends="jar">
-    <java jar="dist/igeodesktop.jar" fork="true" maxmemory="1024m">
+    <java jar="dist/igeodesktop.jar" fork="true" maxmemory="512m">
       <arg value="${run.arg}" />
     </java>
   </target>
