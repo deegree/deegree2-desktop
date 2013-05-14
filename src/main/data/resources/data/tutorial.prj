@@ -686,6 +686,15 @@
 				<ns2:OnlineResource ns3:href="./copypaste_module.mdx"/>
 			</ModuleReference>
 		</ModuleRegister>
+			<!-- CopyCoordinates. Ermöglicht das Ablegen von Koordinaten aus der Karte in die Zwischenablage. -->
+		<ModuleRegister>
+			<AbsolutePosition>
+				<Window width="600" height="500" top="50" left="650"/>
+			</AbsolutePosition>
+			<ModuleReference>
+				<ns2:OnlineResource ns3:href="./copycoordinates_module.mdx"/>
+			</ModuleReference>
+		</ModuleRegister>
 		<!-- Print. Ermöglicht das Erstellen von PDF-Dateien. -->
 		<ModuleRegister>
 			<AbsolutePosition>
