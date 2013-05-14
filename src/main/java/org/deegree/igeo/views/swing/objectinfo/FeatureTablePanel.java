@@ -234,46 +234,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
                     btZoomto = new JButton( getImageIcon( "zoom.gif" ) );
                     btZoomto.setToolTipText( Messages.getMessage( getLocale(), "$MD10540" ) );
                     jToolBar.add( btZoomto );
-                    btZoomto.addActionListener( new ActionListener() {
-                        public void actionPerformed( ActionEvent e ) {
-                            int[] rows = tabFeat.getSelectedRows();
-
-                            if ( rows != null && rows.length > 0 && tabFeat.getModel() instanceof FeatureTableModel ) {
-                                FeatureTableModel ftm = (FeatureTableModel) tabFeat.getModel();
-                                FeatureCollection fc = ftm.getFeatureCollection();
-                                Envelope env = null;
-                                try {
-                                    env = fc.getFeature( rows[0] ).getBoundedBy();
-                                    for ( int i = 1; i < rows.length; i++ ) {
-                                        env = env.merge( fc.getFeature( rows[i] ).getBoundedBy() );
-                                    }
-                                    if ( env.getWidth() < 0.0001 ) {
-                                        // selected object must be a Point; set bbox width/height to 1%
-                                        // of the overall map width
-                                        env = env.getBuffer( fc.getBoundedBy().getWidth() / 200d );
-                                    }
-                                    if ( env.getWidth() < 0.0001 ) {
-                                        // feature collection just contains one point; set fix bbox width/height
-                                        // 25 map units
-                                        env = env.getBuffer( 25 );
-                                    }
-                                } catch ( GeometryException e1 ) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                                ApplicationContainer<Container> appContainer = owner.getApplicationContainer();
-                                MapModel mm = appContainer.getMapModel( null );
-                                ZoomCommand cmd = new ZoomCommand( mm );
-                                cmd.setZoomBox( env, mm.getTargetDevice().getPixelWidth(),
-                                                mm.getTargetDevice().getPixelHeight() );
-                                try {
-                                    appContainer.getCommandProcessor().executeSychronously( cmd, true );
-                                } catch ( Exception ex ) {
-                                    LOG.logError( ex.getMessage(), ex );
-                                }
-                            }
-                        }
-                    } );
+                    btZoomto.addActionListener( new ZoomToActionListener() );
                 }
                 {
                     btHelp = new JButton( IconRegistry.getIcon( "help.png" ) );
@@ -436,7 +397,8 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
      * sets a new FeatureCollection to be displayed with a {@link FeatureTablePanel}
      * 
      * @param layer
-     * @param featureCollection  must not be <code>null</code>
+     * @param featureCollection
+     *            must not be <code>null</code>
      */
     public void setFeatureCollection( Layer layer, final FeatureCollection featureCollection ) {
         this.featureCollection = featureCollection;
@@ -485,7 +447,7 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
                 }
             }
         };
-        th.start();    
+        th.start();
     }
 
     private void markSelectedFeatures( Layer layer, final FeatureCollection featureCollection ) {
@@ -694,6 +656,77 @@ public class FeatureTablePanel extends DefaultPanel implements FeatureTable, Cli
                 FeatureTablePanel.this.getParent().repaint();
             }
 
+        }
+    }
+
+    class ZoomToActionListener implements ActionListener {
+        public void actionPerformed( ActionEvent e ) {
+            Envelope env = null;
+            if ( tabFeat.getModel() instanceof FeatureTableModel ) {
+                env = getEnvelopeFromFeatureTableModel( (FeatureTableModel) tabFeat.getModel() );
+            } else if ( tabFeat.getModel() instanceof WMSFeatureTableModel ) {
+                env = getEnevelopeFromWmsFeatureTableModel( (WMSFeatureTableModel) tabFeat.getModel() );
+            }
+            if ( env != null ) {
+                zoomToSelected( env );
+            }
+        }
+
+        private Envelope getEnvelopeFromFeatureTableModel( FeatureTableModel ftm ) {
+            int[] rows = tabFeat.getSelectedRows();
+            if ( rows != null && rows.length > 0 ) {
+                FeatureCollection fc = ftm.getFeatureCollection();
+                try {
+                    Envelope env = fc.getFeature( rows[0] ).getBoundedBy();
+                    for ( int i = 1; i < rows.length; i++ ) {
+                        env = env.merge( fc.getFeature( rows[i] ).getBoundedBy() );
+                    }
+                    return expandEnvelopeIfItIsAPoint( fc, env );
+                } catch ( GeometryException e ) {
+                    LOG.logError( "Could not zoom to selected features: " + e.getMessage() );
+                    LOG.logDebug( "Could not zoom to selected features!", e );
+                }
+            }
+            return null;
+        }
+
+        private Envelope getEnevelopeFromWmsFeatureTableModel( WMSFeatureTableModel tableModel ) {
+            FeatureCollection fc = tableModel.getFeatureCollection();
+            try {
+                Envelope env = fc.getBoundedBy();
+                return expandEnvelopeIfItIsAPoint( fc, env );
+            } catch ( GeometryException e ) {
+                LOG.logError( "Could not zoom to selected features: " + e.getMessage() );
+                LOG.logDebug( "Could not zoom to selected features!", e );
+            }
+            return null;
+        }
+
+        private Envelope expandEnvelopeIfItIsAPoint( FeatureCollection fc, Envelope env )
+                                throws GeometryException {
+            if ( env.getWidth() < 0.0001 ) {
+                // selected object must be a Point; set bbox width/height to 1%
+                // of the overall map width
+                env = env.getBuffer( fc.getBoundedBy().getWidth() / 200d );
+            }
+            if ( env.getWidth() < 0.0001 ) {
+                // feature collection just contains one point; set fix bbox width/height
+                // 25 map units
+                env = env.getBuffer( 25 );
+            }
+            return env;
+        }
+
+        private void zoomToSelected( Envelope env ) {
+            ApplicationContainer<Container> appContainer = owner.getApplicationContainer();
+            MapModel mm = appContainer.getMapModel( null );
+            ZoomCommand cmd = new ZoomCommand( mm );
+            cmd.setZoomBox( env, mm.getTargetDevice().getPixelWidth(), mm.getTargetDevice().getPixelHeight() );
+            try {
+                appContainer.getCommandProcessor().executeSychronously( cmd, true );
+            } catch ( Exception ex ) {
+                LOG.logError( ex.getMessage(), ex );
+            }
         }
     }
 
