@@ -35,7 +35,7 @@
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
 
-package org.deegree.igeo.state.mapstate;
+package org.deegree.desktop.state.mapstate;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static org.deegree.model.spatialschema.GeometryFactory.createPoint;
@@ -46,11 +46,11 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 
 import org.deegree.graphics.transformation.GeoTransform;
-import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.mapmodel.Layer;
-import org.deegree.igeo.mapmodel.MapModel;
-import org.deegree.igeo.modules.IModule;
-import org.deegree.igeo.views.DrawingPane;
+import org.deegree.desktop.ApplicationContainer;
+import org.deegree.desktop.mapmodel.Layer;
+import org.deegree.desktop.mapmodel.MapModel;
+import org.deegree.desktop.modules.IModule;
+import org.deegree.desktop.views.DrawingPane;
 import org.deegree.kernel.Command;
 import org.deegree.model.spatialschema.Point;
 

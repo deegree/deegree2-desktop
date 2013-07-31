@@ -34,7 +34,7 @@
  Germany
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
-package org.deegree.igeo.views.swing.map;
+package org.deegree.desktop.views.swing.map;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -48,9 +48,9 @@ import javax.swing.JPanel;
 
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.igeo.i18n.Messages;
-import org.deegree.igeo.modules.CopyCoordinatesModule;
-import org.deegree.igeo.state.mapstate.MapTool;
+import org.deegree.desktop.i18n.Messages;
+import org.deegree.desktop.modules.CopyCoordinatesModule;
+import org.deegree.desktop.state.mapstate.MapTool;
 
 /**
  * Handles MouseEvents for the {@link CopyCoordinatesModule}

@@ -34,7 +34,7 @@
  Germany
  E-Mail: greve@giub.uni-bonn.de
  ---------------------------------------------------------------------------*/
-package org.deegree.igeo.modules;
+package org.deegree.desktop.modules;
 
 import static org.deegree.framework.log.LoggerFactory.getLogger;
 
@@ -43,18 +43,18 @@ import java.awt.Container;
 import java.util.Map;
 
 import org.deegree.framework.log.ILogger;
-import org.deegree.igeo.ApplicationContainer;
-import org.deegree.igeo.ChangeListener;
-import org.deegree.igeo.ValueChangedEvent;
-import org.deegree.igeo.config.ModuleType;
-import org.deegree.igeo.config._ComponentPositionType;
-import org.deegree.igeo.mapmodel.MapModel;
-import org.deegree.igeo.modules.ActionDescription.ACTIONTYPE;
-import org.deegree.igeo.state.mapstate.CopyCoordinatesState;
-import org.deegree.igeo.state.mapstate.MapStateChangedEvent;
-import org.deegree.igeo.state.mapstate.MapTool;
-import org.deegree.igeo.state.mapstate.ToolState;
-import org.deegree.igeo.views.swing.map.CopyCoordinatesPanel;
+import org.deegree.desktop.ApplicationContainer;
+import org.deegree.desktop.ChangeListener;
+import org.deegree.desktop.ValueChangedEvent;
+import org.deegree.desktop.config.ModuleType;
+import org.deegree.desktop.config._ComponentPositionType;
+import org.deegree.desktop.mapmodel.MapModel;
+import org.deegree.desktop.modules.ActionDescription.ACTIONTYPE;
+import org.deegree.desktop.state.mapstate.CopyCoordinatesState;
+import org.deegree.desktop.state.mapstate.MapStateChangedEvent;
+import org.deegree.desktop.state.mapstate.MapTool;
+import org.deegree.desktop.state.mapstate.ToolState;
+import org.deegree.desktop.views.swing.map.CopyCoordinatesPanel;
 import org.deegree.model.Identifier;
 
 /**
