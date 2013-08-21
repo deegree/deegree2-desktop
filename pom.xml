@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>deegree2-igeodesktop</artifactId>
-  <name>deegree2-igeodesktop</name>
+  <artifactId>deegree2-desktop</artifactId>
+  <name>deegree2-desktop</name>
   <version>0.4.9-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -89,7 +89,6 @@
         <version>2.1</version>
         <configuration>
           <preparationGoals>clean install</preparationGoals>
-          <tagBase>svn+ssh://svn.wald.intevation.org/deegree/deegree2/deegree2-igeodesktop/tags</tagBase>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <arguments>-e</arguments>
         </configuration>
@@ -150,7 +149,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.deegree.igeo.desktop.IGeoDesktop</mainClass>
+              <mainClass>org.deegree.desktop.main.DeegreeDesktop</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -170,7 +169,7 @@
               </schemaIncludes>
               <schemaDirectory>src/main/resources/META-INF/schemas/</schemaDirectory>
               <episode>true</episode>
-              <generatePackage>org.deegree.igeo.config</generatePackage>
+              <generatePackage>org.deegree.desktop.config</generatePackage>
             </configuration>
           </execution>
         </executions>
@@ -184,7 +183,7 @@
           <excludes>
             <exclude>**/DatabaseConnectionManagerTest.java,**/DatabaseFeatureAdapterTest.java</exclude>
           </excludes>
-          <!-- <excludedGroups>org.deegree.igeo.jdbc.DatabaseTest</excludedGroups> -->
+          <!-- <excludedGroups>org.deegree.desktop.jdbc.DatabaseTest</excludedGroups> -->
         </configuration>
       </plugin>
 
@@ -204,7 +203,7 @@
               <outfile>target/deegreeDesktop.exe</outfile>
               <errTitle />
               <classPath>
-                <mainClass>org.deegree.igeo.desktop.IGeoDesktop</mainClass>
+                <mainClass>org.deegree.desktop.main.DeegreeDesktop</mainClass>
                 <jarLocation>lib/</jarLocation>
               </classPath>
               <jre>
@@ -291,8 +290,8 @@
               <repositoryLayout>flat</repositoryLayout>
               <programs>
                 <program>
-                  <mainClass>org.deegree.igeo.desktop.IGeoDesktop</mainClass>
-                  <name>iGeoDesktop</name>
+                  <mainClass>org.deegree.desktop.main.DeegreeDesktop</mainClass>
+                  <name>deegreeDesktop</name>
                 </program>
               </programs>
               <binFileExtensions>
@@ -335,7 +334,7 @@
                   <tasks>
                     <chmod perm="+x">
                       <fileset dir="target/appassembler/bin">
-                        <include name="iGeoDesktop.*" />
+                        <include name="deegreeDesktop.*" />
                       </fileset>
                     </chmod>
                   </tasks>

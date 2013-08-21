@@ -41,7 +41,7 @@ import java.util.List;
 
 import org.deegree.crs.configuration.CRSConfiguration;
 import org.deegree.crs.configuration.CRSProvider;
-import org.deegree.igeo.i18n.Messages;
+import org.deegree.desktop.i18n.Messages;
 
 /**
  * TODO add class documentation here

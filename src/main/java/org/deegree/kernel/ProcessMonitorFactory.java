@@ -38,7 +38,7 @@
 
 package org.deegree.kernel;
 
-import org.deegree.igeo.views.swing.util.SingleProcessMonitor;
+import org.deegree.desktop.views.swing.util.SingleProcessMonitor;
 
 /**
  * 

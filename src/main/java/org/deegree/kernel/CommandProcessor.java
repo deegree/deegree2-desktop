@@ -45,13 +45,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
 import org.deegree.datatypes.QualifiedName;
+import org.deegree.desktop.i18n.Messages;
+import org.deegree.desktop.views.DialogFactory;
 import org.deegree.framework.concurrent.ExecutionFinishedEvent;
 import org.deegree.framework.concurrent.ExecutionFinishedListener;
 import org.deegree.framework.concurrent.Executor;
 import org.deegree.framework.log.ILogger;
 import org.deegree.framework.log.LoggerFactory;
-import org.deegree.igeo.i18n.Messages;
-import org.deegree.igeo.views.DialogFactory;
 
 /**
  * 
