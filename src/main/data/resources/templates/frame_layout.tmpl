@@ -14,7 +14,7 @@
 	<View hasFooter="true">
 		<ViewForm>
 			<FrameViewForm resizeable="true">
-				<containerClass viewPlatform="Application">org.deegree.igeo.views.map.DefaultMapFrame</containerClass>
+				<containerClass viewPlatform="Application">org.deegree.desktop.views.map.DefaultMapFrame</containerClass>
 				<ComponentState modal="false" active="true">
 					<windowState>normal</windowState>
 				</ComponentState>
@@ -35,10 +35,10 @@
 				<ns2:identifier>
 					<ns2:value>ModuleGrpId</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.DefaultModuleGroup</className>
+				<className>org.deegree.desktop.modules.DefaultModuleGroup</className>
 				<ViewForm>
 					<FrameViewForm closable="false">
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.DefaultFrame</containerClass>
+						<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.DefaultFrame</containerClass>
 						<ComponentState modal="false" active="true">
 							<windowState>normal</windowState>
 						</ComponentState>
@@ -57,10 +57,10 @@
 						<ns2:identifier>
 							<ns2:value>LayerInfoId</ns2:value>
 						</ns2:identifier>
-						<className>org.deegree.igeo.modules.LayerInfoModule</className>
+						<className>org.deegree.desktop.modules.LayerInfoModule</className>
 						<ViewForm>
 							<FrameViewForm resizeable="true">
-								<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.objectinfo.LayerInfoFrame</containerClass>
+								<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.objectinfo.LayerInfoFrame</containerClass>
 								<ComponentState modal="false" active="false">
 									<windowState>closed</windowState>
 								</ComponentState>
@@ -117,11 +117,11 @@
 						<ns2:identifier>
 							<ns2:value>ScaleModuleId</ns2:value>
 						</ns2:identifier>
-						<className>org.deegree.igeo.modules.DefaultModule</className>
+						<className>org.deegree.desktop.modules.DefaultModule</className>
 						<ViewForm>
 							<PaneViewForm>
 								<containerClass viewPlatform="Application">
-							org.deegree.igeo.views.swing.ScaleSelectionPanel
+							org.deegree.desktop.views.swing.ScaleSelectionPanel
 						</containerClass>
 								<ComponentState modal="false" active="true">
 									<windowState>normal</windowState>
@@ -147,10 +147,10 @@
 						<ns2:identifier>
 							<ns2:value>LayerTreeId</ns2:value>
 						</ns2:identifier>
-						<className>org.deegree.igeo.modules.LayerListTreeViewModule</className>
+						<className>org.deegree.desktop.modules.LayerListTreeViewModule</className>
 						<ViewForm>
 							<PaneViewForm>
-								<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.layerlist.LayerTreePanel</containerClass>
+								<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.layerlist.LayerTreePanel</containerClass>
 								<ComponentState modal="false" active="true">
 									<windowState>normal</windowState>
 								</ComponentState>
@@ -226,10 +226,10 @@
 						<ns2:identifier>
 							<ns2:value>LegendViewId</ns2:value>
 						</ns2:identifier>
-						<className>org.deegree.igeo.modules.DefaultModule</className>
+						<className>org.deegree.desktop.modules.DefaultModule</className>
 						<ViewForm>
 							<PaneViewForm>
-								<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.legend.LegendPanel</containerClass>
+								<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.legend.LegendPanel</containerClass>
 								<ComponentState modal="false" active="true">
 									<windowState>normal</windowState>
 								</ComponentState>
@@ -260,10 +260,10 @@
 				<ns2:identifier>
 					<ns2:value>MapModelCollectionInfoInfo</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.MapModelCollectionInfoModule</className>
+				<className>org.deegree.desktop.modules.MapModelCollectionInfoModule</className>
 				<ViewForm>
 					<FrameViewForm resizeable="false">
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.MapModelCollectionInfoDialog</containerClass>
+						<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.MapModelCollectionInfoDialog</containerClass>
 						<ComponentState modal="false" active="false">
 							<windowState>closed</windowState>
 						</ComponentState>
@@ -305,11 +305,11 @@
 				<ns2:identifier>
 					<ns2:value>BookmarkId</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.bookmarks.BookmarkModule</className>
+				<className>org.deegree.desktop.modules.bookmarks.BookmarkModule</className>
 				<ViewForm>
 					<FrameViewForm resizeable="true">
 						<containerClass viewPlatform="Application">
-							org.deegree.igeo.views.swing.bookmark.BookmarkFrame
+							org.deegree.desktop.views.swing.bookmark.BookmarkFrame
                         </containerClass>
 						<ComponentState modal="false" active="false">
 							<windowState>closed</windowState>
@@ -357,10 +357,10 @@
 				<ns2:identifier>
 					<ns2:value>AddLayerId</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.AddLayerModule</className>
+				<className>org.deegree.desktop.modules.AddLayerModule</className>
 				<ViewForm>
 					<FrameViewForm resizeable="true">
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.addlayer.AddLayerFrame</containerClass>
+						<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.addlayer.AddLayerFrame</containerClass>
 						<ComponentState modal="false" active="true">
 							<windowState>closed</windowState>
 						</ComponentState>
@@ -425,10 +425,10 @@
 				<ns2:identifier>
 					<ns2:value>EditStyleId</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.EditStyleModule</className>
+				<className>org.deegree.desktop.modules.EditStyleModule</className>
 				<ViewForm>
 					<FrameViewForm resizeable="true">
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.style.RuleDialog</containerClass>
+						<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.style.RuleDialog</containerClass>
 						<ComponentState modal="true" active="false">
 							<windowState>closed</windowState>
 						</ComponentState>
@@ -474,10 +474,10 @@
 				<ns2:identifier>
 					<ns2:value>Measure1</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.MeasureModule</className>
+				<className>org.deegree.desktop.modules.MeasureModule</className>
 				<ViewForm>
 					<PaneViewForm>
-						<containerClass viewPlatform="Application">org.deegree.igeo.views.swing.measure.MeasureFooterPanel</containerClass>
+						<containerClass viewPlatform="Application">org.deegree.desktop.views.swing.measure.MeasureFooterPanel</containerClass>
 						<ComponentState modal="false" active="false">
 							<windowState>normal</windowState>
 						</ComponentState>
@@ -517,11 +517,11 @@
 				<ns2:identifier>
 					<ns2:value>WebServerModuleID</ns2:value>
 				</ns2:identifier>
-				<className>org.deegree.igeo.modules.remotecontrol.WebServerModule</className>
+				<className>org.deegree.desktop.modules.remotecontrol.WebServerModule</className>
 				<ViewForm>
 					<FrameViewForm resizeable="true">
 						<containerClass viewPlatform="Application">
-							org.deegree.igeo.views.swing.addlayer.DefaultPanel
+							org.deegree.desktop.views.swing.addlayer.DefaultPanel
                         </containerClass>
 						<ComponentState modal="false" active="true">
 							<windowState>closed</windowState>
@@ -556,11 +556,11 @@
 				</init-param>
 				<init-param>
 					<name>setBBOX</name>
-					<value>org.deegree.igeo.modules.remotecontrol.SetBBOXHandler</value>
+					<value>org.deegree.desktop.modules.remotecontrol.SetBBOXHandler</value>
 				</init-param>
 				<init-param>
 					<name>selectFeatures</name>
-					<value>org.deegree.igeo.modules.remotecontrol.SelectFeatureHandler</value>
+					<value>org.deegree.desktop.modules.remotecontrol.SelectFeatureHandler</value>
 				</init-param>
 			</Module>
 		</ModuleRegister>
@@ -612,18 +612,18 @@
 		</ns4:Validation>
 		<ns4:DataAdapter>
 			<ns4:WFSFeatureAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WFS110CapabilitiesEvaluator"/>
+				<ns4:CapabilitiesEvaluator val="org.deegree.desktop.dataadapter.WFS110CapabilitiesEvaluator"/>
 				<ns4:Timeout val="10000"/>
 				<ns4:MaxFeature val="5000"/>
-				<ns4:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
+				<ns4:DataLoader val="org.deegree.desktop.dataadapter.WFS110DataLoader"/>
 			</ns4:WFSFeatureAdapter>
 			<ns4:WMSGridCoverageAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
+				<ns4:CapabilitiesEvaluator val="org.deegree.desktop.dataadapter.WMS111CapabilitiesEvaluator"/>
 				<ns4:Timeout val="10000"/>
 				<ns4:featureCount val="2"/>
 			</ns4:WMSGridCoverageAdapter>
 			<ns4:WCSGridCoverageAdapter>
-				<ns4:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WCS100CapabilitiesEvaluator"/>
+				<ns4:CapabilitiesEvaluator val="org.deegree.desktop.dataadapter.WCS100CapabilitiesEvaluator"/>
 				<ns4:Timeout val="10000"/>
 			</ns4:WCSGridCoverageAdapter>
 		</ns4:DataAdapter>

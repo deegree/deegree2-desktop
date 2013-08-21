@@ -3,7 +3,7 @@
 	<xs:annotation>
 		<xs:appinfo>
             <jaxb:schemaBindings>
-              <jaxb:package name="org.deegree.igeo.config" />
+              <jaxb:package name="org.deegree.desktop.config" />
             </jaxb:schemaBindings>
 			<jaxb:globalBindings underscoreBinding="asCharInWord"/>
 		</xs:appinfo>

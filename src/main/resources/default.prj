@@ -14,7 +14,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 	<ns4:View hasFooter="true">
 		<ns4:ViewForm>
 			<ns4:FrameViewForm resizeable="true">
-				<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.map.DefaultMapFrame</ns4:containerClass>
+				<ns4:containerClass viewPlatform="Application">org.deegree.desktop.views.map.DefaultMapFrame</ns4:containerClass>
 				<ns4:containerClass viewPlatform="Portlet">org.deegree.client.portlet.DeegreeJSP
                                 </ns4:containerClass>
 				<ns4:ComponentState modal="false" active="true">
@@ -37,10 +37,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 				<identifier>
 					<value>XYZ999</value>
 				</identifier>
-				<ns4:className>org.deegree.igeo.modules.DefaultModule</ns4:className>
+				<ns4:className>org.deegree.desktop.modules.DefaultModule</ns4:className>
 				<ns4:ViewForm >
 					<ns4:PaneViewForm>
-					<ns4:containerClass viewPlatform="Application">org.deegree.igeo.views.swing.InfoTextPanel</ns4:containerClass>
+					<ns4:containerClass viewPlatform="Application">org.deegree.desktop.views.swing.InfoTextPanel</ns4:containerClass>
 						<ns4:ComponentState modal="false" active="true">
 							<ns4:windowState>normal</ns4:windowState>
 						</ns4:ComponentState>
@@ -49,7 +49,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 				</ns4:ViewForm>
 				<ns4:init-param>
 					<ns4:name>page</ns4:name>
-					<ns4:value>./org/deegree/igeo/help/start.html</ns4:value>
+					<ns4:value>./org/deegree/desktop/help/start.html</ns4:value>
 				</ns4:init-param>
 			</ns4:Module>
 		</ns4:ModuleRegister>
@@ -62,10 +62,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 				<identifier>
 					<value>PM1</value>
 				</identifier>
-				<ns4:className>org.deegree.igeo.modules.ProxyManagerModule</ns4:className>
+				<ns4:className>org.deegree.desktop.modules.ProxyManagerModule</ns4:className>
 				<ns4:ViewForm>
 					<ns4:FrameViewForm>
-						<ns4:containerClass viewPlatform="Application"> org.deegree.igeo.views.swing.proxymanager.ProxyManagerDialog</ns4:containerClass>
+						<ns4:containerClass viewPlatform="Application"> org.deegree.desktop.views.swing.proxymanager.ProxyManagerDialog</ns4:containerClass>
 						<ns4:ComponentState modal="false" active="true">
 							<ns4:windowState>closed</ns4:windowState>
 						</ns4:ComponentState>
@@ -131,7 +131,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 				<ns4:name/>
 				<ns4:tooltip>$OpenProject.tooltip</ns4:tooltip>
 				<ns4:assignedAction>open</ns4:assignedAction>
-				<ns4:icon ns2:href="/org/deegree/igeo/views/images/open.gif"/>
+				<ns4:icon ns2:href="/org/deegree/desktop/views/images/open.gif"/>
 				<ns4:entryType>PushButton</ns4:entryType>
 			</ns4:ToolBarEntry>
 			<ns4:ToolBarEntry assignedGroup="TBProjectGroup">
@@ -141,7 +141,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 				<ns4:name/>
 				<ns4:tooltip>$Login.tooltip</ns4:tooltip>
 				<ns4:assignedAction>login</ns4:assignedAction>
-				<ns4:icon ns2:href="/org/deegree/igeo/views/images/log_in.png"/>
+				<ns4:icon ns2:href="/org/deegree/desktop/views/images/log_in.png"/>
 				<ns4:entryType>PushButton</ns4:entryType>
 			</ns4:ToolBarEntry>
 		</ns4:ToolBar>
@@ -153,10 +153,10 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 		</ns5:MapHandling>
 		<ns5:DataAdapter>
 			<ns5:WFSFeatureAdapter>
-				<ns5:CapabilitiesEvaluator val="org.deegree.igeo.dataadapter.WMS111CapabilitiesEvaluator"/>
+				<ns5:CapabilitiesEvaluator val="org.deegree.desktop.dataadapter.WMS111CapabilitiesEvaluator"/>
 				<ns5:Timeout val="10000"/>
 				<ns5:MaxFeature val="5000"/>
-				<ns5:DataLoader val="org.deegree.igeo.dataadapter.WFS110DataLoader"/>
+				<ns5:DataLoader val="org.deegree.desktop.dataadapter.WFS110DataLoader"/>
 			</ns5:WFSFeatureAdapter>
 		</ns5:DataAdapter>
 		<ns5:ProjectTemplates>
@@ -181,7 +181,7 @@ xsi:schemaLocation="http://www.deegree.org/project ../../../../resources/schema/
 		<ns5:Clipboard format="text/xml; subtype=gml/3.1.1" maxObjects="1000"/>
 		<ns5:Security>
 			<ns5:Authentication default="true">
-				<ns5:method>org.deegree.igeo.commands.DummyUserAuthenticationCommand</ns5:method>
+				<ns5:method>org.deegree.desktop.commands.DummyUserAuthenticationCommand</ns5:method>
 				<ns5:AuthenticationServer>http://localhost:8280/igeo_authentication/authentication</ns5:AuthenticationServer>
 			</ns5:Authentication>
 		</ns5:Security>

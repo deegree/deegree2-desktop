@@ -38,9 +38,9 @@
 
 package org.deegree.framework.utils;
 
+import static org.deegree.desktop.views.LayerPane.createThemes;
 import static org.deegree.framework.util.MapUtils.DEFAULT_PIXEL_SIZE;
 import static org.deegree.graphics.MapFactory.createMapView;
-import static org.deegree.igeo.views.LayerPane.createThemes;
 import static org.deegree.model.spatialschema.GeometryFactory.createEnvelope;
 
 import java.awt.Color;
@@ -52,13 +52,13 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.deegree.desktop.mapmodel.Layer;
+import org.deegree.desktop.mapmodel.LayerGroup;
+import org.deegree.desktop.mapmodel.MapModel;
+import org.deegree.desktop.mapmodel.MapModelVisitor;
 import org.deegree.graphics.MapView;
 import org.deegree.graphics.Theme;
-import org.deegree.igeo.config.TargetDeviceType;
-import org.deegree.igeo.mapmodel.Layer;
-import org.deegree.igeo.mapmodel.LayerGroup;
-import org.deegree.igeo.mapmodel.MapModel;
-import org.deegree.igeo.mapmodel.MapModelVisitor;
+import org.deegree.desktop.config.TargetDeviceType;
 import org.deegree.model.spatialschema.Envelope;
 import org.deegree.model.spatialschema.GeometryFactory;
 import org.deegree.model.spatialschema.Point;
